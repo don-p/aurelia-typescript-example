@@ -1,0 +1,7 @@
+/node_modules
+/.vscode
+/.history
+/.awcache
+/typings
+/custom_typings
+.DS_Store
