@@ -1,12 +1,17 @@
 ﻿import {Aurelia} from 'aurelia-framework';
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
+import * as config from './config/authConfig';
 // import {I18N} from 'aurelia-i18n';
 
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
- //   .plugin('aurelia-validation')
+    .plugin('aurelia-auth', (baseConfig)=>{
+      baseConfig.configure(config.default);
+    })
+    ;
+//   .plugin('aurelia-validation')
     // .plugin('aurelia-validatejs')
 /*    .plugin('aurelia-i18n', (instance) => {
         // Import i18n resources.

@@ -4,26 +4,26 @@
     <h3>${router.currentInstruction.config.title}</h3>
     <form if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''" role="form" submit.delegate="login()">
       <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" value.bind="username" class="form-control" id="un" placeholder="Username">
+        <label for="username">${messages.getMessage('login.username')}</label>
+        <input type="text" value.bind="username" class="form-control" id="un" placeholder="${messages.getMessage('login.username')}">
       </div>
       <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" value.bind="password" class="form-control" id="pw" placeholder="Password">
+        <label for="password">${messages.getMessage('login.password')}</label>
+        <input type="password" value.bind="password" class="form-control" id="pw" placeholder="${messages.getMessage('login.password')}">
       </div>
-      <button type="submit" class="btn btn-default">Log In</button>
+      <button type="submit" class="btn btn-default">${messages.getMessage('login.submit')}</button>
     </form>
 
      <form if.bind="router.currentInstruction.config.route==='login-2'" role="form" submit.delegate="loginConfirm()">
-       <div><h4><p>You will receive a confirmation code by text message or email.</p>  
-          <p>When you receive the code, please enter it below.</p>
+       <div><h4><p>${messages.getMessage('login.login2.text1')}</p>  
+          <p>${messages.getMessage('login.login2.text2')}</p>
           <p>&nbsp;</p></h4>
        </div>
       <div class="form-group">
-        <label for="confCode">Confirmation code</label>
-        <input type="text" value.bind="confCode" class="form-control" id="cc" placeholder="Confirmation code">
+        <label for="confCode">${messages.getMessage('login.login2.confCode')}</label>
+        <input type="text" value.bind="confCode" class="form-control" id="cc" placeholder="${messages.getMessage('login.login2.confCode')}">
       </div>
-      <button type="submit" class="btn btn-default">Confirm</button>
+      <button type="submit" class="btn btn-default">${messages.getMessage('login.confirm')}</button>
     </form>
    
   </section>

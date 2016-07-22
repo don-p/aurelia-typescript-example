@@ -5,6 +5,49 @@
     <div style="height:100%;border:1px solid #fff;">
       Placeholder for communities view.
     </div>
+<div class="blg-fixed-wrapper">
 
+				<aside class="blg-left-panel" style="width:480px;display:inline-block;">
+
+					<ul class="nav nav-tabs nav-append-content">
+						<li>
+							<a href="#owner" id="tabOwnerTitle">Discover</a>
+						</li>
+						<li>
+							<a href="#participant" id="tabParticipantTitle">Connects</a>
+						</li>
+						<li class="active">
+							<a href="#closed" id="tabClosedTitle">Communities</a>
+						</li>						
+					</ul>
+				
+					<div class="blg-tab-section tab-content">
+						<div class="blg-inner-content tab-pane active" id="owner">
+
+              <!-- communities list elements -->
+              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div repeat.for="community of communities" class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                      <a click.trigger="getCommunityMembers(community.communityId)" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-${$index}"  aria-expanded="true" aria-controls="collapseOne">
+                        ${community.communityName} <span if.bind="(community.communityOwner.memberId===session.auth.member.memberId)"> (OWNER)</span>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapse-${$index}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+						</div>
+					</div>
+				</aside>
+        <div style="display:inline-block;vertical-align:top;">
+          <compose model.bind="selectedItem" view-model="./community-detail"></compose>
+        </div>
+</div>
   </section>
 </template>

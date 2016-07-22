@@ -1,9 +1,10 @@
 import {inject, Lazy} from 'aurelia-framework';
-import {HttpClient} from 'aurelia-fetch-client';
-import {json} from 'aurelia-fetch-client';
+import {HttpClient, json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
-import {Session} from './session';
-import {AppConfig} from './appConfig';
+import {Session} from './services/session';
+import {AppConfig} from './services/appConfig';
+import {Messages} from './services/messages';
+import {AuthService} from 'aurelia-auth';
 import {Validator} from 'aurelia-validation';
 import {required, email} from 'aurelia-validatejs';
 
@@ -15,9 +16,9 @@ import {required, email} from 'aurelia-validatejs';
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
 
-@inject(Lazy.of(HttpClient), Session, Router, AppConfig)
+@inject(Lazy.of(HttpClient), Session, Router, AppConfig, Messages, AuthService)
 export class Login {
-  heading: string = 'BlueLine Grid Command 2.0';
+  heading: string = 'BlueLine Grid Works 2.0';
 //  @required
 //  @email
   username: string = '';
@@ -31,6 +32,8 @@ export class Login {
   router: Router;
   appConfig: AppConfig;
   navigationInstruction: NavigationInstruction;
+  messages: Messages;
+  auth: AuthService;
 
   headers: {
         'X-Requested-With': 'Fetch',
@@ -39,10 +42,12 @@ export class Login {
         'Content-Type': 'application/json'
   };
       
-  constructor(private getHttpClient: () => HttpClient, session, router, appConfig) {
+  constructor(private getHttpClient: () => HttpClient, session, router, appConfig, messages, auth) {
     this.session = session;
     this.router = router;
     this.appConfig = appConfig;
+    this.messages = messages;
+    this.auth = auth;
   }
 
   activate(params, navigationInstruction) {
@@ -55,6 +60,16 @@ export class Login {
   }
 
   async login(): Promise<void> {
+
+    var me = this;
+    var body = 'username=' + this.username + 
+        '&password=' + this.password + 
+        '&grant_type=PASSWORD' +
+        '&client_id=' + me.appConfig.clientId +
+        '&client_secret=' + me.appConfig.clientSecret
+
+    return this.auth.login(body, null)
+/*
     // ensure fetch is polyfilled before we create the http client
     var username = this.username;
     var password = this.password;
@@ -72,8 +87,7 @@ export class Login {
     }
     http.configure(config => {
       config
-        .withBaseUrl(this.appConfig.apiServerUrl.toString())
-        /*.withDefaults({headers: h})*/;
+        .withBaseUrl(this.appConfig.apiServerUrl.toString());
     });
     var me = this;
     const response = http.fetch('oauth/token', {
@@ -88,16 +102,16 @@ export class Login {
         '&client_secret=' + me.appConfig.clientSecret
     //body:{username:'don.peterkofsky@grid.blue', password: '*Do4495*', grant_type:'password'}
       }
-    );//.withParams({username:'don.peterkofsky@grid.blue', password: '*Do4495*', grant_type:'password'});
-    response.then(data => {
+    )
+    */
+//    .then(response => response.json())
+    .then(data => {
       console.log(json(data));
-      if(!data.ok || data.status===0) {
-        console.log("Authentication failed."); 
-      } else {
-        me.session.auth['isLoggedIn'] = true;
-        me.router.navigateToRoute('login-2');
-      }
+      me.session.auth = data;
+      me.session.auth['isLoggedIn'] = true;
+      me.router.navigateToRoute('login-2');
     }).catch(error => {
+      console.log("Authentication failed."); 
       console.log(error); 
     });
   }

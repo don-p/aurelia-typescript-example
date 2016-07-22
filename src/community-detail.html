@@ -1,0 +1,16 @@
+<template>
+    <div style="height:100%;border:1px solid #fff;">
+      Community Members
+    </div>
+
+<table border="1">
+<tr repeat.for="member of selectedCommunityMembers" class="container">
+  
+<td>${member.memberId}</td>
+<td>${member.physicalPersonProfile.firstName}</td>
+<td>${member.physicalPersonProfile.lastName}</td>
+<td>${member.physicalPersonProfile.organization.organizationName}</td>
+<td>${member.physicalPersonProfile.jobTitle}</td>
+</tr>
+</table>
+</template>
