@@ -4,13 +4,27 @@
     </div>
 
 <table border="1">
+<tr class="container">
+  
+<th>Member ID</th>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Title</th>
+<th>Organization</th>
+<th>City</th>
+<th>State</th>
+<th>ZIP</th>
+</tr>
 <tr repeat.for="member of selectedCommunityMembers" class="container">
   
 <td>${member.memberId}</td>
 <td>${member.physicalPersonProfile.firstName}</td>
 <td>${member.physicalPersonProfile.lastName}</td>
-<td>${member.physicalPersonProfile.organization.organizationName}</td>
 <td>${member.physicalPersonProfile.jobTitle}</td>
+<td>${member.physicalPersonProfile.organization.organizationName}</td>
+<td>${member.physicalPersonProfile.locationProfile.city}</td>
+<td>${member.physicalPersonProfile.locationProfile.stateCode}</td>
+<td>${member.physicalPersonProfile.locationProfile.zipCode}</td>
 </tr>
 </table>
 </template>

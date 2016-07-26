@@ -1,11 +1,29 @@
 {
-    "welcome": "Welcome",
-    "score": "Score: {{score}}",
-    "lives": "{{count}} life remaining",
-    "lives_plural": "{{count}} lives remaining",
-    "lives_indefinite": "a life remaining",
-    "lives_plural_indefinite": "some lives remaining",
-    "friend": "A friend",
-    "friend_male": "A boyfriend",
-    "friend_female": "A girlfriend"
+    "app":{
+        "title":"Grid Command V2"
+    },
+
+    "router":{
+        "nav":{
+            "login":"Login",
+            "login2":"Confirm Login",
+            "community":"Community",
+            "alerts":"Alerts",
+            "tracker":"Tracker",
+            "conversations":"Conversations"
+        }
+    },
+
+    "login":{
+        "heading":"BlueLine Grid Command 2.0",
+        "username":"Username",
+        "password":"Password",
+        "submit":"Log In",
+        "confirm":"Confirm",
+        "login2":{
+            "text1":"You will receive a confirmation code by text message or email.",
+            "text2":"When you receive the code, please enter it below.",
+            "confCode":"Confirmation code"
+        }
+    }
 }

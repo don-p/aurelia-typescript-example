@@ -45,7 +45,7 @@
 						</div>
 					</div>
 				</aside>
-        <div style="display:inline-block;vertical-align:top;">
+        <div if.bind="(selectedItem && selectedItem!==null)" style="display:inline-block;vertical-align:top;">
           <compose model.bind="selectedItem" view-model="./community-detail"></compose>
         </div>
 </div>
