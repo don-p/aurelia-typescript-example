@@ -1,0 +1,8 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "typescript.tsdk": "node_modules/typescript/lib"
+
+        // Controls if opened editors should show in tabs or not.
+    "workbench.editor.showTabs": true,
+
+}

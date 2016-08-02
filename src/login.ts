@@ -4,20 +4,15 @@ import {Router, NavigationInstruction} from 'aurelia-router';
 import {Session} from './services/session';
 import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
-import {Messages} from './services/messages';
 import {AuthService} from 'aurelia-auth';
-import {Validator} from 'aurelia-validation';
-import {required, email} from 'aurelia-validatejs';
-
-// const apiServerUrl = 'https://api-dev-scig-blg.bluelinegrid.com/v1/';
-// const apiServerUrl = 'http://192.168.119.115:8888/blueline/';
-//const apiServerUrl = 'https://api-dev.bluelinegrid.com/';
+// import {Validator} from 'aurelia-validation';
+// import {required, email} from 'aurelia-validatejs';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
 
-@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, Messages, AuthService)
+@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, AuthService)
 export class Login {
   heading: string = 'BlueLine Grid Command 2.0';
 //  @required
@@ -39,7 +34,7 @@ export class Login {
   };
       
   constructor(private getHttpClient: () => HttpClient, private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private messages: Messages, private auth: AuthService) {
+    private dataService: DataService, private auth: AuthService) {
       
   }
 
@@ -96,8 +91,8 @@ async loginConfirm(): Promise<void> {
     });
     var me = this;
     // DEBUG
-
         me.router.navigateToRoute('community');
+   // DEBUG
 
 
     /*
@@ -109,7 +104,7 @@ async loginConfirm(): Promise<void> {
         console.log("Authentication failed."); 
       } else {
         me.session.auth['isLoggedIn'] = true;
-        me.router.navigateToRoute('login2');
+        me.router.navigateToRoute('community');
       }
     }).catch(error => {
       console.log(error); 

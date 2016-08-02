@@ -1,9 +1,12 @@
 import {Aurelia, inject} from 'aurelia-framework';
 import {Router, RouterConfiguration} from 'aurelia-router';
 import {Session} from './services/session';
-import {Messages} from './services/messages';
 import {FetchConfig} from 'aurelia-auth';
 import {I18N} from 'aurelia-i18n';
+//import '../less/blg.less';
+import 'bootstrap/less/bootstrap.less';
+
+// require('../less/blg.less');
 
 @inject(Session, FetchConfig, I18N)
 export class App {
@@ -14,7 +17,7 @@ export class App {
  }
 
   activate(){
-    this.fetchConfig.configure();
+   this.fetchConfig.configure();
     
   }
 

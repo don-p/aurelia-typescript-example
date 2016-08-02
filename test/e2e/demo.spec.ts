@@ -1,5 +1,6 @@
 import {PageObject_Welcome} from './welcome.po';
 import {PageObject_Skeleton} from './skeleton.po';
+import {browser, element, by, By, $, $$, ExpectedConditions} from 'protractor/globals';
 
 describe('aurelia skeleton app', function() {
   let po_welcome: PageObject_Welcome;
@@ -29,11 +30,11 @@ describe('aurelia skeleton app', function() {
     browser.sleep(200);
     expect(po_welcome.getFullname()).toBe('ROB EISENBERG');
   });
-/*
+
   it('should show alert message when clicking submit button', () => {
     expect(po_welcome.openAlertDialog()).toBe(true);
   });
-*/
+
   it('should navigate to users page', () => {
     po_skeleton.navigateTo('#/users');
     expect(po_skeleton.getCurrentPageTitle()).toBe('Github Users | Aurelia');

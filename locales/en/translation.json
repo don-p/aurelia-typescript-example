@@ -25,5 +25,11 @@
             "text2":"When you receive the code, please enter it below.",
             "confCode":"Confirmation code"
         }
+    },
+    "community":{
+        "discover":"Discover",
+        "connect":"Connect",
+        "communities":"Communities"
+
     }
 }

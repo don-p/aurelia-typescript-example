@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-//    "allowSyntheticDefaultImports": true,
     "target": "es2015",
     "module": "es2015",
     "emitDecoratorMetadata": true,
@@ -11,7 +10,7 @@
   },
   "awesomeTypescriptLoaderOptions": {
     "doTypeCheck": true,
-    "forkChecker": false,
+    "forkChecker": true,
     "useBabel": true,
     "useCache": true,
     "babelOptions": {
@@ -25,9 +24,5 @@
     "index.js",
     "webpack.config.js",
     "config"
-  // ],
-  // "filesGlob": [
-  //   "./typings/**/*.d.ts" // if you use both typings files from this repository (`doc/*.d.ts`)
   ]
-
 }

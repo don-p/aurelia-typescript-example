@@ -1,7 +1,11 @@
-/node_modules
-/.vscode
-/.history
-/.awcache
+node_modules
+.DS_STORE
+npm-debug.log*
+/dist
+/build
 /typings
-/custom_typings
-.DS_Store
+/.awcache
+/.history
+/electron.js*
+/release
+/test/coverage

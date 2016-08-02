@@ -1,0 +1,35 @@
+{
+    "app":{
+        "title":"Le Grid Command V2"
+    },
+
+    "router":{
+        "nav":{
+            "login":"Connecter",
+            "login2":"Confirmer connexion",
+            "community":"Le Communauté",
+            "alerts":"Les Alertes",
+            "tracker":"Le Traqueur",
+            "conversations":"Les Conversations"
+        }
+    },
+
+    "login":{
+        "heading":"BlueLine Grid Command 2.0",
+        "username":"Nom d'utilisateur",
+        "password":"Mot de passe",
+        "submit":"Connecter",
+        "confirm":"Confirmer",
+        "login2":{
+            "text1":"Vous recevrez un code de confirmation par message texte ou par courriel.",
+            "text2":"Lorsque vous recevez le code, s'il vous plaît indiquer ci-dessous.",
+            "confCode":"Code de confirmation"
+        }
+    },
+        "community":{
+        "discover":"Découvrir",
+        "connect":"Relier",
+        "communities":"Communautés"
+
+    }
+}
