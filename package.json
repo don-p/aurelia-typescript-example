@@ -69,7 +69,8 @@
         "aurelia-i18n/df",
         "aurelia-i18n/rt",
         "i18next-xhr-backend/Backend",
-        "aurelia-auth/auth-filter"
+        "aurelia-auth/auth-filter",
+        "aurelia-ui-virtualization/virtual-repeat-next"
       ]
     }
   },
@@ -91,6 +92,7 @@
     "aurelia-templating-binding": "^1.0.0",
     "aurelia-templating-resources": "^1.0.0",
     "aurelia-templating-router": "^1.0.0",
+    "aurelia-ui-virtualization": "^1.0.0-beta.2.0.0",
     "bluebird": "^3.4.1",
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.6.3",

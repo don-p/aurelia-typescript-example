@@ -105,6 +105,7 @@ export async function configure(aurelia: Aurelia) {
         });
         return pr;
       })
+      .plugin('aurelia-ui-virtualization')
       ;
 
   // Uncomment the line below to enable animation.

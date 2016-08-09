@@ -56,7 +56,7 @@ export class DataService {
     /**
      * Get list of communities for logged-in user.
      */
-    async getCommunities(): Promise<Response> {
+    async getCommunities(communityType: string, startIndex: number, pageSize: number): Promise<Response> {
         await fetch;
         const http =  this.getHttpClient();
         var  headers = new Object({
@@ -76,7 +76,8 @@ export class DataService {
             }
         );
         var me = this;
-        var response = http.fetch('v1/communities?community_type=COI&start_index=110&page_size=20', 
+        var response = http.fetch('v1/communities?community_type=' + communityType + 
+            '&start_index=' + startIndex + '&page_size=' + pageSize, 
             {
                 method: 'GET',
                 headers: h

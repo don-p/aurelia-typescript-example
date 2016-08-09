@@ -1,6 +1,7 @@
 {
     "app":{
-        "title":"Grid Command V2"
+        "title":"Grid Command V2",
+        "loading":"Loading..."
     },
 
     "router":{
@@ -29,7 +30,10 @@
     "community":{
         "discover":"Discover",
         "connect":"Connect",
-        "communities":"Communities"
+        "communities":"Communities",
+        "commType":"Community Type",
+        "coi":"COI",
+        "team":"Team"
 
     }
 }

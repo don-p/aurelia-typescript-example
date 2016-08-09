@@ -29,8 +29,20 @@ body {
   right: 0;
   top: 50px;
   bottom: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
+  /*overflow-x: hidden;
+  overflow-y: auto;*/
+}
+
+/** GC styles **/
+.virtual-repeated-item {
+    background: #FF0000;
+    height: 40px;
+    border: 1px solid #999;
+}
+
+.group-select {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 @media print {
