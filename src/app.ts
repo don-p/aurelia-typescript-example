@@ -5,20 +5,39 @@ import {FetchConfig} from 'aurelia-auth';
 import {I18N} from 'aurelia-i18n';
 //import '../less/blg.less';
 import 'bootstrap/less/bootstrap.less';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
 // require('../less/blg.less');
 
-@inject(Session, FetchConfig, I18N)
+@inject(Session, FetchConfig, I18N, EventAggregator)
 export class App {
   router: Router;
 
-  constructor(private session: Session, private fetchConfig: FetchConfig, private i18n: I18N) {
+  constructor(private session: Session, private fetchConfig: FetchConfig, private i18n: I18N, private evt: EventAggregator) {
     this.session.auth['isLoggedIn'] = false;
+
+    // Subscribe to request/response errors.
+    this.evt.subscribe('responseError', payload => {
+       this.handleResponseError(payload);
+    });
+    
  }
 
   activate(){
    this.fetchConfig.configure();
     
+  }
+
+  handleResponseError(response) {
+    switch (response.status) {
+      case 401:
+        console.log("ResponseError: 401 Unauth");
+        this.router.navigateToRoute('login', {errorMessage: 'error.sessionExpired'});
+        break;
+      default:
+        console.log("No ResponseError");
+    }
+
   }
 
   configureRouter(config: RouterConfiguration, router: Router) {
@@ -28,7 +47,8 @@ export class App {
         route: ['', 'login'], 
         name: 'login',      
         moduleId: './login',      
-        nav: false,     
+        nav: false,
+        errorMessage:'',
         title: this.i18n.tr('router.nav.login') 
       },
       { 

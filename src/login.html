@@ -2,6 +2,8 @@
   <section class="au-animate">
     <h2>${heading}</h2>
     <h3>${router.currentInstruction.config.title}</h3>
+    <div i18n="${errorMessage}" if.bind="(errorMessage && !(errorMessage===undefined))" class="alert-message-inline">
+    </div>
     <form if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''" role="form" submit.delegate="login()">
       <div class="form-group">
         <label i18n='login.username' for="username"></label>

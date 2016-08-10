@@ -2,8 +2,9 @@ import {inject, Lazy} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {AppConfig} from './appConfig';
 import {Session} from './session';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
-@inject(Lazy.of(HttpClient), AppConfig)
+@inject(Lazy.of(HttpClient), AppConfig, EventAggregator)
 export class DataService {  
 
     // Service object for retreiving application data from REST services.
@@ -11,13 +12,47 @@ export class DataService {
     apiServerUrl: String;
     clientId: String;
     clientSecret: String;
+    httpClient: HttpClient;
 
-    constructor(private getHttpClient: () => HttpClient, private appConfig: AppConfig){
+    constructor(private getHttpClient: () => HttpClient, private appConfig: AppConfig, private evt: EventAggregator){
         // Base Url for REST API service.
         this.apiServerUrl = appConfig.apiServerUrl;
         // App identifiers for REST services.
         this.clientId = appConfig.clientId;
         this.clientSecret = appConfig.clientSecret;
+        this.httpClient = this.getHttpClient();
+
+        // Set up global http configuration; API url, request/response error handlers.
+        var me = this;
+        this.httpClient.configure(config => {
+            config
+                .withBaseUrl(this.apiServerUrl.toString())
+                .withDefaults({
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'Fetch'
+                    }
+                })
+                .withInterceptor({
+                    request: function(request) {
+                        console.log(`Requesting ${request.method} ${request.url}`);
+                        return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
+                    },
+                    response: function(response) {
+                        console.log(`Received ${response.status} ${response.url}`);
+                        if(response.status !== 200) {
+                            me.evt.publish('responseError', response);
+                        }
+                        return response; // you can return a modified Response
+                    },
+                    responseError: function(responseError) {
+                        console.log(`Received ` + responseError);
+                        throw responseError;
+                    }
+                });
+        });
+
     }
 
     // AUTHENTICATION
@@ -69,12 +104,12 @@ export class DataService {
         for (var header in headers) {
             h.append(header, headers[header]);
         }
-        http.configure(config => {
-            config
-                .withBaseUrl(this.apiServerUrl.toString())
-                /*.withDefaults({headers: h})*/;
-            }
-        );
+        // http.configure(config => {
+        //     config
+        //         .withBaseUrl(this.apiServerUrl.toString())
+        //         /*.withDefaults({headers: h})*/;
+        //     }
+        // );
         var me = this;
         var response = http.fetch('v1/communities?community_type=' + communityType + 
             '&start_index=' + startIndex + '&page_size=' + pageSize, 

@@ -27,6 +27,11 @@
             "confCode":"Confirmation code"
         }
     },
+
+    "error": {
+        "sessionExpired": "Your session has expired or is invalid.  Please log in."
+    },
+
     "community":{
         "discover":"Discover",
         "connect":"Connect",

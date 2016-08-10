@@ -20,6 +20,7 @@ export class Login {
   username: string = '';
 //  @required
   password: string = '';
+  errorMessage: string;
 
   code: string;
  
@@ -38,8 +39,12 @@ export class Login {
       
   }
 
-  activate(params, navigationInstruction) {
+  activate(params, routeConfig, navigationInstruction) {
     this.navigationInstruction = navigationInstruction;
+    this.errorMessage = params.errorMessage;
+    let hash = location.hash.substring(0,location.hash.indexOf('?'));
+    let url = location.origin + location.pathname + hash;
+    location.replace(url);
     console.log(navigationInstruction);
   }
 
