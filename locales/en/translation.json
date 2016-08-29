@@ -18,6 +18,7 @@
     "login":{
         "heading":"BlueLine Grid Command 2.0",
         "username":"Username",
+        "emailAddr":"Email address",
         "password":"Password",
         "submit":"Log In",
         "confirm":"Confirm",
@@ -29,15 +30,18 @@
     },
 
     "error": {
-        "sessionExpired": "Your session has expired or is invalid.  Please log in."
+        "sessionExpired": "Your session has expired or is invalid.  Please log in.",
+        "serverNotAvailable":"The server is not responding.  Please wait for one minute and log in, or contact your Administrator.",
+        "badCredentials":"The username/password combination provided is not valid. Please try again.",
+        "unknown":"An error occurred.  Please wait for one minute and log in, or contact your Administrator."
     },
 
     "community":{
         "discover":"Discover",
         "connect":"Connect",
         "communities":"Communities",
-        "commType":"Community Type",
-        "coi":"COI",
+        "commType":"Type",
+        "coi":"Interest",
         "team":"Team"
 
     }

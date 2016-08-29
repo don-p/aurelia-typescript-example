@@ -1,10 +1,11 @@
 import {inject, Lazy} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
-import {Router, NavigationInstruction} from 'aurelia-router';
+import {Router, NavigationInstruction, activationStrategy} from 'aurelia-router';
 import {Session} from './services/session';
 import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
-import {AuthService} from 'aurelia-auth';
+import {Utils} from './services/util';
+
 // import {Validator} from 'aurelia-validation';
 // import {required, email} from 'aurelia-validatejs';
 
@@ -12,7 +13,7 @@ import {AuthService} from 'aurelia-auth';
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
 
-@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, AuthService)
+@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, Utils, activationStrategy)
 export class Login {
   heading: string = 'BlueLine Grid Command 2.0';
 //  @required
@@ -33,18 +34,21 @@ export class Login {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
   };
-      
+
   constructor(private getHttpClient: () => HttpClient, private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private auth: AuthService) {
+    private dataService: DataService, private utils: Utils) {
       
+  }
+
+  determineActivationStrategy(){
+    return 'invoke-lifecycle';
   }
 
   activate(params, routeConfig, navigationInstruction) {
     this.navigationInstruction = navigationInstruction;
-    this.errorMessage = params.errorMessage;
-    let hash = location.hash.substring(0,location.hash.indexOf('?'));
-    let url = location.origin + location.pathname + hash;
-    location.replace(url);
+    if(Object.keys(params).length !== 0) {
+      this.errorMessage = this.utils.parseFetchError(params);
+    }
     console.log(navigationInstruction);
   }
 
@@ -55,20 +59,17 @@ export class Login {
   async login(): Promise<void> {
 
     var me = this;
-    var body = 'username=' + this.username + 
-        '&password=' + this.password + 
-        '&grant_type=PASSWORD' +
-        '&client_id=' + me.appConfig.clientId +
-        '&client_secret=' + me.appConfig.clientSecret
 
-    return this.auth.login(body, null)
+    return this.dataService.login(this.username, this.password)
 //    .then(response => response.json())
     .then(data => {
       console.log(json(data));
       me.session.auth = data;
       me.session.auth['isLoggedIn'] = true;
+      this.errorMessage = '';
       me.router.navigateToRoute('login-2');
     }).catch(error => {
+      // me.errorMessage = this.utils.parseFetchError('');
       console.log("Authentication failed."); 
       console.log(error); 
     });

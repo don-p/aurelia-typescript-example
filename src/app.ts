@@ -1,4 +1,4 @@
-import {Aurelia, inject} from 'aurelia-framework';
+import {Aurelia, inject, computedFrom} from 'aurelia-framework';
 import {Router, RouterConfiguration} from 'aurelia-router';
 import {Session} from './services/session';
 import {FetchConfig} from 'aurelia-auth';
@@ -6,14 +6,19 @@ import {I18N} from 'aurelia-i18n';
 //import '../less/blg.less';
 import 'bootstrap/less/bootstrap.less';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {AuthService} from 'aurelia-auth';
 
 // require('../less/blg.less');
 
-@inject(Session, FetchConfig, I18N, EventAggregator)
+@inject(Session, FetchConfig, I18N, EventAggregator, AuthService)
 export class App {
   router: Router;
+  session: Session;
 
-  constructor(private session: Session, private fetchConfig: FetchConfig, private i18n: I18N, private evt: EventAggregator) {
+  constructor(Session, private fetchConfig: FetchConfig, private i18n: I18N, 
+    private evt: EventAggregator, private auth: AuthService) {
+    this.session = Session;
+
     this.session.auth['isLoggedIn'] = false;
 
     // Subscribe to request/response errors.
@@ -23,6 +28,12 @@ export class App {
     
  }
 
+//  @computedFrom('this.session.auth')
+  get fullName(): string {
+    let fn = this.session.auth['member'].firstName + ' ' + this.session.auth['member'].lastName;
+    return fn;
+  }
+
   activate(){
    this.fetchConfig.configure();
     
@@ -30,12 +41,27 @@ export class App {
 
   handleResponseError(response) {
     switch (response.status) {
+      case 400:
+        console.log("ResponseError: 400 Unauth");
+        this.router.navigateToRoute('login', {errorMessage: 'error.badCredentials'});
+        break;
       case 401:
         console.log("ResponseError: 401 Unauth");
-        this.router.navigateToRoute('login', {errorMessage: 'error.sessionExpired'});
+        var messageKey = 'error.badCredentials';
+        if((this.session.auth['access_token'] && !(this.auth.isAuthenticated()))) {
+          messageKey = 'error.sessionExpired';
+        }
+        this.router.navigateToRoute('login', {errorMessage: messageKey});
+        break;
+      case 500:
+        console.log("ResponseError: 500 Server");
+        console.error(response);
+        this.router.navigateToRoute('login', {errorMessage: 'error.serverNotAvailable'});
         break;
       default:
-        console.log("No ResponseError");
+        console.log("ResponseError");
+        console.error(response);
+        this.router.navigateToRoute('login', {errorMessage: 'error.unknown'});
     }
 
   }
@@ -48,7 +74,6 @@ export class App {
         name: 'login',      
         moduleId: './login',      
         nav: false,
-        errorMessage:'',
         title: this.i18n.tr('router.nav.login') 
       },
       { 
@@ -104,8 +129,10 @@ export class App {
         moduleId: './community-detail', 
         nav: false, 
         title: this.i18n.tr('router.nav.community') 
-      },
-      { route: 'child-router', name: 'child-router', moduleId: './child-router', nav: true, title: 'Child Router' }
+      // },
+      // { 
+      //   route: 'child-router', name: 'child-router', moduleId: './child-router', nav: true, title: 'Child Router' 
+      }
     ]);
 
     this.router = router;

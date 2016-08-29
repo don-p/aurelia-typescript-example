@@ -20,6 +20,7 @@ var configForDevelopment = {
 
 var configForProduction = {
     baseUrl: 'https://api-dev-scig-blg.bluelinegrid.com/',
+    loginUrl: 'oauth/token',
     providers: {
         google: {
             clientId: '239531826023-3ludu3934rmcra3oqscc1gid3l9o497i.apps.googleusercontent.com'

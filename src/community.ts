@@ -41,7 +41,7 @@ export class Community {
   }
   attached() {
     console.debug("Community | attached()");
-    this.getCommunitiesPage('COI', 50, this.pageSize);
+    this.getCommunitiesPage('COI', 0, this.pageSize);
   }
 /**
  * Get communities for logged-in user.
@@ -89,7 +89,8 @@ export class Community {
     var me = this;
     var cmtysPromise = this.dataService.getCommunities(communityType, startIndex,  pageSize);
     this.cmtysPromise = cmtysPromise;
-    cmtysPromise.then(response => response.json())
+    cmtysPromise
+    .then(response => response.json())
     .then(data => {
       console.log(json(data));
 //      this.session=me.session;

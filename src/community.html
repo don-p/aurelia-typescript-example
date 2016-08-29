@@ -1,87 +1,138 @@
 <template>
 <require from="./lib/loading-mask/loading-mask"></require>
-  <section class="au-animate">
-    <h2>${heading}</h2>
 
-    <div style="height:100%;border:1px solid #fff;">
-      Placeholder for communities view.
-    </div>
-<div class="blg-fixed-wrapper" style="position:relative;">
+  <div class="blg-fixed-wrapper">
 
-				<aside class="blg-left-panel" style="width:400px;display:inline-block;">
+    <aside class="blg-left-panel" style="width:450px;display:inline-block;">
 
-					<ul class="nav nav-tabs nav-append-content">
-						<li>
-							<a href="#owner" i18n="community.discover" id="tabOwnerTitle"></a>
-						</li>
-						<li>
-							<a href="#participant" i18n="community.connect" iid="tabParticipantTitle"></a>
-						</li>
-						<li class="active">
-							<a href="#closed" i18n="community.communities" iid="tabClosedTitle"></a>
-						</li>						
-					</ul>
-					<div id="community-subtab" style="border:solid 1px #ddd;padding:3px;position:relative;" class="blg-tab-section tab-content">
-          <loading promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
-            <form class="group-select form-inline">
-            <div class="form-group">
-              <label i18n='[prepend]community.commType' for="commType">: </label>
-              <select class="form-control" value.bind="commType" change.delegate="getCommunitiesPage(commType, 0, pageSize)">
-              <option value="COI" i18n="community.coi">
-              </option>
-              <option value="TEAM" i18n="community.team">
-              </option>
+      <ul class="nav nav-tabs nav-append-content">
+        <li class="active">
+          <a href="#closed" i18n="community.communities" iid="tabClosedTitle"></a>
+        </li>						
+        <li>
+          <a href="#owner" i18n="community.discover" id="tabOwnerTitle"></a>
+        </li>
+        <li>
+          <a href="#participant" i18n="community.connect" iid="tabParticipantTitle"></a>
+        </li>
+      </ul>
+      <div class="blg-tab-section tab-content">
+        <div class="blg-inner-content tab-pane active" style="position:relative;" id="communities">
+        <loading promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
+
+          <div class="conv-buttons-bar">
+            <a id="communities-create-comm-btn" class="btn btn-primary btn-xs-square" title="Create community">
+              <i class="ico-users-plus"></i>
+            </a>
+            <a id="communities-delete-comm-btn" class="btn btn-danger btn-xs-square disabled" title="Delete community">
+              <i class="ico-users-cancel"></i>
+            </a>
+            <a id="communities-send-alert-btn" class="btn btn-inverse btn-xs-square disabled" title="Send alert">
+              <i class="ico-bullhorn center"></i>
+            </a>
+            <div class="float-right">
+              <span  i18n='[prepend]community.commType'>: </span>
+              <select style="vertical-align: middle;min-width: 95px;" class="form-control select select-default-blg" value.bind="commType" change.delegate="getCommunitiesPage(commType, 0, pageSize)">
+                <option value="COI" i18n="community.coi"></option>
+                <option value="TEAM" i18n="community.team"></option>
               </select>
+            </div>								
+          </div>											
+          
+          <div class="conv-form-group">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="Search">
+              <span class="input-group-btn">
+                <button type="submit" class="btn"><span class="ico-search"></span></button>
+              </span>												
             </div>
-            </form>
-						<div style="overflow: scroll; height: 70vh;border:solid 1px #ddd;padding:12px;" class="blg-inner-content tab-pane active" id="owner">
+          </div>
+          
+        <div class="blg-inner-content tab-pane active" id="owner">
 
-              <!-- communities list elements -->
+          <!-- communities list elements -->
 <!--
-                <div bindingContext.bind="$parent" class="virtual-repeated-item" virtual-repeat.for="community of communities.responseCollection" virtual-repeat-next="getMore">
-                  ${$index} ${community.communityName}
-                </div>
+            <div bindingContext.bind="$parent" class="virtual-repeated-item" virtual-repeat.for="community of communities.responseCollection" virtual-repeat-next="getMore">
+              ${$index} ${community.communityName}
+            </div>
 -->
-              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                <div repeat.for="community of communities.responseCollection" class="panel panel-default">
-                  <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
-                      <a click.trigger="selectCommunity(community.communityId)" role="button" data-toggle="collapse" data-parent="#accordion" xhref="#collapse-${$index}"  aria-expanded="true" aria-controls="collapseOne">
-                        ${community.communityName} <span if.bind="(community.communityOwner.memberId===session.auth.member.memberId)"> (OWNER)</span>
-                      </a>
-                    </h4>
-                  </div>
-                  <div id="collapse-${$index}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="panel-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+
+            <div class="blg-location-content right-panel" style="position:relative;top:0;">
+              <div class="conversation-list" style="overflow: scroll; height: 70vh;">
+                <ul>
+                  <div repeat.for="community of communities.responseCollection" class="panel-group communities-panel-list list1" id="accordion_communities">
+                    <div class='list1-item with_owner'>
+                      <li class='trigger' style="position:relative;"></li>
+                      <div class='panel panel-default'>
+                        <div class='panel-heading' role='tab'>
+                          <a class='collapsed' click.trigger="selectCommunity(community.communityId)" role='button' data-toggle='collapse' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false' aria-controls='collapse${$index}'>
+                            <h4 class='panel-title'>${community.communityName} ( <i class='ico-users'></i> no. of members ) <span if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" class='badge badge-owner float-right'>OWNER</span></h4>
+                          </a>
+                        </div>
+                        <div id='collapse${$index}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading${$index}'></div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <!--
-                <div>
-                  <nav>
-                    <ul class="pager">
-                      <li class="previous" class.bind="(communities.startPosition - communities.pageSize) <= 0 ? 'disabled':''">
-                        <a click.delegate="getCommunitiesPage(commType, (communities.startPosition - communities.pageSize))" 
-                        href="#"><span>< </span>Previous</a>
-                      </li>
-                      <li class="next" class.bind="(communities.startPosition + communities.pageSize) >= communities.totalCount ? 'disabled':''">
-                        <a click.delegate="getCommunitiesPage(commType, (communities.startPosition + communities.pageSize))" 
-                        disabled.bind="(communities.startPosition + communities.pageSize) >= communities.totalCount" href="#">Next<span> ></span></a>
-                      </li>
-                    </ul>
-                  </nav>                
-                </div>
-                -->
+                </ul>
               </div>
+            </div>
+            
 
-						</div>
-          </loading>
-					</div>
-				</aside>
-        <div id="community-members"  style="display: inline-block;width:720px;/* vertical-align:top; */height: 100%;/* float: right; */top: 0;position: absolute;">
-          <compose  view-model="./community-detail"></compose>
+
+
+            <!--
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div repeat.for="community of communities.responseCollection" class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                  <a click.trigger="selectCommunity(community.communityId)" role="button" data-toggle="collapse" data-parent="#accordion" xhref="#collapse-${$index}"  aria-expanded="true" aria-controls="collapseOne">
+                    ${community.communityName} <span if.bind="(community.communityOwner.memberId===session.auth.member.memberId)"> (OWNER)</span>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse-${$index}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+              </div>
+            </div>
+            -->
+
+            <!--
+            <div>
+              <nav>
+                <ul class="pager">
+                  <li class="previous" class.bind="(communities.startPosition - communities.pageSize) <= 0 ? 'disabled':''">
+                    <a click.delegate="getCommunitiesPage(commType, (communities.startPosition - communities.pageSize))" 
+                    href="#"><span>< </span>Previous</a>
+                  </li>
+                  <li class="next" class.bind="(communities.startPosition + communities.pageSize) >= communities.totalCount ? 'disabled':''">
+                    <a click.delegate="getCommunitiesPage(commType, (communities.startPosition + communities.pageSize))" 
+                    disabled.bind="(communities.startPosition + communities.pageSize) >= communities.totalCount" href="#">Next<span> ></span></a>
+                  </li>
+                </ul>
+              </nav>                
+            </div>
+            -->
+          <!-- </div> -->
+
         </div>
+        </loading>
+        </div>
+      </div>
+    </aside>
+    <!-- community members list element -->
+    <!--
+    <div id="community-members"  style="display: inline-block;width:720px;/* vertical-align:top; */height: 100%;/* float: right; */top: 0;position: absolute;">
+-->
+      <compose  view-model="./community-detail"></compose>
+<!--
+    </div>
+-->  
+
+
+
+
+    
 </div>
-  </section>
 </template>
