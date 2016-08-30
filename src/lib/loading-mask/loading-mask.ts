@@ -12,9 +12,9 @@ export class Loading {
 
   dimScreen:string;
 	dialog:Object;
-	loadingTitle:string;
+	loadingTitle:JQuery;
 	title:string;
-	loadingMask: HTMLElement;
+	loadingMask: JQuery;
 	i18n: I18N;
   bindingEngine: BindingEngine;
 	element: Element;
@@ -89,12 +89,12 @@ export class Loading {
     let maskId = new Date().getTime();
 
     this.title = this.i18n.tr(this.messageKey);
-    this.dimScreen = '<div ref="loadingMask" id="loadingMask-' + maskId + '" class="spinner"><div class="loadingTitle">' + this.title +'</div><div class="mask"></div></div>';
+    this.dimScreen = '<div ref="loadingMask" id="loadingMask-' + maskId + '" class="spinner"><div id="loadingTitle" class="loadingTitle">' + this.title +'</div><div class="mask"></div></div>';
     // this.loadingMask = $.parseHTML(this.dimScreen);
     // $(elementSelector).append(this.loadingMask);
     $('#' + this.element.parentElement.id).append(this.dimScreen);
     this.loadingMask = $('#loadingMask-' + maskId);
-    this.loadingTitle = $('.loadingTitle').css({
+    this.loadingTitle = $('#loadingTitle').css({
       color: '#ffffff',
       opacity: 1,
       fontSize: '2.5em'

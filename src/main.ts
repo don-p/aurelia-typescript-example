@@ -57,7 +57,7 @@ export async function configure(aurelia: Aurelia) {
   };
 
   // Optional Intl polyfill.
-  if (!global.Intl) {
+  if (!window['Intl']) {
     console.log('Intl not present');
     aurelia.use.plugin('intl');
   }
