@@ -145,8 +145,8 @@ switch (ENV) {
       require('@easy-webpack/config-html')(),
 
       require('@easy-webpack/config-css')
-        ({ filename: 'styles.css', allChunks: true, sourceMap: false }),
-      require('@easy-webpack/config-less')
+        ({ filename: 'style.css', allChunks: true, sourceMap: false }),
+      require('@easy-webpack/config-sass')
         ({ filename: 'vendor.css', allChunks: true, sourceMap: false }),
 
       require('@easy-webpack/config-fonts-and-images')(),

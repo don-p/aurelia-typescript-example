@@ -4,11 +4,11 @@ import '../styles/au-styles.css';
 import '../styles/style.css';
 import '../styles/blg.css';
 import 'font-awesome/css/font-awesome.css';
-import 'bootstrap';
+import 'bootstrap-sass';
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
 import * as config from './config/authConfig';
 import {I18N} from 'aurelia-i18n';
-import LngDetector from 'i18next-browser-languagedetector';
+import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
 import Backend from 'i18next-xhr-backend';
 import 'intl';
 
