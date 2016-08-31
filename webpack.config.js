@@ -149,6 +149,13 @@ switch (ENV) {
       require('@easy-webpack/config-sass')
         ({ filename: 'vendor.css', allChunks: true, sourceMap: false }),
 
+      // require the i18n translation files.
+      require('@easy-webpack/config-json')(),
+      require('@easy-webpack/config-copy-files')
+        ({patterns: [
+          {context: './src/locales', from: '**/**.json', to: 'locales'}
+        ]}),
+
       require('@easy-webpack/config-fonts-and-images')(),
       require('@easy-webpack/config-global-bluebird')(),
       require('@easy-webpack/config-global-jquery')(),
