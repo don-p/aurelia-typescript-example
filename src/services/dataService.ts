@@ -4,7 +4,7 @@ import {AppConfig} from './appConfig';
 import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {AuthService} from 'aurelia-auth';
-import 'bootstrap';
+import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
 @inject(Lazy.of(HttpClient), AppConfig, EventAggregator, AuthService, Session, QueryString)
