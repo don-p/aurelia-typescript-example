@@ -5,26 +5,31 @@ import {Session} from './services/session';
 import {DataService} from './services/dataService';
 import {VirtualRepeat} from 'aurelia-ui-virtualization';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import * as Ps from 'perfect-scrollbar';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Lazy.of(HttpClient), Session, Router, DataService, EventAggregator)
+@inject(Lazy.of(HttpClient), Session, Router, DataService, EventAggregator, Ps)
 export class Community {
   communities: Object;
   items:Array<Object>;
   commType: string;
   pageSize: number;
   cmtysPromise: Promise<Response>;
+  ps: Object;
 
   navigationInstruction: NavigationInstruction;
   selectedItem: Object;
   _virtualRepeat: VirtualRepeat;
 
   constructor(private getHttpClient: () => HttpClient, private session: Session, 
-    private router: Router, private dataService: DataService, private evt: EventAggregator) {
+    private router: Router, private dataService: DataService, private evt: EventAggregator, Ps) {
 
-     this.communities = {};
+    // var Ps = require('perfect-scrollbar');
+
+    this.ps = Ps;
+    this.communities = {};
     this.communities['responseCollection'] = [];
     this.pageSize = 500;
     this.selectedItem = null;
@@ -41,6 +46,12 @@ export class Community {
   }
   attached() {
     console.debug("Community | attached()");
+    
+    // Custom scrollbar:
+    var container = document.getElementById('conversation-list');
+    this.ps.initialize(container);
+    this.ps.update(container);
+
     this.getCommunitiesPage('COI', 0, this.pageSize);
   }
 /**
