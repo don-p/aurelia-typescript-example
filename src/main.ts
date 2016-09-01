@@ -4,6 +4,7 @@ import '../styles/au-styles.css';
 import '../styles/style.css';
 import '../styles/blg.css';
 import 'font-awesome/css/font-awesome.css';
+import 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
 import 'bootstrap-sass';
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
 import * as config from './config/authConfig';
