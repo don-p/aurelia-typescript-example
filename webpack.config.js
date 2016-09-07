@@ -149,13 +149,6 @@ switch (ENV) {
       require('@easy-webpack/config-sass')
         ({ filename: 'vendor.css', allChunks: true, sourceMap: false }),
 
-      // require the i18n translation files.
-      require('@easy-webpack/config-json')(),
-      require('@easy-webpack/config-copy-files')
-        ({patterns: [
-          {context: './src/locales', from: '**/**.json', to: 'locales'}
-        ]}),
-
       require('@easy-webpack/config-fonts-and-images')(),
       require('@easy-webpack/config-global-bluebird')(),
       require('@easy-webpack/config-global-jquery')(),
@@ -163,8 +156,13 @@ switch (ENV) {
       require('@easy-webpack/config-generate-index-html')
         ({minify: false}),
 
+      // Copy other resource files to dist directory. (icons, i18n translation files, etc.)
+      require('@easy-webpack/config-json')(),
       require('@easy-webpack/config-copy-files')
-        ({patterns: [{ from: 'favicon.ico', to: 'favicon.ico' }]}),
+        ({patterns: [
+          {context: './src/locales', from: '**/**.json', to: 'locales'},
+          {from: 'favicon.ico', to: 'favicon.ico' }
+          ]}),
 
       require('@easy-webpack/config-common-chunks-simple')
         ({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'})
