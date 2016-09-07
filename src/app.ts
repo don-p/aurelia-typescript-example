@@ -3,7 +3,7 @@ import {Router, RouterConfiguration} from 'aurelia-router';
 import {Session} from './services/session';
 import {FetchConfig} from 'aurelia-auth';
 import {I18N} from 'aurelia-i18n';
-import '../styles/styles.scss';
+import '../styles/style.scss';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {AuthService} from 'aurelia-auth';
 
