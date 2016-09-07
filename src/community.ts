@@ -17,7 +17,7 @@ export class Community {
   commType: string;
   pageSize: number;
   cmtysPromise: Promise<Response>;
-  ps: Object;
+  ps: any;
 
   navigationInstruction: NavigationInstruction;
   selectedItem: Object;
