@@ -41,35 +41,35 @@
 					<h3><img src="../images/gridcommand.png"></h3>
 					<div class="row">
 						<div class="col-xs-12">
-							<div i18n="${errorMessage}" if.bind="(errorMessage && !(errorMessage===undefined))" class="alert alert-danger fade in">
-								The email/password combination is not valid, please try again.
+							<div i18n="[append]${errorMessage}" if.bind="(errorMessage && !(errorMessage===undefined))" class="alert alert-danger fade in">
+								<a href="#" class="close" data-dismiss="alert">&times;</a>
 							</div>	
 						</div>
 					</div>			
 
           <div if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''">
-					<div class="row">
-						<div class="col-xs-12">
-							<input  id="un" i18n='[placeholder]login.emailAddr' value.bind="username" type="email" name="email" class="form-control input-lg" />
-							<span class="glyphicon glyphicon-user"></span>
+						<div class="row">
+							<div class="col-xs-12">
+								<input  id="un" i18n='[placeholder]login.emailAddr' value.bind="username" type="email" name="email" class="form-control input-lg" />
+								<span class="glyphicon glyphicon-user"></span>
+							</div>
+							<div class="col-xs-12">
+								<input id="pw" i18n='[placeholder]login.password' type="password" value.bind="password" name="password" class="form-control input-lg" />
+								<span class="glyphicon glyphicon-lock"></span>
+							</div>
 						</div>
-						<div class="col-xs-12">
-							<input id="pw" i18n='[placeholder]login.password' type="password" value.bind="password" name="password" class="form-control input-lg" />
-							<span class="glyphicon glyphicon-lock"></span>
-						</div>
-					</div>
           </div>
 
           <div if.bind="router.currentInstruction.config.route==='login-2'">
-					<div class="note">
-						<span i18n='login.login2.text1'></span> <span i18n='login.login2.text2'></span>
-					</div>					
-					<div class="row">
-						<div class="col-xs-12">
-							<input type="password" name="password" placeholder="Confirmation code" class="form-control input-lg" />
-							<span class="glyphicon glyphicon-lock"></span>
+						<div class="note">
+							<span i18n='login.login2.text1'></span> <span i18n='login.login2.text2'></span>
+						</div>					
+						<div class="row">
+							<div class="col-xs-12">
+								<input type="password" name="password" placeholder="Confirmation code" class="form-control input-lg" />
+								<span class="glyphicon glyphicon-lock"></span>
+							</div>
 						</div>
-					</div>
           </div>
 
 
