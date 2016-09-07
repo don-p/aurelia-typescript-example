@@ -64,10 +64,14 @@ export class Login {
 //    .then(response => response.json())
     .then(data => {
       console.log(json(data));
-      me.session.auth = data;
-      me.session.auth['isLoggedIn'] = true;
-      this.errorMessage = '';
-      me.router.navigateToRoute('login-2');
+      if(data && data!==null) {
+        me.session.auth = data;
+        me.session.auth['isLoggedIn'] = true;
+        this.errorMessage = '';
+        me.router.navigateToRoute('login-2');
+      } else {
+        throw "Login(): Authentication failed."
+      }
     }).catch(error => {
       // me.errorMessage = this.utils.parseFetchError('');
       console.log("Authentication failed."); 

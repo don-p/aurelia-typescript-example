@@ -3,22 +3,23 @@ import {HttpClient, json} from 'aurelia-fetch-client';
 import {AppConfig} from './appConfig';
 import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {AuthService} from 'aurelia-auth';
+import {AuthService, BaseConfig} from 'aurelia-auth';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(Lazy.of(HttpClient), AppConfig, EventAggregator, AuthService, Session, QueryString)
+@inject(Lazy.of(HttpClient), AppConfig, EventAggregator, AuthService, Session, QueryString, BaseConfig)
 export class DataService {  
 
     // Service object for retreiving application data from REST services.
     
-    apiServerUrl: String;
-    clientId: String;
-    clientSecret: String;
+    apiServerUrl: string;
+    clientId: string;
+    clientSecret: string;
     httpClient: HttpClient;
 
     constructor(private getHttpClient: () => HttpClient, private appConfig: AppConfig, 
-        private evt: EventAggregator, private auth: AuthService, private session: Session){
+        private evt: EventAggregator, private auth: AuthService,  
+        private session: Session, private authConfig: BaseConfig){
 
         // Base Url for REST API service.
         this.apiServerUrl = appConfig.apiServerUrl;
@@ -31,7 +32,7 @@ export class DataService {
         var me = this;
         this.httpClient.configure(config => {
             config
-                .withBaseUrl(this.apiServerUrl.toString())
+                .withBaseUrl(this.apiServerUrl)
                 .withDefaults({
                     credentials: 'same-origin',
                     headers: {
@@ -52,23 +53,24 @@ export class DataService {
                         // }
                         ///// DEBUG /////
                         if(!(response.status >= 200 && response.status < 300)) {
-                            if(response.status === 401 && 
+                            if((response.status === 401 || response.status === 400) && 
+                                request.url.indexOf('/oauth/token')===-1 &&
                                 me.session.auth['access_token'] && 
                                 !me.auth.isAuthenticated()) { // Special case, refresh expired token.
                                 // Request and save a new access token, using the refresh token.
-                                me.refreshToken(me.session.auth['refresh_token'])
-                                // .then(response => response.json())
-                                .then(data => {
-                                    console.log(data);
-                                    // Re-try the original request, which should succeed with a new access token.
-                                    // return me.httpClient.fetch(request);
-                                }).catch(error => {
-                                    console.log("refreshToken() failed."); 
-                                    console.log(error); 
-                                });
+                                return me.refreshToken(me.session.auth['refresh_token'], request);
+                                // // .then(response => response.json())
+                                // .then(data => {
+                                //     // Re-try the original request, which should succeed with a new access token.
+                                //     return me.httpClient.fetch(request);
+                                // }).catch(error => {
+                                //     console.log("refreshToken() failed."); 
+                                //     console.log(error); 
+                                // });
 
                             } else {
                                 me.evt.publish('responseError', response);
+                                return response;
                             }
                         }
                         return response; // you can return a modified Response
@@ -77,7 +79,8 @@ export class DataService {
                         me.evt.publish('responseError', responseError);
                         throw responseError;
                     }
-                });
+                })
+                .withInterceptor(this.tokenExpiredInterceptor);
         });
 
     }
@@ -112,15 +115,15 @@ export class DataService {
         return this.auth.isAuthenticated();
     }
 
-    async refreshToken(refreshToken: string): Promise<Response> {
+    async refreshToken(refreshToken: string, fetchRequest: Request): Promise<Response> {
         await fetch;
         const http =  this.getHttpClient();
-        var  headers = new Object({
+        var  headers = {
             'origin':'*',
             // 'Content-Type': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
             // 'Accept': 'application/json'
-        });
+        };
         var h = new Headers();
         for (var header in headers) {
             h.append(header, headers[header]);
@@ -135,12 +138,13 @@ export class DataService {
 
         var obj = {
                     refresh_token: refreshToken, 
-                    grant_type: 'refresh_token',
+                    grant_type: 'REFRESH_TOKEN',
                     client_id: this.appConfig.clientId,
                     client_secret: this.appConfig.clientSecret
                 };
         var params = QueryString.stringify(obj, {});
 
+        console.debug('Refreshing access token.');
         var response = http.fetch('oauth/token', 
             {
                 method: 'post',
@@ -152,9 +156,20 @@ export class DataService {
         response.then(response => response.json())
         .then(data => {
             console.log(json(data));
-            // Save the new access token in the existing session.
+            // Update the access token in the aurelia-auth object; do not redirect.
+            me.auth['auth'].setToken(data, true);
+            // Save the new access token in the app's existing session.
             me.session.auth['access_token'] = data.access_token;
             me.session.auth['expires_in'] = data.expires_in;
+            console.debug('Access token refreshed.');
+            if(fetchRequest && fetchRequest !== null) {
+                // Before re-executing the original request, replace the token in the auth header.
+                fetchRequest.headers.set('Authorization', 'Bearer ' + data.access_token);
+                console.debug('Access token refreshed -> re-running fetch: ' + fetchRequest.url + '.');
+                return me.httpClient.fetch(fetchRequest).then(response => {
+                    return response;
+                });
+            }
         }).catch(error => {
             console.log("refreshToken() failed."); 
             console.log(error); 
@@ -255,6 +270,23 @@ export class DataService {
             }
         );
         return response;
+    }
+
+    get tokenExpiredInterceptor() {
+        let me = this;
+        return {
+            request(request) {
+                if (request.url.indexOf('/oauth/token')===-1 && !(me.auth.isAuthenticated())) {
+                    console.debug('Access token in request expired.');
+                    let config = me.auth['config'];
+                    let tokenName = config.tokenPrefix ? `${config.tokenPrefix}_${config.tokenName}` : config.tokenName;
+                    let token = me.auth['auth'].getToken();
+
+                    request.headers.set(config.authHeader, ' ' + config.authToken + ' ' + token);
+                }
+                return request;
+            }
+        };
     }
 
 }
