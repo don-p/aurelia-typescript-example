@@ -23,8 +23,8 @@
         "submit":"Log In",
         "confirm":"Confirm",
         "login2":{
-            "text1":"You will receive a confirmation code by text message or email.",
-            "text2":"When you receive the code, please enter it below.",
+            "text1":"A confirmation code will be sent by text message or email.",
+            "text2":"Enter the code below.",
             "confCode":"Confirmation code"
         }
     },
