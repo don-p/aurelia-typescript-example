@@ -31,9 +31,9 @@
 
     "error": {
         "sessionExpired": "Your session has expired or is invalid.  Please log in.",
-        "serverNotAvailable":"The server is not responding.  Please wait for one minute and log in, or contact your Administrator.",
+        "serverNotAvailable":"The server is not responding. Wait and try again, or contact your Administrator.",
         "badCredentials":"The username/password combination provided is not valid. Please try again.",
-        "unknown":"An error occurred.  Please wait for one minute and log in, or contact your Administrator."
+        "unknown":"An error occurred. Wait and try again, or contact your Administrator."
     },
 
     "community":{
