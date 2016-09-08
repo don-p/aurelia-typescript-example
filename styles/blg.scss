@@ -72,7 +72,7 @@ html, body, .page-host {
 	margin-left: 5px;
 	margin-bottom: 5px;	
 	text-align: left;
-	line-height: 20px;	
+	line-height: 18px;	
 }
 
 .login-form {
@@ -90,7 +90,8 @@ form[role=login] {
 	-webkit-border-radius: 5px;
 	-webkit-box-shadow: 5px 5px 5px 0px rgba(35,109,158,0.75);
 	-moz-box-shadow: 5px 5px 5px 0px rgba(35,109,158,0.75);
-	box-shadow: 5px 5px 5px 0px rgba(35,109,158,0.75);	
+	box-shadow: 5px 5px 5px 0px rgba(35,109,158,0.75);
+	height: 550px;	
 }
 form[role=login] > section {
 	text-align: center;
@@ -104,7 +105,7 @@ form[role=login] h3 {
 	font-size: 30px;
 	text-align: center;
 	color: #c0c0c0;
-	padding: 10px 0 12px 0;
+	padding: 10px 0 5px 0;
 }
 	form[role=login] h3 b {
 		color: #013781;
@@ -158,6 +159,10 @@ form[role=login] h3 {
     left: 0;
 	top: 25%;
     padding: 6px 0 0 27px;
+}
+
+.errorMessage {
+	min-height: 60px;
 }
 
 .blg-fixed-wrapper {
