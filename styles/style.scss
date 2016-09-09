@@ -1,9 +1,9 @@
 $bootstrap-sass-asset-helper: true;
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+/*@import "~bootstrap-sass/assets/stylesheets/bootstrap";*/
 /*
 @import "font-awesome/font-awesome.scss";
  
 @import "variables.scss";
-@import "style.scss";
-@import "blg.scss";
 */
+@import "blg.proto.css";
+@import "blg.scss";

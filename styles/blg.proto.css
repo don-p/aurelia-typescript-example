@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css?family=Lato';
+@import 'https://fonts.googleapis.com/css?family=Lato'; 
 /*
 @font-face {
   font-family: 'Lato';
@@ -8776,11 +8776,11 @@ fieldset[disabled] .select2-search input[type="text"] {
 .ico-blocked:before {
   content: "\ed67";
 }
-@font-face {
+/*@font-face {
   font-family: 'Glyphicons Halflings';
   src: url('fonts/glyphicons-halflings-regular.eot');
   src: url('fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('fonts/glyphicons-halflings-regular.woff') format('woff'), url('fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
-}
+}*/
 .input-group-btn .btn {
   background-color: white;
   border: 1px solid #bdc3c7;
@@ -10764,12 +10764,12 @@ TBODY {
   font-size: 12px;
   font-weight: 400;
 }
-.dt-body-center select {
+/*.dt-body-center select {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
   background: #e9eff2 url("images/caret_down.png") no-repeat scroll 71px 13px;
-}
+}*/
 tfoot input.form-control,
 tfoot input.select2-search input[type="text"] {
   padding: 6px 12px;
@@ -10779,7 +10779,7 @@ tfoot select.form-control,
 tfoot select.select2-search input[type="text"] {
   width: 91px !important;
 }
-#example_length select,
+/*#example_length select,
 #example2_length select,
 #example3_length select,
 #example4_length select {
@@ -10787,7 +10787,7 @@ tfoot select.select2-search input[type="text"] {
   -moz-appearance: none;
   -webkit-appearance: none;
   background: #e9eff2 url("images/caret_down.png") no-repeat scroll 55px center;
-}
+}*/
 select::-ms-expand {
   display: none;
 }
