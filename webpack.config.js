@@ -5,6 +5,8 @@
  * Take a look at the README here: https://github.com/easy-webpack/core
  **/
 const easyWebpack = require('@easy-webpack/core');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 const generateConfig = easyWebpack.default;
 const get = easyWebpack.get;
 const path = require('path');
@@ -55,14 +57,63 @@ const coreBundles = {
   ]
 }
 
+// multiple extract instances for CSS
+const ExtractCustomCSS = new ExtractTextPlugin('style.[chunkhash].css');
+const ExtractVendorCSS = new ExtractTextPlugin('vendor.[chunkhash].css');
+const cssLoaders = ENV === 'development'?
+    [// Application custom SASS/CSS.
+      { 
+        test: /\.(scss|css)$/i, 
+        // loader: new ExtractTextPlugin('assets/[path]/[name].[ext]').extract(['file?name=assets/[path]/[name].[ext]']),
+        // loader: "file?name=assets/[path]/[name].[ext]!css",
+        loader: ExtractCustomCSS.extract(['css?sourceMap!sass']), 
+        include: [
+           path.resolve(__dirname, rootDir+"/styles"),
+           path.resolve(__dirname, srcDir+"/lib")
+        ]  
+      },
+      // Vendor/library SASS/CSS.
+      { 
+        test: /\.(scss|css)$/i, loader: ExtractVendorCSS.extract(['css','sass']),
+        exclude: [
+           path.resolve(__dirname, rootDir+"/styles"),
+           path.resolve(__dirname, srcDir+"/lib")
+        ]  
+      },
+    ]:[];
+
 const baseConfig = {
   entry: {
     'app': [/* this is filled by the aurelia-webpack-plugin */],
     'aurelia-bootstrap': coreBundles.bootstrap,
     'aurelia': coreBundles.aurelia.filter(pkg => coreBundles.bootstrap.indexOf(pkg) === -1)
   },
+  devtool: "source-map",
   output: {
     path: outDir,
+  },
+  plugins: [
+    ExtractCustomCSS,
+    ExtractVendorCSS
+  ],
+  module: {
+      loaders: cssLoaders
+    // loaders: [
+    //   // Application cusom SASS/CSS..
+    //   { test: /\.(scss|css)$/i, loader: ExtractCustomCSS.extract(['css?sourceMap!sass']), 
+    //     include: [
+    //        path.resolve(__dirname, rootDir+"/styles"),
+    //        path.resolve(__dirname, srcDir+"/lib")
+    //     ]  
+    //   },
+    //   // Vendor/library SASS/CSS.
+    //   { test: /\.(scss|css)$/i, loader: ExtractVendorCSS.extract(['css','sass']),
+    //     exclude: [
+    //        path.resolve(__dirname, rootDir+"/styles"),
+    //        path.resolve(__dirname, srcDir+"/lib")
+    //     ]  
+    //   },
+    // ]
   }
 }
 
@@ -143,11 +194,6 @@ switch (ENV) {
 
       require('@easy-webpack/config-typescript')(),
       require('@easy-webpack/config-html')(),
-
-      require('@easy-webpack/config-css')
-        ({ filename: 'style.css', allChunks: true, sourceMap: false }),
-      require('@easy-webpack/config-sass')
-        ({ filename: 'vendor.css', allChunks: true, sourceMap: false }),
 
       require('@easy-webpack/config-fonts-and-images')(),
       require('@easy-webpack/config-global-bluebird')(),
