@@ -2,11 +2,11 @@
   // Import the fonts
   @font-face {
     font-family: 'Icomoon';
-    src: url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.eot'), '#{$icon-font2-path}#{$icon-font2-name}.eot'));
-    src: url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.eot?#iefix'), '#{$icon-font2-path}#{$icon-font2-name}.eot?#iefix')) format('embedded-opentype'),
-         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.woff'), '#{$icon-font2-path}#{$icon-font2-name}.woff')) format('woff'),
-         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.ttf'), '#{$icon-font2-path}#{$icon-font2-name}.ttf')) format('truetype'),
-         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.svg##{$icon-font2-svg-id}'), '#{$icon-font2-path}#{$icon-font2-name}.svg##{$icon-font2-svg-id}')) format('svg');
+    src: url('#{$icon-font2-path}#{$icon-font2-name}.eot');
+    src: url('#{$icon-font2-path}#{$icon-font2-name}.eot?#iefix') format('embedded-opentype'),
+         url('#{$icon-font2-path}#{$icon-font2-name}.woff') format('woff'),
+         url('#{$icon-font2-path}#{$icon-font2-name}.ttf') format('truetype'),
+         url('#{$icon-font2-path}#{$icon-font2-name}.svg##{$icon-font2-svg-id}') format('svg');
   }
 }
 
