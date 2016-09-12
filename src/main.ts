@@ -1,11 +1,11 @@
 ﻿import {Aurelia} from 'aurelia-framework';
 // we want font-awesome to load as soon as possible to show the fa-spinner
-import '../styles/au-styles.css';
-import '../styles/style.css';
-import '../styles/blg.css';
-import 'font-awesome/css/font-awesome.css';
+ // Vendor CSS libs:
+import '../styles/style.scss';
+import 'font-awesome/scss/font-awesome.scss';
 import 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
-import 'bootstrap-sass';
+import 'bootstrap-sass/assets/javascripts/bootstrap.js';
+// Framework modules:
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
 import * as config from './config/authConfig';
 import {I18N} from 'aurelia-i18n';

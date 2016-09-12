@@ -3,13 +3,15 @@
   <head>
     <title><%- webpackConfig.metadata.title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="<%- webpackConfig.metadata.baseUrl %>">
 <link href="http://fonts.googleapis.com/css?family=Muli:100italic,100,300italic,300,400italic,400,700italic,700,900italic,900" rel="stylesheet" type="text/css">    <base href="<%- webpackConfig.metadata.baseUrl %>">
     <!-- imported CSS are concatenated and added automatically -->
   </head>
-  <body aurelia-app="main"> 
-    <div class="splash">
-      <div class="message"><%- webpackConfig.metadata.title %></div>
-      <i class="fa fa-spinner fa-spin"></i>
+  <body aurelia-app="main">
+    <div class="vertical-center">	
+      <section class="container">
+        <i class="fa fa-spinner fa-spin"></i>
+      </section>
     </div>
     <% if (webpackConfig.metadata.ENV === 'development') { %>
     <!-- Webpack Dev Server reload -->
