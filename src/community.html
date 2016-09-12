@@ -3,42 +3,44 @@
 
   <div class="blg-fixed-wrapper">
 
-    <aside class="blg-left-panel" style="width:450px;display:inline-block;">
+    <aside class="blg-left-panel">
 
       <ul class="nav nav-tabs nav-append-content">
         <li class="active">
-          <a href="#closed" i18n="community.communities" iid="tabClosedTitle"></a>
+          <a href="#communities" i18n="community.communities" id="tabCommunitiesTitle"></a>
         </li>						
         <li>
-          <a href="#owner" i18n="community.discover" id="tabOwnerTitle"></a>
+          <a href="#discover" i18n="community.discover" id="tabDiscoverTitle"></a>
         </li>
         <li>
-          <a href="#participant" i18n="community.connect" iid="tabParticipantTitle"></a>
+          <a href="#connects" i18n="community.connect" id="tabConnectsTitle"></a>
         </li>
       </ul>
       <div class="blg-tab-section tab-content">
-        <div class="blg-inner-content tab-pane active" style="position:relative;" id="communities">
-        <loading promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
+        <div class="blg-inner-content tab-pane active" id="communities">
+
+          
+          <loading promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
 
           <div class="conv-buttons-bar">
-            <a id="communities-create-comm-btn" class="btn btn-primary btn-xs-square" title="Create community">
+            <a id="communities-create-comm-btn" class="btn btn-info btn-xs-square" title="Create community">
               <i class="ico-users-plus"></i>
             </a>
             <a id="communities-delete-comm-btn" class="btn btn-danger btn-xs-square disabled" title="Delete community">
               <i class="ico-users-cancel"></i>
             </a>
-            <a id="communities-send-alert-btn" class="btn btn-inverse btn-xs-square disabled" title="Send alert">
+            <a id="communities-send-alert-btn" class="btn btn-primary btn-xs-square disabled" title="Send alert">
               <i class="ico-bullhorn center"></i>
             </a>
-            <div class="float-right">
+            <div class="right-select">
               <span  i18n='[prepend]community.commType'>: </span>
-              <select style="vertical-align: middle;min-width: 95px;" class="form-control select select-default-blg" value.bind="commType" change.delegate="getCommunitiesPage(commType, 0, pageSize)">
+              <select class="form-control select select-default-blg" value.bind="commType" change.delegate="getCommunitiesPage(commType, 0, pageSize)">
                 <option value="COI" i18n="community.coi"></option>
                 <option value="TEAM" i18n="community.team"></option>
               </select>
-            </div>								
+            </div>
           </div>											
-          
+           
           <div class="conv-form-group">
             <div class="input-group input-group-sm">
               <input type="text" class="form-control" placeholder="Search">
@@ -48,7 +50,8 @@
             </div>
           </div>
           
-        <div class="blg-inner-content tab-pane active" id="owner">
+        <div class="blg-inner-content tab-pane active" id="communities">
+
 
           <!-- communities list elements -->
 <!--
@@ -57,12 +60,12 @@
             </div>
 -->
 
-            <div class="blg-location-content right-panel" style="position:relative;top:0;">
-              <div id="conversation-list" class="conversation-list" style="overflow: auto; height: 70vh; position:relative;">
+            <div class="blg-location-content">
+              <div id="conversation-list" class="conversation-list">
                 <ul>
-                  <div repeat.for="community of communities.responseCollection" class="panel-group communities-panel-list list1" id="accordion_communities">
-                    <div class='list1-item with_owner'>
-                      <li class='trigger' style="position:relative;"></li>
+                  <div class="panel-group communities-panel-list list1" id="accordion_communities">
+                    <div repeat.for="community of communities.responseCollection" class='list1-item with_owner'>
+                      <li class='trigger'></li>
                       <div class='panel panel-default'>
                         <div class='panel-heading' role='tab'>
                           <a class='collapsed' click.trigger="selectCommunity(community.communityId)" role='button' data-toggle='collapse' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false' aria-controls='collapse${$index}'>
@@ -76,8 +79,8 @@
                 </ul>
               </div>
             </div>
-            
-
+           
+            <div class="paging-line-bottom"></div>
 
 
             <!--
@@ -118,6 +121,7 @@
 
         </div>
         </loading>
+       
         </div>
       </div>
     </aside>

@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="<%- webpackConfig.metadata.baseUrl %>">
   </head>
-  <body aurelia-app="main"> 
+  <body aurelia-app="main">
     <div class="vertical-center">	
       <section class="container">
         <i class="fa fa-spinner fa-spin"></i>
       </section>
-    </div>    
+    </div>
     <% if (webpackConfig.metadata.ENV === 'development') { %>
     <!-- Webpack Dev Server reload -->
     <script src="/webpack-dev-server.js"></script>
