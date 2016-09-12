@@ -1,7 +1,7 @@
 ﻿import {Aurelia} from 'aurelia-framework';
 // we want font-awesome to load as soon as possible to show the fa-spinner
  // Vendor CSS libs:
-import 'bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+import '../styles/style.scss';
 import 'font-awesome/scss/font-awesome.scss';
 import 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
 import 'bootstrap-sass/assets/javascripts/bootstrap.js';
