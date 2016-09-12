@@ -1,0 +1,157 @@
+// Variables
+// --------------------------------------------------
+
+
+//== Colors
+
+// BLG colors 
+$blg-blue:                  #2980b9;
+$blg-blue-tint:             #4eaccf;
+$blg-blue-light:            #94c0dc;
+$blg-blue-lighter:          #8baacc;
+$blg-blue-grey:             #e9eff2;
+$blg-blue-greyer:           #e1e4e7;
+$blg-green:                 #24ae5f;
+$blg-green-light:           #8bcca8;
+$blg-red-light:             #e74c3c;
+$sun-flower:                #f1c40f;
+$blg-wet-asphalt:           #34495e;
+$blg-wet-asphalt-light:     #415B76;
+$blg-wet-asphalt-lighter:   #61778E;
+$blg-grey:                  #798795;
+$blg-disabled:              #bdc3c7;
+$blg-grey-light:            #cccccc;
+$blg-grey-light-more:       #dddddd;
+$blg-grey-lighter:          #eeeeee;
+$blg-grey-lightest:         #f9f9f9;
+$blg-white:                 #ffffff;
+
+$inverse:                   $blg-white;
+
+$gray-base:              #000;
+$gray-darker:            lighten($gray-base, 13.5%); // #222
+$gray-dark:              lighten($gray-base, 20%);   // #333
+$gray:                   lighten($gray-base, 33.5%); // #555
+$gray-light:             lighten($gray-base, 46.7%); // #777
+$gray-lighter:           lighten($gray-base, 93.5%); // #eee
+
+// Brand colors
+$brand-primary:             $blg-wet-asphalt-light;
+$brand-secondary:           $blg-blue;
+$brand-success:             $blg-green;
+$brand-warning:             $sun-flower;
+$brand-danger:              $blg-red-light;
+$brand-info:                $blg-blue;
+
+
+$body-bg:                   $blg-blue-grey;
+$text-color:                $blg-wet-asphalt-light;
+$font-family-sans-serif:    "Muli", Helvetica, Arial, sans-serif;
+$font-size-base:            16px;
+
+$line-height-base:          1.72222;
+$border-radius-base:        4px;
+$border-radius-large:       6px;
+$border-radius-small:       6px;
+
+$component-font-size-base:  ceil(($font-size-base * 0.833));
+
+
+$icon-font-name:          "glyphicons-halflings-regular";
+$icon-font-svg-id:        "glyphicons_halflingsregular";
+$icon-font-path: if($bootstrap-sass-asset-helper, "glyphicons/", "../fonts/glyphicons/");
+
+$icon-font2-name:          "icomoon";
+$icon-font2-svg-id:        "icomoon";
+$icon-font2-path: if($bootstrap-sass-asset-helper, "icomoon/", "../fonts/icomoon/");
+
+$nav-tabs-border-color:         $blg-grey-light;
+$nav-tabs-border-width:         2px;
+$nav-tabs-color:                mix($brand-primary, white, 63%);
+$nav-tabs-active-color:         $brand-secondary;
+$nav-tabs-hover-color:          $brand-secondary;
+$nav-border-radius:             6px;
+$nav-item-border-radius:        ($nav-border-radius - $nav-tabs-border-width);
+$nav-open-zindex:               1001;
+$nav-list-gap:                  13px;
+
+//== Buttons
+
+$btn-font-size-base:         $component-font-size-base;
+$btn-font-size-xs:           ceil(($component-font-size-base * 0.8));   // ~12px
+$btn-font-size-sm:           floor(($component-font-size-base * 0.867)); // ~13px
+$btn-font-size-lg:           ceil(($component-font-size-base * 1.133));  // ~17px
+$btn-font-size-hg:           floor(($component-font-size-base * 1.467)); // ~22px
+
+$btn-line-height-base:       1.43;   // ~21px
+$btn-line-height-hg:         1.227; // ~27px
+$btn-line-height-lg:         1.471; // ~25px
+$btn-line-height-sm:         1.385; // ~16px
+$btn-line-height-xs:         1.083; // ~13px
+
+$btn-social-font-size-base:   floor(($component-font-size-base * 0.867)); // ~13px
+$btn-social-line-height-base: 1.077;  // ~14px
+
+$btn-font-weight:            normal;
+
+$btn-default-color:          $inverse;
+$btn-default-bg:             $gray-light;
+$btn-hover-bg:               mix($gray-light, white, 80%);
+$btn-active-bg:              mix($gray-light, black, 85%);
+
+$btn-primary-hover-bg:       mix($brand-secondary, white, 80%);
+$btn-primary-active-bg:      mix($brand-secondary, black, 85%);
+
+$btn-info-hover-bg:          mix($brand-info, white, 80%);
+$btn-info-active-bg:         mix($brand-info, black, 85%);
+
+$btn-success-hover-bg:       mix($brand-success, white, 80%);
+$btn-success-active-bg:      mix($brand-success, black, 85%);
+
+$btn-danger-hover-bg:        mix($brand-danger, white, 80%);
+$btn-danger-active-bg:       mix($brand-danger, black, 85%);
+
+$btn-warning-hover-bg:       overlay($brand-warning, darken(white, 37.5%));
+$btn-warning-active-bg:      mix($brand-warning, black, 85%);
+
+$btn-inverse-hover-bg:       overlay($brand-primary, darken(white, 37.5%));
+$btn-inverse-active-bg:      mix($brand-primary, black, 85%);
+
+$btn-link-disabled-color:    $blg-disabled;
+
+$btn-font-size-sm-square:    floor(($component-font-size-base * 1.75));
+$btn-font-size-xs-square:    floor(($component-font-size-base * 1.25));
+
+$btn-default-color:          $inverse;
+$btn-default-bg:             $blg-wet-asphalt-light;
+$btn-hover-bg:               mix($blg-wet-asphalt-light, white, 80%);
+$btn-active-bg:              mix($blg-wet-asphalt-light, black, 85%);
+
+$btn-default-blg-color:     $brand-secondary;
+$btn-default-blg-bg:        $blg-blue-grey;
+$btn-hover-blg-bg:          $blg-white;
+$btn-active-blg-bg:         $blg-blue-grey;
+
+$input-font-size-base:     $component-font-size-base;
+$input-font-size-sm:       floor(($component-font-size-base * 0.867));
+$input-font-size-lg:       ceil(($component-font-size-base * 1.133));
+$input-font-size-hg:       floor(($component-font-size-base * 1.467));
+
+$input-line-height-base:   1.467;
+$input-line-height-sm:     1.462;
+$input-line-height-lg:     1.235;
+$input-line-height-hg:     1.318;
+
+$input-icon-font-size:     ceil(($component-font-size-base * 1.067));
+$input-icon-font-size-lg:  ceil(($component-font-size-base * 1.2));
+$input-icon-font-size-hg:  ceil(($component-font-size-base * 1.333));
+
+$input-bg:                 $inverse;
+$input-bg-disabled:        mix($gray, white, 10%);
+
+$input-height-sm:          35px;
+$input-height-base:        41px;
+$input-height-lg:          45px;
+$input-height-hg:          53px;
+
+$input-border-radius:      $border-radius-large;

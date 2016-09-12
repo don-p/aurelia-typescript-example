@@ -6,7 +6,9 @@
   <nav role="navigation">
     <ul>
       <li repeat.for="row of router.navigation" class="${row.isActive || router.currentInstruction.config.title === row.title? 'active' : ''}">
-        <a data-toggle="collapse" data-target="#skeleton-navigation-navbar-collapse.in" href.bind="row.href"><i class="${row.config.className}"></i>${row.title}</a>
+        <a data-toggle="collapse" data-target="#skeleton-navigation-navbar-collapse.in" href.bind="row.href">
+            <i class="${row.config.className}"></i>${row.title}<!--span class="badge">15</span-->
+        </a>
       </li>
     </ul>
 
@@ -16,15 +18,15 @@
     <div class="drop-cont dropdown-toggle" data-toggle="dropdown" role="button">
         <div class="jd-title">
             <div class="caps-top">
-                <span >${session.auth['member'].firstName}</span>
+                <span >${session.auth['member'].firstName}Pavel Belyantsev</span>
             </div>
-<!--            <div class="caps-bottom">Friday 02/05/2016 4:32 PM EST</div> -->
+            <div class="caps-bottom">Friday 02/05/2016 4:32 PM EST</div>
         </div>
         <!--div class="jd-icon">
             Pb
         </div-->
         <img class="avatar-top" src="../images/owner_avatar.png"></img>
-        <div class="clearfix"></div>
+        <!--div class="clearfix"></div-->
     </div>
 </div>
 </header>

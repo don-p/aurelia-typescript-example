@@ -38,10 +38,10 @@
 
     "community":{
         "discover":"Discover",
-        "connect":"Connect",
+        "connect":"Connects",
         "communities":"Communities",
         "commType":"Type",
-        "coi":"Interest",
+        "coi":"Community of interest",
         "team":"Team"
 
     }

@@ -1,0 +1,96 @@
+@at-root {
+  // Import the fonts
+  @font-face {
+    font-family: 'Icomoon';
+    src: url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.eot'), '#{$icon-font2-path}#{$icon-font2-name}.eot'));
+    src: url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.eot?#iefix'), '#{$icon-font2-path}#{$icon-font2-name}.eot?#iefix')) format('embedded-opentype'),
+         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.woff'), '#{$icon-font2-path}#{$icon-font2-name}.woff')) format('woff'),
+         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.ttf'), '#{$icon-font2-path}#{$icon-font2-name}.ttf')) format('truetype'),
+         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font2-path}#{$icon-font2-name}.svg##{$icon-font2-svg-id}'), '#{$icon-font2-path}#{$icon-font2-name}.svg##{$icon-font2-svg-id}')) format('svg');
+  }
+}
+
+// Catchall baseclass
+[class^="ico-"],
+[class*="ico-"] {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Icomoon';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Individual icons
+.ico-location4                { &:before { content: "\ea3b"; } }
+.ico-bubbles10                { &:before { content: "\eadf"; } }
+.ico-bullhorn                 { &:before { content: "\e979"; } }
+.ico-users                    { &:before { content: "\eaf8"; } }
+.ico-plus2                    { &:before { content: "\ed5b"; } }
+.ico-minus2                   { &:before { content: "\ed5c"; } }
+.ico-minus-circle             { &:before { content: "\ed60"; } }
+.ico-plus-circle              { &:before { content: "\ed5F"; } }
+.ico-search                   { &:before { content: "\eb30"; } }
+.ico-stack3                   { &:before { content: "\e9cf"; } }
+.ico-cancel-circle            { &:before { content: "\ed65"; } }
+.ico-cancel-circle2           { &:before { content: "\ed66"; } }
+.ico-cog2                     { &:before { content: "\eb61"; } }
+.ico-cog3                     { &:before { content: "\eb62"; } }
+.ico-person                   { &:before { content: "\ea38"; } }
+.ico-podcast2                 { &:before { content: "\e987"; } }
+.ico-antenna                  { &:before { content: "\e983"; } }
+.ico-device                   { &:before { content: "\e988"; } }
+.ico-phone2                   { &:before { content: "\ea1d"; } }
+.ico-target                   { &:before { content: "\ec2b"; } }
+.ico-equalizer                { &:before { content: "\eb5b"; } }
+.ico-target3                  { &:before { content: "\ec2d"; } }
+.ico-stack-check              { &:before { content: "\ed43"; } }
+.ico-stack-cancel             { &:before { content: "\ed42"; } }
+.ico-info                     { &:before { content: "\ed63"; } }
+.ico-info2                    { &:before { content: "\ed64"; } }
+.ico-sort                     { &:before { content: "\ee48"; } }
+.ico-bubble-plus              { &:before { content: "\eaec"; } }
+.ico-bubble-cancel            { &:before { content: "\eaeb"; } }
+.ico-new                      { &:before { content: "\e97b"; } }
+.ico-user-plus                { &:before { content: "\eaf9"; } }
+.ico-user-cancel              { &:before { content: "\eafb"; } }
+.ico-bubble-right             { &:before { content: "\eaf0"; } }
+.ico-exit3                    { &:before { content: "\ed7b"; } }
+.ico-pencil7                  { &:before { content: "\e914"; } }
+.ico-attachment               { &:before { content: "\ecac"; } }
+.ico-cross                    { &:before { content: "\ed6c"; } }
+.ico-link                     { &:before { content: "\ec99"; } }
+.ico-unlink                   { &:before { content: "\ec9c"; } }
+.ico-unlink2                  { &:before { content: "\ec9e"; } }
+.ico-download9                { &:before { content: "\ec8d"; } }
+.ico-arrow-up                 { &:before { content: "\edb7"; } }
+.ico-arrow-down               { &:before { content: "\edbf"; } }
+.ico-new-tab                  { &:before { content: "\eec9"; } }
+.ico-warning2                 { &:before { content: "\ed50"; } }
+.ico-menu-open                { &:before { content: "\ee3b"; } }
+.ico-menu-open                { &:before { content: "\ee3b"; } }
+.ico-users4                   { &:before { content: "\eb0c"; } }
+.ico-spam                     { &:before { content: "\ed6b"; } }
+.ico-map                      { &:before { content: "\ea45"; } }
+.ico-eye                      { &:before { content: "\ecae"; } }
+.ico-eye-blocked              { &:before { content: "\ecb1"; } }
+.ico-question4                { &:before { content: "\ed56"; } }
+.ico-bug                      { &:before { content: "\eb78"; } }
+.ico-warning2                 { &:before { content: "\ed50"; } }
+.ico-binoculars2              { &:before { content: "\eb2f"; } }
+.ico-calendar                 { &:before { content: "\ea5f"; } }
+.ico-reply                    { &:before { content: "\eac2"; } }
+.ico-forward                  { &:before { content: "\eac1"; } }
+.ico-checkmark-circle         { &:before { content: "\ee76"; } }
+.ico-weather-cloud-sun2       { &:before { content: "\ecc9"; } }
+.ico-traffic-lights           { &:before { content: "\eb7f"; } }
+.ico-list                     { &:before { content: "\ec59"; } }
+.ico-users-plus               { &:before { content: "\ef4a"; } }
+.ico-users-cancel             { &:before { content: "\ef4b"; } }
+.ico-people-plus              { &:before { content: "\ef4c"; } }
+.ico-people-cancel            { &:before { content: "\ef4d"; } }
+.ico-hour-glass3              { &:before { content: "\eb21"; } }
+.ico-blocked                  { &:before { content: "\ed67"; } }
