@@ -48,7 +48,7 @@ export class Community {
     console.debug("Community | attached()");
     
     // Custom scrollbar:
-    var container = document.getElementById('conversation-list');
+    var container = document.getElementById('community-list');
     this.ps.initialize(container);
     this.ps.update(container);
 

@@ -405,21 +405,21 @@ header .navbar-nav {
   background-color: $blg-white;
 }
 
-.conversation-list {
+.conversation-list, .community-list {
   padding: 0px 5px 5px 5px;
   height: 100%;
   position: relative;
 }
-.conversation-list li {
+.conversation-list li, .community-list li {
   list-style: none;
 }
-.conversation-list > li {
+.conversation-list > li, .community-list > li {
   cursor: pointer;
 }
-.conversation-list li:first-child:before {
+.conversation-list li:first-child:before, .community-list li:first-child:before {
   margin-top: 5px !important;
 }
-.conversation-list .trigger:before {
+.conversation-list .trigger:before, .community-list .trigger:before {
   position: absolute;
   display: inline-block;
   width: 20px;
@@ -432,7 +432,7 @@ header .navbar-nav {
   margin-left: -30px;
   cursor: pointer;
 }
-.conversation-list .item-done:before {
+.conversation-list .item-done:before, .community-list .item-done:before {
   font-family: 'Flat-UI-Pro-Icons';
   font-size: 12px;
   font-style: normal;
@@ -455,6 +455,9 @@ header .navbar-nav {
   margin-top: 10px;
   margin-left: -30px;
   cursor: pointer;
+}
+.community-member-list {
+  position: relative;
 }
 
 .panel-default {
