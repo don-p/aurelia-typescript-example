@@ -45,29 +45,16 @@ export class DataService {
                         console.log(`Requesting ${request.method} ${request.url}`);
                         return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
                     },
-                    response: function(response, request) {
+                    response: async function(response, request) {
                         console.log(`Received ${response.status} ${response.url}`);
-                        ///// DEBUG /////
-                        // if(response.status === 201) { // Special case, refresh expired token.
-                        //     me.refreshToken(me.session.auth['refresh_token']);
-                        // }
-                        ///// DEBUG /////
                         if(!(response.status >= 200 && response.status < 300)) {
                             if((response.status === 401 || response.status === 400) && 
                                 request.url.indexOf('/oauth/token')===-1 &&
                                 me.session.auth['access_token'] && 
                                 !me.auth.isAuthenticated()) { // Special case, refresh expired token.
                                 // Request and save a new access token, using the refresh token.
-                                return me.refreshToken(me.session.auth['refresh_token'], request);
-                                // // .then(response => response.json())
-                                // .then(data => {
-                                //     // Re-try the original request, which should succeed with a new access token.
-                                //     return me.httpClient.fetch(request);
-                                // }).catch(error => {
-                                //     console.log("refreshToken() failed."); 
-                                //     console.log(error); 
-                                // });
-
+                                var result = await me.refreshToken(me.session.auth['refresh_token'], request);
+                                return result===null?response:result;
                             } else {
                                 me.evt.publish('responseError', response);
                                 return response;
@@ -145,7 +132,7 @@ export class DataService {
         var params = QueryString.stringify(obj, {});
 
         console.debug('Refreshing access token.');
-        var response = http.fetch('oauth/token', 
+        var result = await http.fetch('oauth/token', 
             {
                 method: 'post',
                 headers: h,
@@ -153,28 +140,23 @@ export class DataService {
                 body: params
            }
         );
-        response.then(response => response.json())
-        .then(data => {
-            console.log(json(data));
-            // Update the access token in the aurelia-auth object; do not redirect.
-            me.auth['auth'].setToken(data, true);
-            // Save the new access token in the app's existing session.
-            me.session.auth['access_token'] = data.access_token;
-            me.session.auth['expires_in'] = data.expires_in;
-            console.debug('Access token refreshed.');
-            if(fetchRequest && fetchRequest !== null) {
-                // Before re-executing the original request, replace the token in the auth header.
-                fetchRequest.headers.set('Authorization', 'Bearer ' + data.access_token);
-                console.debug('Access token refreshed -> re-running fetch: ' + fetchRequest.url + '.');
-                return me.httpClient.fetch(fetchRequest).then(response => {
-                    return response;
-                });
-            }
-        }).catch(error => {
-            console.log("refreshToken() failed."); 
-            console.log(error); 
-        });
-        return response;
+        let data = await result.json();
+
+        me.auth['auth'].setToken(data, true);
+        // Save the new access token in the app's existing session.
+        me.session.auth['access_token'] = data['access_token'];
+        me.session.auth['expires_in'] = data['expires_in'];
+        console.debug('Access token refreshed.');
+
+        if(fetchRequest && fetchRequest !== null) { // We need to re-try the original request.
+            // Before re-executing the original request, replace the token in the auth header.
+            fetchRequest.headers.set('Authorization', 'Bearer ' + data['access_token']);
+            console.debug('Access token refreshed -> re-running fetch: ' + fetchRequest.url + '.');
+            var response = await me.httpClient.fetch(fetchRequest);
+            console.log('refreshToken Response: ' + response);
+            return response; // Return re-try response.
+        }
+        return null;
 
     }
 
