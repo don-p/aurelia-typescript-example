@@ -57,42 +57,14 @@ const coreBundles = {
   ]
 }
 
-// multiple extract instances for CSS
+// extract instances for CSS
 let loaders = [];
 const ExtractCustomCSS = new ExtractTextPlugin('style.[chunkhash].css');
-// const ExtractVendorCSS = new ExtractTextPlugin('vendor.[chunkhash].css');
+// Loader with source map - DEV only.
 const SourceMapScssLoader = {test: /\.(scss|css)$/i, loader: ExtractCustomCSS.extract(['css?sourceMap!sass?sourceMap'])};
+// Loader without source map.
 const ScssLoader = {test: /\.(scss|css)$/i, loader: ExtractCustomCSS.extract(['css!sass'])};
-/*
-const cssLoaders = ENV === 'development'?
-    [// Application custom SASS/CSS.
-      { 
-        test: /\.(scss|css)$/i, 
-        // loader: new ExtractTextPlugin('assets/[path]/[name].[ext]').extract(['file!sass?name=assets/[path]/[name].[ext]']),
-        // loader: "file!css!sass!?name=assets/[path]/[name].[ext]!css",
-        loader: ExtractCustomCSS.extract(['css!sass']), 
-        // loader: ExtractCustomCSS.extract(['css?sourceMap!sass?sourceMap']), 
-        // loader: 'css?sourceMap!sass?sourceMap', 
-        // include: [
-        //    path.resolve(__dirname, rootDir+"/styles"),
-        //    path.resolve(__dirname, srcDir+"/lib")
-        // ]  
-      },
-      // // Vendor/library SASS/CSS.
-      // { 
-      //   test: /\.(scss|css)$/i, loader: ExtractVendorCSS.extract(['css','sass']),
-      //   exclude: [
-      //      path.resolve(__dirname, rootDir+"/styles"),
-      //      path.resolve(__dirname, srcDir+"/lib")
-      //   ]  
-      // },
-    ]:[
-      { 
-        test: /\.(scss|css)$/i, 
-        loader: ExtractCustomCSS.extract(['css!sass?sourceMap'])
-      },
-    ];
-*/
+
 const baseConfig = {
   entry: {
     'app': [/* this is filled by the aurelia-webpack-plugin */],
@@ -109,29 +81,13 @@ const baseConfig = {
   ],
   module: {
       loaders: loaders
-    // loaders: [
-    //   // Application cusom SASS/CSS..
-    //   { test: /\.(scss|css)$/i, loader: ExtractCustomCSS.extract(['css?sourceMap!sass']), 
-    //     include: [
-    //        path.resolve(__dirname, rootDir+"/styles"),
-    //        path.resolve(__dirname, srcDir+"/lib")
-    //     ]  
-    //   },
-    //   // Vendor/library SASS/CSS.
-    //   { test: /\.(scss|css)$/i, loader: ExtractVendorCSS.extract(['css','sass']),
-    //     exclude: [
-    //        path.resolve(__dirname, rootDir+"/styles"),
-    //        path.resolve(__dirname, srcDir+"/lib")
-    //     ]  
-    //   },
-    // ]
   }
 }
 
 // advanced configuration:
 switch (ENV) {
   case 'production':
-    loaders.push(ScssLoader);
+    loaders.push(ScssLoader);  // Loader for SCSS/CSS.
     config = generateConfig(
       baseConfig,
 
@@ -143,9 +99,6 @@ switch (ENV) {
 
       require('@easy-webpack/config-typescript')(),
       require('@easy-webpack/config-html')(),
-
-      // require('@easy-webpack/config-css')
-      //   ({ filename: 'styles.css', allChunks: true, sourceMap: false }),
 
       require('@easy-webpack/config-fonts-and-images')(),
       require('@easy-webpack/config-global-bluebird')(),
@@ -171,7 +124,7 @@ switch (ENV) {
     break;
   
   case 'test':
-    loaders.push(ScssLoader);
+    loaders.push(ScssLoader);  // Loader for SCSS/CSS.
     config = generateConfig(
       baseConfig,
 
@@ -202,7 +155,7 @@ switch (ENV) {
   default:
   case 'development':
     process.env.NODE_ENV = 'development';
-    loaders.push(SourceMapScssLoader);
+    loaders.push(SourceMapScssLoader);  // Loader for SCSS/CSS.
     config = generateConfig(
       baseConfig,
 
@@ -213,11 +166,6 @@ switch (ENV) {
 
       require('@easy-webpack/config-typescript')(),
       require('@easy-webpack/config-html')(),
-
-      // require('@easy-webpack/config-css')
-      //   ({ filename: 'style.[chunkhash].css', allChunks: true, sourceMap: true }),
-      // require('@easy-webpack/config-sass')
-      //   ({ filename: 'vendor.[chunkhash].css', allChunks: true, sourceMap: true }),
 
       require('@easy-webpack/config-fonts-and-images')(),
       require('@easy-webpack/config-global-bluebird')(),
