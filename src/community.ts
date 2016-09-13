@@ -103,8 +103,6 @@ export class Community {
     cmtysPromise
     .then(response => response.json())
     .then(data => {
-      console.log(json(data));
-//      this.session=me.session;
       me.communities = data;
      }, error => {
        console.log("Communities list() rejected."); 

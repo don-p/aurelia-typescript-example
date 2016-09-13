@@ -5,14 +5,15 @@ import {FetchConfig} from 'aurelia-auth';
 import {I18N} from 'aurelia-i18n';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {AuthService} from 'aurelia-auth';
+import {DataService} from './services/dataService';
 
-@inject(Session, FetchConfig, I18N, EventAggregator, AuthService)
+@inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService)
 export class App {
   router: Router;
   session: Session;
 
   constructor(Session, private fetchConfig: FetchConfig, private i18n: I18N, 
-    private evt: EventAggregator, private auth: AuthService) {
+    private evt: EventAggregator, private auth: AuthService, private dataService: DataService) {
     this.session = Session;
 
     this.session.auth['isLoggedIn'] = false;
@@ -133,4 +134,30 @@ export class App {
 
     this.router = router;
   }
+
+//
+// Top-level/global-scope functions
+//
+  async logout(): Promise<void> {
+
+    var me = this;
+
+    return this.dataService.logout(this.session.auth['access_token'])
+  //  .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if(data && data!==null) {
+        me.router.navigateToRoute('login');
+      } else {
+        throw "Logout(): Authentication failed."
+      }
+    }).catch(error => {
+      // me.errorMessage = this.utils.parseFetchError('');
+      console.log("Logout failed."); 
+      console.log(error); 
+      me.router.navigateToRoute('login');
+    });
+  }
+
+
 }
