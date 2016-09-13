@@ -461,8 +461,9 @@ header .navbar-nav {
 }
 
 .panel-default {
-  margin: 6px 0px;
+  padding: 5px 0px 0px 0px;
   border: none;
+  display: table-cell;
 }
 .panel-default > .panel-heading {
   color: $blg-blue;
@@ -1100,4 +1101,21 @@ table.blg-dataTable {
 
 table.blg-dataTable.display tbody td {
     border-top: 1px solid $blg-grey-light-more;
+}
+
+.list-item {
+  display: table;
+  width: 100%;
+}
+
+.list-item .checkbox {
+  display: table-cell;
+  position: relative;
+  top: 2px;
+  right: 1px;
+}
+
+.list-item  .checkbox input[type="checkbox"] {
+    margin-left: -23px;
+    cursor: pointer;
 }
