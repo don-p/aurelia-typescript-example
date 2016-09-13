@@ -1,5 +1,28 @@
 @at-root {
   // Import the fonts
+
+  @font-face {
+    font-family: 'Muli';
+    src: url('#{$icon-font3-path}#{$icon-font3-name}.eot');
+    src: url('#{$icon-font3-path}#{$icon-font3-name}.eot?#iefix') format('embedded-opentype'),
+         url('#{$icon-font3-path}#{$icon-font3-name}.woff') format('woff'),
+         url('#{$icon-font3-path}#{$icon-font3-name}.ttf') format('truetype'),
+         url('#{$icon-font3-path}#{$icon-font3-name}.svg##{$icon-font3-svg-id}') format('svg');
+          font-weight: normal;
+          font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Muli';
+    src: url('#{$icon-font4-path}#{$icon-font4-name}.eot');
+    src: url('#{$icon-font4-path}#{$icon-font4-name}.eot?#iefix') format('embedded-opentype'),
+         url('#{$icon-font4-path}#{$icon-font4-name}.woff') format('woff'),
+         url('#{$icon-font4-path}#{$icon-font4-name}.ttf') format('truetype'),
+         url('#{$icon-font4-path}#{$icon-font4-name}.svg##{$icon-font4-svg-id}') format('svg');
+          font-weight: bold;
+          font-style: normal;
+  }
+
   @font-face {
     font-family: 'Icomoon';
     src: url('#{$icon-font2-path}#{$icon-font2-name}.eot');
