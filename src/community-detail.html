@@ -41,102 +41,88 @@
    <!-- </div>-->
 
 
-				<section if.bind="(selectedCommunityMembers && selectedCommunityMembers!==null)" id="membersTable" class="members-table">
-				
-							<div class="members-table-header" id="membersTableHeader">
-
-							</div>
-							
-							<div class="members-table-buttons-bar">
-								<a id="members-make-call-btn" class="btn btn-success btn-xs-square disabled" title="Make call">
-									<i class="ico-phone2"></i>
-								</a>
-								<a id="members-send-alert-btn" class="btn btn-inverse btn-xs-square disabled" title="Send alert">
-									<i class="ico-bullhorn"></i>
-								</a>
-								<a id="members-start-conv-btn" class="btn btn-primary btn-xs-square disabled" title="Start conversation">
-									<i class="ico-bubble-plus"></i>
-								</a>								
-							
-								<span class="dummy-btn"></span>
-								
-								<a id="members-add-part-btn" class="btn btn-primary btn-xs-square disabled" title="Add member">
-									<i class="ico-user-plus"></i>
-								</a>
-								<a id="members-remove-part-btn" class="btn btn-danger btn-xs-square disabled" title="Remove member" data-toggle="modal" data-target="#myModal">
-									<i class="ico-user-cancel"></i>
-								</a>
-
-								<span class="dummy-btn"></span>
-								
-								<a id="members-transfer-ownership-btn" class="btn btn-primary btn-xs-square disabled" title="Transfer ownership">
-									<i class="ico-bubble-right"></i>
-								</a>
-								<a id="members-delete-comm2-btn" class="btn btn-danger btn-xs-square disabled" title="Delete community" data-toggle="modal" data-target="#myModal2">
-									<i class="ico-users-cancel"></i>
-								</a>							
-								<a id="members-rename-community-btn" class="btn btn-primary btn-xs-square disabled" title="Rename community">
-									<i class="ico-pencil7"></i>
-								</a>
-							</div>
-							
-							<div class="members-table-info-bar">
-
-							</div>							
-							
-							<div class="members-table-content" id="membersTableContent">
-							
-								<table id="example" class="display" cellspacing="0" width="100%">
-								   <thead>
-									  <tr>
-										 <th>
-											<label class="checkbox" for="example-select-all" title="Select/Deselect All">
-												<input name="select_all" value="1" id="example-select-all" type="checkbox" data-toggle="checkbox"/>
-											</label>										 
-										 </th>
-										 <th>GEO</th>
-										 <th>Name</th>
-										 <th>Job title</th>
-										 <th>Industry name</th>
-										 <th>City</th>
-										 <th>State</th>
-										 <th>Zip</th>										 
-									  </tr>
-								   </thead>
-
-                   <tbody>
-                      <tr repeat.for="member of selectedCommunityMembers" class="container">
-                        <td></td>
-                        <td>${member.physicalPersonProfile.firstName} ${member.physicalPersonProfile.lastName}</td>
-                        <td>${member.physicalPersonProfile.jobTitle}</td>
-                        <td>${member.physicalPersonProfile.organization.organizationName}</td>
-                        <td>${member.physicalPersonProfile.locationProfile.city}</td>
-                        <td>${member.physicalPersonProfile.locationProfile.stateCode}</td>
-                        <td>${member.physicalPersonProfile.locationProfile.zipCode}</td>
-                      </tr>
-                   </tbody>
-
-								   <tfoot>
-									  <tr>
-										 <th>
-										 </th>
-										 <th>GEO</th>
-										 <th>Name</th>
-										 <th>Job title</th>
-										 <th>Industry name</th>
-										 <th>City</th>
-										 <th>State</th>
-										 <th>Zip</th>										 
-									  </tr>
-								   </tfoot>								   
-								</table>														
-							
-							</div>
-									
-							<div class="blg-btns-content panel-footer">
-							
-							</div>										
+	<section if.bind="(selectedCommunityMembers && selectedCommunityMembers!==null)" id="membersTable" class="members-table">
 	
-				</section>
+		<div class="members-table-header" id="membersTableHeader">
+			selectedCommunity ( <i class='ico-users'></i> no. of members )
+		</div>
+		
+		<div class="members-table-buttons-bar">
+			<a id="members-make-call-btn" class="btn btn-success btn-xs-square " title="Make call">
+				<i class="ico-phone2"></i>
+			</a>
+			<a id="members-send-alert-btn" class="btn btn-primary btn-xs-square " title="Send alert">
+				<i class="ico-bullhorn"></i>
+			</a>
+			<a id="members-start-conv-btn" class="btn btn-info btn-xs-square " title="Start conversation">
+				<i class="ico-bubble-plus"></i>
+			</a>								
+		
+			<span class="dummy-btn"></span>
+			
+			<a id="members-add-part-btn" class="btn btn-info btn-xs-square " title="Add member">
+				<i class="ico-user-plus"></i>
+			</a>
+			<a id="members-remove-part-btn" class="btn btn-danger btn-xs-square " title="Remove member" data-toggle="modal" data-target="#myModal">
+				<i class="ico-user-cancel"></i>
+			</a>
+
+			<span class="dummy-btn"></span>
+			
+			<a id="members-transfer-ownership-btn" class="btn btn-info btn-xs-square " title="Transfer ownership">
+				<i class="ico-bubble-right"></i>
+			</a>
+			<a id="members-delete-comm2-btn" class="btn btn-danger btn-xs-square " title="Delete community" data-toggle="modal" data-target="#myModal2">
+				<i class="ico-users-cancel"></i>
+			</a>							
+			<a id="members-rename-community-btn" class="btn btn-info btn-xs-square " title="Rename community">
+				<i class="ico-pencil7"></i>
+			</a>
+		</div>
+		
+		<div class="members-table-info-bar">
+			<div role="status" id="example_info" class="members-table-info">Showing X to XX of XXX entries</div>
+		</div>							
+				
+		<div class="members-table-content" id="membersTableContent">
+		
+			<table id="example" class="display blg-dataTable" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>
+							<input name="select_all" value="1" id="example-select-all" type="checkbox" data-toggle="checkbox"/>
+						</th>
+						<th>Name</th>
+						<th>Job title</th>
+						<th>Industry name</th>
+						<th>City</th>
+						<th>State</th>
+						<th>Zip</th>										 
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr repeat.for="member of selectedCommunityMembers">
+						<td>
+							<input name="checkbox" value="1" id="checkbox" type="checkbox" data-toggle="checkbox"/>
+						</td>
+						<td>${member.physicalPersonProfile.firstName} ${member.physicalPersonProfile.lastName}</td>
+						<td>${member.physicalPersonProfile.jobTitle}</td>
+						<td>${member.physicalPersonProfile.organization.organizationName}</td>
+						<td>${member.physicalPersonProfile.locationProfile.city}</td>
+						<td>${member.physicalPersonProfile.locationProfile.stateCode}</td>
+						<td>${member.physicalPersonProfile.locationProfile.zipCode}</td>
+					</tr>
+				</tbody>
+		
+			</table>														
+		
+		</div>
+						
+		<div class="blg-btns-content panel-footer">
+		
+		</div>										
+
+	</section>
 
 </template>

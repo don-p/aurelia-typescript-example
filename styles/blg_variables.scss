@@ -63,7 +63,15 @@ $icon-font-path: if($bootstrap-sass-asset-helper, "glyphicons/", "../fonts/glyph
 
 $icon-font2-name:          "icomoon";
 $icon-font2-svg-id:        "icomoon";
-$icon-font2-path: if($bootstrap-sass-asset-helper, "icomoon/", "../fonts/icomoon/");
+$icon-font2-path:           "../fonts/icomoon/";
+
+$icon-font3-name:          "muli-regular";
+$icon-font3-svg-id:        "muliregular";
+$icon-font3-path:           "../fonts/muli/";
+
+$icon-font4-name:          "muli-bold";
+$icon-font4-svg-id:        "mulibold";
+$icon-font4-path:           "../fonts/muli/";
 
 $nav-tabs-border-color:         $blg-grey-light;
 $nav-tabs-border-width:         2px;

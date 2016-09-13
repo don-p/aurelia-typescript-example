@@ -353,7 +353,7 @@ header .navbar-nav {
 .blg-left-panel .blg-location-content {
   padding: 0px 10px 0px 0px;
   position: absolute;
-  top: 149px;
+  top: 147px;
   bottom: 58px;
   left: 0px;
   right: 0px;
@@ -884,7 +884,6 @@ header .navbar-nav {
 .select-default-blg {
   width: auto;
   border: 1px solid $brand-info;
-  border-right: none;
   height: 36px;
   font-size: 14px;
   height: 30px;
@@ -909,4 +908,193 @@ header .navbar-nav {
 
 .conv-form-group {
   padding: 13px 10px 10px 10px;
+}
+
+
+.badge-owner {
+  font-size: 9px;
+  background-color: $blg-wet-asphalt-light !important;
+  color: $blg-white !important;
+  padding: 2px 5px;
+  margin-top: 2px;
+  float: right;
+  line-height: 1.615;
+  border-radius: 4px;      
+}
+
+
+
+.message-board,
+.members-table,
+.results-table {
+  background: $blg-white;
+  border-radius: 6px;
+  margin: 75px 15px 10px 530px;
+  position: absolute;
+  box-sizing: border-box;
+  min-height: 565px;
+  bottom: 5px;
+  top: 2px;
+  right: 0;
+  left: 0;
+}
+
+.message-board .blg-btns-content,
+.members-table .blg-btns-content,
+.results-table .blg-btns-content,
+.received-table .blg-btns-content {
+  font-size: 14px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  border-radius: 0px 0px 6px 6px;
+  border-bottom: 2px solid $blg-grey-light;
+  border-right: 2px solid $blg-grey-light;
+  border-top: 1px solid $blg-grey-lighter;
+  border-left: 2px solid $blg-grey-light;
+}
+
+.members-table .members-table-content,
+.results-table .results-table-content,
+.received-table .received-table-content {
+  padding: 0px 5px 0px 5px;
+  position: absolute;
+  top: 134px;
+  bottom: 50px;
+  left: 0px;
+  right: 0px;
+  border-bottom: 0px;
+  border-right: 2px solid $blg-grey-light;
+  border-top: 0px;
+  border-left: 2px solid $blg-grey-light;
+  border-radius: 0px;
+  background-color: $blg-white;
+}
+.message-board .message-board-header,
+.members-table .members-table-header,
+.results-table .results-table-header,
+.received-table .received-table-header {
+  background-color: $blg-blue;
+  color: $blg-white;
+  text-align: center;
+  padding: 2px 0px 5px 0px;
+  font-size: 18px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  border-radius: 6px 6px 0px 0px;
+  border-top: 2px solid $blg-blue;
+  border-right: 2px solid $blg-blue;
+  border-bottom: 0px;
+  border-left: 2px solid $blg-blue;
+}
+
+.message-board-icon,
+.members-table-icon {
+  width: 38px;
+  height: 38px;
+  background: $blg-blue-light;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: $blg-white;
+  text-align: center;
+  line-height: 36px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-top: -5px;
+}
+
+.message-board .message-board-buttons-bar,
+.members-table .members-table-buttons-bar,
+.results-table .results-table-buttons-bar {
+  padding: 10px 13px;
+  position: absolute;
+  top: 40px;
+  left: 0px;
+  right: 0px;
+  border-bottom: 0px;
+  border-right: 2px solid $blg-grey-light;
+  border-top: 0px;
+  border-left: 2px solid $blg-grey-light;
+  border-radius: 0px;
+  background-color: $blg-white;
+  box-shadow: 0px 1px 5px lightgrey;
+  z-index: 1000;
+}
+
+.members-table .members-table-info-bar,
+.results-table .results-table-info-bar {
+  padding: 5px 15px;
+  position: absolute;
+  top: 91px;
+  left: 0px;
+  right: 0px;
+  border-bottom: 1px solid $blg-grey-lighter;
+  border-right: 2px solid $blg-grey-light;
+  border-top: 0px;
+  border-left: 2px solid $blg-grey-light;
+  border-radius: 0px;
+  background-color: $blg-white;
+  z-index: 999;
+  font-size: 14px;
+}
+
+.members-table .panel-footer,
+.results-table .panel-footer,
+.received-table .panel-footer {
+  padding-top: 8px;
+  padding-left: 10px;
+  height: 50px;
+}
+
+.dummy-btn {
+  padding: 16px;
+}
+
+.members-table-info {
+    padding-top: 8px;
+}
+
+.blg-dataTable {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  max-width: none !important;
+  font-size: 14px;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;  
+}
+
+table.blg-dataTable {
+    width: 100%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.blg-dataTable thead th {
+    color: $blg-blue;
+    padding: 5px 18px 2px;
+    font-weight: bold;
+}
+
+.blg-dataTable tbody td {
+    padding: 5px 18px 2px;
+}
+
+.blg-dataTable td, .blg-dataTable th {
+    position: relative;
+    box-sizing: content-box;
+}
+
+.blg-dataTable th {
+    width: auto;
+}
+
+table.blg-dataTable.display tbody td {
+    border-top: 1px solid $blg-grey-light-more;
 }
