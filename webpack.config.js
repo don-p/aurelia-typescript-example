@@ -5,6 +5,8 @@
  * Take a look at the README here: https://github.com/easy-webpack/core
  **/
 const easyWebpack = require('@easy-webpack/core');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 const generateConfig = easyWebpack.default;
 const get = easyWebpack.get;
 const path = require('path');
@@ -55,20 +57,81 @@ const coreBundles = {
   ]
 }
 
+// multiple extract instances for CSS
+let loaders = [];
+const ExtractCustomCSS = new ExtractTextPlugin('style.[chunkhash].css');
+// const ExtractVendorCSS = new ExtractTextPlugin('vendor.[chunkhash].css');
+const SourceMapScssLoader = {test: /\.(scss|css)$/i, loader: ExtractCustomCSS.extract(['css?sourceMap!sass?sourceMap'])};
+const ScssLoader = {test: /\.(scss|css)$/i, loader: ExtractCustomCSS.extract(['css!sass'])};
+/*
+const cssLoaders = ENV === 'development'?
+    [// Application custom SASS/CSS.
+      { 
+        test: /\.(scss|css)$/i, 
+        // loader: new ExtractTextPlugin('assets/[path]/[name].[ext]').extract(['file!sass?name=assets/[path]/[name].[ext]']),
+        // loader: "file!css!sass!?name=assets/[path]/[name].[ext]!css",
+        loader: ExtractCustomCSS.extract(['css!sass']), 
+        // loader: ExtractCustomCSS.extract(['css?sourceMap!sass?sourceMap']), 
+        // loader: 'css?sourceMap!sass?sourceMap', 
+        // include: [
+        //    path.resolve(__dirname, rootDir+"/styles"),
+        //    path.resolve(__dirname, srcDir+"/lib")
+        // ]  
+      },
+      // // Vendor/library SASS/CSS.
+      // { 
+      //   test: /\.(scss|css)$/i, loader: ExtractVendorCSS.extract(['css','sass']),
+      //   exclude: [
+      //      path.resolve(__dirname, rootDir+"/styles"),
+      //      path.resolve(__dirname, srcDir+"/lib")
+      //   ]  
+      // },
+    ]:[
+      { 
+        test: /\.(scss|css)$/i, 
+        loader: ExtractCustomCSS.extract(['css!sass?sourceMap'])
+      },
+    ];
+*/
 const baseConfig = {
   entry: {
     'app': [/* this is filled by the aurelia-webpack-plugin */],
     'aurelia-bootstrap': coreBundles.bootstrap,
     'aurelia': coreBundles.aurelia.filter(pkg => coreBundles.bootstrap.indexOf(pkg) === -1)
   },
+  devtool: "source-map",
   output: {
     path: outDir,
+  },
+  plugins: [
+    ExtractCustomCSS,
+    // ExtractVendorCSS
+  ],
+  module: {
+      loaders: loaders
+    // loaders: [
+    //   // Application cusom SASS/CSS..
+    //   { test: /\.(scss|css)$/i, loader: ExtractCustomCSS.extract(['css?sourceMap!sass']), 
+    //     include: [
+    //        path.resolve(__dirname, rootDir+"/styles"),
+    //        path.resolve(__dirname, srcDir+"/lib")
+    //     ]  
+    //   },
+    //   // Vendor/library SASS/CSS.
+    //   { test: /\.(scss|css)$/i, loader: ExtractVendorCSS.extract(['css','sass']),
+    //     exclude: [
+    //        path.resolve(__dirname, rootDir+"/styles"),
+    //        path.resolve(__dirname, srcDir+"/lib")
+    //     ]  
+    //   },
+    // ]
   }
 }
 
 // advanced configuration:
 switch (ENV) {
   case 'production':
+    loaders.push(ScssLoader);
     config = generateConfig(
       baseConfig,
 
@@ -81,8 +144,8 @@ switch (ENV) {
       require('@easy-webpack/config-typescript')(),
       require('@easy-webpack/config-html')(),
 
-      require('@easy-webpack/config-css')
-        ({ filename: 'styles.css', allChunks: true, sourceMap: false }),
+      // require('@easy-webpack/config-css')
+      //   ({ filename: 'styles.css', allChunks: true, sourceMap: false }),
 
       require('@easy-webpack/config-fonts-and-images')(),
       require('@easy-webpack/config-global-bluebird')(),
@@ -91,11 +154,16 @@ switch (ENV) {
       require('@easy-webpack/config-generate-index-html')
         ({minify: true}),
 
+      // Copy other resource files to dist directory. (icons, i18n translation files, etc.)
+      require('@easy-webpack/config-json')(),
+      require('@easy-webpack/config-copy-files')
+        ({patterns: [
+          {context: './src/locales', from: '**/**.json', to: 'locales'},
+          {from: 'favicon.ico', to: 'favicon.ico' }
+          ]}),
+
       require('@easy-webpack/config-common-chunks-simple')
         ({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'}),
-
-      require('@easy-webpack/config-copy-files')
-        ({patterns: [{ from: 'favicon.ico', to: 'favicon.ico' }]}),
 
       require('@easy-webpack/config-uglify')
         ({debug: false})
@@ -103,6 +171,7 @@ switch (ENV) {
     break;
   
   case 'test':
+    loaders.push(ScssLoader);
     config = generateConfig(
       baseConfig,
 
@@ -117,8 +186,8 @@ switch (ENV) {
 
       require('@easy-webpack/config-html')(),
 
-      require('@easy-webpack/config-css')
-        ({ filename: 'styles.css', allChunks: true, sourceMap: false }),
+      // require('@easy-webpack/config-css')
+      //   ({ filename: 'styles.css', allChunks: true, sourceMap: false }),
 
       require('@easy-webpack/config-fonts-and-images')(),
       require('@easy-webpack/config-global-bluebird')(),
@@ -133,6 +202,7 @@ switch (ENV) {
   default:
   case 'development':
     process.env.NODE_ENV = 'development';
+    loaders.push(SourceMapScssLoader);
     config = generateConfig(
       baseConfig,
 
@@ -144,10 +214,10 @@ switch (ENV) {
       require('@easy-webpack/config-typescript')(),
       require('@easy-webpack/config-html')(),
 
-      require('@easy-webpack/config-css')
-        ({ filename: 'style.css', allChunks: true, sourceMap: false }),
-      require('@easy-webpack/config-sass')
-        ({ filename: 'vendor.css', allChunks: true, sourceMap: false }),
+      // require('@easy-webpack/config-css')
+      //   ({ filename: 'style.[chunkhash].css', allChunks: true, sourceMap: true }),
+      // require('@easy-webpack/config-sass')
+      //   ({ filename: 'vendor.[chunkhash].css', allChunks: true, sourceMap: true }),
 
       require('@easy-webpack/config-fonts-and-images')(),
       require('@easy-webpack/config-global-bluebird')(),

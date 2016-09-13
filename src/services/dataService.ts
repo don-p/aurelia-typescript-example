@@ -45,7 +45,7 @@ export class DataService {
                         console.log(`Requesting ${request.method} ${request.url}`);
                         return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
                     },
-                    response: function(response, request) {
+                    response: async function(response, request) {
                         console.log(`Received ${response.status} ${response.url}`);
                         ///// DEBUG /////
                         // if(response.status === 201) { // Special case, refresh expired token.
@@ -58,7 +58,7 @@ export class DataService {
                                 me.session.auth['access_token'] && 
                                 !me.auth.isAuthenticated()) { // Special case, refresh expired token.
                                 // Request and save a new access token, using the refresh token.
-                                return me.refreshToken(me.session.auth['refresh_token'], request);
+                                var result = await me.refreshToken(me.session.auth['refresh_token'], request);
                                 // // .then(response => response.json())
                                 // .then(data => {
                                 //     // Re-try the original request, which should succeed with a new access token.
@@ -145,7 +145,7 @@ export class DataService {
         var params = QueryString.stringify(obj, {});
 
         console.debug('Refreshing access token.');
-        var response = http.fetch('oauth/token', 
+        var result = await http.fetch('oauth/token', 
             {
                 method: 'post',
                 headers: h,
@@ -153,6 +153,24 @@ export class DataService {
                 body: params
            }
         );
+        let data = result.json();
+        // Update the access token in the aurelia-auth object; do not redirect.
+        me.auth['auth'].setToken(data, true);
+        // Save the new access token in the app's existing session.
+        me.session.auth['access_token'] = data['access_token'];
+        me.session.auth['expires_in'] = data['expires_in'];
+        console.debug('Access token refreshed.');
+
+        if(fetchRequest && fetchRequest !== null) {
+            // Before re-executing the original request, replace the token in the auth header.
+            fetchRequest.headers.set('Authorization', 'Bearer ' + data['access_token']);
+            console.debug('Access token refreshed -> re-running fetch: ' + fetchRequest.url + '.');
+            var response = await me.httpClient.fetch(fetchRequest);
+            return response;
+        }
+        return null;
+
+/*
         response.then(response => response.json())
         .then(data => {
             console.log(json(data));
@@ -175,7 +193,7 @@ export class DataService {
             console.log(error); 
         });
         return response;
-
+*/
     }
 
     async loginFactor2(): Promise<Response> {
