@@ -189,6 +189,26 @@ export class DataService {
         return response;
     }
 
+    async logout(token: string): Promise<Response> {
+        await fetch;
+        const http =  this.getHttpClient();
+        var obj = {
+                    client_id: this.appConfig.clientId,
+                    client_secret: this.appConfig.clientSecret
+                };
+        var params = QueryString.stringify(obj, {});
+        var me = this;
+        var response = http.fetch('oauth/token/' + token + '?' +params, 
+            {
+                method: 'DELETE'
+            }
+        );
+        
+        return response;
+    }
+
+
+
     // COMMUNITIES
 
     /**

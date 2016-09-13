@@ -17,8 +17,11 @@
   <div class="dropdown right-cont nav navbar-nav navbar-right pull-right">
     <div class="drop-cont dropdown-toggle" data-toggle="dropdown" role="button">
         <div class="jd-title">
-            <div class="caps-top">
-                <span>${session.auth['member'].firstName} ${session.auth['member'].lastName}</span>
+            <div >
+                <span class="caps-top pull-left">${session.auth['member'].firstName} ${session.auth['member'].lastName}</span>
+                <span>&nbsp;</span>
+                <span><a click.delegate="logout()" 
+                    href="#">Logout</a></span>
             </div>
             <div class="caps-bottom">Friday 02/05/2016 4:32 PM EST</div>
         </div>
