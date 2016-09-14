@@ -49,7 +49,7 @@
               </span>												
             </div>
           </div>
-          
+
         <div class="blg-inner-content tab-pane active" id="communities">
 
 
@@ -64,8 +64,11 @@
               <div id="community-list" class="community-list">
                 <ul>
                   <div class="panel-group communities-panel-list list1" id="accordion_communities">
-                    <div repeat.for="community of communities.responseCollection" class='list1-item with_owner'>
-                      <li class='trigger'></li>
+                    <div repeat.for="community of communities.responseCollection" class='list-item'>
+                    <div class="checkbox checkbox-info">
+                        <input type="checkbox" class="styled styled-info" id="singleCheckbox2" value="option2">
+                        <label></label>
+                    </div>
                       <div class='panel panel-default'>
                         <div class='panel-heading' role='tab'>
                           <a class='collapsed' click.trigger="selectCommunity(community.communityId)" role='button' data-toggle='collapse' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false' aria-controls='collapse${$index}'>

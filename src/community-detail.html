@@ -86,11 +86,14 @@
 				
 		<div class="members-table-content" id="membersTableContent">
 		
-			<table id="example" class="display blg-dataTable" cellspacing="0" width="100%">
+			<table id="example" class="table table-striped blg-dataTable" cellspacing="0" width="100%">
 				<thead>
 					<tr>
 						<th>
-							<input name="select_all" value="1" id="example-select-all" type="checkbox" data-toggle="checkbox"/>
+							<div class="checkbox checkbox-info">
+								<input type="checkbox" class="styled styled-info" id="singleCheckbox2" value="option2">
+								<label></label>
+							</div>
 						</th>
 						<th>Name</th>
 						<th>Job title</th>
@@ -100,11 +103,14 @@
 						<th>Zip</th>										 
 					</tr>
 				</thead>
-
+				
 				<tbody id="community-member-list" class="community-member-list">
 					<tr repeat.for="member of selectedCommunityMembers">
 						<td>
-							<input name="checkbox" value="1" id="checkbox" type="checkbox" data-toggle="checkbox"/>
+							<div class="checkbox checkbox-info">
+								<input type="checkbox" class="styled styled-info" id="singleCheckbox2" value="option2">
+								<label></label>
+							</div>
 						</td>
 						<td>${member.physicalPersonProfile.firstName} ${member.physicalPersonProfile.lastName}</td>
 						<td>${member.physicalPersonProfile.jobTitle}</td>
