@@ -41,9 +41,9 @@
    <!-- </div>-->
 
 
-	<section if.bind="(selectedCommunityMembers && selectedCommunityMembers!==null)" id="membersTable" class="members-table">
+	<section if.bind="(selectedCommunityMembers && selectedCommunityMembers!==null)" class="members-table">
 	
-		<div class="members-table-header" id="membersTableHeader">
+		<div class="members-table-header">
 			selectedCommunity ( <i class='ico-users'></i> no. of members )
 		</div>
 		
@@ -91,7 +91,7 @@
 					<tr>
 						<th>
 							<div class="checkbox checkbox-info">
-								<input type="checkbox" class="styled styled-info" id="singleCheckbox2" value="option2">
+								<input id="checkbox-members-all" type="checkbox" class="styled styled-info" value="">
 								<label></label>
 							</div>
 						</th>
@@ -108,7 +108,7 @@
 					<tr repeat.for="member of selectedCommunityMembers">
 						<td>
 							<div class="checkbox checkbox-info">
-								<input type="checkbox" class="styled styled-info" id="singleCheckbox2" value="option2">
+								<input id="checkbox-members-XX" type="checkbox" class="styled styled-info" value="">
 								<label></label>
 							</div>
 						</td>

@@ -50,12 +50,20 @@
             </div>
           </div>
 
+        <div class="community-list-info-bar">
+          <div class="checkbox checkbox-info">
+            <input id="checkbox-community-all" type="checkbox" class="styled styled-info" value="">
+            <label></label>
+          </div>
+          <div class="community-list-info pull-right">Showing X to XX of XXX entries</div>
+        </div>
+
         <div class="blg-inner-content tab-pane active" id="communities">
 
 
           <!-- communities list elements -->
 <!--
-            <div bindingContext.bind="$parent" class="virtual-repeated-item" virtual-repeat.for="community of communities.responseCollection" virtual-repeat-next="getMore">
+            <div bindingContext.bind="$parent" class="virtual-repeated-item" virtual-repeat.for="community of communities.response_collection" virtual-repeat-next="getMore">
               ${$index} ${community.communityName}
             </div>
 -->
@@ -66,7 +74,7 @@
                   <div class="panel-group communities-panel-list list1" id="accordion_communities">
                     <div repeat.for="community of communities.responseCollection" class='list-item'>
                     <div class="checkbox checkbox-info">
-                        <input type="checkbox" class="styled styled-info" id="singleCheckbox2" value="option2">
+                        <input id="checkbox-community-XX" type="checkbox" class="styled styled-info" value="">
                         <label></label>
                     </div>
                       <div class='panel panel-default'>
