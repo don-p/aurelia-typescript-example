@@ -1,8 +1,6 @@
 $bootstrap-sass-asset-helper: false;
 @import "blg_variables.scss";
 @import "blg_localfonts.scss";
-
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
-@import "blg_checkradio.scss";
-//@import "blg.proto.css";
+@import "blg_bootstrap.scss";
 @import "blg.scss";
