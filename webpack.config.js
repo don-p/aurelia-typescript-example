@@ -156,6 +156,16 @@ switch (ENV) {
   case 'development':
     process.env.NODE_ENV = 'development';
     loaders.push(SourceMapScssLoader);  // Loader for SCSS/CSS.
+    loaders.push( // Loader for env config token replacement.
+      {
+        test: /services\/appConfig\.ts$/,
+        loader: 'string-replace',
+        query: {
+          search: '%API_SERVER_URL%',
+          replace: 'https://scig-dev.bluelinegrid.com/'
+        }
+      }  
+    )
     config = generateConfig(
       baseConfig,
 
