@@ -543,6 +543,10 @@ header .navbar-nav {
     cursor: pointer;
 }
 
+.community-list-info-bar .checkbox input[type="checkbox"]:disabled {
+    cursor: no-drop;
+}
+
 .community-member-list {
   position: relative;
 }
@@ -908,6 +912,10 @@ table.blg-dataTable.display tbody td {
     cursor: pointer;
 }
 
+.list-item .checkbox input[type="checkbox"]:disabled {
+    cursor: no-drop;
+}
+
 .members-table-content table tbody .checkbox {
   margin-top: 0px;
   margin-bottom: 0px;
@@ -930,5 +938,9 @@ table.blg-dataTable.display tbody td {
   cursor: pointer;
   margin-left: -23px;
   margin-top: 3px;
+}
+
+.members-table-content .checkbox input[type="checkbox"]:disabled {
+  cursor: no-drop;
 }
 
