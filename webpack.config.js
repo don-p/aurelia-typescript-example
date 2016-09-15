@@ -11,6 +11,8 @@ const generateConfig = easyWebpack.default;
 const get = easyWebpack.get;
 const path = require('path');
 const ENV = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() || 'development';
+
+console.log('========== BUILDING FOR ENV - ' +  process.env.NODE_ENV + ' ==========');
 let config;
 
 // basic configuration:
@@ -155,6 +157,16 @@ switch (ENV) {
   default:
   case 'development':
     process.env.NODE_ENV = 'development';
+    loaders.push( // Loader for env config token replacement.
+      {
+        test: /(.*)Config\.ts$/,
+        loader: 'string-replace',
+        query: {
+          search: '%API_SERVER_URL%',
+          replace: 'https://scig-dev.bluelinegrid.com/'
+        }
+      }  
+    );
     loaders.push(SourceMapScssLoader);  // Loader for SCSS/CSS.
     config = generateConfig(
       baseConfig,
