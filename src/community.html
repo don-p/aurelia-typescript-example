@@ -23,13 +23,13 @@
           <loading promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
 
           <div class="conv-buttons-bar">
-            <a id="communities-create-comm-btn" class="btn btn-info btn-xs-square" title="Create community">
+            <a id="btn-communities-create-community" class="btn btn-info btn-xs-square" i18n='[title]community.createCommunity'>
               <i class="ico-users-plus"></i>
             </a>
-            <a id="communities-delete-comm-btn" class="btn btn-danger btn-xs-square disabled" title="Delete community">
+            <a id="btn-communities-delete-community" class="btn btn-danger btn-xs-square" i18n='[title]community.deleteCommunity'>
               <i class="ico-users-cancel"></i>
             </a>
-            <a id="communities-send-alert-btn" class="btn btn-primary btn-xs-square disabled" title="Send alert">
+            <a id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]community.sendAlert'>
               <i class="ico-bullhorn center"></i>
             </a>
             <div class="right-select">
@@ -43,19 +43,27 @@
            
           <div class="conv-form-group">
             <div class="input-group input-group-sm">
-              <input type="text" class="form-control" placeholder="Search">
+              <input type="text" class="form-control" i18n='[placeholder]community.search'>
               <span class="input-group-btn">
                 <button type="submit" class="btn"><span class="ico-search"></span></button>
               </span>												
             </div>
           </div>
 
+        <div class="community-list-info-bar">
+          <div class="checkbox checkbox-info">
+            <input id="checkbox-community-all" type="checkbox" class="styled styled-info" value="">
+            <label></label>
+          </div>
+          <div class="community-list-info pull-right">Showing X to XX of XXX entries</div>
+        </div>
+
         <div class="blg-inner-content tab-pane active" id="communities">
 
 
           <!-- communities list elements -->
 <!--
-            <div bindingContext.bind="$parent" class="virtual-repeated-item" virtual-repeat.for="community of communities.responseCollection" virtual-repeat-next="getMore">
+            <div bindingContext.bind="$parent" class="virtual-repeated-item" virtual-repeat.for="community of communities.response_collection" virtual-repeat-next="getMore">
               ${$index} ${community.communityName}
             </div>
 -->
@@ -66,13 +74,13 @@
                   <div class="panel-group communities-panel-list list1" id="accordion_communities">
                     <div repeat.for="community of communities.responseCollection" class='list-item'>
                     <div class="checkbox checkbox-info">
-                        <input type="checkbox" class="styled styled-info" id="singleCheckbox2" value="option2">
+                        <input id="checkbox-community-XX" type="checkbox" class="styled styled-info" value="">
                         <label></label>
                     </div>
                       <div class='panel panel-default'>
                         <div class='panel-heading' role='tab'>
                           <a class='collapsed' click.trigger="selectCommunity(community.communityId)" role='button' data-toggle='collapse' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false' aria-controls='collapse${$index}'>
-                            <h4 class='panel-title'>${community.communityName} ( <i class='ico-users'></i> no. of members ) <span if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" class='badge badge-owner float-right'>OWNER</span></h4>
+                            <h4 class='panel-title'>${community.communityName} ( <i class='ico-users'></i> no. of members ) <span if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" class='badge badge-owner float-right' i18n="community.owner"></span></h4>
                           </a>
                         </div>
                         <div id='collapse${$index}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading${$index}'></div>
