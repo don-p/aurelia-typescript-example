@@ -159,7 +159,7 @@ switch (ENV) {
     process.env.NODE_ENV = 'development';
     loaders.push( // Loader for env config token replacement.
       {
-        test: /services\/appConfig\.ts$/,
+        test: /(.*)Config\.ts$/,
         loader: 'string-replace',
         query: {
           search: '%API_SERVER_URL%',
