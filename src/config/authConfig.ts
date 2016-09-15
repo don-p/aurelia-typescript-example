@@ -2,7 +2,7 @@
 
 
 var configForDevelopment = {
-    baseUrl: 'https://api-dev-scig-blg.bluelinegrid.com/',
+    baseUrl: '%API_SERVER_URL%',
     loginUrl: 'oauth/token',
     providers: {
         google: {
@@ -19,7 +19,7 @@ var configForDevelopment = {
 };
 
 var configForProduction = {
-    baseUrl: 'https://api-dev-scig-blg.bluelinegrid.com/',
+    baseUrl: '%API_SERVER_URL%',
     loginUrl: 'oauth/token',
     providers: {
         google: {
