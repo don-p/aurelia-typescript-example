@@ -405,7 +405,7 @@ header .navbar-nav {
 }
 
 .blg-left-panel .blg-location-content {
-  padding: 0px 10px 0px 0px;
+  padding: 3px 10px 0px 0px;
   position: absolute;
   top: 180px;
   bottom: 58px;
@@ -514,7 +514,7 @@ header .navbar-nav {
 .community-list-info-bar {
   padding: 0px 15px;
   position: absolute;
-  top: 148px;
+  top: 147px;
   left: 0px;
   right: 0px;
   border-bottom: 1px solid $blg-grey-lighter;
@@ -554,7 +554,8 @@ header .navbar-nav {
 .panel-default {
   padding: 5px 0px 0px 0px;
   border: none;
-  display: table-cell;
+  display: inline-block;
+  width: 100%;
 }
 .panel-default > .panel-heading {
   color: $blg-blue;
