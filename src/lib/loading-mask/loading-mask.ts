@@ -51,7 +51,7 @@ export class Loading {
   attached() {
     console.debug("LoadingMask | attached()");
     this._createLoadingMask();
-    this.attachPromise();
+    // this.attachPromise();
     // this._createLoadingMask();
   }
 
@@ -71,10 +71,12 @@ export class Loading {
 
   promiseChanged(promise:Promise<Response>) {
     console.debug("LoadingMask | promiseChanged()");
-    if(promise.isPending()) {
-      this.show();
-    } else {
-      this.hide();
+    if(promise && promise !== null) {
+      if(promise.isPending()) {
+        this.show();
+      } else {
+        this.hide();
+      }
     }
   }
 

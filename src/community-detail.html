@@ -1,4 +1,5 @@
 <template>
+
     <!--<div style="vertical-align:top;" class="container">-->
       <!--
       <div class="row">
@@ -40,9 +41,61 @@
       -->
    <!-- </div>-->
 
+<!--
+	<section if.bind="(selectedCmty && selectedCmty!==null)" id="membersTable" class="members-table">
+ -->
+	<section id="membersTable" class="members-table">
+		
 
-	<section if.bind="(selectedCommunityMembers && selectedCommunityMembers!==null)" id="membersTable" class="members-table">
-	
+<!--
+<m-grid>
+  <data-source read.bind="selectedCommunityMembers.get"></data-source>
+  <pagination size="10" all.bind="[5,10,20,40]"></pagination>
+  <columns>
+    <column heading="First Name" field="physicalPersonProfile.firstName"></column>
+    <column heading="Last Name" field="physicalPersonProfile.lastName"></column>
+  </columns>
+</m-grid>
+-->
+	<!--
+        <ej-grid e-data-source.bind="selectedCommunityMembers" e-allow-paging=true e-allow-sorting=true>
+            <ej-column e-field="physicalPersonProfile.firstName" e-header-text="Order ID" e-text-align="right"></ej-column>
+            <ej-column e-field="physicalPersonProfile.lastName" e-header-text="Customer ID"></ej-column>
+            <ej-column e-field="EmployeeID" e-header-text="Employee ID" e-text-align="right"></ej-column>
+            <ej-column e-field="Freight" e-header-text="Freight" e-format="{0:C}" e-text-align="right"></ej-column>
+            <ej-column e-field="OrderDate" e-header-text="Order Date" e-format="{0:MM/dd/yyyy}" e-text-align="right"></ej-column>
+        </ej-grid>
+-->
+
+<!--
+<v-grid show.bind="(selectedCommunityMembers && selectedCommunityMembers!==null)"
+      class="col-md-6"
+      style="height:250px"
+      v-row-height="25"
+      v-header-height="50"
+      v-footer-height="50"
+      v-multi-select="true"
+      v-current-entity.bind=currentMember
+      v-remote-index="id"
+      v-event-onremote.call="callRemoteServer($event)"
+      v-collection.bind=selectedCommunityMembers
+      v-grid-context.bind=membersGrid>
+	  
+      <v-grid-col col-width="50" col-type="selection" col-add-row-attributes="v-key-move"></v-grid-col>
+
+      <v-grid-col col-width="120" col-type="text" col-field="startIndex" col-header-name="Full name" col-add-row-attributes="v-row-menu='name' v-key-move" col-add-filter-attributes="v-col-header-name-menu='name'"></v-grid-col>
+
+      <v-grid-col col-width="100" col-field="number | numberFormat & updateTrigger:'blur':'paste'" col-sort="number" col-header-name="Salery" col-filter="number|>=" col-filter-top="true" col-add-row-attributes="v-row-menu='number' v-key-move" col-add-filter-attributes="v-col-header-name-menu='number'" col-css="color:${tempRef.numberColor};font-weight:${tempRef.numberFont}"></v-grid-col>
+      <v-grid-col col-width="105" col-type="text" col-field="date | dateFormat & updateTrigger:'blur':'paste'" col-sort="date" col-header-name="Created" col-filter="date|>|dateFormat" col-filter-top="true" col-add-row-attributes="v-row-menu='date' v-key-move" col-add-filter-attributes="v-col-header-name-menu='date'"></v-grid-col>
+      <v-grid-col col-width="100" col-type="checkbox" col-field="bool" col-sort="bool" col-header-name="Booked" col-filter="bool|=" col-filter-top="true" col-add-row-attributes="v-row-menu='bool' v-key-move" col-add-filter-attributes="v-col-header-name-menu='bool'"></v-grid-col>
+      <v-grid-col col-width="107" col-type="image" col-field="images" col-header-name="Profile Img"  col-filter-top="true" col-add-row-attributes="v-row-menu='images' v-key-move tabindex='0'" col-add-filter-attributes="v-col-header-name-menu='images'"></v-grid-col>
+    </v-grid>
+
+-->
+
+
+
+
 		<div class="members-table-header" id="membersTableHeader">
 			selectedCommunity ( <i class='ico-users'></i> no. of members )
 		</div>
@@ -79,11 +132,19 @@
 				<i class="ico-pencil7"></i>
 			</a>
 		</div>
-		
+		<!--
 		<div class="members-table-info-bar">
 			<div role="status" id="example_info" class="members-table-info">Showing X to XX of XXX entries</div>
-		</div>							
-				
+		</div>		
+		-->
+				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
+<require from="./lib/loading-mask/loading-mask"></require>
+<require from="./lib/ag-grid.ts"></require>
+<!--<loading promise.bind="'membersPromise'">-->
+<ag-grid id="eGridDiv" class="ag-blue" style="position: absolute;top: 90px;bottom: 50px;width: 100%;" columns.bind="gridColumns" rows.bind="selectedCommunityMembers" pagesize.bind="pageSize"></ag-grid>
+<!--</loading>-->
+					
+<!--
 		<div class="members-table-content" id="membersTableContent">
 		
 			<table id="example" class="table table-striped blg-dataTable" cellspacing="0" width="100%">
@@ -124,10 +185,8 @@
 			</table>														
 		
 		</div>
-						
-		<div class="blg-btns-content panel-footer">
-		
-		</div>										
+-->		
+		<div class="blg-btns-content panel-footer"></div>										
 
 	</section>
 
