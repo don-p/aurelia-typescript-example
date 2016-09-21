@@ -26,6 +26,7 @@ export class CommunityDetail {
   selectedCmty: string;
   selectedCommunityMembers: { get: () => any[] };
   membersGrid: Object;
+  cmtyMembersGrid: any;
   currentMember: Object;
   remoteData: RemoteData;
 
@@ -63,14 +64,6 @@ export class CommunityDetail {
     // this.membersGrid = {};
     // this.currentMember = {};
     // this.remoteData = new RemoteData(appConfig.apiServerUrl, null);
-
-    // this.gridOptions = {
-    //     columnDefs: this.columnDefs,
-    //     rowData: this.rowData
-    // };
-
-        // this.pageSize = 10;
-        // this.rows = [];
 
     // this.ps = Ps; // SCROLL
 
@@ -134,11 +127,10 @@ export class CommunityDetail {
         rowModelType: 'virtual',
         virtualPaging: true,
         datasource: this.gridDataSource,
+        maxPagesInCache: 2,
         getRowNodeId: function(item) {
-          // the id can be any string, as long as it's unique within your dataset
           return item.memberId.toString();
         }
-        // onGridReady: function(event) { me.initGrid(event, me)}
     };
 
 
@@ -146,20 +138,9 @@ export class CommunityDetail {
     this.gridOptions = gridOptions;
     this.initGrid(this);
 
-    // this.gridOptions['api'].setDatasource(this.gridDataSource);
-
-    // this.grid = this.agGridWrap.createGrid('eGridDiv', gridOptions);
-    // this.agGridWrap.gridCreated = true;
-    // this.gridOptions['api'].sizeColumnsToFit();
-
-
-    // this.myGrid.setGridOptions(this.gridOptions);
-
-    // this.loadData();
-    
   }
   initGrid(me) {
-    this.grid = this.agGridWrap.createGrid('eGridDiv', this.gridOptions);
+    this.cmtyMembersGrid.setGridOptions(this.gridOptions);
     this.agGridWrap.gridCreated = true;
     this.gridOptions['api'].sizeColumnsToFit();
   }
@@ -193,8 +174,9 @@ export class CommunityDetail {
                     if(me.gridDataSource.rowCount === null) {
                       me.gridDataSource.rowCount = data.totalCount;
                     }
-                    params.successCallback(data.responseCollection, data.totalCount-1);
-                    me.gridOptions.api.hideOverlay();
+                     me.gridOptions.api.hideOverlay();
+                   params.successCallback(data.responseCollection, data.totalCount-1);
+                    // me.gridOptions.api.hideOverlay();
                     this.loading = false;
                 });
               }
