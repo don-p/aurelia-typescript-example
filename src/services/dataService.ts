@@ -246,7 +246,7 @@ export class DataService {
    /**
      * Get an individual community detail for logged-in user.
      */
-    async getCommunity(communityId: string): Promise<Response> {
+    async getCommunity(communityId: string, startIndex: number, pageSize:number): Promise<Response> {
         await fetch;
         const http =  this.getHttpClient();
         var  headers = new Object({
@@ -265,7 +265,8 @@ export class DataService {
             }
         );
         var me = this;
-        var response = http.fetch('v1/communities/' + communityId + '/members?start_index=0&page_size=125', 
+        var response = http.fetch('v1/communities/' + communityId + '/members?start_index=' + 
+            startIndex + '&page_size=' + pageSize, 
             {
                 method: 'GET',
                 headers: h

@@ -89,6 +89,17 @@ const baseConfig = {
 // advanced configuration:
 switch (ENV) {
   case 'production':
+    loaders.push( // Loader for env config token replacement.
+      {
+        test: /(.*)Config\.ts$/,
+        loader: 'string-replace',
+        query: {
+          search: '%API_SERVER_URL%',
+          replace: 'https://scig-dev.bluelinegrid.com/',
+          flags: 'ig'
+        }
+      }  
+    );
     loaders.push(ScssLoader);  // Loader for SCSS/CSS.
     config = generateConfig(
       baseConfig,
@@ -126,6 +137,17 @@ switch (ENV) {
     break;
   
   case 'test':
+    loaders.push( // Loader for env config token replacement.
+      {
+        test: /(.*)Config\.ts$/,
+        loader: 'string-replace',
+        query: {
+          search: '%API_SERVER_URL%',
+          replace: 'https://scig-dev.bluelinegrid.com/',
+          flags: 'ig'
+        }
+      }  
+    );
     loaders.push(ScssLoader);  // Loader for SCSS/CSS.
     config = generateConfig(
       baseConfig,
@@ -163,7 +185,8 @@ switch (ENV) {
         loader: 'string-replace',
         query: {
           search: '%API_SERVER_URL%',
-          replace: 'https://scig-dev.bluelinegrid.com/'
+          replace: 'https://scig-dev.bluelinegrid.com/',
+          flags: 'ig'
         }
       }  
     );
