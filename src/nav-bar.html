@@ -1,6 +1,6 @@
 <template bindable="session, router">
     <header >
-        <div class="logo" style="float:left;">
+        <div class="logo">
             <a href="#"><img alt="${router.title}" src="../images/gc_logo.png"></a>
         </div>
         <nav role="navigation">
@@ -12,8 +12,8 @@
                 </li>
             </ul>
         </nav>
-        <div class="dropdown right-cont nav navbar-nav navbar-right pull-right">
-            <div class="drop-cont dropdown-toggle" data-toggle="dropdown">
+        <div class="right-cont nav navbar-nav navbar-right pull-right">
+            <div class="drop-cont">
                 <div class="jd-title">
                     <div class="avatar-top">
                         <img class="avatar" src="../images/owner_avatar.png"></img>
@@ -22,11 +22,15 @@
                         <span class="caps-top pull-left">${session.auth['member'].firstName} ${session.auth['member'].lastName}</span>
                     </div>
                     <div class="caps-bottom pull-left">Friday 02/05/2016 4:32 PM EST</div>
-                    <a click.delegate="logout()" href="#">
-                        <div class="logout" title="Logout">
-                            <i class="fa fa-power-off btn-logout"></i>
+                    <div class="dropdown acc-settings">
+                        <div class="dropdown-toggle settings-toggle" data-toggle="dropdown" i18n='[title]tools.settings'>
+                            <i class="fa fa-cog btn-settings"></i>
                         </div>
-                    </a>
+                        <ul class="dropdown-menu">
+                            <li class="disabled"><a href="#"><i class="ico-key"></i><span i18n='tools.menuPassword'></span></a></li>
+                            <li><a click.delegate="logout()" href="#"><i class="ico-exit"></i><span i18n='tools.menuLogout'></span></a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

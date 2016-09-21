@@ -14,6 +14,12 @@
             "conversations":"Conversations"
         }
     },
+    
+    "tools":{
+        "settings":"Account settings",
+        "menuPassword":"Change password",
+        "menuLogout":"Logout"
+    },
 
     "login":{
         "heading":"BlueLine Grid Command 2.0",
@@ -42,7 +48,28 @@
         "communities":"Communities",
         "commType":"Type",
         "coi":"Community of interest",
-        "team":"Team"
+        "team":"Team",
+        "search":"Search",
+        "createCommunity":"Create community",
+        "deleteCommunity":"Delete community",
+        "sendAlert":"Send alert",
+        "owner":"OWNER"                
+    },
 
-    }
+    "members":{
+        "makeCall":"Make call",
+        "sendAlert":"Send alert",
+        "startConversation":"Start conversation",
+        "addMember":"Add member",
+        "deleteMember":"Delete member",
+        "transferOwnership":"Transfer ownership",
+        "deleteCommunity":"Delete community",
+        "renameCommunity":"Rename community",
+        "name":"Name",
+        "jobTitle":"Job title",
+        "industryName":"Industry name",
+        "city":"City",
+        "state":"State",
+        "zip":"Zip"               
+    }    
 }
