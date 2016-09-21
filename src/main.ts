@@ -5,6 +5,9 @@ import 'font-awesome/scss/font-awesome.scss';
 import 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
 // Application CSS + Bootstrap:
 import '../styles/style.scss';
+import 'ag-grid/dist/styles/theme-blue.css';
+import 'ag-grid/dist/styles/theme-bootstrap.css';
+import 'ag-grid/dist/styles/ag-grid.css';
 
 
 import 'bootstrap-sass/assets/javascripts/bootstrap.js';
@@ -15,6 +18,8 @@ import {I18N} from 'aurelia-i18n';
 import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
 import Backend from 'i18next-xhr-backend';
 import 'intl';
+
+import * as ag from 'ag-grid';
 
 // comment out if you don't want a Promise polyfill (remove also from webpack.config.js)
 import * as Bluebird from 'bluebird';
@@ -36,6 +41,8 @@ bootstrap(aurelia => {
     }
 });
 */
+
+declare var agGrid: any;
 
 export async function configure(aurelia: Aurelia) {
 
@@ -71,6 +78,7 @@ export async function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
+    // .globalResources('services/remoteDataAttribute')
     .plugin('aurelia-auth', (baseConfig)=>{
       baseConfig.configure(config.default);
     })
@@ -111,9 +119,11 @@ export async function configure(aurelia: Aurelia) {
         });
         return pr;
       })
-      .plugin('aurelia-ui-virtualization')
+      // .plugin('aurelia-ui-virtualization')
       ;
 
+      ag.initialiseAgGridWithWebComponents();
+      
   // Uncomment the line below to enable animation.
   // aurelia.use.plugin('aurelia-animator-css');
   // if the css animator is enabled, add swap-order="after" to all router-view elements

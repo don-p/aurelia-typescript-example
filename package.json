@@ -70,6 +70,7 @@
     }
   },
   "dependencies": {
+    "ag-grid": "^6.0.1",
     "aurelia-auth": "^3.0.2",
     "aurelia-bootstrapper-webpack": "^1.0.0",
     "aurelia-event-aggregator": "^1.0.0",
@@ -77,7 +78,7 @@
     "aurelia-framework": "^1.0.0",
     "aurelia-history-browser": "^1.0.0",
     "aurelia-http-client": "^1.0.0",
-    "aurelia-i18n": "^1.0.0",
+    "aurelia-i18n": "^1.1.2",
     "aurelia-loader-webpack": "^1.0.0",
     "aurelia-logging-console": "^1.0.0",
     "aurelia-pal-browser": "^1.0.0",
@@ -92,7 +93,7 @@
     "bootstrap-sass": "^3.3.7",
     "font-awesome": "^4.6.3",
     "i18next-browser-languagedetector": "^1.0.0",
-    "i18next-xhr-backend": "^1.1.0",
+    "i18next-xhr-backend": "1.1.0",
     "intl": "^1.2.4",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.1.0",
@@ -138,7 +139,7 @@
     "ts-node": "^1.2.1",
     "typescript": "^2.0.0",
     "wait-on": "^1.5.2",
-    "webpack": ">=2.1.0-beta.18 || ^2.1.0",
+    "webpack": "2.1.0-beta.22 || ^2.1.0",
     "webpack-dev-server": ">=2.1.0-beta.0 || ^2.1.0"
   },
   "babel": {
