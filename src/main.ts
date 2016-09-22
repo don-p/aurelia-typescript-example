@@ -73,6 +73,8 @@ export async function configure(aurelia: Aurelia) {
     aurelia.use.plugin('intl');
   }
 
+  // polyfill fetch client conditionally
+  const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
 
   aurelia.use

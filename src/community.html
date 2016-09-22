@@ -34,7 +34,7 @@
             </a>
             <div class="right-select">
               <span  i18n='[prepend]community.commType'>: </span>
-              <select class="form-control select select-default-blg" value.bind="commType" change.delegate="getCommunitiesPage(commType, 0, pageSize)">
+              <select class="form-control select select-default-blg" value.bind="commType" change.delegate="selectCommunityType(commType)">
                 <option value="COI" i18n="community.coi"></option>
                 <option value="TEAM" i18n="community.team"></option>
               </select>
