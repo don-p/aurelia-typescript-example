@@ -116,8 +116,8 @@ export class Community {
     return cmtysPromise;
   }
 
-  selectCommunity(cmtyId: string) {
-    this.evt.publish('cmtySelected', {cmtyId: cmtyId});
+  selectCommunity(community: string) {
+    this.evt.publish('cmtySelected', {community: community});
   }
 
 }

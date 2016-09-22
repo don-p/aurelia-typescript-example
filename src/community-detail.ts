@@ -81,10 +81,10 @@ export class CommunityDetail {
 
     this.pageSize = 50;
 
-
+    var me = this;
     this.evt.subscribe('cmtySelected', payload => {
-      if(this.selectedCmty.communityId !== payload.cmtyId.communityId) {
-        this.selectedCmty = payload.community;
+      if((!me.selectedCmty || me.selectedCmty === null) || (me.selectedCmty.communityId !== payload.community.communityId)) {
+        me.selectedCmty = payload.community;
         // this.remoteData.setDataApi('v1/communities/' + selectedCmty + '/members')
         // DEBUG TEMP - this.getCommunityMembers(this.selectedCmty, 0);
         // this.gridDataSource.getRows({startRow: 0, endRow: this.pageSize});
@@ -92,7 +92,7 @@ export class CommunityDetail {
 
         // this.initGrid(this);
 
-        this.setGridDataSource(this);
+        me.setGridDataSource(me);
       }
     });
   }
