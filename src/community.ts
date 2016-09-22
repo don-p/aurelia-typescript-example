@@ -12,7 +12,7 @@ const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(
 
 @inject(Lazy.of(HttpClient), Session, Router, DataService, EventAggregator, Ps)
 export class Community {
-  communities: Object;
+  communities: any;
   items:Array<Object>;
   commType: string;
   pageSize: number;
@@ -51,8 +51,10 @@ export class Community {
     var container = document.getElementById('community-list');
     this.ps.initialize(container);
     this.ps.update(container);
-
-    this.getCommunitiesPage('COI', 0, this.pageSize);
+    let me = this;
+    this.getCommunitiesPage('COI', 0, this.pageSize).then(function(){
+      me.selectDefaultCommunity();
+    });
   }
 /**
  * Get communities for logged-in user.
@@ -96,11 +98,11 @@ export class Community {
 
     }
   }
-  getCommunitiesPage(communityType: string, startIndex: number, pageSize: number): Promise<Response> {
+  getCommunitiesPage(communityType: string, startIndex: number, pageSize: number): Promise<void> {
     var me = this;
     var cmtysPromise = this.dataService.getCommunities(communityType, startIndex,  pageSize);
     this.cmtysPromise = cmtysPromise;
-    cmtysPromise
+    return cmtysPromise
     .then(response => response.json())
     .then(data => {
       me.communities = data;
@@ -113,10 +115,23 @@ export class Community {
       return Promise.reject(error);
     });
 
-    return cmtysPromise;
+    // return cmtysPromise;
   }
 
-  selectCommunity(community: string) {
+  selectCommunityType(communityType:string) {
+    let me = this;
+    this.getCommunitiesPage(communityType, 0, this.pageSize).then(function(){
+      me.selectDefaultCommunity();
+    })
+  }
+
+  selectDefaultCommunity() {
+    if(this.communities && this.communities.responseCollection.length > 0) {
+      this.selectCommunity(this.communities.responseCollection[0]);
+    }
+  }
+
+  selectCommunity(community: Object) {
     this.evt.publish('cmtySelected', {community: community});
   }
 

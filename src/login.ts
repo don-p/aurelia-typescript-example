@@ -9,9 +9,6 @@ import {Utils} from './services/util';
 // import {Validator} from 'aurelia-validation';
 // import {required, email} from 'aurelia-validatejs';
 
-// polyfill fetch client conditionally
-const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
-
 
 @inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, Utils, activationStrategy)
 export class Login {
