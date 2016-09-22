@@ -11,7 +11,7 @@ import * as ag from 'ag-grid';
 import {AgGridWrapper} from './lib/ag-grid';
 
 
-import {RemoteData} from './services/remoteData';
+// import {RemoteData} from './services/remoteData';
 
 
 // polyfill fetch client conditionally
@@ -23,12 +23,12 @@ export class CommunityDetail {
 
   navigationInstruction: NavigationInstruction;
   // selectedCommunityMembers: Array<Object>;
-  selectedCmty: string;
+  selectedCmty: any;
   selectedCommunityMembers: { get: () => any[] };
   membersGrid: Object;
   cmtyMembersGrid: any;
   currentMember: Object;
-  remoteData: RemoteData;
+  // remoteData: RemoteData;
 
   membersPromise: Promise<Response>;
   // @bindable columns;
@@ -83,8 +83,8 @@ export class CommunityDetail {
 
 
     this.evt.subscribe('cmtySelected', payload => {
-      if(this.selectedCmty !== payload.cmtyId) {
-        this.selectedCmty = payload.cmtyId;
+      if(this.selectedCmty.communityId !== payload.cmtyId.communityId) {
+        this.selectedCmty = payload.community;
         // this.remoteData.setDataApi('v1/communities/' + selectedCmty + '/members')
         // DEBUG TEMP - this.getCommunityMembers(this.selectedCmty, 0);
         // this.gridDataSource.getRows({startRow: 0, endRow: this.pageSize});
@@ -168,7 +168,7 @@ export class CommunityDetail {
               if(!this.loading) {
                 console.debug("..... Loading Grid row | startIndex: " + params.startRow);
                 this.loading = true;
-                me.membersPromise = me.dataService.getCommunity(me.selectedCmty, params.startRow, me.pageSize);
+                me.membersPromise = me.dataService.getCommunity(me.selectedCmty.communityId, params.startRow, me.pageSize);
                 me.membersPromise.then(response => response.json())
                   .then(data => {
                     if(me.gridDataSource.rowCount === null) {
@@ -213,7 +213,7 @@ export class CommunityDetail {
       console.log(error); 
     });
   }
-
+/*
   loadData() {
     //tell grid to set loading overlay while we get our data
     this.membersGrid['ctx'].setLoadingOverlay(true);
@@ -247,7 +247,7 @@ export class CommunityDetail {
         //param.callback([]);
       });
   }
-
+*/
 
 
 }
