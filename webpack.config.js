@@ -62,7 +62,7 @@ const coreBundles = {
 // extract instances for CSS
 const ExtractCustomCSS = new ExtractTextPlugin('style.[chunkhash].css');
 const ExtractCustomStylus = new ExtractTextPlugin('theme.css');
-let loaders = [{ test: /\.styl$/, loader: ExtractTextPlugin.extract(['css-loader', 'stylus-loader']) }];
+let loaders = [{ test: /\.styl$/, loader: ExtractTextPlugin.extract(['css-loader?sourceMap', 'stylus-loader']) }];
 // Loader with source map - DEV only.
 const SourceMapScssLoader = {test: /\.(scss|css)$/i, exclude: [srcDir+'/libs/'], loader: ExtractCustomCSS.extract(['css?sourceMap!sass?sourceMap'])};
 // Loader without source map.
