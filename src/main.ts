@@ -5,9 +5,10 @@ import 'font-awesome/scss/font-awesome.scss';
 import 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
 // Application CSS + Bootstrap:
 import '../styles/style.scss';
-import 'ag-grid/dist/styles/theme-blue.css';
-import 'ag-grid/dist/styles/theme-bootstrap.css';
+// import 'ag-grid/dist/styles/theme-blue.css';
+// import 'ag-grid/dist/styles/theme-bootstrap.css';
 import 'ag-grid/dist/styles/ag-grid.css';
+import '../styles/theme-blg.styl';
 
 
 import 'bootstrap-sass/assets/javascripts/bootstrap.js';

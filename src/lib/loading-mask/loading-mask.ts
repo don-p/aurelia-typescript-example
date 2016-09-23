@@ -1,8 +1,8 @@
-import './loading-mask.css';
 import {customElement, Parent, noView, bindable, observable, inject, BindingEngine} from 'aurelia-framework';
 import $ from 'jquery';
 import {I18N} from 'aurelia-i18n';
 import {Container} from 'aurelia-dependency-injection';
+import './loading-mask.css';
 
 @customElement('loading')
 @noView()

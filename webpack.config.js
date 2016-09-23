@@ -60,10 +60,11 @@ const coreBundles = {
 }
 
 // extract instances for CSS
-let loaders = [];
 const ExtractCustomCSS = new ExtractTextPlugin('style.[chunkhash].css');
+const ExtractCustomStylus = new ExtractTextPlugin('theme.css');
+let loaders = [{ test: /\.styl$/, loader: ExtractTextPlugin.extract(['css-loader', 'stylus-loader']) }];
 // Loader with source map - DEV only.
-const SourceMapScssLoader = {test: /\.(scss|css)$/i, loader: ExtractCustomCSS.extract(['css?sourceMap!sass?sourceMap'])};
+const SourceMapScssLoader = {test: /\.(scss|css)$/i, exclude: [srcDir+'/libs/'], loader: ExtractCustomCSS.extract(['css?sourceMap!sass?sourceMap'])};
 // Loader without source map.
 const ScssLoader = {test: /\.(scss|css)$/i, loader: ExtractCustomCSS.extract(['css!sass'])};
 
@@ -77,12 +78,14 @@ const baseConfig = {
   output: {
     path: outDir,
   },
-  plugins: [
-    ExtractCustomCSS,
-    // ExtractVendorCSS
-  ],
+  plugins: [ExtractCustomCSS],
   module: {
       loaders: loaders
+  },
+  stylus: {
+    // preferPathResolver: 'webpack',
+    use: [require('nib')()],
+    import: ['~nib/lib/nib/index.styl']
   }
 }
 
