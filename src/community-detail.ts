@@ -69,14 +69,14 @@ export class CommunityDetail {
 
 
     this.gridColumns = [
-      { headerName: '', field: "customerId", width: 50, checkboxSelection: true, suppressMenu: true},
+      { headerName: '', field: "customerId", width: 30, checkboxSelection: true, suppressMenu: true},
       { headerName: "First Name", field: "physicalPersonProfile.firstName",filter: 'text' },
       { headerName: "Last Name", field: "physicalPersonProfile.lastName", filter: 'text' },
       { headerName: "Title", field: "physicalPersonProfile.jobTitle",filter: 'text' },
       { headerName: "Organization", field: "physicalPersonProfile.organization.organizationName", filter: 'text' },
       { headerName: "City", field: "physicalPersonProfile.locationProfile.city",filter: 'text' },
-      { headerName: "State", field: "physicalPersonProfile.locationProfile.stateCode", filter: 'text' },
-      { headerName: "ZIP", field: "physicalPersonProfile.locationProfile.zipCode",filter: 'text' }
+      { headerName: "State", field: "physicalPersonProfile.locationProfile.stateCode", filter: 'text', width: 80  },
+      { headerName: "ZIP", field: "physicalPersonProfile.locationProfile.zipCode",filter: 'text', width: 80 }
     ];
 
     this.pageSize = 50;
@@ -117,7 +117,7 @@ export class CommunityDetail {
         columnDefs: this.gridColumns,
         // rowData: this.selectedCommunityMembers,
         rowSelection: 'multiple',
-        rowHeight: 35,
+        rowHeight: 30,
         // pageSize: this.pageSize,
         paginationPageSize: this.pageSize,
         enableServerSideSorting: true,

@@ -76,7 +76,7 @@ html, body, .page-host {
 	font-size: 14px;
 	margin-left: 5px;
 	margin-top: 3px;
-	margin-bottom: 16px;	
+	margin-bottom: 5px;	
 	text-align: left;
 	line-height: 20px;	
 }
@@ -290,11 +290,16 @@ header .right-cont .caps-top {
     color: $brand-secondary;
 }
 
+.caps-top-wrapper{
+    display: table-cell;
+}
+
 header .right-cont .caps-bottom {
     color: $brand-primary;
     font-size: 12px;
     position: relative;
-    bottom: 3px;    
+    bottom: 3px;
+    display: table-cell;        
 }
 
 header .right-cont .jd-icon {
@@ -332,7 +337,7 @@ header .navbar-nav {
   position: relative;
   right: 10px;
   display: table-cell;
-  bottom: 21px;
+  bottom: 0px;
 }
 
 .avatar {
@@ -344,7 +349,7 @@ header .navbar-nav {
   background-color: $blg-blue-light;
   display: table-cell;
   position: relative;
-  bottom: 28px;
+  bottom: 8px;
   left: 20px;
 }
 
@@ -680,6 +685,11 @@ header .navbar-nav {
     color: $blg-white;
     background-color: $brand-secondary;
     border-color: $brand-secondary;
+}
+
+.community-select-label {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .select-default-blg {
