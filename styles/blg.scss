@@ -763,14 +763,17 @@ header .navbar-nav {
   padding: 0px 5px 0px 5px;
   position: absolute;
   top: 134px;
-  bottom: 50px;
+  bottom: 0px;
   left: 0px;
   right: 0px;
-  border-bottom: 0px;
+  border-bottom: 2px solid $blg-grey-light;;
   border-right: 2px solid $blg-grey-light;
   border-top: 0px;
   border-left: 2px solid $blg-grey-light;
-  border-radius: 0px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
   background-color: $blg-white;
 }
 .message-board .message-board-header,

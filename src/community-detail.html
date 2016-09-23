@@ -132,17 +132,18 @@
 				<i class="ico-pencil7"></i>
 			</a>
 		</div>
-		<!--
+		
 		<div class="members-table-info-bar">
 			<div role="status" id="example_info" class="members-table-info">Showing X to XX of XXX entries</div>
 		</div>		
-		-->
+		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
-<require from="./lib/loading-mask/loading-mask"></require>
-<require from="./lib/ag-grid.ts"></require>
-<!--<loading promise.bind="'membersPromise'">-->
-<ag-grid id="eGridDiv" ref="cmtyMembersGrid" class="ag-blue" style="position: absolute;top: 90px;bottom: 50px;width: 100%;" columns.bind="gridColumns" rows.bind="selectedCommunityMembers" pagesize.bind="pageSize"></ag-grid>
-<!--</loading>-->
+<div class="members-table-content" id="membersTableContent">				  
+	<require from="./lib/loading-mask/loading-mask"></require>
+	<require from="./lib/ag-grid.ts"></require>
+	<!--<loading promise.bind="'membersPromise'">-->
+	<ag-grid id="eGridDiv" ref="cmtyMembersGrid" class="ag-blg" columns.bind="gridColumns" rows.bind="selectedCommunityMembers" pagesize.bind="pageSize"></ag-grid>
+	<!--</loading>-->
 					
 <!--
 		<div class="members-table-content" id="membersTableContent">
@@ -186,7 +187,8 @@
 		
 		</div>
 -->		
-		<div class="blg-btns-content panel-footer"></div>										
+</div>
+		<!--<div class="blg-btns-content panel-footer"></div>										-->
 
 	</section>
 

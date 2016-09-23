@@ -117,7 +117,7 @@ export class CommunityDetail {
         columnDefs: this.gridColumns,
         // rowData: this.selectedCommunityMembers,
         rowSelection: 'multiple',
-      //  rowHeight: 25,
+        rowHeight: 35,
         // pageSize: this.pageSize,
         paginationPageSize: this.pageSize,
         enableServerSideSorting: true,
