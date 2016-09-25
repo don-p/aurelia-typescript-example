@@ -118,6 +118,8 @@ export class CommunityDetail {
         // rowData: this.selectedCommunityMembers,
         rowSelection: 'multiple',
         rowHeight: 30,
+        headerHeight: 40,
+        suppressMenuHide: true,
         // pageSize: this.pageSize,
         paginationPageSize: this.pageSize,
         enableServerSideSorting: true,

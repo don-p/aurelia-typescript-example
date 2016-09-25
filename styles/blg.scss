@@ -962,3 +962,39 @@ table.blg-dataTable.display tbody td {
   cursor: no-drop;
 }
 
+.members-table-content .ag-header-cell {
+  text-align: left !important;
+  margin-left: 5px !important;  
+}
+
+.members-table-content .ag-header-container {
+  margin-top: 5px;
+}
+
+.ag-header-row,
+.ag-blg img {
+  cursor: pointer;
+}
+
+.ag-blg .ag-header-cell-menu-button {
+  margin-top: 5px !important;
+  float: left;  
+}
+
+.filter-label {
+  margin-bottom: 5px;
+  position: relative;
+  bottom: 3px;  
+}
+
+.table-label-blg {
+  font-size: 12px;
+  vertical-align: super;
+  background-color: $blg-blue-greyer;
+  color: $blg-wet-asphalt-light;
+}
+
+.table-label-blg [class^="ico-"], 
+.table-label-blg [class*="ico-"] {
+    left: 2px;
+}
