@@ -26,9 +26,12 @@
             <a id="btn-communities-create-community" class="btn btn-info btn-xs-square" i18n='[title]community.createCommunity'>
               <i class="ico-users-plus"></i>
             </a>
-            <a id="btn-communities-delete-community" class="btn btn-danger btn-xs-square" i18n='[title]community.deleteCommunity'>
+            <!--<a id="btn-communities-delete-community" class="btn btn-danger btn-xs-square" i18n='[title]community.deleteCommunity'>
               <i class="ico-users-cancel"></i>
-            </a>
+            </a>-->
+            <a id="btn-community-make-call" class="btn btn-success btn-xs-square " i18n="[title]community.makeCall">
+              <i class="ico-phone2"></i>
+            </a>            
             <a id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]community.sendAlert'>
               <i class="ico-bullhorn center"></i>
             </a>
@@ -80,7 +83,14 @@
                         <div class='panel panel-default'>
                           <div class='panel-heading community-item-head' role='tab'>
                             <a class='collapsed' click.trigger="selectCommunity(community)" role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
-                              <h4 class='panel-title'>${community.communityName} ( <i class='ico-users'></i> no. of members ) <span if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" class='badge badge-owner float-right' i18n="community.owner"></span></h4>
+                              <h4 class='panel-title'>${community.communityName} ( <i class='ico-users'></i> no. of members )
+                                <a href="#" i18n='[title]community.deleteCommunity'>
+                                  <i class="ico-bin float-right"></i>
+                                </a>
+                                <a href="#" i18n='[title]community.renameCommunity'>
+                                  <i class="ico-pencil7 float-right"></i>
+                                </a>                               
+                              </h4>
                             </a>
                           </div>
                           <div id='collapse${$index}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading${$index}'></div>
