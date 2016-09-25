@@ -76,7 +76,7 @@ html, body, .page-host {
 	font-size: 14px;
 	margin-left: 5px;
 	margin-top: 3px;
-	margin-bottom: 16px;	
+	margin-bottom: 5px;	
 	text-align: left;
 	line-height: 20px;	
 }
@@ -290,11 +290,16 @@ header .right-cont .caps-top {
     color: $brand-secondary;
 }
 
+.caps-top-wrapper{
+    display: table-cell;
+}
+
 header .right-cont .caps-bottom {
     color: $brand-primary;
     font-size: 12px;
     position: relative;
-    bottom: 3px;    
+    bottom: 3px;
+    display: table-cell;        
 }
 
 header .right-cont .jd-icon {
@@ -332,7 +337,7 @@ header .navbar-nav {
   position: relative;
   right: 10px;
   display: table-cell;
-  bottom: 21px;
+  bottom: 0px;
 }
 
 .avatar {
@@ -344,7 +349,7 @@ header .navbar-nav {
   background-color: $blg-blue-light;
   display: table-cell;
   position: relative;
-  bottom: 28px;
+  bottom: 8px;
   left: 20px;
 }
 
@@ -682,6 +687,11 @@ header .navbar-nav {
     border-color: $brand-secondary;
 }
 
+.community-select-label {
+  display: table-cell;
+  vertical-align: middle;
+}
+
 .select-default-blg {
   width: auto;
   border: 1px solid $brand-info;
@@ -952,3 +962,39 @@ table.blg-dataTable.display tbody td {
   cursor: no-drop;
 }
 
+.members-table-content .ag-header-cell {
+  text-align: left !important;
+  margin-left: 5px !important;  
+}
+
+.members-table-content .ag-header-container {
+  margin-top: 5px;
+}
+
+.ag-header-row,
+.ag-blg img {
+  cursor: pointer;
+}
+
+.ag-blg .ag-header-cell-menu-button {
+  margin-top: 5px !important;
+  float: left;  
+}
+
+.filter-label {
+  margin-bottom: 5px;
+  position: relative;
+  bottom: 3px;  
+}
+
+.table-label-blg {
+  font-size: 12px;
+  vertical-align: super;
+  background-color: $blg-blue-greyer;
+  color: $blg-wet-asphalt-light;
+}
+
+.table-label-blg [class^="ico-"], 
+.table-label-blg [class*="ico-"] {
+    left: 2px;
+}
