@@ -75,7 +75,7 @@ export class CommunityDetail {
       { headerName: "Title", field: "physicalPersonProfile.jobTitle",filter: 'text' },
       { headerName: "Organization", field: "physicalPersonProfile.organization.organizationName", filter: 'text' },
       { headerName: "City", field: "physicalPersonProfile.locationProfile.city",filter: 'text' },
-      { headerName: "State", field: "physicalPersonProfile.locationProfile.stateCode", width: 80, filter: 'text' },
+      { headerName: "State", field: "physicalPersonProfile.locationProfile.stateCode", width: 100, filter: 'text' },
       { headerName: "ZIP", field: "physicalPersonProfile.locationProfile.zipCode", width: 80, filter: 'text' }
     ];
 

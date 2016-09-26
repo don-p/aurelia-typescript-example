@@ -80,21 +80,21 @@
                           <input id="checkbox-community-XX" type="checkbox" class="styled styled-info" value="">
                           <label></label>
                       </div>
-                        <div class='panel panel-default'>
-                          <div class='panel-heading community-item-head' role='tab'>
-                            <a class='collapsed' click.trigger="selectCommunity(community)" role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
-                              <h4 class='panel-title'>${community.communityName} ( <i class='ico-users'></i> no. of members )
-                                <a href="#" i18n='[title]community.deleteCommunity'>
-                                  <i class="ico-bin float-right"></i>
-                                </a>
-                                <a href="#" i18n='[title]community.renameCommunity'>
-                                  <i class="ico-pencil7 float-right"></i>
-                                </a>                               
-                              </h4>
-                            </a>
-                          </div>
-                          <div id='collapse${$index}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading${$index}'></div>
+                      <div class='panel panel-default'>
+                        <div class='panel-heading community-item-head' role='tab'>
+                          <a class='collapsed' click.trigger="selectCommunity(community)" role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
+                            <h4 class='panel-title'>${community.communityName} ( <i class='ico-users'></i> no. of members )
+                              <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="" i18n='[title]community.deleteCommunity' data-toggle="modal" data-target="#myModal">
+                                <i class="ico-bin float-right"></i>
+                              </a>
+                              <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="" i18n='[title]community.renameCommunity'>
+                                <i class="ico-pencil7 float-right"></i>
+                              </a>                               
+                            </h4>
+                          </a>
                         </div>
+                        <div id='collapse${$index}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading${$index}'></div>
+                      </div>
                     </div>
                   </div>
                 </ul>
@@ -115,6 +115,25 @@
 -->
     <compose view-model="./community-detail"></compose>
 
-   
+
+ 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close fui-cross" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title" id="myModalLabel">Confirm delete community</h4>
+					</div>
+					<div class="modal-body">
+						<p>You are about to delete current community, this procedure is irreversible.</p>
+						<p>Do you want to proceed?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">No, close</button>
+						<button type="button" class="btn btn-success">Yes, delete</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 </div>
 </template>
