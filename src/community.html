@@ -78,7 +78,8 @@
                           <label></label>
                       </div>
                         <div class='panel panel-default'>
-                          <div class='panel-heading community-item-head' role='tab'>
+                          <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
+                            role='tab'>
                             <a class='collapsed' click.trigger="selectCommunity(community)" role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
                               <h4 class='panel-title'>${community.communityName} ( <i class='ico-users'></i> no. of members ) <span if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" class='badge badge-owner float-right' i18n="community.owner"></span></h4>
                             </a>

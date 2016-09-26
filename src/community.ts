@@ -132,6 +132,7 @@ export class Community {
   }
 
   selectCommunity(community: Object) {
+    this.selectedItem = community;
     this.evt.publish('cmtySelected', {community: community});
   }
 
