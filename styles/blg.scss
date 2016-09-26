@@ -617,7 +617,6 @@ header .navbar-nav {
   transition: none;
 }
 .panel-heading a:hover,
-.panel-heading a:focus,
 .panel-heading a:hover:focus {
   color: $blg-white;
 }
@@ -748,6 +747,7 @@ header .navbar-nav {
   top: 2px;
   right: 0;
   left: 0;
+  min-width: 905px;
 }
 
 .message-board .blg-btns-content,
@@ -997,4 +997,96 @@ table.blg-dataTable.display tbody td {
 .table-label-blg [class^="ico-"], 
 .table-label-blg [class*="ico-"] {
     left: 2px;
+}
+
+.float-right {
+  float: right;
+}
+
+.panel-title > a > i {
+  margin-left: 2px;
+}
+.ag-blg .ag-menu {
+  border-radius: 4px;
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.175);
+}
+.ag-filter-filter, .ag-filter-select {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+
+
+.modal {
+  text-align: center;
+  padding: 0!important;  
+  z-index: 1050;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.modal-content {
+  background-color: $blg-white;
+  border: 2px solid #eceff1;
+  border-radius: 7px;
+  background-clip: border-box;
+  box-shadow: none;
+}
+.modal-backdrop {
+  background-color: #2e4053;
+}
+.modal-backdrop.in {
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+}
+.modal-header {
+  padding: 17px 19px 15px 24px;
+  border-bottom: 2px solid #eceff1;
+}
+.modal-header .close {
+  margin: 5px 0 0;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+  color: $blg-wet-asphalt-light;
+}
+.modal-title {
+  color: $blg-blue;  
+  margin: 0;
+  font-size: 23px;
+  line-height: 30px;
+}
+
+.modal-body {
+  padding: 20px 24px 20px;
+}
+.modal-body p {
+  font-size: 14px;
+  line-height: 1.625;
+}
+.modal-footer {
+  padding: 19px 22px 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-top: none;
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+}
+.modal-footer .btn + .btn {
+  margin-left: 12px;
+}
+
+a:focus {
+    outline: none;
 }

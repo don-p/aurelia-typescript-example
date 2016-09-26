@@ -106,7 +106,7 @@ export class CommunityDetail {
         headerName: this.i18n.tr('community.members.state'), 
         field: "physicalPersonProfile.locationProfile.stateCode", 
         filter: 'text',
-        width: 80
+        width: 100
       },
       {
         headerName: this.i18n.tr('community.members.zip'), 
