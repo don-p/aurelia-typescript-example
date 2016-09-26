@@ -21,6 +21,7 @@ export class Community {
 
   navigationInstruction: NavigationInstruction;
   selectedItem: Object;
+  selectedCommunities: Array<String>;
   _virtualRepeat: VirtualRepeat;
 
   constructor(private getHttpClient: () => HttpClient, private session: Session, 
@@ -33,6 +34,7 @@ export class Community {
     this.communities['responseCollection'] = [];
     this.pageSize = 500;
     this.selectedItem = null;
+    this.selectedCommunities = [];
     // this.getCommunitiesPage('COI', 50, this.pageSize);
     // this.cmtysPromise = this.getCommunitiesPage('COI', 50, this.pageSize);
   }
@@ -132,6 +134,7 @@ export class Community {
   }
 
   selectCommunity(community: Object) {
+    this.selectedItem = community;
     this.evt.publish('cmtySelected', {community: community});
   }
 

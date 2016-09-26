@@ -55,7 +55,16 @@
         "createCommunity":"Create community",
         "deleteCommunity":"Delete community",
         "sendAlert":"Send alert",
-        "owner":"OWNER"                
+        "owner":"OWNER",
+        "members": {
+            "firstname": "First Name",
+            "lastname": "Last Name",
+            "title": "Title",
+            "organization": "Organization",
+            "city": "City",
+            "state": "State",
+            "zip": "ZIP"
+        }            
     },
 
     "members":{

@@ -5,6 +5,7 @@ import {Session} from './services/session';
 import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {I18N} from 'aurelia-i18n';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 
 import * as ag from 'ag-grid';
@@ -17,14 +18,14 @@ import {AgGridWrapper} from './lib/ag-grid';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, EventAggregator, Ps, AgGridWrapper) // SCROLL
+@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, EventAggregator, Ps, AgGridWrapper, I18N) // SCROLL
 export class CommunityDetail {
   member: Object;
 
   navigationInstruction: NavigationInstruction;
-  // selectedCommunityMembers: Array<Object>;
+  selectedCommunityMembers: Array<Object>;
   selectedCmty: any;
-  selectedCommunityMembers: { get: () => any[] };
+  communityMembers: { get: () => any[] };
   membersGrid: Object;
   cmtyMembersGrid: any;
   currentMember: Object;
@@ -58,9 +59,9 @@ export class CommunityDetail {
 
   
   constructor(private getHttpClient: () => HttpClient, private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private evt: EventAggregator, Ps, private agGridWrap:AgGridWrapper) { // SCROLL
+    private dataService: DataService, private evt: EventAggregator, Ps, private agGridWrap:AgGridWrapper, private i18n: I18N) { // SCROLL
 
-    this.selectedCommunityMembers = null;
+    this.communityMembers = null;
     // this.membersGrid = {};
     // this.currentMember = {};
     // this.remoteData = new RemoteData(appConfig.apiServerUrl, null);
@@ -69,14 +70,50 @@ export class CommunityDetail {
 
 
     this.gridColumns = [
-      { headerName: '', field: "customerId", width: 30, checkboxSelection: true, suppressMenu: true},
-      { headerName: "First Name", field: "physicalPersonProfile.firstName",filter: 'text' },
-      { headerName: "Last Name", field: "physicalPersonProfile.lastName", filter: 'text' },
-      { headerName: "Title", field: "physicalPersonProfile.jobTitle",filter: 'text' },
-      { headerName: "Organization", field: "physicalPersonProfile.organization.organizationName", filter: 'text' },
-      { headerName: "City", field: "physicalPersonProfile.locationProfile.city",filter: 'text' },
-      { headerName: "State", field: "physicalPersonProfile.locationProfile.stateCode", width: 100, filter: 'text' },
-      { headerName: "ZIP", field: "physicalPersonProfile.locationProfile.zipCode", width: 80, filter: 'text' }
+      {
+        headerName: '', 
+        field: "customerId", 
+        width: 30, 
+        checkboxSelection: true, 
+        suppressMenu: true
+      },
+      {
+        headerName: this.i18n.tr('community.members.firstname'), 
+        field: "physicalPersonProfile.firstName",
+        filter: 'text'
+      },
+      {
+        headerName: this.i18n.tr('community.members.lastname'), 
+        field: "physicalPersonProfile.lastName", 
+        filter: 'text'
+      },
+      {
+        headerName: this.i18n.tr('community.members.title'), 
+        field: "physicalPersonProfile.jobTitle",
+        filter: 'text'
+      },
+      {
+        headerName: this.i18n.tr('community.members.organization'), 
+        field: "physicalPersonProfile.organization.organizationName",
+        filter: 'text'
+      },
+      {
+        headerName: this.i18n.tr('community.members.city'), 
+        field: "physicalPersonProfile.locationProfile.city",
+        filter: 'text'
+      },
+      {
+        headerName: this.i18n.tr('community.members.state'), 
+        field: "physicalPersonProfile.locationProfile.stateCode", 
+        filter: 'text',
+        width: 100
+      },
+      {
+        headerName: this.i18n.tr('community.members.zip'), 
+        field: "physicalPersonProfile.locationProfile.zipCode", 
+        filter: 'text',
+        width: 80
+      }
     ];
 
     this.pageSize = 50;
@@ -99,7 +136,7 @@ export class CommunityDetail {
 
   attached(params, navigationInstruction) {
     // this.navigationInstruction = navigationInstruction;
-    // this.selectedCommunityMembers = params;
+    // this.communityMembers = params;
 
     // // Custom scrollbar:
     // var container = document.getElementById('community-member-list'); // SCROLL
@@ -115,7 +152,7 @@ export class CommunityDetail {
 
     let gridOptions = {
         columnDefs: this.gridColumns,
-        // rowData: this.selectedCommunityMembers,
+        // rowData: this.communityMembers,
         rowSelection: 'multiple',
         rowHeight: 30,
         headerHeight: 40,
@@ -130,6 +167,9 @@ export class CommunityDetail {
         virtualPaging: true,
         datasource: this.gridDataSource,
         maxPagesInCache: 2,
+        onSelectionChanged: function() {
+          me.membersSelectionChanged(this)
+        },
         getRowNodeId: function(item) {
           return item.memberId.toString();
         }
@@ -148,8 +188,6 @@ export class CommunityDetail {
   }
 
   setGridDataSource(me) {
-
-
     // me.dataService.getCommunity(me.selectedCmty, 0, me.pageSize)
     //   .then(response => response.json())
     //   .then(data => {
@@ -208,12 +246,17 @@ export class CommunityDetail {
     .then(data => {
       console.log(json(data));
 //      this.session=me.session;
-      me.selectedCommunityMembers = data.responseCollection;
-      me.agGridWrap.rowsChanged(me.selectedCommunityMembers, null);
+      me.communityMembers = data.responseCollection;
+      me.agGridWrap.rowsChanged(me.communityMembers, null);
     }).catch(error => {
       console.log("Communities members() failed."); 
       console.log(error); 
     });
+  }
+
+  membersSelectionChanged(scope) {
+    let rows = scope.api.getSelectedRows();
+    this.selectedCommunityMembers = rows;
   }
 /*
   loadData() {
