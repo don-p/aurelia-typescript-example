@@ -23,9 +23,9 @@ export class CommunityDetail {
   member: Object;
 
   navigationInstruction: NavigationInstruction;
-  // selectedCommunityMembers: Array<Object>;
+  selectedCommunityMembers: Array<Object>;
   selectedCmty: any;
-  selectedCommunityMembers: { get: () => any[] };
+  communityMembers: { get: () => any[] };
   membersGrid: Object;
   cmtyMembersGrid: any;
   currentMember: Object;
@@ -61,7 +61,7 @@ export class CommunityDetail {
   constructor(private getHttpClient: () => HttpClient, private session: Session, private router: Router, private appConfig: AppConfig, 
     private dataService: DataService, private evt: EventAggregator, Ps, private agGridWrap:AgGridWrapper, private i18n: I18N) { // SCROLL
 
-    this.selectedCommunityMembers = null;
+    this.communityMembers = null;
     // this.membersGrid = {};
     // this.currentMember = {};
     // this.remoteData = new RemoteData(appConfig.apiServerUrl, null);
@@ -136,7 +136,7 @@ export class CommunityDetail {
 
   attached(params, navigationInstruction) {
     // this.navigationInstruction = navigationInstruction;
-    // this.selectedCommunityMembers = params;
+    // this.communityMembers = params;
 
     // // Custom scrollbar:
     // var container = document.getElementById('community-member-list'); // SCROLL
@@ -152,7 +152,7 @@ export class CommunityDetail {
 
     let gridOptions = {
         columnDefs: this.gridColumns,
-        // rowData: this.selectedCommunityMembers,
+        // rowData: this.communityMembers,
         rowSelection: 'multiple',
         rowHeight: 30,
         headerHeight: 40,
@@ -167,6 +167,9 @@ export class CommunityDetail {
         virtualPaging: true,
         datasource: this.gridDataSource,
         maxPagesInCache: 2,
+        onSelectionChanged: function() {
+          me.membersSelectionChanged(this)
+        },
         getRowNodeId: function(item) {
           return item.memberId.toString();
         }
@@ -185,8 +188,6 @@ export class CommunityDetail {
   }
 
   setGridDataSource(me) {
-
-
     // me.dataService.getCommunity(me.selectedCmty, 0, me.pageSize)
     //   .then(response => response.json())
     //   .then(data => {
@@ -245,12 +246,17 @@ export class CommunityDetail {
     .then(data => {
       console.log(json(data));
 //      this.session=me.session;
-      me.selectedCommunityMembers = data.responseCollection;
-      me.agGridWrap.rowsChanged(me.selectedCommunityMembers, null);
+      me.communityMembers = data.responseCollection;
+      me.agGridWrap.rowsChanged(me.communityMembers, null);
     }).catch(error => {
       console.log("Communities members() failed."); 
       console.log(error); 
     });
+  }
+
+  membersSelectionChanged(scope) {
+    let rows = scope.api.getSelectedRows();
+    this.selectedCommunityMembers = rows;
   }
 /*
   loadData() {
