@@ -74,7 +74,7 @@
                   <div class="panel-group communities-panel-list list1" id="accordion_communities">
                     <div repeat.for="community of communities.responseCollection" class='list-item'>
                       <div class="checkbox checkbox-info">
-                          <input id="checkbox-community-XX" type="checkbox" class="styled styled-info" value="">
+                          <input id="checkbox-community-${$index}" type="checkbox" class="styled styled-info" value.bind="community.communityId" checked.bind="selectedCommunities">
                           <label></label>
                       </div>
                         <div class='panel panel-default'>
