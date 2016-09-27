@@ -6,6 +6,8 @@ import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
+import {DialogService} from 'aurelia-dialog';
+import {Prompt} from './lib/prompt/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 
 import * as ag from 'ag-grid';
@@ -18,7 +20,7 @@ import {AgGridWrapper} from './lib/ag-grid';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, EventAggregator, Ps, AgGridWrapper, I18N) // SCROLL
+@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, EventAggregator, Ps, AgGridWrapper, I18N, DialogService) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -59,7 +61,7 @@ export class CommunityDetail {
 
   
   constructor(private getHttpClient: () => HttpClient, private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private evt: EventAggregator, Ps, private agGridWrap:AgGridWrapper, private i18n: I18N) { // SCROLL
+    private dataService: DataService, private evt: EventAggregator, Ps, private agGridWrap:AgGridWrapper, private i18n: I18N, private dialogService: DialogService) { // SCROLL
 
     this.communityMembers = null;
     // this.membersGrid = {};
@@ -258,6 +260,31 @@ export class CommunityDetail {
     let rows = scope.api.getSelectedRows();
     this.selectedCommunityMembers = rows;
   }
+
+  deleteCommunityMembers(communityMembers: Array<any>) {
+    let message = null;
+    if(communityMembers.length === 1) {
+      message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
+          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
+          communityMembers[0].physicalPersonProfile.lastName});
+    } else if(communityMembers.length === 1) {
+      message = this.i18n.tr('community.members.confirmDelete.message');
+    }
+    this.dialogService.open({ viewModel: Prompt, model: {
+        question:this.i18n.tr('community.members.confirmDelete.title') , 
+        message: message
+      }
+    }).then(response => {
+      if (!response.wasCancelled) {
+        // Call the delete service.
+        console.log('Delete');
+      } else {
+        // Cancel.
+        console.log('Cancel');
+      }
+    });
+  }
+  
 /*
   loadData() {
     //tell grid to set loading overlay while we get our data
