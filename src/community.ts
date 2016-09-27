@@ -155,7 +155,6 @@ export class Community {
         console.log('Cancel');
       }
     });
-    
   }
 
 }
