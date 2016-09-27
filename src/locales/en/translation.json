@@ -44,6 +44,8 @@
 
     "community":{
         "discover":"Discover",
+        "makeCall":"Make GridCall",
+        "renameCommunity":"Rename community",                
         "connect":"Connects",
         "communities":"Communities",
         "commType":"Type",
@@ -66,7 +68,7 @@
     },
 
     "members":{
-        "makeCall":"Make call",
+        "makeCall":"Make GridCall",
         "sendAlert":"Send alert",
         "startConversation":"Start conversation",
         "addMember":"Add member",
