@@ -118,7 +118,7 @@ export class CommunityDetail {
       }
     ];
 
-    this.pageSize = 50;
+    this.pageSize = 35;
 
     var me = this;
     this.evt.subscribe('cmtySelected', payload => {
@@ -209,6 +209,8 @@ export class CommunityDetail {
                me.gridOptions.api.showLoadingOverlay();
               if(!this.loading) {
                 console.debug("..... Loading Grid row | startIndex: " + params.startRow);
+                console.debug("..... ..... Filter | " + Object.keys(params.filterModel));
+                console.debug("..... ..... Sort | " + params.sortModel.toString());
                 this.loading = true;
                 me.membersPromise = me.dataService.getCommunity(me.selectedCmty.communityId, params.startRow, me.pageSize);
                 me.membersPromise.then(response => response.json())
@@ -267,7 +269,7 @@ export class CommunityDetail {
       message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
           {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
           communityMembers[0].physicalPersonProfile.lastName});
-    } else if(communityMembers.length === 1) {
+    } else if(communityMembers.length >= 1) {
       message = this.i18n.tr('community.members.confirmDelete.message');
     }
     this.dialogService.open({ viewModel: Prompt, model: {
