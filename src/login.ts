@@ -1,6 +1,7 @@
 import {inject, Lazy} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction, activationStrategy} from 'aurelia-router';
+import {DialogService} from 'aurelia-dialog';
 import {Session} from './services/session';
 import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
@@ -10,7 +11,7 @@ import {Utils} from './services/util';
 // import {required, email} from 'aurelia-validatejs';
 
 
-@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, Utils, activationStrategy)
+@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, Utils, activationStrategy, DialogService)
 export class Login {
   heading: string = 'BlueLine Grid Command 2.0';
 //  @required
@@ -33,7 +34,7 @@ export class Login {
   };
 
   constructor(private getHttpClient: () => HttpClient, private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private utils: Utils) {
+    private dataService: DataService, private utils: Utils, private dialogService: DialogService) {
       
   }
 
