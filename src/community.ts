@@ -5,6 +5,7 @@ import {Session} from './services/session';
 import {DataService} from './services/dataService';
 import {VirtualRepeat} from 'aurelia-ui-virtualization';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {I18N} from 'aurelia-i18n';
 import {DialogService} from 'aurelia-dialog';
 import {Prompt} from './lib/prompt/prompt';
 import * as Ps from 'perfect-scrollbar';
@@ -12,7 +13,7 @@ import * as Ps from 'perfect-scrollbar';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Lazy.of(HttpClient), Session, Router, DataService, EventAggregator, Ps, DialogService)
+@inject(Lazy.of(HttpClient), Session, Router, DataService, EventAggregator, Ps, I18N, DialogService)
 export class Community {
   communities: any;
   items:Array<Object>;
@@ -27,7 +28,7 @@ export class Community {
   _virtualRepeat: VirtualRepeat;
 
   constructor(private getHttpClient: () => HttpClient, private session: Session, 
-    private router: Router, private dataService: DataService, private evt: EventAggregator, Ps, private dialogService: DialogService) {
+    private router: Router, private dataService: DataService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
 
     // var Ps = require('perfect-scrollbar');
 
@@ -140,14 +141,19 @@ export class Community {
     this.evt.publish('cmtySelected', {community: community});
   }
 
-  async deletCommunity(community: Object) {
-    this.dialogService.open({ viewModel: Prompt, model: 'Good or Bad?'}).then(response => {
-      if (!response.wasCancelled) {
-        console.log('good');
-      } else {
-        console.log('bad');
+  deleteCommunity(community: any) {
+    this.dialogService.open({ viewModel: Prompt, model: {
+        question:this.i18n.tr('community.confirmDelete.title') , 
+        message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName})
       }
-      console.log(response.output);
+    }).then(response => {
+      if (!response.wasCancelled) {
+        // Call the delete service.
+        console.log('Delete');
+      } else {
+        // Cancel.
+        console.log('Cancel');
+      }
     });
     
   }
