@@ -11,7 +11,7 @@ import 'ag-grid/dist/styles/ag-grid.css';
 import '../styles/theme-blg.styl';
 
 
-import 'bootstrap-sass/assets/javascripts/bootstrap.js';
+// import 'bootstrap-sass/assets/javascripts/bootstrap.js';
 // Framework modules:
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
 import * as config from './config/authConfig';
@@ -21,6 +21,8 @@ import Backend from 'i18next-xhr-backend';
 import 'intl';
 
 import * as ag from 'ag-grid';
+
+// import '../node_modules/webcomponents.js/webcomponents.js';
 
 // comment out if you don't want a Promise polyfill (remove also from webpack.config.js)
 import * as Bluebird from 'bluebird';
@@ -122,6 +124,7 @@ export async function configure(aurelia: Aurelia) {
         });
         return pr;
       })
+      .plugin('aurelia-dialog')
       // .plugin('aurelia-ui-virtualization')
       ;
 
