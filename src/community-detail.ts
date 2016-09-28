@@ -172,6 +172,9 @@ export class CommunityDetail {
         onSelectionChanged: function() {
           me.membersSelectionChanged(this)
         },
+        onViewportChanged: function() {
+          me.gridOptions['api'].sizeColumnsToFit();
+        },
         getRowNodeId: function(item) {
           return item.memberId.toString();
         }
@@ -219,16 +222,14 @@ export class CommunityDetail {
                     if(me.gridDataSource.rowCount === null) {
                       me.gridDataSource.rowCount = data.totalCount;
                     }
-                     me.gridOptions.api.hideOverlay();
-                   params.successCallback(data.responseCollection, data.totalCount-1);
-                    // me.gridOptions.api.hideOverlay();
+                    me.gridOptions.api.hideOverlay();
+                    params.successCallback(data.responseCollection, data.totalCount-1);
                     this.loading = false;
                 });
               }
             }
         }
         me.gridOptions.api.setDatasource(me.gridDataSource);
-        me.gridOptions.api.sizeColumnsToFit();
     // });
 
 
