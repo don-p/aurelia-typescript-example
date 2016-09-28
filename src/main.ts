@@ -11,7 +11,7 @@ import 'ag-grid/dist/styles/ag-grid.css';
 import '../styles/theme-blg.styl';
 
 
-// import 'bootstrap-sass/assets/javascripts/bootstrap.js';
+import 'bootstrap-sass/assets/javascripts/bootstrap.js';
 // Framework modules:
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
 import * as config from './config/authConfig';
@@ -20,7 +20,7 @@ import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
 import Backend from 'i18next-xhr-backend';
 import 'intl';
 
-import * as ag from 'ag-grid';
+// import * as ag from 'ag-grid';
 
 // import '../node_modules/webcomponents.js/webcomponents.js';
 
@@ -128,7 +128,7 @@ export async function configure(aurelia: Aurelia) {
       // .plugin('aurelia-ui-virtualization')
       ;
 
-      ag.initialiseAgGridWithWebComponents();
+      // ag.initialiseAgGridWithWebComponents();
       
   // Uncomment the line below to enable animation.
   // aurelia.use.plugin('aurelia-animator-css');

@@ -11,7 +11,7 @@ import {Prompt} from './lib/prompt/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 
 import * as ag from 'ag-grid';
-import {AgGridWrapper} from './lib/ag-grid';
+// import {AgGridWrapper} from './lib/ag-grid';
 
 
 // import {RemoteData} from './services/remoteData';
@@ -20,7 +20,7 @@ import {AgGridWrapper} from './lib/ag-grid';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, EventAggregator, Ps, AgGridWrapper, I18N, DialogService) // SCROLL
+@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, EventAggregator, Ps, I18N, DialogService) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -61,7 +61,7 @@ export class CommunityDetail {
 
   
   constructor(private getHttpClient: () => HttpClient, private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private evt: EventAggregator, Ps, private agGridWrap:AgGridWrapper, private i18n: I18N, private dialogService: DialogService) { // SCROLL
+    private dataService: DataService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) { // SCROLL
 
     this.communityMembers = null;
     // this.membersGrid = {};
@@ -184,8 +184,9 @@ export class CommunityDetail {
 
   }
   initGrid(me) {
-    this.cmtyMembersGrid.setGridOptions(this.gridOptions);
-    this.agGridWrap.gridCreated = true;
+    // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
+    new ag.Grid(this.cmtyMembersGrid, this.gridOptions); //create a new grid
+    // this.agGridWrap.gridCreated = true;
     this.gridOptions['api'].sizeColumnsToFit();
   }
 
@@ -251,7 +252,7 @@ export class CommunityDetail {
       console.log(json(data));
 //      this.session=me.session;
       me.communityMembers = data.responseCollection;
-      me.agGridWrap.rowsChanged(me.communityMembers, null);
+      // me.agGridWrap.rowsChanged(me.communityMembers, null);
     }).catch(error => {
       console.log("Communities members() failed."); 
       console.log(error); 
