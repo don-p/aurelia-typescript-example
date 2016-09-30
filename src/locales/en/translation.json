@@ -46,7 +46,6 @@
     "community":{
         "discover":"Discover",
         "makeCall":"Make GridCall",
-        "renameCommunity":"Rename community",                
         "connect":"Connects",
         "communities":"Communities",
         "commType":"Type",
@@ -54,6 +53,7 @@
         "team":"Team",
         "search":"Search",
         "createCommunity":"Create community",
+        "editCommunity":"Edit community",                
         "deleteCommunity":"Delete community",
         "confirmDelete": {
             "title": "Delete Community?",

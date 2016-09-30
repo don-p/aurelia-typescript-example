@@ -8,7 +8,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {DialogService} from 'aurelia-dialog';
 import {Prompt} from './lib/prompt/prompt';
-import {CommunityModel} from './model/community';
+import {Model} from './model/model';
 import * as Ps from 'perfect-scrollbar';
 
 // polyfill fetch client conditionally
@@ -145,11 +145,24 @@ export class Community {
   deleteCommunity(community: any) {
     this.dialogService.open({ viewModel: Prompt, model: {
         question:this.i18n.tr('community.confirmDelete.title') , 
-        message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName})
+        message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
+        item: community
       }
     }).then(response => {
       if (!response.wasCancelled) {
         // Call the delete service.
+        let community = response.output;
+        this.dataService.deleteCommunity(community)
+          .then(response => response.json())
+          .then(data => {
+            let res = data;
+          }, error => {
+            console.debug("Community create() rejected."); 
+          }).catch(error => {
+            console.debug("Community create() failed."); 
+            console.debug(error); 
+            return Promise.reject(error);
+          })
         console.log('Delete');
       } else {
         // Cancel.
@@ -158,26 +171,47 @@ export class Community {
     });
   }
 
-  showCommunityModelModal() {
-
-  }
-
   createCommunity() {
-    this.editCommunity(new CommunityModel('', '', ''));
+    this.editCommunity(null);
   }
 
-  editCommunity(community: CommunityModel) {
-    this.dialogService.open({ viewModel: prompt, model: {
-        question:this.i18n.tr('community.confirmDelete.title') , 
-        message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName})
-      }
-    }).then(response => {
+  editCommunity(community: any) {
+    if(community === null) {
+      community = {};
+    }
+    this.dialogService.open({viewModel: Model, view: './communityModel.html', model: community})
+    .then(response => {
       if (!response.wasCancelled) {
+        let community = response.output;
+        if(community.commnunityId ) {
+          // Update
+        } else {
+          // Create
+          let comm = {
+            communityId: community.communityId, 
+            communityName: community.communityName, 
+            communityDescription: community.communityDescription, 
+            communityType: community.communityType,
+            membershipType: 'DEFINED'
+          };
+          this.dataService.createCommunity(comm)
+            .then(response => response.json())
+            .then(data => {
+              let res = data;
+            }, error => {
+              console.debug("Community create() rejected."); 
+            }).catch(error => {
+              console.debug("Community create() failed."); 
+              console.debug(error); 
+              return Promise.reject(error);
+            })
+        }
         // Call the delete service.
-        console.log('Delete');
+        console.debug('Edited');
+        console.debug(response.output);
       } else {
         // Cancel.
-        console.log('Cancel');
+        console.debug('Cancel');
       }
     });
   }

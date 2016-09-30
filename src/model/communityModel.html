@@ -1,0 +1,19 @@
+<template>
+  <ai-dialog>
+    <ai-dialog-body>
+      <label>Community name</label>
+      <input attach-focus="true" value.bind="item.communityName" />
+      <label>Community description</label>
+      <input value.bind="item.communityDescription" />
+      <label>Community type</label>
+      <input value.bind="item.communityType" />
+      
+      <input type="hidden" value.bind="item.communityId" />
+    </ai-dialog-body>
+
+    <ai-dialog-footer>
+      <button click.trigger="controller.cancel()">Cancel</button>
+      <button click.trigger="controller.ok(item)">Ok</button>
+    </ai-dialog-footer>
+  </ai-dialog>
+</template>

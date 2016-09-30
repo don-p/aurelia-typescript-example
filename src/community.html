@@ -23,7 +23,7 @@
           <loading promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
 
           <div class="conv-buttons-bar">
-            <a id="btn-communities-create-community" class="btn btn-info btn-xs-square" i18n='[title]community.createCommunity'>
+            <a id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]community.createCommunity'>
               <i class="ico-users-plus"></i>
             </a>
             <!--<a id="btn-communities-delete-community" class="btn btn-danger btn-xs-square" i18n='[title]community.deleteCommunity'>
@@ -89,7 +89,8 @@
                                 click.delegate="deleteCommunity(community)" i18n='[title]community.deleteCommunity'>
                                 <i class="ico-bin float-right"></i>
                               </a>
-                              <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="#" i18n='[title]community.renameCommunity'>
+                              <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="#" 
+                                click.delegate="editCommunity(community)" i18n='[title]community.editCommunity'>
                                 <i class="ico-pencil7 float-right"></i>
                               </a>                               
                             </h4>
