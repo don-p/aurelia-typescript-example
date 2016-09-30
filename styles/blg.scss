@@ -412,15 +412,15 @@ header .navbar-nav {
 .blg-left-panel .blg-location-content {
   padding: 3px 10px 0px 0px;
   position: absolute;
-  top: 180px;
-  bottom: 58px;
+  top: 170px;
+  bottom: 15px;
   left: 0px;
   right: 0px;
   border-right: 2px solid $blg-grey-light;
   border-top: 1px solid $blg-grey-lighter;
   border-left: 2px solid $blg-grey-light;
-  border-bottom: 1px solid $blg-grey-lighter;
-  border-radius: 0px;
+  border-bottom: 2px solid $blg-grey-light;
+  border-radius: 0px 0px 6px 6px;
   background-color: $blg-white;
   z-index: 0;
 }
@@ -837,7 +837,7 @@ header .navbar-nav {
   border-radius: 0px;
   background-color: $blg-white;
   box-shadow: 0px 1px 5px lightgrey;
-  z-index: 1000;
+  z-index: 999;
 }
 
 .members-table .members-table-info-bar,
@@ -853,7 +853,7 @@ header .navbar-nav {
   border-left: 2px solid $blg-grey-light;
   border-radius: 0px;
   background-color: $blg-white;
-  z-index: 999;
+  z-index: 998;
   font-size: 14px;
 }
 
@@ -1095,4 +1095,8 @@ a:focus {
 ai-dialog-overlay.active {
     opacity: 0.5 !important;
     background-color: #000 !important;
+}
+
+ai-dialog {
+  display: table !important;
 }
