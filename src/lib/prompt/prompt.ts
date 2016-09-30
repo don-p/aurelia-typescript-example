@@ -1,22 +1,23 @@
 import {DialogController} from 'aurelia-dialog';
+import {inject} from 'aurelia-framework';
 
+@inject(DialogController)
 export class Prompt {
-  static inject = [DialogController];
 
-  controller: DialogController;
   message: string;
   title: string;
-
-  constructor(controller) {
-    this.controller = controller;
+  item: any;
+  
+  constructor(private controller:DialogController) {
     this.title = null;
     this.message = null;
-
+    this.item = null;
     controller.settings.lock = false;
   }
 
   activate(model) {
     this.title = model.question;
     this.message = model.message;
+    this.item = model.item;
   }
 }

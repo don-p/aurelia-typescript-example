@@ -205,6 +205,31 @@ export class DataService {
         return response;
     }
 
+    async createCommunity(community: Object) {
+        await fetch;
+
+        let response = this.getHttpClient().fetch('v1/communities', 
+            {
+                method: !!(community['communityId'])?'POST':'PUT',
+                body: JSON.stringify(community)
+            }
+        );
+        return response;
+    }
+
+    async deleteCommunity(community: Object) {
+        await fetch;
+
+        let response = this.getHttpClient().fetch('v1/communities/' + community['communityId'], 
+            {
+                method: 'DELETE'
+            }
+        );
+        return response;
+    }
+
+// GLOBAL SERVICES //
+
     get tokenExpiredInterceptor() {
         let me = this;
         return {
