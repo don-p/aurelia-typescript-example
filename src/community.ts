@@ -8,6 +8,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {DialogService} from 'aurelia-dialog';
 import {Prompt} from './lib/prompt/prompt';
+import {CommunityModel} from './model/community';
 import * as Ps from 'perfect-scrollbar';
 
 // polyfill fetch client conditionally
@@ -142,6 +143,30 @@ export class Community {
   }
 
   deleteCommunity(community: any) {
+    this.dialogService.open({ viewModel: Prompt, model: {
+        question:this.i18n.tr('community.confirmDelete.title') , 
+        message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName})
+      }
+    }).then(response => {
+      if (!response.wasCancelled) {
+        // Call the delete service.
+        console.log('Delete');
+      } else {
+        // Cancel.
+        console.log('Cancel');
+      }
+    });
+  }
+
+  showCommunityModelModal() {
+
+  }
+
+  createCommunity() {
+    this.editCommunity(new CommunityModel('', '', ''));
+  }
+
+  editCommunity(community: CommunityModel) {
     this.dialogService.open({ viewModel: prompt, model: {
         question:this.i18n.tr('community.confirmDelete.title') , 
         message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName})
