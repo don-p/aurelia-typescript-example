@@ -1,5 +1,5 @@
 import {inject, Lazy} from 'aurelia-framework';
-import {HttpClient, json} from 'aurelia-fetch-client';
+import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {Session} from './services/session';
 import {DataService} from './services/dataService';
@@ -13,7 +13,7 @@ import * as Ps from 'perfect-scrollbar';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Lazy.of(HttpClient), Session, Router, DataService, EventAggregator, Ps, I18N, DialogService)
+@inject(Session, Router, DataService, EventAggregator, Ps, I18N, DialogService)
 export class Community {
   communities: any;
   items:Array<Object>;
@@ -27,8 +27,8 @@ export class Community {
   selectedCommunities: Array<String>;
   _virtualRepeat: VirtualRepeat;
 
-  constructor(private getHttpClient: () => HttpClient, private session: Session, 
-    private router: Router, private dataService: DataService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
+  constructor(private session: Session, private router: Router, private dataService: DataService, 
+    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
 
     // var Ps = require('perfect-scrollbar');
 
@@ -142,7 +142,7 @@ export class Community {
   }
 
   deleteCommunity(community: any) {
-    this.dialogService.open({ viewModel: Prompt, model: {
+    this.dialogService.open({ viewModel: prompt, model: {
         question:this.i18n.tr('community.confirmDelete.title') , 
         message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName})
       }

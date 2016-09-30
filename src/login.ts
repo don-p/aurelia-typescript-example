@@ -1,7 +1,8 @@
 import {inject, Lazy} from 'aurelia-framework';
-import {HttpClient, json} from 'aurelia-fetch-client';
-import {Router, NavigationInstruction, activationStrategy} from 'aurelia-router';
+import {json} from 'aurelia-fetch-client';
+import {Router, NavigationInstruction} from 'aurelia-router';
 import {DialogService} from 'aurelia-dialog';
+import {I18N} from 'aurelia-i18n';
 import {Session} from './services/session';
 import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
@@ -11,7 +12,7 @@ import {Utils} from './services/util';
 // import {required, email} from 'aurelia-validatejs';
 
 
-@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, Utils, activationStrategy, DialogService)
+@inject(Session, Router, AppConfig, DataService, Utils, DialogService, I18N)
 export class Login {
   heading: string = 'BlueLine Grid Command 2.0';
 //  @required
@@ -21,9 +22,8 @@ export class Login {
   password: string = '';
   errorMessage: string;
 
-  code: string;
+  mfaCode: string;
  
-  http: HttpClient;
   navigationInstruction: NavigationInstruction;
 
   headers: {
@@ -33,13 +33,9 @@ export class Login {
         'Content-Type': 'application/json'
   };
 
-  constructor(private getHttpClient: () => HttpClient, private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private utils: Utils, private dialogService: DialogService) {
+  constructor(private session: Session, private router: Router, private appConfig: AppConfig, 
+    private dataService: DataService, private utils: Utils, private dialogService: DialogService, private i18n: I18N) {
       
-  }
-
-  determineActivationStrategy(){
-    return 'invoke-lifecycle';
   }
 
   activate(params, routeConfig, navigationInstruction) {
@@ -60,13 +56,17 @@ export class Login {
 
     return this.dataService.login(this.username, this.password)
 //    .then(response => response.json())
-    .then(data => {
+    .then((data:any) => {
       console.log(json(data));
       if(data && data!==null) {
         me.session.auth = data;
         me.session.auth['isLoggedIn'] = true;
         this.errorMessage = '';
-        me.router.navigateToRoute('login-2');
+        if(data.mfa.isRequired) {
+          me.router.navigateToRoute('login-2');          
+        } else {
+          me.router.navigateToRoute('community');
+        }
       } else {
         throw "Login(): Authentication failed."
       }
@@ -77,31 +77,33 @@ export class Login {
     });
   }
 
-async loginConfirm(): Promise<void> {
+async loginConfirm(token): Promise<void> {
     // ensure fetch is polyfilled before we create the http client
-    var code = this.code;
-    await fetch;
-    const http = this.http = this.getHttpClient();
-    var  headers = new Object({
-      'TestHEader': 'Testing',
-      'X-Requested-With': 'Fetch',
-      'origin':'*',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
-    var h = new Headers();
-    for (var header in headers) {
-      h.append(header, headers[header]);
-    }
-    http.configure(config => {
-      config
-        .withBaseUrl(this.appConfig.apiServerUrl.toString())
-        /*.withDefaults({headers: h})*/;
-    });
     var me = this;
-    // DEBUG
-        me.router.navigateToRoute('community');
-   // DEBUG
+    var er = null;
 
+    var mfaPromise = this.dataService.loginFactor2(token);
+    mfaPromise
+    // .then(response => response.json())
+    .then(data => {
+      // Successfully validated confirmation code.
+      me.router.navigateToRoute('community');
+    })
+    .catch(error => {
+      er = error;
+      error.json()
+      .then(responseError => { 
+        console.log("mfa token failed."); 
+        console.log(er); 
+        if(/*er.status === 400 && */responseError.error == 'INCORRECT_PARAMETER') {
+          me.errorMessage = me.i18n.tr('error.invalidConfirmationCode');
+        } else {
+      // DEBUG
+          me.router.navigateToRoute('community');
+    // DEBUG
+        }
+      })
+    });
 
     /*
     const response = dataService.loginFactor2()

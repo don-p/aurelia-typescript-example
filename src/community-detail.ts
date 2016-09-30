@@ -1,5 +1,5 @@
 import {inject, Lazy, bindable} from 'aurelia-framework';
-import {HttpClient, json} from 'aurelia-fetch-client';
+import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {Session} from './services/session';
 import {AppConfig} from './services/appConfig';
@@ -20,7 +20,7 @@ import * as ag from 'ag-grid';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Lazy.of(HttpClient), Session, Router, AppConfig, DataService, EventAggregator, Ps, I18N, DialogService) // SCROLL
+@inject(Session, Router, AppConfig, DataService, EventAggregator, Ps, I18N, DialogService) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -60,7 +60,7 @@ export class CommunityDetail {
   // ];
 
   
-  constructor(private getHttpClient: () => HttpClient, private session: Session, private router: Router, private appConfig: AppConfig, 
+  constructor(private session: Session, private router: Router, private appConfig: AppConfig, 
     private dataService: DataService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) { // SCROLL
 
     this.communityMembers = null;

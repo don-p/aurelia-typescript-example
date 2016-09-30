@@ -1,4 +1,4 @@
-import {Aurelia, inject, computedFrom} from 'aurelia-framework';
+import {inject, computedFrom} from 'aurelia-framework';
 import {Router, RouterConfiguration} from 'aurelia-router';
 import {Session} from './services/session';
 import {FetchConfig} from 'aurelia-auth';
@@ -17,12 +17,11 @@ export class App {
     this.session = Session;
 
     this.session.auth['isLoggedIn'] = false;
-
+    
     // Subscribe to request/response errors.
     this.evt.subscribe('responseError', payload => {
        this.handleResponseError(payload);
-    });
-    
+    });    
  }
 
 //  @computedFrom('this.session.auth')
@@ -31,17 +30,13 @@ export class App {
     return fn;
   }
 
-  activate(){
-   this.fetchConfig.configure();
-    
-  }
 
   handleResponseError(response) {
     switch (response.status) {
-      case 400:
-        console.log("ResponseError: 400 Unauth");
-        this.router.navigateToRoute('login', {errorMessage: 'error.badCredentials'});
-        break;
+      // case 400:
+      //   console.log("ResponseError: 400 Unauth");
+      //   this.router.navigateToRoute('login', {errorMessage: 'error.badCredentials'});
+      //   break;
       case 401:
         console.log("ResponseError: 401 Unauth");
         var messageKey = 'error.badCredentials';
@@ -55,10 +50,10 @@ export class App {
         console.error(response);
         this.router.navigateToRoute('login', {errorMessage: 'error.serverNotAvailable'});
         break;
-      default:
-        console.log("ResponseError");
-        console.error(response);
-        this.router.navigateToRoute('login', {errorMessage: 'error.unknown'});
+      // default:
+      //   console.log("ResponseError");
+      //   console.error(response);
+      //   this.router.navigateToRoute('login', {errorMessage: 'error.unknown'});
     }
 
   }
