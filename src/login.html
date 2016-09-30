@@ -37,7 +37,7 @@
 			<section class="container">
 				<section class="login-form">
 
-					<form method="post" role="login" submit.delegate="router.currentInstruction.config.route==='login-2'?loginConfirm():login()">
+					<form method="post" role="login" submit.delegate="router.currentInstruction.config.route==='login-2'?loginConfirm(mfaCode):login()">
 						<img class="login-logo" src="../images/logo.png">				
 						<h3><img src="../images/gridcommand.png"></h3>
 						<div class="row errorMessage">
@@ -67,7 +67,7 @@
 							</div>					
 							<div class="row">
 								<div class="col-xs-12">
-									<input type="password" name="password" placeholder="Confirmation code" class="form-control input-lg" />
+									<input type="password" name="code" value.bind="mfaCode" placeholder="Confirmation code" class="form-control input-lg" />
 									<span class="glyphicon glyphicon-lock"></span>
 								</div>
 							</div>

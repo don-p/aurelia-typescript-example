@@ -20,10 +20,6 @@ import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
 import Backend from 'i18next-xhr-backend';
 import 'intl';
 
-// import * as ag from 'ag-grid';
-
-// import '../node_modules/webcomponents.js/webcomponents.js';
-
 // comment out if you don't want a Promise polyfill (remove also from webpack.config.js)
 import * as Bluebird from 'bluebird';
 Bluebird.config({ warnings: false });
@@ -44,8 +40,6 @@ bootstrap(aurelia => {
     }
 });
 */
-
-declare var agGrid: any;
 
 export async function configure(aurelia: Aurelia) {
 
@@ -79,7 +73,7 @@ export async function configure(aurelia: Aurelia) {
   // polyfill fetch client conditionally
   const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-
+  
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
@@ -128,8 +122,6 @@ export async function configure(aurelia: Aurelia) {
       // .plugin('aurelia-ui-virtualization')
       ;
 
-      // ag.initialiseAgGridWithWebComponents();
-      
   // Uncomment the line below to enable animation.
   // aurelia.use.plugin('aurelia-animator-css');
   // if the css animator is enabled, add swap-order="after" to all router-view elements
@@ -139,6 +131,9 @@ export async function configure(aurelia: Aurelia) {
 
   await aurelia.start();
   aurelia.setRoot('app');
+
+
+ 
 
   // if you would like your website to work offline (Service Worker), 
   // install and enable the @easy-webpack/config-offline package in webpack.config.js and uncomment the following code:

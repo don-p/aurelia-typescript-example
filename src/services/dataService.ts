@@ -3,11 +3,12 @@ import {HttpClient, json} from 'aurelia-fetch-client';
 import {AppConfig} from './appConfig';
 import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {AuthService, BaseConfig} from 'aurelia-auth';
+import {FetchConfig} from 'aurelia-auth';
+import {AuthService} from 'aurelia-auth';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(Lazy.of(HttpClient), AppConfig, EventAggregator, AuthService, Session, QueryString, BaseConfig)
+@inject(Lazy.of(HttpClient), AppConfig, EventAggregator, AuthService, FetchConfig, Session, QueryString)
 export class DataService {  
 
     // Service object for retreiving application data from REST services.
@@ -19,24 +20,31 @@ export class DataService {
 
     constructor(private getHttpClient: () => HttpClient, private appConfig: AppConfig, 
         private evt: EventAggregator, private auth: AuthService,  
-        private session: Session, private authConfig: BaseConfig){
+        private fetchConfig: FetchConfig, private session: Session){
 
         // Base Url for REST API service.
         this.apiServerUrl = appConfig.apiServerUrl;
         // App identifiers for REST services.
         this.clientId = appConfig.clientId;
         this.clientSecret = appConfig.clientSecret;
-        this.httpClient = this.getHttpClient();
+
+        // Configure custom fetch for aurelia-auth service.
+        fetchConfig.configure();
 
         // Set up global http configuration; API url, request/response error handlers.
         var me = this;
-        this.httpClient.configure(config => {
+        // let http = new HttpClient().configure(config => {
+        let http = getHttpClient().configure(config => {
             config
+                // Standard config causes Promise to reject 'error' resposes.
+                .useStandardConfiguration()
+                // Add the baseUrl for API server.
                 .withBaseUrl(this.apiServerUrl)
                 .withDefaults({
                     credentials: 'same-origin',
                     headers: {
                         'Accept': 'application/json',
+                        'Content-Type': 'application/json',
                         'X-Requested-With': 'Fetch'
                     }
                 })
@@ -56,6 +64,7 @@ export class DataService {
                                 var result = await me.refreshToken(me.session.auth['refresh_token'], request);
                                 return result===null?response:result;
                             } else {
+                                // response
                                 me.evt.publish('responseError', response);
                                 return response;
                             }
@@ -67,19 +76,15 @@ export class DataService {
                         throw responseError;
                     }
                 })
+                // Add special interceptor to force inclusion of access_token when token is expired, 
+                // to support refreshing the token.
                 .withInterceptor(this.tokenExpiredInterceptor);
         });
-
     }
 
     // AUTHENTICATION
     async login(username: string, password: string): Promise<Response> {
 
-        // var body = 'username=' + username + 
-        //     '&password=' + password + 
-        //     '&grant_type=PASSWORD' +
-        //     '&client_id=' + this.appConfig.clientId +
-        //     '&client_secret=' + this.appConfig.clientSecret
         var obj = {
                     username: username, 
                     password: password,
@@ -90,11 +95,6 @@ export class DataService {
         var params = QueryString.stringify(obj, {});
         var me = this;
         var response = this.auth.login(params, null);
-         response.then(response => {
-            // var res = response.json();
-            // var res = new Response(response);
-            // return res;
-        });
         return response;
     }
 
@@ -104,23 +104,6 @@ export class DataService {
 
     async refreshToken(refreshToken: string, fetchRequest: Request): Promise<Response> {
         await fetch;
-        const http =  this.getHttpClient();
-        var  headers = {
-            'origin':'*',
-            // 'Content-Type': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
-            // 'Accept': 'application/json'
-        };
-        var h = new Headers();
-        for (var header in headers) {
-            h.append(header, headers[header]);
-        }
-        http.configure(config => {
-            config
-                .withBaseUrl(this.apiServerUrl.toString())
-                /*.withDefaults({headers: h})*/;
-            }
-        );
         var me = this;
 
         var obj = {
@@ -132,10 +115,10 @@ export class DataService {
         var params = QueryString.stringify(obj, {});
 
         console.debug('Refreshing access token.');
-        var result = await http.fetch('oauth/token', 
+        var result = await this.getHttpClient().fetch('oauth/token', 
             {
                 method: 'post',
-                headers: h,
+                // headers: h,
                 // body: body
                 body: params
            }
@@ -160,30 +143,11 @@ export class DataService {
 
     }
 
-    async loginFactor2(): Promise<Response> {
+    async loginFactor2(token): Promise<Response> {
         await fetch;
-        const http =  this.getHttpClient();
-        var  headers = new Object({
-            'X-Requested-With': 'Fetch',
-            'origin':'*',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        });
-        var h = new Headers();
-        for (var header in headers) {
-            h.append(header, headers[header]);
-        }
-        http.configure(config => {
-            config
-                .withBaseUrl(this.apiServerUrl.toString())
-                /*.withDefaults({headers: h})*/;
-            }
-        );
-        var me = this;
-        var response = http.fetch('v1/communities?community_type=COI&start_index=110&page_size=20', 
+        var response = this.getHttpClient().fetch('v1/mfa-tokens/'+token, 
             {
-                method: 'GET',
-                headers: h
+                method: 'PUT',
             }
         );
         return response;
@@ -217,27 +181,11 @@ export class DataService {
     async getCommunities(communityType: string, startIndex: number, pageSize: number): Promise<Response> {
         await fetch;
         const http =  this.getHttpClient();
-        var  headers = new Object({
-            'origin':'*',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        });
-        var h = new Headers();
-        for (var header in headers) {
-            h.append(header, headers[header]);
-        }
-        // http.configure(config => {
-        //     config
-        //         .withBaseUrl(this.apiServerUrl.toString())
-        //         /*.withDefaults({headers: h})*/;
-        //     }
-        // );
         var me = this;
         var response = http.fetch('v1/communities?community_type=' + communityType + 
             '&start_index=' + startIndex + '&page_size=' + pageSize, 
             {
-                method: 'GET',
-                headers: h
+                method: 'GET'
             }
         );
         return response;
@@ -248,28 +196,10 @@ export class DataService {
      */
     async getCommunity(communityId: string, startIndex: number, pageSize:number): Promise<Response> {
         await fetch;
-        const http =  this.getHttpClient();
-        var  headers = new Object({
-            'origin':'*',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        });
-        var h = new Headers();
-        for (var header in headers) {
-            h.append(header, headers[header]);
-        }
-        http.configure(config => {
-            config
-                .withBaseUrl(this.apiServerUrl.toString())
-                /*.withDefaults({headers: h})*/;
-            }
-        );
-        var me = this;
-        var response = http.fetch('v1/communities/' + communityId + '/members?start_index=' + 
+        var response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members?start_index=' + 
             startIndex + '&page_size=' + pageSize, 
             {
                 method: 'GET',
-                headers: h
             }
         );
         return response;
