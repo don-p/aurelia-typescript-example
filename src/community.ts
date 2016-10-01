@@ -6,7 +6,7 @@ import {DataService} from './services/dataService';
 import {VirtualRepeat} from 'aurelia-ui-virtualization';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
-import {DialogService} from 'aurelia-dialog';
+import {DialogService, DialogController} from 'aurelia-dialog';
 import {Prompt} from './lib/prompt/prompt';
 import {Model} from './model/model';
 import * as Ps from 'perfect-scrollbar';
@@ -176,11 +176,28 @@ export class Community {
   }
 
   editCommunity(community: any) {
+    let title = '';
     if(community === null) {
       community = {};
+      title = this.i18n.tr('community.createCommunity');
+    } else {
+      title = this.i18n.tr('community.editCommunity');
     }
-    this.dialogService.open({viewModel: Model, view: './communityModel.html', model: community})
-    .then(response => {
+    // this.dialogService.open({
+    //   viewModel: Model, 
+    //   view: './communityModel.html', 
+    //   model: {title: title, item: community, okText: this.i18n.tr('button.save')}
+    // })
+
+    this.dialogService.openAndYieldController({
+      viewModel: Model, 
+      view: './communityModel.html', 
+      model: {title: title, item: community, okText: this.i18n.tr('button.save')},
+      ignoreTransitions: true,
+      centerHorizontalOnly: false
+    }).then((controller:any) => {
+       controller.result.then((response) => {
+    // .then(response => {
       if (!response.wasCancelled) {
         let community = response.output;
         if(community.commnunityId ) {
@@ -213,7 +230,10 @@ export class Community {
         // Cancel.
         console.debug('Cancel');
       }
+    })
     });
+
+
   }
 
 }

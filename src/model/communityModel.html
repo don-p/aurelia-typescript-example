@@ -1,19 +1,41 @@
 <template>
   <ai-dialog>
+    <div class="modal-header">
+        <h4 class="modal-title">${title}</h4>
+    </div>
     <ai-dialog-body>
+        <section class="container">
+            <div class="row">
+            <form>
+        <div class="col-xs-12">
+            <label i18n='community.communityName'></label>
+            <input  id="name" i18n='[placeholder]global.name' value.bind="item.communityName" class="form-control input-lg" />
+        </div>
+        <div class="col-xs-12">
+            <label i18n='community.communityDesc'></label>
+            <input  id="name" i18n='[placeholder]global.description' value.bind="item.communityDescription" class="form-control input-lg" />
+        </div>
+        <div class="col-xs-12">
+            <label i18n='community.communityType'></label>
+            <input  id="name" i18n='[placeholder]global.type' value.bind="item.communityType" class="form-control input-lg" />
+        </div>
+<!--
       <label>Community name</label>
       <input attach-focus="true" value.bind="item.communityName" />
       <label>Community description</label>
       <input value.bind="item.communityDescription" />
       <label>Community type</label>
       <input value.bind="item.communityType" />
-      
+-->
       <input type="hidden" value.bind="item.communityId" />
+            </form>
+            </div>
+      </section>
     </ai-dialog-body>
 
     <ai-dialog-footer>
       <button click.trigger="controller.cancel()">Cancel</button>
-      <button click.trigger="controller.ok(item)">Ok</button>
+      <button click.trigger="controller.ok(item)">${okText}</button>
     </ai-dialog-footer>
   </ai-dialog>
 </template>

@@ -220,9 +220,14 @@ export class DataService {
     async deleteCommunity(community: Object) {
         await fetch;
 
-        let response = this.getHttpClient().fetch('v1/communities/' + community['communityId'], 
+        let obj = {communityType: community['communityType']};
+        let params = QueryString.stringify(obj, {});
+
+        let response = this.getHttpClient().fetch('v1/communities/' + community['communityId']/*+'?'+params*/, 
             {
-                method: 'DELETE'
+                method: 'DELETE',
+                body: JSON.stringify(obj)
+
             }
         );
         return response;
