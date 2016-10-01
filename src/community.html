@@ -54,10 +54,10 @@
           </div>
 
         <div class="community-list-info-bar">
-          <div class="checkbox checkbox-info">
+          <!--<div class="checkbox checkbox-info">
             <input id="checkbox-community-all" type="checkbox" class="styled styled-info" value="">
             <label></label>
-          </div>
+          </div>-->
           <div class="community-list-info pull-right">Showing X to XX of XXX entries</div>
         </div>
 
@@ -90,7 +90,7 @@
                                 <i class="ico-bin float-right"></i>
                               </a>
                               <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="#" 
-                                click.delegate="editCommunity(community)" i18n='[title]community.editCommunity'>
+                                 click.delegate="editCommunity(community)" i18n='[title]community.editCommunity'>
                                 <i class="ico-pencil7 float-right"></i>
                               </a>                               
                             </h4>
@@ -104,7 +104,7 @@
               </div>
             </div>
            
-            <div class="paging-line-bottom"></div>
+            <!--<div class="paging-line-bottom"></div>-->
 
         </div>
         </loading>
