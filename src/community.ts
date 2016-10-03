@@ -143,35 +143,38 @@ export class Community {
   }
 
   deleteCommunity(community: any) {
-    // this.dialogService.open({ viewModel: Prompt, model: {
-    //     question:this.i18n.tr('community.confirmDelete.title') , 
-    //     message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
-    //     item: community
-    //   }
-    // })
     this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
       this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
       community, 'Delete')
-    .then(response => {
-      if (!response.wasCancelled) {
+    .then((controller:any) => {
+      let model = controller.settings.model;
+      // Callback function for submitting the dialog.
+      model.submit = (community) => {
+        let comm = {
+          communityId: community.communityId, 
+          communityType: community.communityType
+        };
         // Call the delete service.
-        let community = response.output;
-        this.dataService.deleteCommunity(community)
-          .then(response => response.json())
+        this.dataService.deleteCommunity(comm)
           .then(data => {
-            let res = data;
+            // Close dialog on success.
+            controller.ok();
           }, error => {
-            console.debug("Community create() rejected."); 
+            model.errorMessage = "Failed"; 
+            console.debug("Community delete() rejected."); 
           }).catch(error => {
-            console.debug("Community create() failed."); 
+            model.errorMessage = "Failed"; 
+            console.debug("Community delete() failed."); 
             console.debug(error); 
             return Promise.reject(error);
           })
-        console.log('Delete');
-      } else {
-        // Cancel.
-        console.log('Cancel');
       }
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          console.debug('Cancel');
+        }
+      })
     });
   }
 
@@ -191,14 +194,20 @@ export class Community {
     this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'))
     .then((controller:any) => {
       let model = controller.settings.model;
-      model.submit = (comm) => {
-        me.dataService.createCommunity(comm).then(() => {
-          controller.ok()
-        })
+      // Callback function for submitting the dialog.
+      model.submit = (community) => {
+        let comm = {
+          communityId: community.communityId, 
+          communityName: community.communityName, 
+          communityDescription: community.communityDescription, 
+          communityType: community.communityType,
+          membershipType: 'DEFINED'
+        };
         me.dataService.createCommunity(comm)
           .then(response => response.json())
           .then(data => {
             let res = data;
+            // Close dialog on success.
             controller.ok();
           }, error => {
             console.debug("Community create() rejected.");
@@ -210,41 +219,12 @@ export class Community {
             return Promise.reject(error);
           })
       }
-       controller.result.then((response) => {
-    // .then(response => {
-      if (!response.wasCancelled) {
-        let community = response.output;
-        if(community.commnunityId ) {
-          // Update
-        } else {
-          // Create
-          let comm = {
-            communityId: community.communityId, 
-            communityName: community.communityName, 
-            communityDescription: community.communityDescription, 
-            communityType: community.communityType,
-            membershipType: 'DEFINED'
-          };
-          this.dataService.createCommunity(comm)
-            .then(response => response.json())
-            .then(data => {
-              let res = data;
-            }, error => {
-              console.debug("Community create() rejected."); 
-            }).catch(error => {
-              console.debug("Community create() failed."); 
-              console.debug(error); 
-              return Promise.reject(error);
-            })
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          console.debug('Cancel');
         }
-        // Call the delete service.
-        console.debug('Edited');
-        console.debug(response.output);
-      } else {
-        // Cancel.
-        console.debug('Cancel');
-      }
-    })
+      })
     });
 
 

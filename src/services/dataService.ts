@@ -213,7 +213,7 @@ export class DataService {
 
         let response = this.getHttpClient().fetch('v1/communities', 
             {
-                method: !!(community['communityId'])?'POST':'PUT',
+                method: (typeof community['communityId'] !== 'string')?'POST':'PUT',
                 body: JSON.stringify(community)
             }
         );
@@ -223,13 +223,13 @@ export class DataService {
     async deleteCommunity(community: Object) {
         await fetch;
 
-        let obj = {communityType: community['communityType']};
+        let obj = {community_type: community['communityType']};
         let params = QueryString.stringify(obj, {});
 
-        let response = this.getHttpClient().fetch('v1/communities/' + community['communityId']/*+'?'+params*/, 
+        let response = this.getHttpClient().fetch('v1/communities/' + community['communityId']+'?'+params, 
             {
-                method: 'DELETE',
-                body: JSON.stringify(obj)
+                method: 'DELETE'
+                // body: JSON.stringify(obj)
 
             }
         );
@@ -260,8 +260,8 @@ export class DataService {
         })
     }
 
-    async openPromptDialog(question:string, message:string, item: any, okText:string): Promise<DialogResult> {
-        return this.dialogService.open({ 
+    async openPromptDialog(question:string, message:string, item: any, okText:string): Promise<DialogController> {
+        return this.dialogService.openAndYieldController({ 
             viewModel: Prompt, 
             view: 'model/model.html', 
             model: {
