@@ -9,8 +9,11 @@
             <input  id="name" i18n='[placeholder]global.description' value.bind="model.item.communityDescription" class="form-control input-lg" />
         </div>
         <div class="col-xs-12">
-            <label i18n='community.communityType'></label>
-            <input  id="name" i18n='[placeholder]global.type' value.bind="model.item.communityType" class="form-control input-lg" />
+            <span  class="community-select-label" i18n='[prepend]community.commType'>: </span>
+            <select class="form-control select select-default-blg" value.bind="model.item.communityType">
+            <option value="COI" i18n="community.coi"></option>
+            <option value="TEAM" i18n="community.team"></option>
+            </select>
         </div>
         <input type="hidden" value.bind="model.item.communityId" />
     </form>
