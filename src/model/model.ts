@@ -9,15 +9,17 @@ export class Model {
   title: string;
   okText: string;
   item: any;
+  submit: Function;
+  model: Object;
+  errorMessage: string;
 
   constructor(private controller:DialogController) {
 
   }
 
   activate(model){
-    this.title = model.title;
-    this.okText = model.okText;
-    this.item = model.item;
+    this.model = model;
+    this.errorMessage = null;
   }
 
   bind(bindingContext: Object, overrideContext: Object) {

@@ -1,0 +1,25 @@
+<template>
+  <ai-dialog>
+    <div class="modal-header">
+        <h4 class="modal-title">${model.title}</h4>
+    </div>
+    <ai-dialog-body>
+        <section class="container">
+            <div class="row errorMessage">
+                <div class="col-xs-12">
+                    <div i18n="[append]${model.errorMessage}" if.bind="(model.errorMessage && !(model.errorMessage===undefined))" class="alert alert-danger fade in">
+                    </div>	
+                </div>
+            </div>			
+            <div class="row">
+                <compose view="${model.modelView}" containerless></compose>
+            </div>
+      </section>
+    </ai-dialog-body>
+
+    <ai-dialog-footer>
+      <button class="btn btn-default" click.trigger="controller.cancel()">Cancel</button>
+      <button class="btn btn-primary" click.trigger="model.submit(model.item)">${model.okText}</button>
+    </ai-dialog-footer>
+  </ai-dialog>
+</template>

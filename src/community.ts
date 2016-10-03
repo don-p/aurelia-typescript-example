@@ -176,6 +176,7 @@ export class Community {
   }
 
   editCommunity(community: any) {
+    let me = this;
     let title = '';
     if(community === null) {
       community = {};
@@ -183,19 +184,28 @@ export class Community {
     } else {
       title = this.i18n.tr('community.editCommunity');
     }
-    // this.dialogService.open({
-    //   viewModel: Model, 
-    //   view: './communityModel.html', 
-    //   model: {title: title, item: community, okText: this.i18n.tr('button.save')}
-    // })
-
-    this.dialogService.openAndYieldController({
-      viewModel: Model, 
-      view: './communityModel.html', 
-      model: {title: title, item: community, okText: this.i18n.tr('button.save')},
-      ignoreTransitions: true,
-      centerHorizontalOnly: false
-    }).then((controller:any) => {
+    this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'))
+    .then((controller:any) => {
+      let model = controller.settings.model;
+      model.submit = (comm) => {
+        me.dataService.createCommunity(comm).then(() => {
+          controller.ok()
+        })
+        me.dataService.createCommunity(comm)
+          .then(response => response.json())
+          .then(data => {
+            let res = data;
+            controller.ok();
+          }, error => {
+            console.debug("Community create() rejected.");
+            model.errorMessage = "Failed"; 
+          }).catch(error => {
+            console.debug("Community create() failed."); 
+            console.debug(error); 
+            model.errorMessage = "Failed"; 
+            return Promise.reject(error);
+          })
+      }
        controller.result.then((response) => {
     // .then(response => {
       if (!response.wasCancelled) {
