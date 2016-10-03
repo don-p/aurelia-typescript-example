@@ -1,18 +1,4 @@
 
 <template>
-  <ai-dialog >
-    <div class="modal-header">
-        <h4 class="modal-title">${title}</h4>
-    </div>
-
-    <ai-dialog-body >
-      ${message}
-    </ai-dialog-body>
-
-    <ai-dialog-footer >
-      <button i18n="button.cancel" class="btn btn-default" type="button" click.trigger="controller.cancel()"></button>
-      <button i18n="button.ok" class="btn btn-primary" type="submit" click.trigger="controller.ok(item)">OK</button>
-    </ai-dialog-footer>
-   </ai-dialog>
-
+    <div>${message}</div>
 </template>
