@@ -6,14 +6,20 @@ import {inject} from 'aurelia-framework';
  *  Generic controller for model-mutating dialogs. 
  * */
 export class Model {
+  title: string;
+  okText: string;
   item: any;
+  submit: Function;
+  model: Object;
+  errorMessage: string;
 
   constructor(private controller:DialogController) {
 
   }
 
-  activate(item){
-    this.item = item;
+  activate(model){
+    this.model = model;
+    this.errorMessage = null;
   }
 
   bind(bindingContext: Object, overrideContext: Object) {

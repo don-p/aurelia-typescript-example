@@ -59,6 +59,9 @@
             "title": "Delete Community?",
             "message": "Delete the community '{{communityName}}'?"
         },
+        "communityName": "Community Name",
+        "communityDesc": "Community Description",
+        "communityType": "Community Type",
         "sendAlert":"Send alert",
         "owner":"OWNER",
         "members": {
@@ -97,6 +100,14 @@
 
     "button": {
         "ok": "OK",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "save": "Save"
+    },
+
+    "global": {
+        "name": "Name",
+        "description": "Description",
+        "type": "Type"
     }
 }

@@ -5,10 +5,12 @@ import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {FetchConfig} from 'aurelia-auth';
 import {AuthService} from 'aurelia-auth';
+import {DialogService, DialogController} from 'aurelia-dialog';
+import {Model} from '../model/model';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(Lazy.of(HttpClient), AppConfig, EventAggregator, AuthService, FetchConfig, Session, QueryString)
+@inject(Lazy.of(HttpClient), AppConfig, EventAggregator, AuthService, FetchConfig, DialogService, Session, QueryString)
 export class DataService {  
 
     // Service object for retreiving application data from REST services.
@@ -20,7 +22,7 @@ export class DataService {
 
     constructor(private getHttpClient: () => HttpClient, private appConfig: AppConfig, 
         private evt: EventAggregator, private auth: AuthService,  
-        private fetchConfig: FetchConfig, private session: Session){
+        private fetchConfig: FetchConfig, private dialogService:DialogService,private session: Session){
 
         // Base Url for REST API service.
         this.apiServerUrl = appConfig.apiServerUrl;
@@ -220,15 +222,42 @@ export class DataService {
     async deleteCommunity(community: Object) {
         await fetch;
 
-        let response = this.getHttpClient().fetch('v1/communities/' + community['communityId'], 
+        let obj = {communityType: community['communityType']};
+        let params = QueryString.stringify(obj, {});
+
+        let response = this.getHttpClient().fetch('v1/communities/' + community['communityId']/*+'?'+params*/, 
             {
-                method: 'DELETE'
+                method: 'DELETE',
+                body: JSON.stringify(obj)
+
             }
         );
         return response;
     }
 
 // GLOBAL SERVICES //
+
+    /**
+     * Opens a dialog for creating/editing a resource type.
+     * modelView: the path to the hteml template.
+     * title: title of the dialog.
+     * item: the resource object instance.
+     * okText: text for the submit button.
+     * 
+     * Returns a Promise upon opening the dialog.
+     */
+    async openResourceEditDialog(modelView:string, title:string, item: any, okText:string): Promise<DialogController> {
+        return this.dialogService.openAndYieldController({
+            viewModel: Model, 
+            view: '../model/model.html', 
+            model: {
+                modelView: modelView,
+                title: title, 
+                item: item, 
+                okText: okText,
+            }
+        })
+    }
 
     get tokenExpiredInterceptor() {
         let me = this;
