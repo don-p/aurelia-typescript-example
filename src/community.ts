@@ -143,12 +143,16 @@ export class Community {
   }
 
   deleteCommunity(community: any) {
-    this.dialogService.open({ viewModel: Prompt, model: {
-        question:this.i18n.tr('community.confirmDelete.title') , 
-        message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
-        item: community
-      }
-    }).then(response => {
+    // this.dialogService.open({ viewModel: Prompt, model: {
+    //     question:this.i18n.tr('community.confirmDelete.title') , 
+    //     message: this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
+    //     item: community
+    //   }
+    // })
+    this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
+      this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
+      community, 'Delete')
+    .then(response => {
       if (!response.wasCancelled) {
         // Call the delete service.
         let community = response.output;

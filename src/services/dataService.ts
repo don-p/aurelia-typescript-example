@@ -5,8 +5,9 @@ import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {FetchConfig} from 'aurelia-auth';
 import {AuthService} from 'aurelia-auth';
-import {DialogService, DialogController} from 'aurelia-dialog';
+import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
+import {Prompt} from '../model/prompt';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
@@ -249,12 +250,26 @@ export class DataService {
     async openResourceEditDialog(modelView:string, title:string, item: any, okText:string): Promise<DialogController> {
         return this.dialogService.openAndYieldController({
             viewModel: Model, 
-            view: '../model/model.html', 
+            view: 'model/model.html', 
             model: {
                 modelView: modelView,
                 title: title, 
                 item: item, 
-                okText: okText,
+                okText: okText
+            }
+        })
+    }
+
+    async openPromptDialog(question:string, message:string, item: any, okText:string): Promise<DialogResult> {
+        return this.dialogService.open({ 
+            viewModel: Prompt, 
+            view: 'model/model.html', 
+            model: {
+                modelView: 'model/prompt.html',
+                title: question, 
+                message: message,
+                item: item, 
+                okText: okText
             }
         })
     }
