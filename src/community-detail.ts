@@ -7,7 +7,7 @@ import {DataService} from './services/dataService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {DialogService} from 'aurelia-dialog';
-import {Prompt} from './lib/prompt/prompt';
+import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 
 import * as ag from 'ag-grid';
@@ -265,14 +265,15 @@ export class CommunityDetail {
     this.selectedCommunityMembers = rows;
   }
 
-  deleteCommunityMembers(communityMembers: Array<any>) {
+  deleteCommunityMembers_1(communityMembers: Array<any>) {
     let message = null;
     if(communityMembers.length === 1) {
       message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
           {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
           communityMembers[0].physicalPersonProfile.lastName});
     } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.members.confirmDelete.message');
+      message = this.i18n.tr('community.members.confirmDelete.message',
+          {memberCount: communityMembers.length});
     }
     this.dialogService.open({ viewModel: Prompt, model: {
         question:this.i18n.tr('community.members.confirmDelete.title') , 
@@ -288,7 +289,54 @@ export class CommunityDetail {
       }
     });
   }
-  
+
+  deleteCommunityMembers(communityMembers: Array<any>) {
+    let message = null;
+    if(communityMembers.length === 1) {
+      message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
+          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
+          communityMembers[0].physicalPersonProfile.lastName});
+    } else if(communityMembers.length >= 1) {
+      message = this.i18n.tr('community.members.confirmDelete.message',
+          {memberCount: communityMembers.length});
+    }
+    this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
+      message,
+      null, 'Delete')
+    .then((controller:any) => {
+      let model = controller.settings.model;
+      // Callback function for submitting the dialog.
+      model.submit = (community) => {
+        let comm = {
+          communityId: community.communityId, 
+          communityType: community.communityType
+        };
+        // Call the delete service.
+        this.dataService.deleteCommunity(comm)
+          .then(data => {
+            // Close dialog on success.
+            controller.ok();
+          }, error => {
+            model.errorMessage = "Failed"; 
+            console.debug("Community delete() rejected."); 
+          }).catch(error => {
+            model.errorMessage = "Failed"; 
+            console.debug("Community delete() failed."); 
+            console.debug(error); 
+            return Promise.reject(error);
+          })
+      }
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          console.debug('Cancel');
+        }
+      })
+    });
+  }
+
+
+
 /*
   loadData() {
     //tell grid to set loading overlay while we get our data
