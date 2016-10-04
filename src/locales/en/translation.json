@@ -75,7 +75,7 @@
             "confirmDelete": {
                 "title": "Delete Community Members?",
                 "messageSingle": "Delete the community member '{{memberName}}'?",
-                "message": "Delete the selected community members?"
+                "message": "Delete {{memberCount}} selected community members?"
             }
 
         }            
