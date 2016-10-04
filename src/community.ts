@@ -3,18 +3,17 @@ import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {Session} from './services/session';
 import {DataService} from './services/dataService';
+import {CommunityService} from './services/communityService';
 import {VirtualRepeat} from 'aurelia-ui-virtualization';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {DialogService, DialogController} from 'aurelia-dialog';
-import {Prompt} from './lib/prompt/prompt';
-import {Model} from './model/model';
 import * as Ps from 'perfect-scrollbar';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, DataService, EventAggregator, Ps, I18N, DialogService)
+@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService)
 export class Community {
   communities: any;
   items:Array<Object>;
@@ -29,7 +28,7 @@ export class Community {
   _virtualRepeat: VirtualRepeat;
 
   constructor(private session: Session, private router: Router, private dataService: DataService, 
-    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
+    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
 
     // var Ps = require('perfect-scrollbar');
 
@@ -87,7 +86,7 @@ export class Community {
     var me = this;
 
     if(isAtBottom){
-      return this.dataService.getCommunities(this.commType, topIndex, 
+      return this.communityService.getCommunities(this.commType, topIndex, 
         this._virtualRepeat['_viewsLength'] +  this._virtualRepeat['_bottomBufferHeight'])
       .then(response => response.json())
       .then(data => {
@@ -106,7 +105,7 @@ export class Community {
   }
   getCommunitiesPage(communityType: string, startIndex: number, pageSize: number): Promise<void> {
     var me = this;
-    var cmtysPromise = this.dataService.getCommunities(communityType, startIndex,  pageSize);
+    var cmtysPromise = this.communityService.getCommunities(communityType, startIndex,  pageSize);
     this.cmtysPromise = cmtysPromise;
     return cmtysPromise
     .then(response => response.json())
@@ -155,7 +154,7 @@ export class Community {
           communityType: community.communityType
         };
         // Call the delete service.
-        this.dataService.deleteCommunity(comm)
+        this.communityService.deleteCommunity(comm)
           .then(data => {
             // Close dialog on success.
             controller.ok();
@@ -203,7 +202,7 @@ export class Community {
           communityType: community.communityType,
           membershipType: 'DEFINED'
         };
-        me.dataService.createCommunity(comm)
+        me.communityService.createCommunity(comm)
           .then(response => response.json())
           .then(data => {
             let res = data;
