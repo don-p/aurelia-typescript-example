@@ -4,6 +4,7 @@ import {Router, NavigationInstruction} from 'aurelia-router';
 import {Session} from './services/session';
 import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
+import {CommunityService} from './services/communityService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {DialogService} from 'aurelia-dialog';
@@ -20,7 +21,7 @@ import * as ag from 'ag-grid';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, AppConfig, DataService, EventAggregator, Ps, I18N, DialogService) // SCROLL
+@inject(Session, Router, AppConfig, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -61,7 +62,8 @@ export class CommunityDetail {
 
   
   constructor(private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) { // SCROLL
+    private dataService: DataService, private communityService: CommunityService, 
+    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) { // SCROLL
 
     this.communityMembers = null;
     // this.membersGrid = {};
@@ -216,7 +218,7 @@ export class CommunityDetail {
                 console.debug("..... ..... Filter | " + Object.keys(params.filterModel));
                 console.debug("..... ..... Sort | " + params.sortModel.toString());
                 this.loading = true;
-                me.membersPromise = me.dataService.getCommunity(me.selectedCmty.communityId, params.startRow, me.pageSize);
+                me.membersPromise = me.communityService.getCommunity(me.selectedCmty.communityId, params.startRow, me.pageSize);
                 me.membersPromise.then(response => response.json())
                   .then(data => {
                     if(me.gridDataSource.rowCount === null) {
@@ -247,7 +249,7 @@ export class CommunityDetail {
   
   async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
     var me = this;
-    return this.dataService.getCommunity(communityId, startIndex, this.pageSize)
+    return this.communityService.getCommunity(communityId, startIndex, this.pageSize)
     .then(response => response.json())
     .then(data => {
       console.log(json(data));
@@ -302,17 +304,16 @@ export class CommunityDetail {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
       message,
-      null, 'Delete')
+      communityMembers, 'Delete')
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
-      model.submit = (community) => {
-        let comm = {
-          communityId: community.communityId, 
-          communityType: community.communityType
-        };
+      model.submit = (communityMembers) => {
+        let commMemberIds = communityMembers.map(function(obj){ 
+          return obj.memberId;
+        });
         // Call the delete service.
-        this.dataService.deleteCommunity(comm)
+        this.communityService.deleteCommunity(commMemberIds)
           .then(data => {
             // Close dialog on success.
             controller.ok();
