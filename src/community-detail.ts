@@ -223,7 +223,7 @@ export class CommunityDetail {
                       me.gridDataSource.rowCount = data.totalCount;
                     }
                     me.gridOptions.api.hideOverlay();
-                    params.successCallback(data.responseCollection, data.totalCount-1);
+                    params.successCallback(data.responseCollection, data.totalCount/*-1*/);
                     this.loading = false;
                 });
               }
