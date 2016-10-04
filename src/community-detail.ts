@@ -78,6 +78,7 @@ export class CommunityDetail {
         headerName: '', 
         field: "customerId", 
         width: 30, 
+        minWidth: 30, 
         checkboxSelection: true, 
         suppressMenu: true
       },
@@ -177,6 +178,10 @@ export class CommunityDetail {
         onViewportChanged: function() {
           me.gridOptions['api'].sizeColumnsToFit();
         },
+        onGridSizeChanged: function(){
+          if(!this.api) return;
+          this.api.sizeColumnsToFit();
+        },
         getRowNodeId: function(item) {
           return item.memberId.toString();
         }
@@ -267,31 +272,6 @@ export class CommunityDetail {
     this.selectedCommunityMembers = rows;
   }
 
-  deleteCommunityMembers_1(communityMembers: Array<any>) {
-    let message = null;
-    if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
-          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
-          communityMembers[0].physicalPersonProfile.lastName});
-    } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.members.confirmDelete.message',
-          {memberCount: communityMembers.length});
-    }
-    this.dialogService.open({ viewModel: Prompt, model: {
-        question:this.i18n.tr('community.members.confirmDelete.title') , 
-        message: message
-      }
-    }).then(response => {
-      if (!response.wasCancelled) {
-        // Call the delete service.
-        console.log('Delete');
-      } else {
-        // Cancel.
-        console.log('Cancel');
-      }
-    });
-  }
-
   deleteCommunityMembers(communityMembers: Array<any>) {
     let message = null;
     if(communityMembers.length === 1) {
@@ -304,7 +284,7 @@ export class CommunityDetail {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
       message,
-      communityMembers, 'Delete')
+      communityMembers, this.i18n.tr('button.delete'))
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
@@ -313,16 +293,16 @@ export class CommunityDetail {
           return obj.memberId;
         });
         // Call the delete service.
-        this.communityService.deleteCommunity(commMemberIds)
+        this.communityService.deleteCommunityMembers(this.selectedCmty.communityId, commMemberIds)
           .then(data => {
             // Close dialog on success.
             controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
-            console.debug("Community delete() rejected."); 
+            console.debug("Community member delete() rejected."); 
           }).catch(error => {
             model.errorMessage = "Failed"; 
-            console.debug("Community delete() failed."); 
+            console.debug("Community member delete() failed."); 
             console.debug(error); 
             return Promise.reject(error);
           })
