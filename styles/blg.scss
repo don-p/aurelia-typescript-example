@@ -1015,7 +1015,7 @@ table.blg-dataTable.display tbody td {
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-
+/*
 
 .modal {
   text-align: center;
@@ -1051,22 +1051,13 @@ table.blg-dataTable.display tbody td {
   opacity: 0.75;
   filter: alpha(opacity=75);
 }
-.modal-header {
-  padding: 17px 19px 15px 24px;
-  border-bottom: 2px solid #eceff1;
-}
+
 .modal-header .close {
   margin: 5px 0 0;
   padding: 0;
   font-size: 18px;
   line-height: 1;
   color: $blg-wet-asphalt-light;
-}
-.modal-title {
-  color: $blg-blue;  
-  margin: 0;
-  font-size: 23px;
-  line-height: 30px;
 }
 
 .modal-body {
@@ -1087,6 +1078,8 @@ table.blg-dataTable.display tbody td {
   margin-left: 12px;
 }
 
+*/
+
 a:focus {
     outline: none;
 }
@@ -1094,9 +1087,46 @@ a:focus {
 /* aurelia-dialog style overrides */
 ai-dialog-overlay.active {
     opacity: 0.5 !important;
-    background-color: #000 !important;
+    background-color: $blg-wet-asphalt !important;
 }
 
 ai-dialog {
   display: table !important;
 }
+
+ai-dialog .alert {
+	padding: 5px 10px;
+	margin-bottom: 5px;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	font-size: 13px;
+	line-height: 20px;
+	text-align: left;	
+}
+
+ai-dialog .errorMessage {
+  min-height: 32px;
+}
+
+.modal-header {
+padding: 15px 20px;
+border-bottom: 1px solid $blg-grey-light-more;
+}
+
+.modal-title {
+  color: $blg-blue;  
+  margin: 0;
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+ai-dialog > ai-dialog-footer {
+  padding: 15px !important;
+  border-top: 1px solid $blg-grey-light-more !important;
+}
+
+ai-dialog > ai-dialog-footer button {
+  min-width: 100px;
+  margin-left: 10px !important;
+}	
