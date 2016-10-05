@@ -104,11 +104,6 @@ $btn-social-line-height-base: 1.077;  // ~14px
 
 $btn-font-weight:            normal;
 
-$btn-default-color:          $inverse;
-$btn-default-bg:             $gray-light;
-$btn-hover-bg:               mix($gray-light, white, 80%);
-$btn-active-bg:              mix($gray-light, black, 85%);
-
 $btn-primary-hover-bg:       mix($brand-secondary, white, 80%);
 $btn-primary-active-bg:      mix($brand-secondary, black, 85%);
 
@@ -138,8 +133,8 @@ $btn-hover-bg:               mix($blg-wet-asphalt-light, white, 80%);
 $btn-active-bg:              mix($blg-wet-asphalt-light, black, 85%);
 
 $btn-default-blg-color:     $brand-secondary;
-$btn-default-blg-bg:        $blg-blue-grey;
-$btn-hover-blg-bg:          $blg-white;
+$btn-default-blg-bg:        $blg-white;
+$btn-hover-blg-bg:          $blg-blue-grey;
 $btn-active-blg-bg:         $blg-blue-grey;
 
 $input-font-size-base:     $component-font-size-base;

@@ -165,19 +165,24 @@ form[role=login] button:hover {
 }
 	
 .login-form .form-control {
-    padding-left: 40px;
-	box-shadow: inset 0 0px 1px rgba(0, 0, 0, 0.075);	
+  padding-left: 40px;
+  box-shadow: inset 0 0px 1px rgba(0, 0, 0, 0.075);
+  height: 38px;	
 }
 
 .login-form .form-control + .glyphicon {
-    position: absolute;
-    left: 0;
-	top: 25%;
-    padding: 7px 0 0 30px;
+  position: absolute;
+  left: 0;
+  top: 25%;
+  padding: 7px 0 0 30px;
 }
 
 .errorMessage {
 	min-height: 60px;
+}
+
+.textMessage > div {
+  padding: 0px 15px;
 }
 
 .alert .close {
@@ -465,7 +470,7 @@ header .navbar-nav {
 }
 
 .conversation-list, .community-list {
-  padding: 0px 5px 5px 5px;
+  padding: 0px 5px 5px 0px;
   height: 100%;
   position: relative;
 }
@@ -561,9 +566,9 @@ header .navbar-nav {
 }
 
 .panel-default {
-  padding: 5px 0px 0px 0px;
+  padding: 4px 0px 0px 0px;
   border: none;
-  display: inline-block;
+  display: table-cell;
   width: 100%;
 }
 .panel-default > .panel-heading {
@@ -626,9 +631,13 @@ header .navbar-nav {
 }
 
 .panel-title {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.292;
   font-weight: normal;
+}
+
+.panel-title a{
+  font-size: 16px;
 }
 
 .conv-buttons-bar {
@@ -672,7 +681,7 @@ header .navbar-nav {
 
 .btn-default-blg {
   @include button-variant($btn-default-blg-color, $btn-default-blg-bg, $btn-hover-blg-bg);
-  box-shadow: inset 0px 0px 0px 2px $brand-secondary;
+  box-shadow: inset 0px 0px 0px 1px $brand-secondary;
 }
 
 .btn-default-blg-new {
@@ -1015,78 +1024,6 @@ table.blg-dataTable.display tbody td {
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-
-
-.modal {
-  text-align: center;
-  padding: 0!important;  
-  z-index: 1050;
-}
-
-.modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: -4px;
-}
-
-.modal-dialog {
-  display: inline-block;
-  text-align: left;
-  vertical-align: middle;
-}
-
-.modal-content {
-  background-color: $blg-white;
-  border: 2px solid #eceff1;
-  border-radius: 7px;
-  background-clip: border-box;
-  box-shadow: none;
-}
-.modal-backdrop {
-  background-color: #2e4053;
-}
-.modal-backdrop.in {
-  opacity: 0.75;
-  filter: alpha(opacity=75);
-}
-.modal-header {
-  padding: 17px 19px 15px 24px;
-  border-bottom: 2px solid #eceff1;
-}
-.modal-header .close {
-  margin: 5px 0 0;
-  padding: 0;
-  font-size: 18px;
-  line-height: 1;
-  color: $blg-wet-asphalt-light;
-}
-.modal-title {
-  color: $blg-blue;  
-  margin: 0;
-  font-size: 23px;
-  line-height: 30px;
-}
-
-.modal-body {
-  padding: 20px 24px 20px;
-}
-.modal-body p {
-  font-size: 14px;
-  line-height: 1.625;
-}
-.modal-footer {
-  padding: 19px 22px 20px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-top: none;
-  border-bottom-right-radius: 7px;
-  border-bottom-left-radius: 7px;
-}
-.modal-footer .btn + .btn {
-  margin-left: 12px;
-}
-
 a:focus {
     outline: none;
 }
@@ -1094,9 +1031,49 @@ a:focus {
 /* aurelia-dialog style overrides */
 ai-dialog-overlay.active {
     opacity: 0.5 !important;
-    background-color: #000 !important;
+    background-color: $blg-wet-asphalt !important;
 }
 
 ai-dialog {
+  min-width: 450px !important;
   display: table !important;
+  font-size: 14px;
+}
+
+ai-dialog .alert {
+	padding: 5px 10px;
+	margin-bottom: 5px;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	font-size: 13px;
+	line-height: 20px;
+	text-align: left;	
+}
+
+ai-dialog .errorMessage {
+  min-height: 38px;
+}
+
+.modal-header {
+padding: 15px 20px;
+border-bottom: 1px solid $blg-grey-light-more;
+}
+
+.modal-title {
+  color: $blg-blue;  
+  margin: 0;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.modal-footer {
+  padding: 15px;
+  border-top: 0px;
+}
+
+.modal-footer button {
+  min-width: 100px;
+  margin-left: 10px;
+  font-size: 14px;  
 }
