@@ -4,10 +4,11 @@ import {Router, NavigationInstruction} from 'aurelia-router';
 import {Session} from './services/session';
 import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
+import {CommunityService} from './services/communityService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {DialogService} from 'aurelia-dialog';
-import {Prompt} from './lib/prompt/prompt';
+import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 
 import * as ag from 'ag-grid';
@@ -20,7 +21,7 @@ import * as ag from 'ag-grid';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, AppConfig, DataService, EventAggregator, Ps, I18N, DialogService) // SCROLL
+@inject(Session, Router, AppConfig, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -61,7 +62,8 @@ export class CommunityDetail {
 
   
   constructor(private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) { // SCROLL
+    private dataService: DataService, private communityService: CommunityService, 
+    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) { // SCROLL
 
     this.communityMembers = null;
     // this.membersGrid = {};
@@ -216,14 +218,14 @@ export class CommunityDetail {
                 console.debug("..... ..... Filter | " + Object.keys(params.filterModel));
                 console.debug("..... ..... Sort | " + params.sortModel.toString());
                 this.loading = true;
-                me.membersPromise = me.dataService.getCommunity(me.selectedCmty.communityId, params.startRow, me.pageSize);
+                me.membersPromise = me.communityService.getCommunity(me.selectedCmty.communityId, params.startRow, me.pageSize);
                 me.membersPromise.then(response => response.json())
                   .then(data => {
                     if(me.gridDataSource.rowCount === null) {
                       me.gridDataSource.rowCount = data.totalCount;
                     }
                     me.gridOptions.api.hideOverlay();
-                    params.successCallback(data.responseCollection, data.totalCount-1);
+                    params.successCallback(data.responseCollection, data.totalCount/*-1*/);
                     this.loading = false;
                 });
               }
@@ -247,7 +249,7 @@ export class CommunityDetail {
   
   async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
     var me = this;
-    return this.dataService.getCommunity(communityId, startIndex, this.pageSize)
+    return this.communityService.getCommunity(communityId, startIndex, this.pageSize)
     .then(response => response.json())
     .then(data => {
       console.log(json(data));
@@ -265,14 +267,15 @@ export class CommunityDetail {
     this.selectedCommunityMembers = rows;
   }
 
-  deleteCommunityMembers(communityMembers: Array<any>) {
+  deleteCommunityMembers_1(communityMembers: Array<any>) {
     let message = null;
     if(communityMembers.length === 1) {
       message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
           {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
           communityMembers[0].physicalPersonProfile.lastName});
     } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.members.confirmDelete.message');
+      message = this.i18n.tr('community.members.confirmDelete.message',
+          {memberCount: communityMembers.length});
     }
     this.dialogService.open({ viewModel: Prompt, model: {
         question:this.i18n.tr('community.members.confirmDelete.title') , 
@@ -288,7 +291,53 @@ export class CommunityDetail {
       }
     });
   }
-  
+
+  deleteCommunityMembers(communityMembers: Array<any>) {
+    let message = null;
+    if(communityMembers.length === 1) {
+      message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
+          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
+          communityMembers[0].physicalPersonProfile.lastName});
+    } else if(communityMembers.length >= 1) {
+      message = this.i18n.tr('community.members.confirmDelete.message',
+          {memberCount: communityMembers.length});
+    }
+    this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
+      message,
+      communityMembers, 'Delete')
+    .then((controller:any) => {
+      let model = controller.settings.model;
+      // Callback function for submitting the dialog.
+      model.submit = (communityMembers) => {
+        let commMemberIds = communityMembers.map(function(obj){ 
+          return obj.memberId;
+        });
+        // Call the delete service.
+        this.communityService.deleteCommunity(commMemberIds)
+          .then(data => {
+            // Close dialog on success.
+            controller.ok();
+          }, error => {
+            model.errorMessage = "Failed"; 
+            console.debug("Community delete() rejected."); 
+          }).catch(error => {
+            model.errorMessage = "Failed"; 
+            console.debug("Community delete() failed."); 
+            console.debug(error); 
+            return Promise.reject(error);
+          })
+      }
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          console.debug('Cancel');
+        }
+      })
+    });
+  }
+
+
+
 /*
   loadData() {
     //tell grid to set loading overlay while we get our data
