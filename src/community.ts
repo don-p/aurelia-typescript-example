@@ -20,6 +20,7 @@ export class Community {
   commType: string;
   pageSize: number;
   cmtysPromise: Promise<Response>;
+  modelPromise: Promise<void>;
   ps: any;
 
   navigationInstruction: NavigationInstruction;
@@ -142,10 +143,11 @@ export class Community {
   }
 
   deleteCommunity(community: any) {
+    let me = this;
     this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
-      this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
-      community, 'Delete')
-    .then((controller:any) => {
+      this.i18n.tr('community.confirmDelete.message', {promise: 'cmtyDeletePromise', communityName: community.communityName}),
+      community, this.i18n.tr('button.delete'))
+    .then((controller:DialogController) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
       model.submit = (community) => {
@@ -154,8 +156,22 @@ export class Community {
           communityType: community.communityType
         };
         // Call the delete service.
-        this.communityService.deleteCommunity(comm)
+        me.modelPromise = this.communityService.deleteCommunity(comm)
           .then(data => {
+            /*
+            let item = me.communities.responseCollection.find(function(obj) {
+              return obj.communityId === comm.communityId;
+            })
+            if(typeof item === 'object') {
+              let idx = me.communities.responseCollection.indexOf(item);
+              if(idx >= 0) {
+                me.communities.responseCollection.splice(idx, 1);
+              }
+            }
+            */
+            me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
+              me.selectCommunity(me.selectedItem);
+            });
             // Close dialog on success.
             controller.ok();
           }, error => {
@@ -191,7 +207,7 @@ export class Community {
       title = this.i18n.tr('community.editCommunity');
     }
     this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'))
-    .then((controller:any) => {
+    .then((controller:DialogController) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
       model.submit = (community) => {
@@ -205,7 +221,9 @@ export class Community {
         me.communityService.createCommunity(comm)
           .then(response => response.json())
           .then(data => {
-            let res = data;
+            me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
+              me.selectCommunity(me.selectedItem);
+            });
             // Close dialog on success.
             controller.ok();
           }, error => {

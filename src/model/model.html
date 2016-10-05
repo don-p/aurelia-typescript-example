@@ -1,5 +1,8 @@
 <template>
-  <ai-dialog class="blg-dialog">
+<require from="../lib/loading-mask/loading-mask"></require>
+
+<loading id="model-loading" promise.bind="'modelPromise'" message-key.bind="'app.loading'">
+  <ai-dialog id="model-dialog" class="blg-dialog">
     <div class="modal-header">
         <h4 class="modal-title">${model.title}</h4>
     </div>
@@ -17,9 +20,10 @@
       </section>
     </ai-dialog-body>
 
-    <ai-dialog-footer>
+    <div class="modal-footer">
       <button class="btn btn-default" click.trigger="controller.cancel()">Cancel</button>
       <button class="btn btn-primary" click.trigger="!!(model.submit)?model.submit(model.item):controller.ok(model.item)">${model.okText}</button>
-    </ai-dialog-footer>
+    </div>
   </ai-dialog>
+</loading>
 </template>

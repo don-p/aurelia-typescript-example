@@ -94,7 +94,8 @@ export class Loading {
     this.dimScreen = '<div ref="loadingMask" id="loadingMask-' + maskId + '" class="spinner"><div id="loadingTitle" class="loadingTitle">' + this.title +'</div><div class="mask"></div></div>';
     // this.loadingMask = $.parseHTML(this.dimScreen);
     // $(elementSelector).append(this.loadingMask);
-    $('#' + this.element.parentElement.id).append(this.dimScreen);
+    // $('#' + this.element.parentElement.id).append(this.dimScreen);
+    $('#' + this.element.id).parent().append(this.dimScreen);
     this.loadingMask = $('#loadingMask-' + maskId);
     this.loadingTitle = $('#loadingTitle').css({
       color: '#ffffff',

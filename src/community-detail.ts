@@ -10,8 +10,7 @@ import {I18N} from 'aurelia-i18n';
 import {DialogService} from 'aurelia-dialog';
 import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
-
-import * as ag from 'ag-grid';
+import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid';
 // import {AgGridWrapper} from './lib/ag-grid';
 
 
@@ -38,11 +37,11 @@ export class CommunityDetail {
   // @bindable columns;
   // @bindable rows;
   @bindable pageSize;
-  gridOptions: Object;
+  gridOptions: GridOptions;
   gridCreated: boolean;
   gridColumns: Array<any>;
   grid: any;
-  gridDataSource: ag.IDatasource;
+  gridDataSource: IDatasource;
 
 
   ps: any; // SCROLL
@@ -121,7 +120,7 @@ export class CommunityDetail {
       }
     ];
 
-    this.pageSize = 35;
+    this.pageSize = 200;
 
     var me = this;
     this.evt.subscribe('cmtySelected', payload => {
@@ -195,7 +194,7 @@ export class CommunityDetail {
   }
   initGrid(me) {
     // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
-    new ag.Grid(this.cmtyMembersGrid, this.gridOptions); //create a new grid
+    new Grid(this.cmtyMembersGrid, this.gridOptions); //create a new grid
     // this.agGridWrap.gridCreated = true;
     this.gridOptions['api'].sizeColumnsToFit();
   }
@@ -216,7 +215,7 @@ export class CommunityDetail {
             loading: false,
 
             /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-            getRows: function(params: ag.IGetRowsParams) {
+            getRows: function(params: IGetRowsParams) {
                me.gridOptions.api.showLoadingOverlay();
               if(!this.loading) {
                 console.debug("..... Loading Grid row | startIndex: " + params.startRow);
@@ -295,6 +294,7 @@ export class CommunityDetail {
         // Call the delete service.
         this.communityService.deleteCommunityMembers(this.selectedCmty.communityId, commMemberIds)
           .then(data => {
+            this.gridOptions.api.refreshView().
             // Close dialog on success.
             controller.ok();
           }, error => {
