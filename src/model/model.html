@@ -17,9 +17,9 @@
       </section>
     </ai-dialog-body>
 
-    <ai-dialog-footer>
+    <div class="modal-footer">
       <button class="btn btn-default-blg" click.trigger="controller.cancel()">Cancel</button>
       <button class="btn btn-info" click.trigger="!!(model.submit)?model.submit(model.item):controller.ok(model.item)">${model.okText}</button>
-    </ai-dialog-footer>
+    </div>
   </ai-dialog>
 </template>

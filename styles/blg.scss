@@ -1035,7 +1035,7 @@ ai-dialog-overlay.active {
 }
 
 ai-dialog {
-  min-width: 500px !important;
+  min-width: 450px !important;
   display: table !important;
   font-size: 14px;
 }
@@ -1051,12 +1051,12 @@ ai-dialog .alert {
 }
 
 ai-dialog .errorMessage {
-  min-height: 32px;
+  min-height: 38px;
 }
 
 .modal-header {
 padding: 15px 20px;
-border-bottom: 2px solid $blg-grey-light-more;
+border-bottom: 1px solid $blg-grey-light-more;
 }
 
 .modal-title {
@@ -1067,13 +1067,13 @@ border-bottom: 2px solid $blg-grey-light-more;
   line-height: 30px;
 }
 
-ai-dialog > ai-dialog-footer {
-  padding: 5px 15px 15px 15px !important;
-  border-top: 0px !important;
+.modal-footer {
+  padding: 15px;
+  border-top: 0px;
 }
 
-ai-dialog > ai-dialog-footer button {
+.modal-footer button {
   min-width: 100px;
-  margin-left: 10px !important;
-  font-size: 14px !important;  
+  margin-left: 10px;
+  font-size: 14px;  
 }
