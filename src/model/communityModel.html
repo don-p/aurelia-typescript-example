@@ -1,15 +1,15 @@
 <template>
     <form>
         <div class="col-xs-12">
-            <label i18n='global.name'></label>
-            <input  id="name" i18n='[placeholder]global.name' value.bind="model.item.communityName" class="form-control input-lg" />
+            <label i18n='[prepend]global.name'>: </label>
+            <input  id="name" value.bind="model.item.communityName" class="form-control input-lg" />
         </div>
         <div class="col-xs-12">
-            <label i18n='global.description'></label>
-            <input  id="name" i18n='[placeholder]global.description' value.bind="model.item.communityDescription" class="form-control input-lg" />
+            <label i18n='[prepend]global.description'>: </label>
+            <input  id="name" value.bind="model.item.communityDescription" class="form-control input-lg" />
         </div>
         <div class="col-xs-12">
-            <span  class="community-select-label" i18n='[prepend]global.type'>: </span>
+            <label class="community-select-label" i18n='[prepend]global.type'>: </label>
             <select class="form-control select select-default-blg" value.bind="model.item.communityType">
             <option value="COI" i18n="community.coi"></option>
             <option value="TEAM" i18n="community.team"></option>
