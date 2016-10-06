@@ -159,7 +159,7 @@ export class Community {
         // Call the delete service.
         let promise = this.communityService.deleteCommunity(comm);
         // model.modelPromise = promise;
-        me.modelPromise = promise;
+        // me.modelPromise = promise;
         return promise.then(data => {
             /*
             let item = me.communities.responseCollection.find(function(obj) {

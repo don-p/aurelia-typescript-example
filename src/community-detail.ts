@@ -283,7 +283,7 @@ export class CommunityDetail {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
       message,
-      communityMembers, this.i18n.tr('button.delete'))
+      communityMembers, this.i18n.tr('button.delete'), 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
@@ -294,7 +294,7 @@ export class CommunityDetail {
         // Call the delete service.
         this.communityService.deleteCommunityMembers(this.selectedCmty.communityId, commMemberIds)
           .then(data => {
-            this.gridOptions.api.refreshView().
+            this.gridOptions.api.refreshView();
             // Close dialog on success.
             controller.ok();
           }, error => {
