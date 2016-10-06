@@ -39,11 +39,11 @@ export class App {
       //   break;
       case 401:
         console.log("ResponseError: 401 Unauth");
-        var messageKey = 'error.badCredentials';
         if((this.session.auth['access_token'] && !(this.auth.isAuthenticated()))) {
+          let messageKey = 'error.badCredentials';
           messageKey = 'error.sessionExpired';
+          this.router.navigateToRoute('login', {errorMessage: messageKey});
         }
-        this.router.navigateToRoute('login', {errorMessage: messageKey});
         break;
       case 500:
         console.log("ResponseError: 500 Server");
