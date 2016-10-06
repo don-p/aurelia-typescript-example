@@ -54,10 +54,10 @@
           </div>
 
         <div class="community-list-info-bar">
-          <!--<div class="checkbox checkbox-info">
-            <input id="checkbox-community-all" type="checkbox" class="styled styled-info" value="">
+          <div class="checkbox checkbox-info">
+            <input id="checkbox-community-all" type="checkbox" checked.bind="selectAll" change.delegate="selectAllCommunities($event.target.checked)" class="styled styled-info" value="">
             <label></label>
-          </div>-->
+          </div>
           <div class="community-list-info pull-right">Showing X to XX of XXX entries</div>
         </div>
 
@@ -75,9 +75,10 @@
               <div id="community-list" class="community-list">
                 <ul>
                   <div class="panel-group communities-panel-list list1" id="accordion_communities">
-                    <div repeat.for="community of communities.responseCollection" class='list-item'>
+                    <div repeat.for="community of communities" class='list-item'>
                       <div class="checkbox checkbox-info">
-                          <input id="checkbox-community-${$index}" type="checkbox" class="styled styled-info" value.bind="community.communityId" checked.bind="selectedCommunities">
+                          <input id="checkbox-community-${$index}" type="checkbox" class="styled styled-info" 
+                            change.delegate="onCommunitySelectionChanged()" value.bind="community.communityId" checked.bind="selectedCommunities">
                           <label></label>
                       </div>
                       <div class='panel panel-default'>
