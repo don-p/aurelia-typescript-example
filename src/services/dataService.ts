@@ -35,10 +35,19 @@ export class DataService {
 
         // Set up global http configuration; API url, request/response error handlers.
         var me = this;
-        // let http = new HttpClient().configure(config => {
+        
+        // Inner function to asynchronously wait for result of call to refreshToken.
+        // Called from responseError() handler.
+        var waitRefresh = async function waitRefresh(request: Request) {
+            let refreshResponse = me.refreshToken(me.session.auth['refresh_token'], request);
+            let result = await refreshResponse;
+            return result;
+        };
+
+
         let http = getHttpClient().configure(config => {
             config
-                // Standard config causes Promise to reject 'error' resposes.
+                // Standard config causes Promise to reject 'error' responses.
                 .useStandardConfiguration()
                 // Add the baseUrl for API server.
                 .withBaseUrl(this.apiServerUrl)
@@ -52,30 +61,29 @@ export class DataService {
                 })
                 .withInterceptor({
                     request: function(request) {
-                        console.log(`Requesting ${request.method} ${request.url}`);
+                        console.debug(`Requesting ${request.method} ${request.url}`);
                         return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
                     },
                     response: async function(response, request) {
-                        console.log(`Received ${response.status} ${response.url}`);
-                        if(!(response.status >= 200 && response.status < 300)) {
+                        console.debug(`Received response ${response.status} ${response.url}`);
+                        return response; 
+                    },
+                    responseError: function(response, request) {
+                         console.debug(`Received response error ${response.status} ${response.url}`);
+                       if(!(response.status >= 200 && response.status < 300)) {
                             if((response.status === 401 || response.status === 400) && 
                                 request.url.indexOf('/oauth/token')===-1 &&
                                 me.session.auth['access_token'] && 
                                 !me.auth.isAuthenticated()) { // Special case, refresh expired token.
                                 // Request and save a new access token, using the refresh token.
-                                var result = await me.refreshToken(me.session.auth['refresh_token'], request);
+                                var result = waitRefresh(request);
                                 return result===null?response:result;
                             } else {
                                 // response
                                 me.evt.publish('responseError', response);
-                                return response;
+                                throw response;
                             }
                         }
-                        return response; // you can return a modified Response
-                    },
-                    responseError: function(responseError, request) {
-                        me.evt.publish('responseError', responseError);
-                        throw responseError;
                     }
                 })
                 // Add special interceptor to force inclusion of access_token when token is expired, 
@@ -118,11 +126,10 @@ export class DataService {
         var params = QueryString.stringify(obj, {});
 
         console.debug('Refreshing access token.');
-        var result = await this.getHttpClient().fetch('oauth/token', 
+        let result = await this.getHttpClient().fetch('oauth/token', 
             {
                 method: 'post',
-                // headers: h,
-                // body: body
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: params
            }
         );
