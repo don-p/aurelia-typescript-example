@@ -1013,7 +1013,7 @@ table.blg-dataTable.display tbody td {
 }
 
 .panel-title > a > i {
-  margin-left: 2px;
+  margin-left: 3px;
 }
 .ag-blg .ag-menu {
   border-radius: 4px;
@@ -1081,4 +1081,13 @@ border-bottom: 1px solid $blg-grey-light-more;
 .blg-form-required:after { 
    content: "*";
    color: $blg-red-light;
+}
+
+.members-count {
+  margin: 0px 3px;
+  letter-spacing: -1px;
+}
+
+.checkbox-info {
+  width: 5px;
 }
