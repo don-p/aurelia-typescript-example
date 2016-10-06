@@ -80,10 +80,34 @@ export class CommunityService {
         let obj = {community_type: community['communityType']};
         let params = QueryString.stringify(obj, {});
 
-        let response = this.getHttpClient().fetch('v1/communities/' + community['communityId']+'?'+params, 
+        // let response = this.getHttpClient().fetch('v1/communities/' + community['communityId']+'?'+params, 
+        //     {
+        //         method: 'DELETE'
+        //         // body: JSON.stringify(obj)
+
+        //     }
+        // );
+        var p = new Promise(function(resolve, reject){
+
+            window.setTimeout(
+                function() {
+                    // We fulfill the promise !
+                    resolve('done');
+                }, 10000);
+        });
+        return p
+        // return response;
+    }
+
+    async deleteCommunityMembers(communityId: string, members: Array<string>) {
+        await fetch;
+
+        let obj = {memberIds: members};
+
+        let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members', 
             {
-                method: 'DELETE'
-                // body: JSON.stringify(obj)
+                method: 'DELETE',
+                body: JSON.stringify(obj)
 
             }
         );

@@ -10,8 +10,7 @@ import {I18N} from 'aurelia-i18n';
 import {DialogService} from 'aurelia-dialog';
 import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
-
-import * as ag from 'ag-grid';
+import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid';
 // import {AgGridWrapper} from './lib/ag-grid';
 
 
@@ -38,11 +37,11 @@ export class CommunityDetail {
   // @bindable columns;
   // @bindable rows;
   @bindable pageSize;
-  gridOptions: Object;
+  gridOptions: GridOptions;
   gridCreated: boolean;
   gridColumns: Array<any>;
   grid: any;
-  gridDataSource: ag.IDatasource;
+  gridDataSource: IDatasource;
 
 
   ps: any; // SCROLL
@@ -78,6 +77,7 @@ export class CommunityDetail {
         headerName: '', 
         field: "customerId", 
         width: 30, 
+        minWidth: 30, 
         checkboxSelection: true, 
         suppressMenu: true
       },
@@ -120,7 +120,7 @@ export class CommunityDetail {
       }
     ];
 
-    this.pageSize = 35;
+    this.pageSize = 200;
 
     var me = this;
     this.evt.subscribe('cmtySelected', payload => {
@@ -177,6 +177,10 @@ export class CommunityDetail {
         onViewportChanged: function() {
           me.gridOptions['api'].sizeColumnsToFit();
         },
+        onGridSizeChanged: function(){
+          if(!this.api) return;
+          this.api.sizeColumnsToFit();
+        },
         getRowNodeId: function(item) {
           return item.memberId.toString();
         }
@@ -190,7 +194,7 @@ export class CommunityDetail {
   }
   initGrid(me) {
     // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
-    new ag.Grid(this.cmtyMembersGrid, this.gridOptions); //create a new grid
+    new Grid(this.cmtyMembersGrid, this.gridOptions); //create a new grid
     // this.agGridWrap.gridCreated = true;
     this.gridOptions['api'].sizeColumnsToFit();
   }
@@ -211,7 +215,7 @@ export class CommunityDetail {
             loading: false,
 
             /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-            getRows: function(params: ag.IGetRowsParams) {
+            getRows: function(params: IGetRowsParams) {
                me.gridOptions.api.showLoadingOverlay();
               if(!this.loading) {
                 console.debug("..... Loading Grid row | startIndex: " + params.startRow);
@@ -267,31 +271,6 @@ export class CommunityDetail {
     this.selectedCommunityMembers = rows;
   }
 
-  deleteCommunityMembers_1(communityMembers: Array<any>) {
-    let message = null;
-    if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
-          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
-          communityMembers[0].physicalPersonProfile.lastName});
-    } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.members.confirmDelete.message',
-          {memberCount: communityMembers.length});
-    }
-    this.dialogService.open({ viewModel: Prompt, model: {
-        question:this.i18n.tr('community.members.confirmDelete.title') , 
-        message: message
-      }
-    }).then(response => {
-      if (!response.wasCancelled) {
-        // Call the delete service.
-        console.log('Delete');
-      } else {
-        // Cancel.
-        console.log('Cancel');
-      }
-    });
-  }
-
   deleteCommunityMembers(communityMembers: Array<any>) {
     let message = null;
     if(communityMembers.length === 1) {
@@ -304,7 +283,7 @@ export class CommunityDetail {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
       message,
-      communityMembers, 'Delete')
+      communityMembers, this.i18n.tr('button.delete'))
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
@@ -313,16 +292,17 @@ export class CommunityDetail {
           return obj.memberId;
         });
         // Call the delete service.
-        this.communityService.deleteCommunity(commMemberIds)
+        this.communityService.deleteCommunityMembers(this.selectedCmty.communityId, commMemberIds)
           .then(data => {
+            this.gridOptions.api.refreshView().
             // Close dialog on success.
             controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
-            console.debug("Community delete() rejected."); 
+            console.debug("Community member delete() rejected."); 
           }).catch(error => {
             model.errorMessage = "Failed"; 
-            console.debug("Community delete() failed."); 
+            console.debug("Community member delete() failed."); 
             console.debug(error); 
             return Promise.reject(error);
           })

@@ -12,6 +12,7 @@ export class Model {
   submit: Function;
   model: Object;
   errorMessage: string;
+  modelPromise: string;
 
   constructor(private controller:DialogController) {
 
@@ -20,6 +21,7 @@ export class Model {
   activate(model){
     this.model = model;
     this.errorMessage = null;
+    this.modelPromise = model.modelPromise;
   }
 
   bind(bindingContext: Object, overrideContext: Object) {

@@ -1,5 +1,8 @@
 <template>
-  <ai-dialog class="blg-dialog">
+<require from="../lib/loading-mask/loading-mask"></require>
+
+<loading id="model-loading" promise.bind="'modelPromise'" message-key.bind="'app.loading'">
+  <ai-dialog id="model-dialog" class="blg-dialog">
     <div class="modal-header">
         <h4 class="modal-title">${model.title}</h4>
     </div>
@@ -22,4 +25,5 @@
       <button class="btn btn-info" click.trigger="!!(model.submit)?model.submit(model.item):controller.ok(model.item)">${model.okText}</button>
     </div>
   </ai-dialog>
+</loading>
 </template>
