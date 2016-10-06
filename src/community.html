@@ -26,15 +26,15 @@
             <a id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]community.createCommunity'>
               <i class="ico-users-plus"></i>
             </a>
-            <!--<a id="btn-communities-delete-community" class="btn btn-danger btn-xs-square" i18n='[title]community.deleteCommunity'>
-              <i class="ico-users-cancel"></i>
-            </a>-->
             <a id="btn-community-make-call" class="btn btn-success btn-xs-square " i18n="[title]community.makeCall">
               <i class="ico-phone2"></i>
             </a>            
             <a id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]community.sendAlert'>
               <i class="ico-bullhorn center"></i>
             </a>
+            <a id="btn-communities-send-voice" class="btn btn-primary btn-xs-square disabled" i18n='[title]community.sendVoiceAlert'>
+              <i class="ico-mic5 center"></i>
+            </a>            
             <div class="right-select">
               <span  class="community-select-label" i18n='[prepend]community.commType'>: </span>
               <select class="form-control select select-default-blg" value.bind="commType" change.delegate="selectCommunityType(commType)">

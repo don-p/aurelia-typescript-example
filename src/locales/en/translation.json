@@ -63,6 +63,7 @@
         "communityDesc": "Community Description",
         "communityType": "Community Type",
         "sendAlert":"Send alert",
+        "sendVoiceAlert":"Send voice alert",        
         "owner":"OWNER",
         "members": {
             "firstname": "First Name",

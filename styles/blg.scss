@@ -415,7 +415,7 @@ header .navbar-nav {
 }
 
 .blg-left-panel .blg-location-content {
-  padding: 3px 10px 0px 0px;
+  padding: 12px 10px 0px 0px;
   position: absolute;
   top: 170px;
   bottom: 15px;
@@ -522,7 +522,7 @@ header .navbar-nav {
 }
 
 .community-list-info-bar {
-  padding: 0px 15px;
+  padding: 0px 15px 0px 10px;
   position: absolute;
   top: 147px;
   left: 0px;
@@ -566,9 +566,9 @@ header .navbar-nav {
 }
 
 .panel-default {
-  padding: 4px 0px 0px 0px;
+  padding: 5px 0px 0px 0px;
   border: none;
-  display: table-cell;
+  display: inline-block;
   width: 100%;
 }
 .panel-default > .panel-heading {
@@ -1076,4 +1076,9 @@ border-bottom: 1px solid $blg-grey-light-more;
   min-width: 100px;
   margin-left: 10px;
   font-size: 14px;  
+}
+
+.blg-form-required:after { 
+   content: "*";
+   color: $blg-red-light;
 }
