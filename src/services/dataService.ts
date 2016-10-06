@@ -213,7 +213,7 @@ export class DataService {
                 item: item, 
                 okText: okText
             }
-        })
+        });
     }
 
     get tokenExpiredInterceptor() {
