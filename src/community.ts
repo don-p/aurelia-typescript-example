@@ -15,7 +15,7 @@ const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(
 
 @inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService)
 export class Community {
-  communities: any;
+  communities: Array<Object>;
   items:Array<Object>;
   commType: string;
   pageSize: number;
@@ -26,6 +26,7 @@ export class Community {
   navigationInstruction: NavigationInstruction;
   selectedItem: Object;
   selectedCommunities: Array<String>;
+  selectAll: boolean;
   _virtualRepeat: VirtualRepeat;
 
   constructor(private session: Session, private router: Router, private dataService: DataService, 
@@ -34,7 +35,7 @@ export class Community {
     // var Ps = require('perfect-scrollbar');
 
     this.ps = Ps;
-    this.communities = {};
+    this.communities = [];
     this.communities['responseCollection'] = [];
     this.pageSize = 500;
     this.selectedItem = null;
@@ -111,7 +112,7 @@ export class Community {
     return cmtysPromise
     .then(response => response.json())
     .then(data => {
-      me.communities = data;
+      me.communities = data.responseCollection;
      }, error => {
        console.log("Communities list() rejected."); 
        console.debug(me.cmtysPromise.isRejected().toString());
@@ -132,8 +133,8 @@ export class Community {
   }
 
   selectDefaultCommunity() {
-    if(this.communities && this.communities.responseCollection.length > 0) {
-      this.selectCommunity(this.communities.responseCollection[0]);
+    if(this.communities && this.communities.length > 0) {
+      this.selectCommunity(this.communities[0]);
     }
   }
 
@@ -141,6 +142,26 @@ export class Community {
     this.selectedItem = community;
     this.evt.publish('cmtySelected', {community: community});
   }
+
+  selectAllCommunities(selected: boolean) {
+    if(selected) {
+      this.selectedCommunities = this.communities.map(function(com:any){
+        return com.communityId;
+      });
+    } else {
+      this.selectedCommunities = [];
+    }
+    console.log(selected);
+  }
+
+  onCommunitySelectionChanged(event) {
+    if(this.selectedCommunities.length == this.communities.length) {
+      this.selectAll = true;
+    } else {
+      this.selectAll = false;
+    }
+  }
+
 
   deleteCommunity(community: any) {
     let me = this;
