@@ -148,7 +148,7 @@ export class Community {
     this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
       this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
       community, this.i18n.tr('button.delete'), 'modelPromise')
-    .then((controller:DialogController) => {
+    .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
       model.submit = (community) => {
@@ -210,7 +210,7 @@ export class Community {
       title = this.i18n.tr('community.editCommunity');
     }
     this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'))
-    .then((controller:DialogController) => {
+    .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
       model.submit = (community) => {

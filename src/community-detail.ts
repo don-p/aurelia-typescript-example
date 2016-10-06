@@ -7,7 +7,7 @@ import {DataService} from './services/dataService';
 import {CommunityService} from './services/communityService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
-import {DialogService} from 'aurelia-dialog';
+import {DialogService, DialogController} from 'aurelia-dialog';
 import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid';
