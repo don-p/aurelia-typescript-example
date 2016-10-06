@@ -8,7 +8,7 @@
             <label i18n='[prepend]global.description'>: </label>
             <input  id="name" value.bind="model.item.communityDescription" class="form-control input-lg" />
         </div>
-        <div class="col-xs-12">
+        <div if.bind="(!(model.item.communityId) || model.item.communityId == null)" class="col-xs-12">
             <label class="blg-form-required community-select-label" i18n='[prepend]global.type'>: </label>
             <select class="form-control select select-default-blg" value.bind="model.item.communityType">
             <option value="COI" i18n="community.coi"></option>
