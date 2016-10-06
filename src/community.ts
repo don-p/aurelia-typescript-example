@@ -144,9 +144,10 @@ export class Community {
 
   deleteCommunity(community: any) {
     let me = this;
+    this.modelPromise = null;
     this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
-      this.i18n.tr('community.confirmDelete.message', {promise: 'cmtyDeletePromise', communityName: community.communityName}),
-      community, this.i18n.tr('button.delete'))
+      this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
+      community, this.i18n.tr('button.delete'), 'modelPromise')
     .then((controller:DialogController) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
@@ -156,8 +157,10 @@ export class Community {
           communityType: community.communityType
         };
         // Call the delete service.
-        me.modelPromise = this.communityService.deleteCommunity(comm)
-          .then(data => {
+        let promise = this.communityService.deleteCommunity(comm);
+        // model.modelPromise = promise;
+        me.modelPromise = promise;
+        return promise.then(data => {
             /*
             let item = me.communities.responseCollection.find(function(obj) {
               return obj.communityId === comm.communityId;
@@ -182,7 +185,7 @@ export class Community {
             console.debug("Community delete() failed."); 
             console.debug(error); 
             return Promise.reject(error);
-          })
+          });
       }
       controller.result.then((response) => {
         if (response.wasCancelled) {

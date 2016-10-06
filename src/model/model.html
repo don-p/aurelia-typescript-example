@@ -7,22 +7,22 @@
         <h4 class="modal-title">${model.title}</h4>
     </div>
     <ai-dialog-body>
-        <section class="container">
+        <section>
             <div class="row errorMessage">
                 <div class="col-xs-12">
                     <div i18n="[append]${model.errorMessage}" if.bind="(model.errorMessage && !(model.errorMessage===undefined))" class="alert alert-danger fade in">
                     </div>	
                 </div>
             </div>			
-            <div class="row">
+            <div class="row textMessage">
                 <compose view="${model.modelView}" containerless></compose>
             </div>
       </section>
     </ai-dialog-body>
 
     <div class="modal-footer">
-      <button class="btn btn-default" click.trigger="controller.cancel()">Cancel</button>
-      <button class="btn btn-primary" click.trigger="!!(model.submit)?model.submit(model.item):controller.ok(model.item)">${model.okText}</button>
+      <button class="btn btn-default-blg" click.trigger="controller.cancel()">Cancel</button>
+      <button class="btn btn-info" click.trigger="!!(model.submit)?model.submit(model.item):controller.ok(model.item)">${model.okText}</button>
     </div>
   </ai-dialog>
 </loading>
