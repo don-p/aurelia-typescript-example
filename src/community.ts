@@ -225,9 +225,12 @@ export class Community {
     let me = this;
     let title = '';
     if(community === null) {
+      // Create an empty object model for creation.
       community = {};
       title = this.i18n.tr('community.createCommunity');
     } else {
+      // Clone the object so we do not edit the live/bound model.
+      community = Object.assign({}, community);
       title = this.i18n.tr('community.editCommunity');
     }
     this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'))
