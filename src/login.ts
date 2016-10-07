@@ -7,12 +7,13 @@ import {Session} from './services/session';
 import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
 import {Utils} from './services/util';
+import {FetchConfig, AuthService} from 'aurelia-auth';
 
 // import {Validator} from 'aurelia-validation';
 // import {required, email} from 'aurelia-validatejs';
 
 
-@inject(Session, Router, AppConfig, DataService, Utils, DialogService, I18N)
+@inject(Session, Router, AppConfig, DataService, Utils, DialogService, I18N, AuthService)
 export class Login {
   heading: string = 'BlueLine Grid Command 2.0';
 //  @required
@@ -34,7 +35,7 @@ export class Login {
   };
 
   constructor(private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private utils: Utils, private dialogService: DialogService, private i18n: I18N) {
+    private dataService: DataService, private utils: Utils, private dialogService: DialogService, private i18n: I18N, private authService: AuthService) {
       
   }
 
@@ -59,8 +60,12 @@ export class Login {
     .then((data:any) => {
       console.log(json(data));
       if(data && data!==null) {
+        let auth = {};
+        auth['refresh_token'] = data.refresh_token;
+        auth['member'] = data.member;
         me.session.auth = data;
         me.session.auth['isLoggedIn'] = true;
+        me.authService['auth'].storage.set('auth', JSON.stringify(auth));
         this.errorMessage = '';
         if(data.mfa.isRequired) {
           me.router.navigateToRoute('login-2');          

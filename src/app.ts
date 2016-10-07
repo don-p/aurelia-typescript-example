@@ -13,10 +13,19 @@ export class App {
   session: Session;
 
   constructor(Session, private fetchConfig: FetchConfig, private i18n: I18N, 
-    private evt: EventAggregator, private auth: AuthService, private dataService: DataService) {
+    private evt: EventAggregator, private authService: AuthService, private dataService: DataService) {
     this.session = Session;
 
-    this.session.auth['isLoggedIn'] = false;
+ 
+    let auth = this.authService['auth'].storage.get('auth');
+    if(typeof auth === 'string') {
+      auth = JSON.parse(auth);
+      auth['access_token'] = this.authService['auth'].getToken();
+      this.session.auth = auth;
+      this.session.auth['isLoggedIn'] = true;
+    } else {
+      this.session.auth['isLoggedIn'] = false;      
+    }
     
     // Subscribe to request/response errors.
     this.evt.subscribe('responseError', payload => {
@@ -39,7 +48,7 @@ export class App {
       //   break;
       case 401:
         console.log("ResponseError: 401 Unauth");
-        if((this.session.auth['access_token'] && !(this.auth.isAuthenticated()))) {
+        if((this.session.auth['access_token'] && !(this.authService.isAuthenticated()))) {
           let messageKey = 'error.badCredentials';
           messageKey = 'error.sessionExpired';
           this.router.navigateToRoute('login', {errorMessage: messageKey});
@@ -141,6 +150,8 @@ export class App {
   //  .then(response => response.json())
     .then(data => {
       console.log(data);
+      me.authService['auth'].storage.remove(me.authService['tokenName']);
+      me.authService['auth'].storage.remove('auth');
       if(data && data!==null) {
         me.router.navigateToRoute('login');
       } else {
