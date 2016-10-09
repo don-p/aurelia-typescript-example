@@ -1085,9 +1085,24 @@ border-bottom: 1px solid $blg-grey-light-more;
 
 .members-count {
   margin: 0px 3px;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
+  vertical-align: top;
+}
+
+.long-name {
+  position: relative;
+  left: -7px;  
 }
 
 .checkbox-info {
   width: 5px;
+}
+
+.community-long-name {
+  display: inline-block;
+  width: 290px;
+  max-height: 19px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
