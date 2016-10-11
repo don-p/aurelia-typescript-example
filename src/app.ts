@@ -47,7 +47,7 @@ export class App {
       //   this.router.navigateToRoute('login', {errorMessage: 'error.badCredentials'});
       //   break;
       case 401:
-        console.log("ResponseError: 401 Unauth");
+        console.log("handler - ResponseError: 401 Unauthorized");
         if((this.session.auth['access_token'] && !(this.authService.isAuthenticated()))) {
           let messageKey = 'error.badCredentials';
           messageKey = 'error.sessionExpired';
@@ -55,7 +55,7 @@ export class App {
         }
         break;
       case 500:
-        console.log("ResponseError: 500 Server");
+        console.log("handler - ResponseError: 500 Server");
         console.error(response);
         this.router.navigateToRoute('login', {errorMessage: 'error.serverNotAvailable'});
         break;
