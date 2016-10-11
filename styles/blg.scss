@@ -1117,7 +1117,7 @@ border-bottom: 1px solid $blg-grey-light-more;
 
 .community-long-name {
   display: inline-block;
-  width: 290px;
+  max-width: 288px;
   max-height: 19px;
   white-space: nowrap;
   overflow: hidden;
