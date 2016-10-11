@@ -53,7 +53,7 @@ export class CommunityService {
      */
     async getCommunity(communityId: string, startIndex: number, pageSize:number): Promise<Response> {
         await fetch;
-        var response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members?start_index=' + 
+        let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members?start_index=' + 
             startIndex + '&page_size=' + pageSize, 
             {
                 method: 'GET',
@@ -65,9 +65,12 @@ export class CommunityService {
     async createCommunity(community: Object) {
         await fetch;
 
-        let response = this.getHttpClient().fetch('v1/communities', 
+        let method = (typeof community['communityId'] !== 'string')?'POST':'PUT';
+        let path = (typeof community['communityId'] !== 'string')?'':'/'+community['communityId'];
+        
+        let response = this.getHttpClient().fetch('v1/communities'+path, 
             {
-                method: (typeof community['communityId'] !== 'string')?'POST':'PUT',
+                method: method,
                 body: JSON.stringify(community)
             }
         );
@@ -116,4 +119,18 @@ export class CommunityService {
         return response;
     }
 
+
+    // ORGANIZATION
+
+    async getOrgMembers(organizationId: string): Promise<Response> {
+        await fetch;
+        let response = this.getHttpClient().fetch('v1/organizations/' + organizationId + '/members?start_index=' + 
+            0 + '&page_size=' + 5000, 
+            {
+                method: 'GET',
+            }
+        );
+        return response;
+
+    }
 }

@@ -140,6 +140,7 @@ export class Community {
 
   selectCommunity(community: Object) {
     this.selectedItem = community;
+    this.selectedCommunities = [];
     this.evt.publish('cmtySelected', {community: community});
   }
 
@@ -249,6 +250,9 @@ export class Community {
           .then(response => response.json())
           .then(data => {
             me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
+              if(community === null || typeof community.communityId !== 'string') {
+                me.selectedItem = data;
+              }
               me.selectCommunity(me.selectedItem);
             });
             // Close dialog on success.

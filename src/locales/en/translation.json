@@ -77,7 +77,8 @@
                 "title": "Delete Community Members?",
                 "messageSingle": "Delete the community member '{{memberName}}'?",
                 "message": "Delete {{memberCount}} selected community members?"
-            }
+            },
+            "addMembers": "Add Community Members"
 
         }            
     },
