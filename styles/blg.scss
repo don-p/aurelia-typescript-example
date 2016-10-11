@@ -695,6 +695,10 @@ header .navbar-nav {
     border-color: $brand-secondary;
 }
 
+.btn-default-blg:hover {
+    background-color: $blg-blue-grey;
+}
+
 .community-select-label {
   display: table-cell;
   vertical-align: middle;
@@ -781,7 +785,7 @@ header .navbar-nav {
 .received-table .received-table-content {
   padding: 0px 5px 0px 5px;
   position: absolute;
-  top: 134px;
+  top: 155px;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -879,7 +883,8 @@ header .navbar-nav {
 }
 
 .members-table-info {
-    padding-top: 8px;
+    padding-top: 5px;
+    display: table;
 }
 
 .blg-dataTable {
@@ -990,14 +995,26 @@ table.blg-dataTable.display tbody td {
   float: left;  
 }
 
-.filter-label {
-  margin-bottom: 5px;
+.filter-label-text {
   position: relative;
-  bottom: 3px;  
+  bottom: 2px;
+  height: 50px;
+  display: table-cell;
+  white-space: nowrap;  
+}
+
+.filter-labels {
+  display: table-cell;
+  vertical-align: top;
+  position: relative;
+  left: 5px;
 }
 
 .table-label-blg {
+  display: inline-block;  
   font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 4px;
   vertical-align: super;
   background-color: $blg-blue-greyer;
   color: $blg-wet-asphalt-light;
@@ -1085,9 +1102,25 @@ border-bottom: 1px solid $blg-grey-light-more;
 
 .members-count {
   margin: 0px 3px;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
+  vertical-align: top;
+}
+
+.long-name {
+  position: relative;
+  left: -7px;  
 }
 
 .checkbox-info {
   width: 5px;
 }
+
+.community-long-name {
+  display: inline-block;
+  width: 290px;
+  max-height: 19px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
