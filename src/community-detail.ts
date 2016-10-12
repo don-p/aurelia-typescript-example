@@ -269,16 +269,6 @@ export class CommunityDetail {
   membersSelectionChanged(scope) {
     let rows = scope.api.getSelectedRows();
     this.selectedCommunityMembers = rows;
-
-    let disabledButtons = ['btn-members-make-call','btn-members-send-alert','btn-members-start-conversation','btn-members-delete-member','btn-members-transfer-ownership'];
-    for (var i = 0; i < disabledButtons.length; i++) {
-      if(rows.length === 0) {
-        document.getElementById(disabledButtons[i]).classList.add('disabled');
-      }
-      else {
-        document.getElementById(disabledButtons[i]).classList.remove('disabled');
-      }
-    }
   }
 
   deleteCommunityMembers(communityMembers: Array<any>) {
