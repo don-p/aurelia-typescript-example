@@ -1,4 +1,5 @@
-﻿import {Aurelia} from 'aurelia-framework';
+﻿import {Aurelia, LogManager} from 'aurelia-framework';
+import {ConsoleAppender} from "aurelia-logging-console";
 // we want font-awesome to load as soon as possible to show the fa-spinner
  // Vendor CSS libs:
 import 'font-awesome/scss/font-awesome.scss';
@@ -43,6 +44,7 @@ bootstrap(aurelia => {
 
 export async function configure(aurelia: Aurelia) {
 
+  let environment = '%RUNTIME_ENVIRONMENT%';
   // Language detector options.
   var options = {
     // order and from where user language should be detected
@@ -73,10 +75,12 @@ export async function configure(aurelia: Aurelia) {
   // polyfill fetch client conditionally
   const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
+  LogManager.setLevel(LogManager.logLevel.debug);
+  LogManager.addAppender(new ConsoleAppender());
   
   aurelia.use
     .standardConfiguration()
-    .developmentLogging()
+    // .developmentLogging()
     // .globalResources('services/remoteDataAttribute')
     .plugin('aurelia-auth', (baseConfig)=>{
       baseConfig.configure(config.default);
@@ -118,6 +122,9 @@ export async function configure(aurelia: Aurelia) {
         });
         return pr;
       })
+      // .plugin('aurelia-configuration', config => {
+      //   config.setEnvironment(environment); 
+      // })
       .plugin('aurelia-dialog')
       // .plugin('aurelia-ui-virtualization')
       ;

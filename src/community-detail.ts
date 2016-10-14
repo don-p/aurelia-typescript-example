@@ -1,4 +1,5 @@
-import {inject, Lazy, bindable} from 'aurelia-framework';
+import {inject, Lazy, bindable, LogManager} from 'aurelia-framework';
+import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {Session} from './services/session';
@@ -20,7 +21,7 @@ import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, AppConfig, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService) // SCROLL
+@inject(Session, Router, AppConfig, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -46,6 +47,7 @@ export class CommunityDetail {
 
   ps: any; // SCROLL
 
+  logger: Logger;
 
   //   columnDefs = [
   //     {headerName: "Make", field: "make"},
@@ -136,6 +138,7 @@ export class CommunityDetail {
         me.setGridDataSource(me);
       }
     });
+    this.logger = LogManager.getLogger(this.constructor.name);
   }
 
   attached(params, navigationInstruction) {
@@ -192,6 +195,13 @@ export class CommunityDetail {
     this.initGrid(this);
 
   }
+
+  findGridColumnDef(fieldName: string):Object {
+    return this.gridOptions.columnDefs.find(function(colDef: Object){
+      return colDef['field'] === fieldName;
+    });
+  }
+
   initGrid(me) {
     // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
     new Grid(this.cmtyMembersGrid, this.gridOptions); //create a new grid
@@ -218,10 +228,11 @@ export class CommunityDetail {
             getRows: function(params: IGetRowsParams) {
                me.gridOptions.api.showLoadingOverlay();
               if(!this.loading) {
-                console.debug("..... Loading Grid row | startIndex: " + params.startRow);
-                console.debug("..... ..... Filter | " + Object.keys(params.filterModel));
-                console.debug("..... ..... Sort | " + params.sortModel.toString());
+                me.logger.debug("..... Loading Grid row | startIndex: " + params.startRow);
+                me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
+                me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
                 this.loading = true;
+                let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
                 me.membersPromise = me.communityService.getCommunity(me.selectedCmty.communityId, params.startRow, me.pageSize);
                 me.membersPromise.then(response => response.json())
                   .then(data => {
@@ -252,17 +263,17 @@ export class CommunityDetail {
   // }
   
   async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
-    var me = this;
+    let me = this;
     return this.communityService.getCommunity(communityId, startIndex, this.pageSize)
     .then(response => response.json())
     .then(data => {
-      console.log(json(data));
+      me.logger.debug(json(data));
 //      this.session=me.session;
       me.communityMembers = data.responseCollection;
       // me.agGridWrap.rowsChanged(me.communityMembers, null);
     }).catch(error => {
-      console.log("Communities members() failed."); 
-      console.log(error); 
+      me.logger.error("Communities members() failed."); 
+      me.logger.error(error); 
     });
   }
 
@@ -273,6 +284,8 @@ export class CommunityDetail {
 
   deleteCommunityMembers(communityMembers: Array<any>) {
     let message = null;
+    var me = this;
+
     if(communityMembers.length === 1) {
       message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
           {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
@@ -294,26 +307,77 @@ export class CommunityDetail {
         // Call the delete service.
         this.communityService.deleteCommunityMembers(this.selectedCmty.communityId, commMemberIds)
           .then(data => {
-            this.gridOptions.api.refreshView();
+            me.gridOptions.api.refreshVirtualPageCache();
+            me.gridOptions.api.refreshView();
+            me.gridOptions.api.deselectAll();
             // Close dialog on success.
             controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
-            console.debug("Community member delete() rejected."); 
+            me.logger.error("Community member delete() rejected."); 
           }).catch(error => {
             model.errorMessage = "Failed"; 
-            console.debug("Community member delete() failed."); 
-            console.debug(error); 
+            me.logger.error("Community member delete() failed."); 
+            me.logger.error(error); 
             return Promise.reject(error);
           })
       }
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.
-          console.debug('Cancel');
+          this.logger.debug('Cancel');
         }
       })
     });
+  }
+
+  addCommunityMembers() {
+    let message = null;
+    let membersList = [];
+    let organizationId = this.session.auth['organization'].organizationId;
+    let me = this;
+
+    this.communityService.getOrgMembers(organizationId)
+    .then(response => response.json())
+    .then(data => {
+      Array.prototype.push.apply(membersList, data.responseCollection);
+      // membersList = membersList.concat(data.responseCollection);
+    });
+    this.dataService.openResourceEditDialog('model/communityMembersModel.html', this.i18n.tr('community.members.addMembers'),
+      membersList, this.i18n.tr('button.delete'))
+    .then((controller:any) => {
+      let model = controller.settings.model;
+      // Callback function for submitting the dialog.
+      model.submit = (communityMembers) => {
+        let commMemberIds = communityMembers.map(function(obj){ 
+          return obj.memberId;
+        });
+
+        // Call the delete service.
+        this.communityService.deleteCommunityMembers(this.selectedCmty.communityId, commMemberIds)
+          .then(data => {
+            this.gridOptions.api.refreshView();
+            // Close dialog on success.
+            controller.ok();
+          }, error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member delete() rejected."); 
+          }).catch(error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member delete() failed."); 
+            me.logger.error(error); 
+            return Promise.reject(error);
+          })
+      }
+
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          this.logger.debug('Cancel');
+        }
+      })
+    });
+    
   }
 
 

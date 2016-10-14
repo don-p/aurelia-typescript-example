@@ -107,12 +107,12 @@ export class CommunityService {
     async deleteCommunityMembers(communityId: string, members: Array<string>) {
         await fetch;
 
-        let obj = {memberIds: members};
+        // let obj = {memberIds: members};
 
         let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members', 
             {
                 method: 'DELETE',
-                body: JSON.stringify(obj)
+                body: JSON.stringify(members)
 
             }
         );
