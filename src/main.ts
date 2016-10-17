@@ -15,7 +15,9 @@ import '../styles/theme-blg.styl';
 import 'bootstrap-sass/assets/javascripts/bootstrap.js';
 // Framework modules:
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
-import * as config from './config/authConfig';
+import {Configure} from "aurelia-configuration";
+import {AuthConfig} from './config/authConfig';
+// import * as config from './config/authConfig';
 import {I18N} from 'aurelia-i18n';
 import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
 import Backend from 'i18next-xhr-backend';
@@ -45,6 +47,7 @@ bootstrap(aurelia => {
 export async function configure(aurelia: Aurelia) {
 
   let environment = '%RUNTIME_ENVIRONMENT%';
+  let authConfig = aurelia.container.get(AuthConfig);
   // Language detector options.
   var options = {
     // order and from where user language should be detected
@@ -82,8 +85,16 @@ export async function configure(aurelia: Aurelia) {
     .standardConfiguration()
     // .developmentLogging()
     // .globalResources('services/remoteDataAttribute')
+    .plugin('aurelia-configuration', config => {
+      config.setDirectory('src/config'); // Will make plugin look for config files in a directory called "config-files"
+      config.setConfig('appConfig.json'); // Will look for mycoolconfig.json as the configuration file
+      config.setEnvironment(environment); 
+    })
     .plugin('aurelia-auth', (baseConfig)=>{
-      baseConfig.configure(config.default);
+      let configInstance = aurelia.container.get(Configure);
+      let apiServerUrl = configInstance.get('api.serverUrl'); 
+      authConfig.config.baseUrl = apiServerUrl;
+      baseConfig.configure(authConfig.config);
     })
 //       .plugin('aurelia-i18n')
 
@@ -122,9 +133,6 @@ export async function configure(aurelia: Aurelia) {
         });
         return pr;
       })
-      // .plugin('aurelia-configuration', config => {
-      //   config.setEnvironment(environment); 
-      // })
       .plugin('aurelia-dialog')
       // .plugin('aurelia-ui-virtualization')
       ;

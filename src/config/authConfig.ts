@@ -1,8 +1,12 @@
+export class AuthConfig {
+    config: Object;
 
+  constructor() {
 
+      this.config = {};
 
-var configForDevelopment = {
-    baseUrl: '%API_SERVER_URL%',
+let configForDevelopment = {
+    baseUrl: '',
     loginUrl: 'oauth/token',
     providers: {
         google: {
@@ -18,7 +22,7 @@ var configForDevelopment = {
     }
 };
 
-var configForProduction = {
+let configForProduction = {
     baseUrl: '%API_SERVER_URL%',
     loginUrl: 'oauth/token',
     providers: {
@@ -35,7 +39,7 @@ var configForProduction = {
 
     }
 };
-var config ;
+let config ;
 if (window.location.hostname==='localhost') {
     config = configForDevelopment;
 }
@@ -43,6 +47,9 @@ else{
     config = configForProduction;
 }
 
+this.config = config;
 
-export default config;
+// export default config;
+}
 
+}

@@ -3,7 +3,6 @@ import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {Session} from './services/session';
-import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
 import {CommunityService} from './services/communityService';
 import {EventAggregator} from 'aurelia-event-aggregator';
@@ -21,7 +20,7 @@ import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, AppConfig, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager) // SCROLL
+@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -62,7 +61,7 @@ export class CommunityDetail {
   // ];
 
   
-  constructor(private session: Session, private router: Router, private appConfig: AppConfig, 
+  constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, 
     private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) { // SCROLL
 

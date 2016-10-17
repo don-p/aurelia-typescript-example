@@ -5,7 +5,6 @@ import {Router, NavigationInstruction} from 'aurelia-router';
 import {DialogService} from 'aurelia-dialog';
 import {I18N} from 'aurelia-i18n';
 import {Session} from './services/session';
-import {AppConfig} from './services/appConfig';
 import {DataService} from './services/dataService';
 import {Utils} from './services/util';
 import {FetchConfig, AuthService} from 'aurelia-auth';
@@ -14,7 +13,7 @@ import {FetchConfig, AuthService} from 'aurelia-auth';
 // import {required, email} from 'aurelia-validatejs';
 
 
-@inject(Session, Router, AppConfig, DataService, Utils, DialogService, I18N, AuthService, LogManager)
+@inject(Session, Router, DataService, Utils, DialogService, I18N, AuthService, LogManager)
 export class Login {
   heading: string = 'BlueLine Grid Command 2.0';
 //  @required
@@ -38,8 +37,8 @@ export class Login {
   logger: Logger;
 
 
-  constructor(private session: Session, private router: Router, private appConfig: AppConfig, 
-    private dataService: DataService, private utils: Utils, private dialogService: DialogService, private i18n: I18N, private authService: AuthService) {
+  constructor(private session: Session, private router: Router, private dataService: DataService, 
+    private utils: Utils, private dialogService: DialogService, private i18n: I18N, private authService: AuthService) {
       
     this.logger = LogManager.getLogger(this.constructor.name);
   }
