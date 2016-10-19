@@ -152,7 +152,7 @@ export class App {
     return this.dataService.logout()
   //  .then(response => response.json())
     .then(data => {
-      me.logger.debug(data);
+      me.logger.debug("Logged out");
       me.authService['auth'].storage.remove(me.authService['tokenName']);
       me.authService['auth'].storage.remove('auth');
       if(data && data!==null) {

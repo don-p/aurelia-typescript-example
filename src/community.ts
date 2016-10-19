@@ -96,8 +96,8 @@ export class Community {
       return this.communityService.getCommunities(this.commType, topIndex, 
         this._virtualRepeat['_viewsLength'] +  this._virtualRepeat['_bottomBufferHeight'])
       .then(response => response.json())
-      .then(data => {
-        me.logger.debug(json(data));
+      .then((data: any) => {
+        me.logger.debug(data);
   //      this.session=me.session;
         me.communities = 
           me.communities['responseCollection'].splice(topIndex,me.communities['responseCollection'].length - topIndex, data.responseCollection);
@@ -172,7 +172,6 @@ export class Community {
     } else {
       this.selectedCommunities = [];
     }
-    this.logger.debug(selected);
   }
 
   onCommunitySelectionChanged(event) {

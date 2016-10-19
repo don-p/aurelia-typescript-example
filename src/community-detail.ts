@@ -381,8 +381,8 @@ export class CommunityDetail {
     let me = this;
     return this.communityService.getCommunity(communityId, startIndex, this.pageSize)
     .then(response => response.json())
-    .then(data => {
-      me.logger.debug(json(data));
+    .then((data: any) => {
+      me.logger.debug(data);
 //      this.session=me.session;
       me.communityMembers = data.responseCollection;
       // me.agGridWrap.rowsChanged(me.communityMembers, null);

@@ -62,7 +62,7 @@ export class Login {
     return this.dataService.login(this.username, this.password)
 //    .then(response => response.json())
     .then((data:any) => {
-      me.logger.debug(json(data));
+      me.logger.debug(data);
       if(data && data!==null) {
         let auth = {};
         auth['refresh_token'] = data.refresh_token;
