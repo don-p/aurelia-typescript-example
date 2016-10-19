@@ -1,6 +1,7 @@
-import {inject, Lazy} from 'aurelia-framework';
+import {inject, Lazy, LogManager} from 'aurelia-framework';
+import {Logger} from 'aurelia-logging';
 import {HttpClient, json} from 'aurelia-fetch-client';
-import {AppConfig} from './appConfig';
+import {Configure} from "aurelia-configuration";
 import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {FetchConfig, AuthService} from 'aurelia-auth';
@@ -10,7 +11,7 @@ import {Prompt} from '../model/prompt';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(Lazy.of(HttpClient), AppConfig, EventAggregator, AuthService, FetchConfig, DialogService, Session, QueryString)
+@inject(Lazy.of(HttpClient), Configure, EventAggregator, AuthService, FetchConfig, DialogService, Session, QueryString, LogManager)
 export class DataService {  
 
     // Service object for retreiving application data from REST services.
@@ -19,16 +20,17 @@ export class DataService {
     clientId: string;
     clientSecret: string;
     httpClient: HttpClient;
+    logger: Logger;
 
-    constructor(private getHttpClient: () => HttpClient, private appConfig: AppConfig, 
+    constructor(private getHttpClient: () => HttpClient, private appConfig: Configure, 
         private evt: EventAggregator, private auth: AuthService,  
         private fetchConfig: FetchConfig, private dialogService:DialogService,private session: Session){
 
         // Base Url for REST API service.
-        this.apiServerUrl = appConfig.apiServerUrl;
+        this.apiServerUrl = this.appConfig.get('api.serverUrl');
         // App identifiers for REST services.
-        this.clientId = appConfig.clientId;
-        this.clientSecret = appConfig.clientSecret;
+        this.clientId = this.appConfig.get('api.clientId');
+        this.clientSecret = this.appConfig.get('api.clientSecret');
 
         // Configure custom fetch for aurelia-auth service.
         fetchConfig.configure();
@@ -38,11 +40,11 @@ export class DataService {
         
         // Inner function to asynchronously wait for result of call to refreshToken.
         // Called from responseError() handler.
-        var waitRefresh = async function waitRefresh(request: Request) {
-            let refreshResponse = me.refreshToken(me.session.auth['refresh_token'], request);
-            let result = await refreshResponse;
-            return result;
-        };
+        // var waitRefresh = async function waitRefresh(request: Request) {
+        //     let refreshResponse = me.refreshToken(me.session.auth['refresh_token'], request);
+        //     let result = await refreshResponse;
+        //     return result;
+        // };
 
 
         let http = getHttpClient().configure(config => {
@@ -59,38 +61,129 @@ export class DataService {
                         'X-Requested-With': 'Fetch'
                     }
                 })
-                .withInterceptor({
-                    request: function(request) {
-                        console.debug(`Requesting ${request.method} ${request.url}`);
-                        return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
-                    },
-                    response: async function(response, request) {
-                        console.debug(`Received response ${response.status} ${response.url}`);
-                        return response; 
-                    },
-                    responseError: function(response, request) {
-                         console.debug(`Received response error ${response.status} ${response.url}`);
-                       if(!(response.status >= 200 && response.status < 300)) {
-                            if((response.status === 401 || response.status === 400) && 
-                                request.url.indexOf('/oauth/token')===-1 &&
-                                me.session.auth['access_token'] && 
-                                !me.auth.isAuthenticated()) { // Special case, refresh expired token.
-                                // Request and save a new access token, using the refresh token.
-                                var result = waitRefresh(request);
-                                return result===null?response:result;
-                            } else {
-                                // response
-                                me.evt.publish('responseError', response);
-                                throw response;
-                            }
-                        }
-                    }
-                })
+                .withInterceptor(this.debugRequestResponseInterceptor)
+                // .withInterceptor({
+                //     responseError: function(response, request) {
+                //         console.debug(`Received response error ${response.status} ${response.url}`);
+                //        if(!(response.status >= 200 && response.status < 300)) {
+                //             if((response.status === 401 || response.status === 400) && 
+                //                 request.url.indexOf('/oauth/token')===-1 &&
+                //                 me.session.auth['access_token'] && 
+                //                 !me.auth.isAuthenticated()) { // Special case, refresh expired token.
+                //                 // Request and save a new access token, using the refresh token.
+                //                 var result = waitRefresh(request);
+                //                 return result;
+                //             } else {
+                //                 // response
+                //                 me.evt.publish('responseError', response);
+                //                 throw response;
+                //             }
+                //         }
+                //     }
+                // })
+                .withInterceptor(this.refreshExpiredTokenResponseInterceptor)
                 // Add special interceptor to force inclusion of access_token when token is expired, 
                 // to support refreshing the token.
-                .withInterceptor(this.tokenExpiredInterceptor);
+                .withInterceptor(this.includeExpiredTokenResponseInterceptor)
+                .withInterceptor(this.responseErrorInterceptor)
+;
         });
+        this.logger = LogManager.getLogger(this.constructor.name);
     }
+
+    // HTTP CLIENT INTERCEPTORS
+
+    /**
+     * Force inclusion in the headers of an expired token, so that a REST
+     * call to refresh the token will succeed.
+     */
+    get includeExpiredTokenResponseInterceptor() {
+        let me = this;
+        return {
+            request(request) {
+                if (request.url.indexOf('/oauth/token')===-1 && !(me.auth.isAuthenticated())) {
+                    me.logger.debug('Access token in request expired.');
+                    let config = me.auth['config'];
+                    let tokenName = config.tokenPrefix ? `${config.tokenPrefix}_${config.tokenName}` : config.tokenName;
+                    let token = me.auth['auth'].getToken();
+
+                    request.headers.set(config.authHeader, ' ' + config.authToken + ' ' + token);
+                }
+                return request;
+            }
+        };
+    }
+
+    async waitRefresh(request: Request, response: Response) {
+        let refreshPromise = await this.refreshToken(this.session.auth['refresh_token'], request, response);
+        this.logger.debug('waitrefresh() refreshPromise:' + refreshPromise);
+        let result = await refreshPromise;
+        this.logger.debug('waitrefresh() result:' + result);
+        return result;
+    };
+
+    /**
+     * Force inclusion in the headers of an expired token, so that a REST
+     * call to refresh the token will succeed.
+     */
+    get refreshExpiredTokenResponseInterceptor() {
+        let me = this;
+        return {
+            responseError: function(response, request) {
+                // Inner function to asynchronously wait for result of call to refreshToken.
+                // Called from responseError() handler.
+                // let waitRefresh = async function waitRefresh(request: Request) {
+                //     let refreshResponse = me.refreshToken(me.session.auth['refresh_token'], request);
+                //     let result = await refreshResponse;
+                //     return result;
+                // };
+
+                if((response.status === 401 || response.status === 400) && 
+                    request.url.indexOf('/oauth/token')===-1 &&
+                    me.session.auth['access_token'] && !me.auth.isAuthenticated()) { 
+                    me.logger.debug('Received expiredToken response error ${response.status} ${response.url}');
+                    // Special case, refresh expired token.
+                    // Request and save a new access token, using the refresh token.
+                    me.logger.debug('responseErrorInterceptor - wait for refreshToken()');
+                    let result = me.waitRefresh(request, response);
+                    me.logger.debug('responseErrorInterceptor - result from wait(): '+ result);
+                   return result===null?response:result;
+                } 
+            }
+        };
+    }
+
+    /**
+     * Forward response errors to central error handler.
+     */
+    get responseErrorInterceptor() {
+        let me = this;
+        return {
+            responseError: function(response, request) {
+                me.evt.publish('responseError', response);
+                return response;
+            },
+        };
+    }
+
+    /**
+     * Log the REST requests and responses for debugging.
+     */
+    get debugRequestResponseInterceptor() {
+        let me = this;
+        return {
+            request: function(request) {
+                me.logger.debug(`Requesting ${request.method} ${request.url}`);
+                return request;
+            },
+            response: async function(response, request) {
+                me.logger.debug(`Received response ${response.status} ${response.url}`);
+                return response; 
+            },
+        };
+    }
+
+
 
     // AUTHENTICATION
 
@@ -100,8 +193,8 @@ export class DataService {
                     username: username, 
                     password: password,
                     grant_type: 'PASSWORD',
-                    client_id: this.appConfig.clientId,
-                    client_secret: this.appConfig.clientSecret
+                    client_id: this.clientId,
+                    client_secret: this.clientSecret
                 };
         var params = QueryString.stringify(obj, {});
         var me = this;
@@ -113,40 +206,78 @@ export class DataService {
         return this.auth.isAuthenticated();
     }
 
-    async refreshToken(refreshToken: string, fetchRequest: Request): Promise<Response> {
+    async refreshToken(refreshToken: string, fetchRequest: Request, response: Response): Promise<Response> {
         await fetch;
+        const http =  this.getHttpClient();
         var me = this;
 
         var obj = {
                     refresh_token: refreshToken, 
                     grant_type: 'REFRESH_TOKEN',
-                    client_id: this.appConfig.clientId,
-                    client_secret: this.appConfig.clientSecret
+                    client_id: this.clientId,
+                    client_secret: this.clientSecret
                 };
         var params = QueryString.stringify(obj, {});
 
-        console.debug('Refreshing access token.');
-        let result = await this.getHttpClient().fetch('oauth/token', 
-            {
-                method: 'post',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: params
-           }
-        );
-        let data = await result.json();
-
+        this.logger.debug('Refreshing access token.');
+        let result;
+        let data;
+        // let theResponse = response;
+        this.logger.debug('refreshToken - wait for oauth/token');
+        try {
+            result = await http.fetch('oauth/token', 
+                {
+                    method: 'post',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: params
+            // })
+            // .then(response => {
+            //     me.logger.debug('refreshToken.then()');
+            // })
+            // .catch(error => {
+            //      me.logger.error('refreshToken failed in catch() - Refresh token (session) expired - error: ' + error);
+            });
+        } catch(e) {
+            // Refresh token (session) expired).
+            me.logger.error('refreshToken failed catch1 - Refresh token (session) expired: ' + e);
+            //console.debug('refreshToken - wait for oauth/token catch: ' + e);
+        //    throw e;
+            return response;         
+        }
+        try {
+            data = await result.json();
+        } catch(e) {
+            me.logger.error('refreshToken failed catch2 - Refresh token (session) expired: ' + e);
+            return new Response(null, {status: 401});
+        }
         me.auth['auth'].setToken(data, true);
         // Save the new access token in the app's existing session.
         me.session.auth['access_token'] = data['access_token'];
         me.session.auth['expires_in'] = data['expires_in'];
-        console.debug('Access token refreshed.');
+        me.logger.debug('Access token refreshed.');
+    //    } catch(e) {
+    //         // Refresh token (session) expired).
+    //         me.logger.error('refreshToken failed - Refresh token (session) expired: ' + e);
+    //         //console.debug('refreshToken - wait for oauth/token catch: ' + e);
+    //        throw e;
+    //         // return response;         
+    //    }
+        // data = await result.json();
+    //    data = result;
 
+        // me.auth['auth'].setToken(data, true);
+        // // Save the new access token in the app's existing session.
+        // me.session.auth['access_token'] = data['access_token'];
+        // me.session.auth['expires_in'] = data['expires_in'];
+        // console.debug('Access token refreshed.');
         if(fetchRequest && fetchRequest !== null) { // We need to re-try the original request.
             // Before re-executing the original request, replace the token in the auth header.
             fetchRequest.headers.set('Authorization', 'Bearer ' + data['access_token']);
-            console.debug('Access token refreshed -> re-running fetch: ' + fetchRequest.url + '.');
-            var response = await me.httpClient.fetch(fetchRequest);
-            console.log('refreshToken Response: ' + response);
+            this.logger.debug('Access token refreshed -> re-running fetch: ' + fetchRequest.url + '.');
+            this.logger.debug('refreshToken - wait for fetch request: ' + fetchRequest);
+            var response = await http.fetch(fetchRequest);
+            this.logger.debug('refreshToken - after await  fetch request: ' + fetchRequest);
+            this.logger.debug('refreshToken Response: ' + response);
             return response; // Return re-try response.
         }
         return null;
@@ -163,15 +294,15 @@ export class DataService {
         return response;
     }
 
-    async logout(token: string): Promise<Response> {
+    async logout(): Promise<Response> {
         await fetch;
         const http =  this.getHttpClient();
-        var obj = {
-                    client_id: this.appConfig.clientId,
-                    client_secret: this.appConfig.clientSecret
+        let obj = {
+                    client_id: this.clientId,
+                    client_secret: this.clientSecret
                 };
-        var params = QueryString.stringify(obj, {});
-        var me = this;
+        let params = QueryString.stringify(obj, {});
+        let token = this.session.auth['access_token'];
         var response = http.fetch('oauth/token/' + token + '?' +params, 
             {
                 method: 'DELETE'
@@ -221,23 +352,6 @@ export class DataService {
                 okText: okText
             }
         });
-    }
-
-    get tokenExpiredInterceptor() {
-        let me = this;
-        return {
-            request(request) {
-                if (request.url.indexOf('/oauth/token')===-1 && !(me.auth.isAuthenticated())) {
-                    console.debug('Access token in request expired.');
-                    let config = me.auth['config'];
-                    let tokenName = config.tokenPrefix ? `${config.tokenPrefix}_${config.tokenName}` : config.tokenName;
-                    let token = me.auth['auth'].getToken();
-
-                    request.headers.set(config.authHeader, ' ' + config.authToken + ' ' + token);
-                }
-                return request;
-            }
-        };
     }
 
 }

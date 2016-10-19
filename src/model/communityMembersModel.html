@@ -1,0 +1,12 @@
+<template>
+<div class="row textMessage">
+    <div if.bind="model.gridOptions.api.rowModel.datasource.name ==='organizationMembers'" style="display:inline-block;float:right"><a href="javascript:(void)" click.delegate="model.showSelectedOrganizationMembers(true)">Show selected</a></div>
+    <div if.bind="model.gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" style="display:inline-block;float:right"><a href="javascript:(void)" click.delegate="model.showSelectedOrganizationMembers(false)">Show list</a></div>
+</div>
+<div class="members-table-content" style="width:980px;height:360px;" id="membersTableContent">				  
+	<!--<require from="../lib/loading-mask/loading-mask"></require>-->
+	<!--<loading promise.bind="'membersPromise'">-->
+	<div id="addMembersGridDiv" ref="addCmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
+</div>
+<input type="hidden" value.bind="model.item.communityId" />
+</template>
