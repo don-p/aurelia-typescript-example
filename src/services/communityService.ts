@@ -98,14 +98,25 @@ export class CommunityService {
         // return p
     }
 
-    async deleteCommunityMembers(communityId: string, members: Array<string>) {
+    async removeCommunityMembers(communityId: string, members: Array<string>) {
         await fetch;
-
-        // let obj = {memberIds: members};
 
         let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members', 
             {
                 method: 'DELETE',
+                body: JSON.stringify(members)
+
+            }
+        );
+        return response;
+    }
+
+    async addCommunityMembers(communityId: string, members: Array<string>) {
+        await fetch;
+
+        let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members', 
+            {
+                method: 'POST',
                 body: JSON.stringify(members)
 
             }

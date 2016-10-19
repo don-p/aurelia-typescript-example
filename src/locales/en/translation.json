@@ -91,13 +91,7 @@
         "deleteMember":"Delete member",
         "transferOwnership":"Transfer ownership",
         "deleteCommunity":"Delete community",
-        "renameCommunity":"Rename community",
-        "name":"Name",
-        "jobTitle":"Job title",
-        "industryName":"Industry name",
-        "city":"City",
-        "state":"State",
-        "zip":"Zip"               
+        "renameCommunity":"Rename community"
     },
 
     "button": {
