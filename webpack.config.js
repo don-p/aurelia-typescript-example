@@ -94,11 +94,11 @@ switch (ENV) {
   case 'production':
     loaders.push( // Loader for env config token replacement.
       {
-        test: /(.*)Config\.ts$/,
+        test: /main.ts$/,
         loader: 'string-replace',
         query: {
-          search: '%API_SERVER_URL%',
-          replace: 'https://scig-dev.bluelinegrid.com/',
+          search: '%RUNTIME_ENVIRONMENT%',
+          replace: 'production',
           flags: 'ig'
         }
       }  
@@ -142,11 +142,11 @@ switch (ENV) {
   case 'test':
     loaders.push( // Loader for env config token replacement.
       {
-        test: /(.*)Config\.ts$/,
+        test: /main.ts$/,
         loader: 'string-replace',
         query: {
-          search: '%API_SERVER_URL%',
-          replace: 'https://scig-dev.bluelinegrid.com/',
+          search: '%RUNTIME_ENVIRONMENT%',
+          replace: 'qa',
           flags: 'ig'
         }
       }  
@@ -184,14 +184,14 @@ switch (ENV) {
     process.env.NODE_ENV = 'development';
     loaders.push( // Loader for env config token replacement.
       {
-        test: /(.*)Config\.ts$/,
+        test: /main.ts$/,
         loader: 'string-replace',
         query: {
-          search: '%API_SERVER_URL%',
-          replace: 'https://scig-dev.bluelinegrid.com/',
+          search: '%RUNTIME_ENVIRONMENT%',
+          replace: 'development',
           flags: 'ig'
         }
-      }  
+      }
     );
     loaders.push(SourceMapScssLoader);  // Loader for SCSS/CSS.
     config = generateConfig(
