@@ -239,7 +239,7 @@ export class DataService {
             });
         } catch(e) {
             // Refresh token (session) expired).
-            me.logger.error('refreshToken failed catch1 - Refresh token (session) expired: ' + e + ' : ' + theResponse);
+            me.logger.error('refreshToken failed catch1 - Refresh token (session) expired: ' + e);
             //console.debug('refreshToken - wait for oauth/token catch: ' + e);
         //    throw e;
             return response;         
@@ -247,7 +247,7 @@ export class DataService {
         try {
             data = await result.json();
         } catch(e) {
-            me.logger.error('refreshToken failed catch2 - Refresh token (session) expired: ' + e + ' : ' + theResponse);
+            me.logger.error('refreshToken failed catch2 - Refresh token (session) expired: ' + e);
             return new Response(null, {status: 401});
         }
         me.auth['auth'].setToken(data, true);
