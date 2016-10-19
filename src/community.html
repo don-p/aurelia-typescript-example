@@ -85,15 +85,19 @@
                         <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
                           role='tab'>
                           <a class='collapsed' click.trigger="selectCommunity(community)" role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
-                            <h4 class='panel-title'>${community.communityName} (<span class='members-count'><i class='ico-users'></i> ${community.memberCount}</span>)
-                              <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                click.delegate="deleteCommunity(community)" i18n='[title]community.deleteCommunity'>
-                                <i class="ico-bin float-right"></i>
-                              </a>
-                              <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                 click.delegate="editCommunity(community)" i18n='[title]community.editCommunity'>
-                                <i class="ico-pencil7 float-right"></i>
-                              </a>                               
+                            <h4 class='panel-title'>
+                              <span class="community-name">${community.communityName}</span>
+                              <span class="members-count">(<i class='ico-users'></i> ${community.memberCount})</span>
+                              <span class='community-buttons'>
+                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                  click.delegate="deleteCommunity(community)" i18n='[title]community.deleteCommunity'>
+                                  <i class="ico-bin float-right"></i>
+                                </a>
+                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                  click.delegate="editCommunity(community)" i18n='[title]community.editCommunity'>
+                                  <i class="ico-pencil7 float-right"></i>
+                                </a>
+                              </span>                               
                             </h4>
                           </a>
                         </div>
