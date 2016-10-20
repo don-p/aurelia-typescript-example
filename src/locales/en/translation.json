@@ -74,9 +74,9 @@
             "state": "State",
             "zip": "ZIP",
             "confirmDelete": {
-                "title": "Delete Community Members?",
-                "messageSingle": "Delete the community member '{{memberName}}'?",
-                "message": "Delete {{memberCount}} selected community members?"
+                "title": "Remove Community Members?",
+                "messageSingle": "Remove the community member '{{memberName}}'?",
+                "message": "Remove {{memberCount}} selected community members?"
             },
             "addMembers": "Add Community Members"
 
@@ -88,7 +88,7 @@
         "sendAlert":"Send alert",
         "startConversation":"Start conversation",
         "addMember":"Add member",
-        "deleteMember":"Delete member",
+        "deleteMember":"Remove member",
         "transferOwnership":"Transfer ownership",
         "deleteCommunity":"Delete community",
         "renameCommunity":"Rename community"
