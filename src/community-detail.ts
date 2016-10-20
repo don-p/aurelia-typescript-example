@@ -21,7 +21,8 @@ export class CommunityDetail {
   selectedCommunityMembers: Array<Object>;
   selectedOrganizationMembers: Array<Object>;
   selectedCmty: any;
-  communityMembers: { get: () => any[] };
+  // communityMembers: { get: () => any[] };
+  communityMembers: Array<Object>;
   membersGrid: Object;
   cmtyMembersGrid: any;
   addCmtyMembersGrid: any;
@@ -68,7 +69,10 @@ export class CommunityDetail {
 
         // me.setGridDataSource(me);
         me.gridOptions['communityId'] = me.selectedCmty.communityId;
-        me.setCommunityMembersGridDataSource(me.gridOptions, me.pageSize, me.communityService);
+        me.getCommunityMemberIDs(me.selectedCmty.communityId, 20000).then(() => {
+          me.setCommunityMembersGridDataSource(me.gridOptions, me.pageSize, me.communityService);
+        }
+        );
       }
     });
     this.logger = LogManager.getLogger(this.constructor.name);
@@ -261,11 +265,21 @@ export class CommunityDetail {
             let orgPromise = communityService.getOrgMembers(organizationId, params.startRow, pageSize);
             orgPromise.then(response => response.json())
               .then(data => {
+                // Filter out existing community members.
+                let totalCount = data.totalCount;
+                let filteredData = data.responseCollection.filter(function(item) {
+                  if(me.communityMembers.indexOf(item.memberId) < 0) {
+                    return true;
+                  } else {
+                    totalCount--;
+                    return false;
+                  }
+                });
                 if(gridDataSource.rowCount === null) {
-                  gridDataSource.rowCount = data.totalCount;
+                  gridDataSource.rowCount = totalCount;
                 }
                 gridOptions.api.hideOverlay();
-                params.successCallback(data.responseCollection, data.totalCount);
+                params.successCallback(filteredData, totalCount);
                 this.loading = false;
             });
           }
@@ -315,6 +329,23 @@ export class CommunityDetail {
     });
   }
 
+  async getCommunityMemberIDs(communityId: string, pageSize: number) : Promise<void> {
+    let me = this;
+    return this.communityService.getCommunity(communityId, 0, pageSize)
+    .then(response => response.json())
+    .then((data: any) => {
+      me.logger.debug(data);
+//      this.session=me.session;
+      me.communityMembers = data.responseCollection.map(function(item) {
+        return item.memberId;
+      });
+      // me.agGridWrap.rowsChanged(me.communityMembers, null);
+    }).catch(error => {
+      me.logger.error("Communities members() failed."); 
+      me.logger.error(error); 
+    });
+  }
+
   membersSelectionChanged(scope) {
     let rows = scope.api.getSelectedRows();
     this.selectedCommunityMembers = rows;
@@ -351,6 +382,11 @@ export class CommunityDetail {
         this.communityService.removeCommunityMembers(this.selectedCmty.communityId, commMemberIds)
         .then(response => response.json())
         .then(data => {
+            // Update local cache of community members.
+            me.communityMembers = me.communityMembers.filter(function(item:any) {
+              return !(commMemberIds.indexOf(item.memberId >= 0));
+            })
+
             me.gridOptions.api.refreshVirtualPageCache();
             me.gridOptions.api.refreshView();
             me.gridOptions.api.deselectAll();
@@ -419,6 +455,9 @@ export class CommunityDetail {
         this.communityService.addCommunityMembers(this.selectedCmty.communityId, orgMemberIds)
         .then(response => response.json())
         .then(data => {
+            // Update local cache of community members.
+            Array.prototype.splice.apply(me.communityMembers,[].concat(me.communityMembers.length,0,orgMemberIds));
+
             me.gridOptions.api.refreshVirtualPageCache();
             me.gridOptions.api.refreshView();
             me.gridOptions.api.deselectAll();
