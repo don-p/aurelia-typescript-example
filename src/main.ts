@@ -19,7 +19,7 @@ import {Configure} from "aurelia-configuration";
 import {AuthConfig} from './config/authConfig';
 // import * as config from './config/authConfig';
 import {I18N} from 'aurelia-i18n';
-import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
+import LngDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-xhr-backend';
 import 'intl';
 
