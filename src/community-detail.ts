@@ -10,7 +10,7 @@ import {I18N} from 'aurelia-i18n';
 import {DialogService, DialogController} from 'aurelia-dialog';
 import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
-import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid';
+import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid/main';
 // import {RemoteData} from './services/remoteData';
 
 @inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager) // SCROLL
