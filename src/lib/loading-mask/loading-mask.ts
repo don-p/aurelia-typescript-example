@@ -1,12 +1,13 @@
-import {customElement, Parent, noView, bindable, observable, inject, BindingEngine} from 'aurelia-framework';
+import {customElement, Parent, noView, bindable, observable, inject, BindingEngine, LogManager} from 'aurelia-framework';
 import $ from 'jquery';
 import {I18N} from 'aurelia-i18n';
 import {Container} from 'aurelia-dependency-injection';
+import {Logger} from 'aurelia-logging';
 import './loading-mask.css';
 
 @customElement('loading')
 @noView()
-@inject(Element, Parent.of(Loading)) // Inject the instance of this element and its parent
+@inject(Element, Parent.of(Loading), LogManager) // Inject the instance of this element and its parent
 export class Loading {
   // @bindable('messageKey')
 
@@ -24,6 +25,9 @@ export class Loading {
  // Set up an observable binding to watch the promise changing state.
   @observable({changeHandler: 'promiseChanged'}) promiseFromContext: Promise<Response>;
 
+   logger: Logger;
+
+
   constructor(element, parent) {
     // access root container
     let container = Container.instance;
@@ -38,10 +42,12 @@ export class Loading {
     this.loadingTitle = undefined;
     this.title = undefined;
     // this._createLoadingMask();
+    
+    this.logger = LogManager.getLogger(this.constructor.name);
   }
 
   bind(bindingContext: Object, overrideContext: Object) {
-    console.debug("LoadingMask | bind()");
+    this.logger.debug("LoadingMask | bind()");
     this.context = bindingContext;
     let subscription = this.bindingEngine.propertyObserver(this.context, this.promise)
       .subscribe((newValue, oldValue) => this.contextPromiseChanged(newValue));
@@ -49,7 +55,7 @@ export class Loading {
   }
 
   attached() {
-    console.debug("LoadingMask | attached()");
+    this.logger.debug("LoadingMask | attached()");
     this._createLoadingMask();
     // this.attachPromise();
     // this._createLoadingMask();
@@ -70,7 +76,7 @@ export class Loading {
   }
 
   promiseChanged(promise:Promise<Response>) {
-    console.debug("LoadingMask | promiseChanged()");
+    this.logger.debug("LoadingMask | promiseChanged()");
     if(promise && promise !== null) {
       if(promise.isPending()) {
         this.show();
@@ -81,7 +87,7 @@ export class Loading {
   }
 
   contextPromiseChanged(promise:Promise<Response>) {
-    console.debug("LoadingMask | promiseContextChanged()");
+    this.logger.debug("LoadingMask | promiseContextChanged()");
 
     this.attachPromise();
   }

@@ -1,4 +1,5 @@
-﻿import {Aurelia} from 'aurelia-framework';
+﻿import {Aurelia, LogManager} from 'aurelia-framework';
+import {ConsoleAppender} from "aurelia-logging-console";
 // we want font-awesome to load as soon as possible to show the fa-spinner
  // Vendor CSS libs:
 import 'font-awesome/scss/font-awesome.scss';
@@ -14,52 +15,36 @@ import '../styles/theme-blg.styl';
 import 'bootstrap-sass/assets/javascripts/bootstrap.js';
 // Framework modules:
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
-import * as config from './config/authConfig';
+import {Configure} from "aurelia-configuration";
+import {AuthConfig} from './config/authConfig';
+// import * as config from './config/authConfig';
 import {I18N} from 'aurelia-i18n';
-import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
+import LngDetector from 'i18next-browser-languagedetector/dist/commonjs/index.js';
 import Backend from 'i18next-xhr-backend';
 import 'intl';
 
 // comment out if you don't want a Promise polyfill (remove also from webpack.config.js)
 import * as Bluebird from 'bluebird';
 Bluebird.config({ warnings: false });
-/*
-bootstrap(aurelia => {
-    if (!global.Intl) {
-        console.log('Intl not present')
-        require.ensure([
-            'intl',
-            'intl/locale-data/jsonp/en.js'
-        ], function (require) {
-            require('intl');
-            require('intl/locale-data/jsonp/en.js');
-//            boot(aurelia);
-        });
-    } else {
-//        boot(aurelia);
-    }
-});
-*/
 
 export async function configure(aurelia: Aurelia) {
 
+  let environment = '%RUNTIME_ENVIRONMENT%';
+
+  let authConfig = aurelia.container.get(AuthConfig);
   // Language detector options.
   var options = {
-    // order and from where user language should be detected
+    // order and from where i18n user language should be detected
     order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
-
     // keys or params to lookup language from
     lookupQuerystring: 'lng',
     lookupCookie: 'i18next',
     lookupLocalStorage: 'i18nextLng',
-
     // cache user language on
     caches: ['localStorage', 'cookie'],
-
     // optional expire and domain for set cookie
     cookieMinutes: 10,
-    cookieDomain: 'myDomain',
-
+    cookieDomain: 'blg',
     // optional htmlTag with lang attribute, the default is:
     htmlTag: document.documentElement
   };
@@ -73,13 +58,21 @@ export async function configure(aurelia: Aurelia) {
   // polyfill fetch client conditionally
   const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-  
   aurelia.use
     .standardConfiguration()
-    .developmentLogging()
+    // .developmentLogging()
     // .globalResources('services/remoteDataAttribute')
+    .plugin('aurelia-configuration', config => {
+      config.setDirectory('config'); // Will make plugin look for config files in a directory called "config-files"
+      config.setConfig('appConfig.json'); // Will look for mycoolconfig.json as the configuration file
+      config.setEnvironment(environment);     
+    })
     .plugin('aurelia-auth', (baseConfig)=>{
-      baseConfig.configure(config.default);
+      // Use config to set auth Url.
+      let configInstance = aurelia.container.get(Configure);
+      let apiServerUrl = configInstance.get('api.serverUrl'); 
+      authConfig.config.baseUrl = apiServerUrl;
+      baseConfig.configure(authConfig.config);
     })
 //       .plugin('aurelia-i18n')
 
@@ -120,7 +113,13 @@ export async function configure(aurelia: Aurelia) {
       })
       .plugin('aurelia-dialog')
       // .plugin('aurelia-ui-virtualization')
-      ;
+      .postTask(function() {
+        // Use config to set logging level.
+        let configInstance = aurelia.container.get(Configure);
+        let logLevel = configInstance.get('logLevel');
+        LogManager.setLevel(LogManager.logLevel[logLevel]);
+        LogManager.addAppender(new ConsoleAppender());
+      });
 
   // Uncomment the line below to enable animation.
   // aurelia.use.plugin('aurelia-animator-css');

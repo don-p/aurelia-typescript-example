@@ -1,6 +1,5 @@
 import {inject, Lazy} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
-import {AppConfig} from './appConfig';
 import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
@@ -9,7 +8,7 @@ import {Prompt} from '../model/prompt';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(Lazy.of(HttpClient), AppConfig, EventAggregator, DialogService, Session, QueryString)
+@inject(Lazy.of(HttpClient), EventAggregator, DialogService, Session, QueryString)
 export class CommunityService {  
 
     // Service object for retreiving application data from REST services.
@@ -19,14 +18,9 @@ export class CommunityService {
     clientSecret: string;
     httpClient: HttpClient;
 
-    constructor(private getHttpClient: () => HttpClient, private appConfig: AppConfig, 
+    constructor(private getHttpClient: () => HttpClient, 
         private evt: EventAggregator, private dialogService:DialogService,private session: Session){
 
-        // Base Url for REST API service.
-        this.apiServerUrl = appConfig.apiServerUrl;
-        // App identifiers for REST services.
-        this.clientId = appConfig.clientId;
-        this.clientSecret = appConfig.clientSecret;
     }
 
 
@@ -104,15 +98,26 @@ export class CommunityService {
         // return p
     }
 
-    async deleteCommunityMembers(communityId: string, members: Array<string>) {
+    async removeCommunityMembers(communityId: string, members: Array<string>) {
         await fetch;
-
-        let obj = {memberIds: members};
 
         let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members', 
             {
                 method: 'DELETE',
-                body: JSON.stringify(obj)
+                body: JSON.stringify(members)
+
+            }
+        );
+        return response;
+    }
+
+    async addCommunityMembers(communityId: string, members: Array<string>) {
+        await fetch;
+
+        let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members', 
+            {
+                method: 'POST',
+                body: JSON.stringify(members)
 
             }
         );
@@ -122,10 +127,10 @@ export class CommunityService {
 
     // ORGANIZATION
 
-    async getOrgMembers(organizationId: string): Promise<Response> {
+    async getOrgMembers(organizationId: string, startIndex: number, pageSize:number): Promise<Response> {
         await fetch;
         let response = this.getHttpClient().fetch('v1/organizations/' + organizationId + '/members?start_index=' + 
-            0 + '&page_size=' + 5000, 
+            startIndex + '&page_size=' + pageSize, 
             {
                 method: 'GET',
             }

@@ -1,4 +1,5 @@
-import {inject, computedFrom} from 'aurelia-framework';
+import {inject, computedFrom, LogManager} from 'aurelia-framework';
+import {Logger} from 'aurelia-logging';
 import {Router, RouterConfiguration} from 'aurelia-router';
 import {Session} from './services/session';
 import {FetchConfig} from 'aurelia-auth';
@@ -7,10 +8,11 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {AuthService} from 'aurelia-auth';
 import {DataService} from './services/dataService';
 
-@inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService)
+@inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, LogManager)
 export class App {
   router: Router;
   session: Session;
+  logger: Logger;
 
   constructor(Session, private fetchConfig: FetchConfig, private i18n: I18N, 
     private evt: EventAggregator, private authService: AuthService, private dataService: DataService) {
@@ -31,6 +33,7 @@ export class App {
     this.evt.subscribe('responseError', payload => {
        this.handleResponseError(payload);
     });    
+    this.logger = LogManager.getLogger(this.constructor.name);
  }
 
 //  @computedFrom('this.session.auth')
@@ -47,7 +50,7 @@ export class App {
       //   this.router.navigateToRoute('login', {errorMessage: 'error.badCredentials'});
       //   break;
       case 401:
-        console.log("handler - ResponseError: 401 Unauthorized");
+        this.logger.debug("handler - ResponseError: 401 Unauthorized");
         if((this.session.auth['access_token'] && !(this.authService.isAuthenticated()))) {
           let messageKey = 'error.badCredentials';
           messageKey = 'error.sessionExpired';
@@ -55,8 +58,8 @@ export class App {
         }
         break;
       case 500:
-        console.log("handler - ResponseError: 500 Server");
-        console.error(response);
+        this.logger.debug("handler - ResponseError: 500 Server");
+        this.logger.error(response);
         this.router.navigateToRoute('login', {errorMessage: 'error.serverNotAvailable'});
         break;
       // default:
@@ -146,10 +149,10 @@ export class App {
 
     var me = this;
 
-    return this.dataService.logout(this.session.auth['access_token'])
+    return this.dataService.logout()
   //  .then(response => response.json())
     .then(data => {
-      console.log(data);
+      me.logger.debug("Logged out");
       me.authService['auth'].storage.remove(me.authService['tokenName']);
       me.authService['auth'].storage.remove('auth');
       if(data && data!==null) {
@@ -159,8 +162,8 @@ export class App {
       }
     }).catch(error => {
       // me.errorMessage = this.utils.parseFetchError('');
-      console.log("Logout failed."); 
-      console.log(error); 
+      me.logger.error("Logout failed."); 
+      me.logger.error(error); 
       me.router.navigateToRoute('login');
     });
   }

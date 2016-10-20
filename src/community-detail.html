@@ -113,7 +113,7 @@
 		
 			<span class="dummy-btn"></span>
 			
-			<button id="btn-members-add-member" class="btn btn-info btn-xs-square " i18n="[title]members.addMember">
+			<button id="btn-members-add-member" click.delegate="addCommunityMembers()" class="btn btn-info btn-xs-square " i18n="[title]members.addMember">
 				<i class="ico-user-plus"></i>
 			</button>
 			<button id="btn-members-delete-member" click.delegate="deleteCommunityMembers(selectedCommunityMembers)" class="btn btn-danger btn-xs-square" i18n="[title]members.deleteMember" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
@@ -146,7 +146,7 @@
 	<require from="./lib/loading-mask/loading-mask"></require>
 	<require from="./lib/ag-grid.ts"></require>
 	<!--<loading promise.bind="'membersPromise'">-->
-	<div id="eGridDiv" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
+	<div id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
 	<!--</loading>-->
 					
 <!--

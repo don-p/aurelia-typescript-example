@@ -1,4 +1,5 @@
-import {inject, Lazy} from 'aurelia-framework';
+import {inject, Lazy, LogManager} from 'aurelia-framework';
+import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {Session} from './services/session';
@@ -13,7 +14,7 @@ import * as Ps from 'perfect-scrollbar';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService)
+@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager)
 export class Community {
   communities: Array<Object>;
   items:Array<Object>;
@@ -29,6 +30,8 @@ export class Community {
   selectAll: boolean;
   _virtualRepeat: VirtualRepeat;
 
+  logger: Logger;
+
   constructor(private session: Session, private router: Router, private dataService: DataService, 
     private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
 
@@ -40,8 +43,7 @@ export class Community {
     this.pageSize = 500;
     this.selectedItem = null;
     this.selectedCommunities = [];
-    // this.getCommunitiesPage('COI', 50, this.pageSize);
-    // this.cmtysPromise = this.getCommunitiesPage('COI', 50, this.pageSize);
+    this.logger = LogManager.getLogger(this.constructor.name);
   }
 
   activate(params, navigationInstruction) {
@@ -49,10 +51,10 @@ export class Community {
   }
 
   bind(bindingContext: Object, overrideContext: Object) {
-    console.debug("Community | bind()");
+    this.logger.debug("Community | bind()");
   }
   attached() {
-    console.debug("Community | attached()");
+    this.logger.debug("Community | attached()");
     
     // Custom scrollbar:
     var container = document.getElementById('community-list');
@@ -63,43 +65,24 @@ export class Community {
       me.selectDefaultCommunity();
     });
   }
-/**
- * Get communities for logged-in user.
- */
-/*
-  async listCommunities(communityType: string): Promise<void> {
-    var me = this;
-
-    this.dataService.getCommunities(communityType)
-    .then(response => response.json())
-    .then(data => {
-      console.log(json(data));
-//      this.session=me.session;
-      me.communities = data.responseCollection;
-    }).catch(error => {
-      console.log("Communities list() failed."); 
-      console.log(error); 
-    });
-  }
-*/
 
   async getMore(topIndex: number, isAtBottom: boolean, isAtTop: boolean): Promise<void> {
-    console.debug('Getting more communities: '+topIndex+' | '+isAtBottom+' | '+isAtTop);
+    this.logger.debug('Getting more communities: '+topIndex+' | '+isAtBottom+' | '+isAtTop);
     var me = this;
 
     if(isAtBottom){
       return this.communityService.getCommunities(this.commType, topIndex, 
         this._virtualRepeat['_viewsLength'] +  this._virtualRepeat['_bottomBufferHeight'])
       .then(response => response.json())
-      .then(data => {
-        console.log(json(data));
+      .then((data: any) => {
+        me.logger.debug(data);
   //      this.session=me.session;
         me.communities = 
           me.communities['responseCollection'].splice(topIndex,me.communities['responseCollection'].length - topIndex, data.responseCollection);
         // me.communities = data;
       }).catch(error => {
-        console.log("Communities list() failed."); 
-        console.log(error); 
+        me.logger.error("Communities list() failed."); 
+        me.logger.error(error); 
       });
     } else if(isAtTop){
 
@@ -110,19 +93,21 @@ export class Community {
     var cmtysPromise = this.communityService.getCommunities(communityType, startIndex,  pageSize);
     this.cmtysPromise = cmtysPromise;
     return cmtysPromise
-    .then(response => response.json())
-    .then(data => {
-      me.communities = data.responseCollection;
-     }, error => {
-       console.log("Communities list() rejected."); 
-       console.debug(me.cmtysPromise.isRejected().toString());
-     }).catch(error => {
-      console.log("Communities list() failed."); 
-      console.log(error); 
+    .then(response => {return response.json()
+      .then(data => {
+        me.communities = data.responseCollection;
+        me.logger.debug('cmtyPromise resolved');
+      }).catch(error => {
+        me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
+        return Promise.reject(error);
+      })
+    })
+    .catch(error => {
+      me.logger.error('Communities list() failed in then(response). Error: ' + error); 
+      me.logger.error(error); 
+      //throw error;
       return Promise.reject(error);
     });
-
-    // return cmtysPromise;
   }
 
   selectCommunityType(communityType:string) {
@@ -152,7 +137,6 @@ export class Community {
     } else {
       this.selectedCommunities = [];
     }
-    console.log(selected);
   }
 
   onCommunitySelectionChanged(event) {
@@ -201,18 +185,18 @@ export class Community {
             controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
-            console.debug("Community delete() rejected."); 
+            me.logger.error("Community delete() rejected."); 
           }).catch(error => {
             model.errorMessage = "Failed"; 
-            console.debug("Community delete() failed."); 
-            console.debug(error); 
+            me.logger.error("Community delete() failed."); 
+            me.logger.error(error); 
             return Promise.reject(error);
           });
       }
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.
-          console.debug('Cancel');
+          this.logger.debug('Cancel');
         }
       })
     });
@@ -258,11 +242,11 @@ export class Community {
             // Close dialog on success.
             controller.ok();
           }, error => {
-            console.debug("Community create() rejected.");
+            me.logger.error("Community create() rejected.");
             model.errorMessage = "Failed"; 
           }).catch(error => {
-            console.debug("Community create() failed."); 
-            console.debug(error); 
+            me.logger.error("Community create() failed."); 
+            me.logger.error(error); 
             model.errorMessage = "Failed"; 
             return Promise.reject(error);
           })
@@ -270,7 +254,7 @@ export class Community {
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.
-          console.debug('Cancel');
+          this.logger.debug('Cancel');
         }
       })
     });
