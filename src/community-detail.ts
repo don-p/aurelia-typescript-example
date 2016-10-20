@@ -471,6 +471,7 @@ export class CommunityDetail {
             // update the community member count.
             me.selectedCmty.memberCount = data.totalCount;
             // Close dialog on success.
+            gridOptions.api.destroy();
             controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
@@ -494,6 +495,7 @@ export class CommunityDetail {
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.
+          gridOptions.api.destroy();
           this.logger.debug('Cancel');
         }
       })

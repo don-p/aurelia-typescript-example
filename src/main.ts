@@ -17,7 +17,6 @@ import 'bootstrap-sass/assets/javascripts/bootstrap.js';
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
 import {Configure} from "aurelia-configuration";
 import {AuthConfig} from './config/authConfig';
-// import * as config from './config/authConfig';
 import {I18N} from 'aurelia-i18n';
 import LngDetector from 'i18next-browser-languagedetector/dist/commonjs/index.js';
 import Backend from 'i18next-xhr-backend/dist/commonjs/index.js';
