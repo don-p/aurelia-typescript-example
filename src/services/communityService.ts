@@ -127,10 +127,10 @@ export class CommunityService {
 
     // ORGANIZATION
 
-    async getOrgMembers(organizationId: string): Promise<Response> {
+    async getOrgMembers(organizationId: string, startIndex: number, pageSize:number): Promise<Response> {
         await fetch;
         let response = this.getHttpClient().fetch('v1/organizations/' + organizationId + '/members?start_index=' + 
-            0 + '&page_size=' + 5000, 
+            startIndex + '&page_size=' + pageSize, 
             {
                 method: 'GET',
             }

@@ -127,6 +127,7 @@ switch (ENV) {
       require('@easy-webpack/config-json')(),
       require('@easy-webpack/config-copy-files')
         ({patterns: [
+          {context: './src/config', from: '**/**.json', to: 'config'},
           {context: './src/locales', from: '**/**.json', to: 'locales'},
           {from: 'favicon.ico', to: 'favicon.ico' }
           ]}),
@@ -216,6 +217,7 @@ switch (ENV) {
       require('@easy-webpack/config-json')(),
       require('@easy-webpack/config-copy-files')
         ({patterns: [
+          {context: './src/config', from: '**/**.json', to: 'config'},
           {context: './src/locales', from: '**/**.json', to: 'locales'},
           {from: 'favicon.ico', to: 'favicon.ico' }
           ]}),

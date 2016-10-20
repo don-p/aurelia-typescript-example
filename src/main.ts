@@ -19,7 +19,7 @@ import {Configure} from "aurelia-configuration";
 import {AuthConfig} from './config/authConfig';
 // import * as config from './config/authConfig';
 import {I18N} from 'aurelia-i18n';
-import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
+import LngDetector from 'i18next-browser-languagedetector/dist/commonjs/index.js';
 import Backend from 'i18next-xhr-backend';
 import 'intl';
 
@@ -63,7 +63,7 @@ export async function configure(aurelia: Aurelia) {
     // .developmentLogging()
     // .globalResources('services/remoteDataAttribute')
     .plugin('aurelia-configuration', config => {
-      config.setDirectory('src/config'); // Will make plugin look for config files in a directory called "config-files"
+      config.setDirectory('config'); // Will make plugin look for config files in a directory called "config-files"
       config.setConfig('appConfig.json'); // Will look for mycoolconfig.json as the configuration file
       config.setEnvironment(environment);     
     })
