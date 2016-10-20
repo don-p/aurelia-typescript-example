@@ -370,7 +370,7 @@ export class CommunityDetail {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
       message,
-      communityMembers, this.i18n.tr('button.delete'), 'modelPromise')
+      communityMembers, this.i18n.tr('button.remove'), 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.

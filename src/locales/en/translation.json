@@ -88,7 +88,7 @@
         "sendAlert":"Send alert",
         "startConversation":"Start conversation",
         "addMember":"Add member",
-        "deleteMember":"Remove member",
+        "deleteMember":"Remove members",
         "transferOwnership":"Transfer ownership",
         "deleteCommunity":"Delete community",
         "renameCommunity":"Rename community"
@@ -98,6 +98,7 @@
         "ok": "OK",
         "cancel": "Cancel",
         "delete": "Delete",
+        "remove": "Remove",
         "save": "Save"
     },
 
