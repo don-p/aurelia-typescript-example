@@ -63,7 +63,7 @@ export async function configure(aurelia: Aurelia) {
     // .developmentLogging()
     // .globalResources('services/remoteDataAttribute')
     .plugin('aurelia-configuration', config => {
-      config.setDirectory('src/config'); // Will make plugin look for config files in a directory called "config-files"
+      config.setDirectory('config'); // Will make plugin look for config files in a directory called "config-files"
       config.setConfig('appConfig.json'); // Will look for mycoolconfig.json as the configuration file
       config.setEnvironment(environment);     
     })

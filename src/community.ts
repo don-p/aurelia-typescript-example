@@ -43,9 +43,6 @@ export class Community {
     this.pageSize = 500;
     this.selectedItem = null;
     this.selectedCommunities = [];
-    // this.getCommunitiesPage('COI', 50, this.pageSize);
-    // this.cmtysPromise = this.getCommunitiesPage('COI', 50, this.pageSize);
-
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
@@ -68,25 +65,6 @@ export class Community {
       me.selectDefaultCommunity();
     });
   }
-/**
- * Get communities for logged-in user.
- */
-/*
-  async listCommunities(communityType: string): Promise<void> {
-    var me = this;
-
-    this.dataService.getCommunities(communityType)
-    .then(response => response.json())
-    .then(data => {
-      this.logger.debug(json(data));
-//      this.session=me.session;
-      me.communities = data.responseCollection;
-    }).catch(error => {
-      this.logger.error("Communities list() failed."); 
-      this.logger.error(error); 
-    });
-  }
-*/
 
   async getMore(topIndex: number, isAtBottom: boolean, isAtTop: boolean): Promise<void> {
     this.logger.debug('Getting more communities: '+topIndex+' | '+isAtBottom+' | '+isAtTop);
@@ -130,19 +108,6 @@ export class Community {
       //throw error;
       return Promise.reject(error);
     });
-    // .then(data => {
-    //   me.communities = data.responseCollection;
-    //  }, error => {
-    //    console.log('Communities list() rejected. Error: ' + error); 
-    //    console.debug(me.cmtysPromise.isRejected().toString());
-    //    return Promise.reject(error);
-    //  }).catch(error => {
-    //   console.log("Communities list() failed."); 
-    //   console.log(error); 
-    //   return Promise.reject(error);
-    // });
-
-    // return cmtysPromise;
   }
 
   selectCommunityType(communityType:string) {

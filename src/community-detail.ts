@@ -11,14 +11,7 @@ import {DialogService, DialogController} from 'aurelia-dialog';
 import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid';
-// import {AgGridWrapper} from './lib/ag-grid';
-
-
 // import {RemoteData} from './services/remoteData';
-
-
-// polyfill fetch client conditionally
-const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
 @inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager) // SCROLL
 export class CommunityDetail {
@@ -48,19 +41,6 @@ export class CommunityDetail {
   ps: any; // SCROLL
 
   logger: Logger;
-
-  //   columnDefs = [
-  //     {headerName: "Make", field: "make"},
-  //     {headerName: "Model", field: "model"},
-  //     {headerName: "Price", field: "price"}
-  // ];
-  
-  // @bindable() rowData = [
-  //     {make: "Toyota", model: "Celica", price: 35000},
-  //     {make: "Ford", model: "Mondeo", price: 32000},
-  //     {make: "Porsche", model: "Boxter", price: 72000}
-  // ];
-
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, 
@@ -153,75 +133,34 @@ export class CommunityDetail {
     return columns;
   }
 
-    // getGridOptions(type) {
-    //   let me = this;
-    //    return {
-    //     columnDefs: this.getGridColumns(type),
-    //     // rowData: this.communityMembers,
-    //     rowSelection: 'multiple',
-    //     rowHeight: 30,
-    //     headerHeight: 40,
-    //     suppressMenuHide: true,
-    //     // pageSize: this.pageSize,
-    //     paginationPageSize: this.pageSize,
-    //     enableServerSideSorting: true,
-    //     enableServerSideFilter: true,
-    //     enableColResize: true,
-    //     debug: false,
-    //     rowModelType: 'virtual',
-    //     virtualPaging: true,
-    //     maxPagesInCache: 2,
-    //     onSelectionChanged: type === 'listMembers'?
-    //       function() {
-    //         me.membersSelectionChanged(this)
-    //       }:
-    //       function() {
-    //         me.orgMembersSelectionChanged(this)
-    //       },
-    //     onViewportChanged: function() {
-    //       me.gridOptions['api'].sizeColumnsToFit();
-    //     },
-    //     onGridSizeChanged: function(){
-    //       if(!this.api) return;
-    //       this.api.sizeColumnsToFit();
-    //     },
-    //     getRowNodeId: function(item) {
-    //       return item.memberId.toString();
-    //     }
-    // };
-    // }
-
-    getGridOptions(type): GridOptions {
-      let me = this;
-       return {
-        columnDefs: this.getGridColumns(type),
-        // rowData: this.communityMembers,
-        rowSelection: 'multiple',
-        rowHeight: 30,
-        headerHeight: 40,
-        suppressMenuHide: true,
-        // pageSize: this.pageSize,
-        paginationPageSize: this.pageSize,
-        enableServerSideSorting: true,
-        enableServerSideFilter: true,
-        enableColResize: true,
-        debug: false,
-        rowModelType: 'virtual',
-        maxPagesInCache: 2,
-        onViewportChanged: function() {
-          me.gridOptions['api'].sizeColumnsToFit();
-        },
-        onGridSizeChanged: function(){
-          if(!this.api) return;
-          this.api.sizeColumnsToFit();
-        }
+  getGridOptions(type): GridOptions {
+    let me = this;
+      return {
+      columnDefs: this.getGridColumns(type),
+      // rowData: this.communityMembers,
+      rowSelection: 'multiple',
+      rowHeight: 30,
+      headerHeight: 40,
+      suppressMenuHide: true,
+      // pageSize: this.pageSize,
+      paginationPageSize: this.pageSize,
+      enableServerSideSorting: true,
+      enableServerSideFilter: true,
+      enableColResize: true,
+      debug: false,
+      rowModelType: 'virtual',
+      maxPagesInCache: 2,
+      onViewportChanged: function() {
+        me.gridOptions['api'].sizeColumnsToFit();
+      },
+      onGridSizeChanged: function(){
+        if(!this.api) return;
+        this.api.sizeColumnsToFit();
+      }
     };
-    }
+  }
 
   attached(params, navigationInstruction) {
-    // this.navigationInstruction = navigationInstruction;
-    // this.communityMembers = params;
-
     // // Custom scrollbar:
     // var container = document.getElementById('community-member-list'); // SCROLL
     // this.ps.initialize(container);
@@ -241,7 +180,6 @@ export class CommunityDetail {
     gridOptions.getRowNodeId = function(item) {
       return item.memberId.toString();
     };
-    // var eGridDiv = document.querySelector('#eGridDiv');
     this.gridOptions = gridOptions;
     this.initGrid(this);
   }
@@ -260,88 +198,80 @@ export class CommunityDetail {
   }
 
   setCommunityMembersGridDataSource(gridOptions, pageSize, communityService) {
-    // me.dataService.getCommunity(me.selectedCmty, 0, me.pageSize)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //       // params.successCallback(data.responseCollection, data.totalCount-1);
     const me = this;
 
-        let gridDataSource = {
-            /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-            rowCount: null,
-            paginationPageSize: pageSize,
-            //  paginationOverflowSize: 1,
-             maxConcurrentDatasourceRequests: 2,
-            //  maxPagesInPaginationCache: 2,
-            loading: false,
+    let gridDataSource = {
+        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
+        rowCount: null,
+        paginationPageSize: pageSize,
+        //  paginationOverflowSize: 1,
+          maxConcurrentDatasourceRequests: 2,
+        //  maxPagesInPaginationCache: 2,
+        loading: false,
 
-            /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-            getRows: function(params: IGetRowsParams) {
-               gridOptions.api.showLoadingOverlay();
-              if(!this.loading) {
-                me.logger.debug("..... Loading Grid row | startIndex: " + params.startRow);
-                me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
-                me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
-                this.loading = true;
-                let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
-                let  communityId = gridOptions.communityId;
-                let membersPromise = communityService.getCommunity(communityId, params.startRow, pageSize);
-                membersPromise.then(response => response.json())
-                  .then(data => {
-                    if(gridDataSource.rowCount === null) {
-                      gridDataSource.rowCount = data.totalCount;
-                    }
-                    gridOptions.api.hideOverlay();
-                    params.successCallback(data.responseCollection, data.totalCount);
-                    this.loading = false;
-                });
-              }
-            }
+        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
+        getRows: function(params: IGetRowsParams) {
+            gridOptions.api.showLoadingOverlay();
+          if(!this.loading) {
+            me.logger.debug("..... Loading Grid row | startIndex: " + params.startRow);
+            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
+            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
+            this.loading = true;
+            let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
+            let  communityId = gridOptions.communityId;
+            let membersPromise = communityService.getCommunity(communityId, params.startRow, pageSize);
+            membersPromise.then(response => response.json())
+              .then(data => {
+                if(gridDataSource.rowCount === null) {
+                  gridDataSource.rowCount = data.totalCount;
+                }
+                gridOptions.api.hideOverlay();
+                params.successCallback(data.responseCollection, data.totalCount);
+                this.loading = false;
+            });
+          }
         }
-        gridOptions.api.setDatasource(gridDataSource);
+    }
+    gridOptions.api.setDatasource(gridDataSource);
   }
 
   setOrganizationMembersGridDataSource(gridOptions, pageSize, communityService) {
-    // me.dataService.getCommunity(me.selectedCmty, 0, me.pageSize)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //       // params.successCallback(data.responseCollection, data.totalCount-1);
     const me = this;
 
-        let gridDataSource = {
-            name: 'organizationMembers',
-            /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-            rowCount: null,
-            paginationPageSize: pageSize,
-            //  paginationOverflowSize: 1,
-             maxConcurrentDatasourceRequests: 2,
-            //  maxPagesInPaginationCache: 2,
-            loading: false,
+    let gridDataSource = {
+        name: 'organizationMembers',
+        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
+        rowCount: null,
+        paginationPageSize: pageSize,
+        //  paginationOverflowSize: 1,
+          maxConcurrentDatasourceRequests: 2,
+        //  maxPagesInPaginationCache: 2,
+        loading: false,
 
-            /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-            getRows: function(params: IGetRowsParams) {
-               gridOptions.api.showLoadingOverlay();
-              if(!this.loading) {
-                me.logger.debug("..... Loading Grid row | startIndex: " + params.startRow);
-                me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
-                me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
-                this.loading = true;
-                let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
-                let  organizationId = gridOptions.organizationId;
-                let orgPromise = communityService.getOrgMembers(organizationId, params.startRow, pageSize);
-                orgPromise.then(response => response.json())
-                  .then(data => {
-                    if(gridDataSource.rowCount === null) {
-                      gridDataSource.rowCount = data.totalCount;
-                    }
-                    gridOptions.api.hideOverlay();
-                    params.successCallback(data.responseCollection, data.totalCount);
-                    this.loading = false;
-                });
-              }
-            }
+        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
+        getRows: function(params: IGetRowsParams) {
+            gridOptions.api.showLoadingOverlay();
+          if(!this.loading) {
+            me.logger.debug("..... Loading Grid row | startIndex: " + params.startRow);
+            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
+            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
+            this.loading = true;
+            let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
+            let  organizationId = gridOptions.organizationId;
+            let orgPromise = communityService.getOrgMembers(organizationId, params.startRow, pageSize);
+            orgPromise.then(response => response.json())
+              .then(data => {
+                if(gridDataSource.rowCount === null) {
+                  gridDataSource.rowCount = data.totalCount;
+                }
+                gridOptions.api.hideOverlay();
+                params.successCallback(data.responseCollection, data.totalCount);
+                this.loading = false;
+            });
+          }
         }
-        gridOptions.api.setDatasource(gridDataSource);
+    }
+    gridOptions.api.setDatasource(gridDataSource);
   }
 
   setSelectedOrganizationMembersGridDataSource(gridOptions, pageSize, selection) {
@@ -369,13 +299,6 @@ export class CommunityDetail {
 
   bind() {
   }
-
-  // rowDataChanged(newValue) {
-  //   if (newValue && newValue.length) {
-  //       this.gridOptions.api.setRowData(newValue);
-  //       this.gridOptions.api.refreshView();
-  //   }
-  // }
   
   async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
     let me = this;
