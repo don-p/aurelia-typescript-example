@@ -102,11 +102,6 @@ export class CommunityDetail {
       field: "physicalPersonProfile.lastName", 
       filter: 'text'
     });
-    columns.push({
-      headerName: this.i18n.tr('community.members.title'), 
-      field: "physicalPersonProfile.jobTitle",
-      filter: 'text'
-    });
     if(type == 'listMembers') {
       columns.push({
         headerName: this.i18n.tr('community.members.organization'), 
@@ -116,7 +111,7 @@ export class CommunityDetail {
     } else if (type === 'addMembers') {
       columns.push({
         headerName: this.i18n.tr('community.members.title'), 
-        field: "physicalPersonProfile.title",
+        field: "physicalPersonProfile.jobTitle",
         filter: 'text'
       });
     }
