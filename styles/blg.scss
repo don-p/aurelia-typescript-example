@@ -1128,3 +1128,12 @@ border-bottom: 1px solid $blg-grey-light-more;
   transform: rotate(180deg);
   display: inline-block;
 }
+
+ai-dialog-container {
+  overflow-y: hidden !important; 
+}
+
+.organization-members-table {
+  width: 1000px;
+  height: 400px;
+}
