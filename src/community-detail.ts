@@ -102,11 +102,6 @@ export class CommunityDetail {
       field: "physicalPersonProfile.lastName", 
       filter: 'text'
     });
-    columns.push({
-      headerName: this.i18n.tr('community.members.title'), 
-      field: "physicalPersonProfile.jobTitle",
-      filter: 'text'
-    });
     if(type == 'listMembers') {
       columns.push({
         headerName: this.i18n.tr('community.members.organization'), 
@@ -116,7 +111,7 @@ export class CommunityDetail {
     } else if (type === 'addMembers') {
       columns.push({
         headerName: this.i18n.tr('community.members.title'), 
-        field: "physicalPersonProfile.title",
+        field: "physicalPersonProfile.jobTitle",
         filter: 'text'
       });
     }
@@ -471,6 +466,7 @@ export class CommunityDetail {
             // update the community member count.
             me.selectedCmty.memberCount = data.totalCount;
             // Close dialog on success.
+            gridOptions.api.destroy();
             controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
@@ -494,6 +490,7 @@ export class CommunityDetail {
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.
+          gridOptions.api.destroy();
           this.logger.debug('Cancel');
         }
       })
