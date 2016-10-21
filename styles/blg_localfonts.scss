@@ -55,7 +55,9 @@
 .ico-plus2                    { &:before { content: "\ed5b"; } }
 .ico-minus2                   { &:before { content: "\ed5c"; } }
 .ico-minus-circle             { &:before { content: "\ed60"; } }
+.ico-minus-circle2            { &:before { content: "\ed62"; } }
 .ico-plus-circle              { &:before { content: "\ed5F"; } }
+.ico-plus-circle2             { &:before { content: "\ed61"; } }
 .ico-search                   { &:before { content: "\eb30"; } }
 .ico-stack3                   { &:before { content: "\e9cf"; } }
 .ico-cancel-circle            { &:before { content: "\ed65"; } }
@@ -79,6 +81,9 @@
 .ico-bubble-cancel            { &:before { content: "\eaeb"; } }
 .ico-new                      { &:before { content: "\e97b"; } }
 .ico-user-plus                { &:before { content: "\eaf9"; } }
+.ico-user-minus               { &:before { content: "\eafa"; } }
+.ico-user-plus2               { &:before { content: "\eb02"; } }
+.ico-user-minus2              { &:before { content: "\eb03"; } }
 .ico-user-cancel              { &:before { content: "\eafb"; } }
 .ico-bubble-right             { &:before { content: "\eaf0"; } }
 .ico-exit3                    { &:before { content: "\ed7b"; } }
@@ -126,3 +131,12 @@
 .ico-pen7                     { &:before { content: "\e927"; } }
 .ico-mic                      { &:before { content: "\e989"; } }
 .ico-mic5                     { &:before { content: "\e98f"; } }
+.ico-file-plus                { &:before { content: "\e9a1"; } }
+.ico-file-plus2               { &:before { content: "\e9a2"; } }
+.ico-file-minus               { &:before { content: "\e9a3"; } }
+.ico-file-minus2              { &:before { content: "\e9a4"; } }
+.ico-menu7                    { &:before { content: "\ec71"; } }
+.ico-paragraph-justify2       { &:before { content: "\eebe"; } }
+.ico-paragraph-justify3       { &:before { content: "\eec4"; } }
+.ico-circle-right             { &:before { content: "\ede8"; } }
+.ico-lamp8                    { &:before { content: "\ebfa"; } }
