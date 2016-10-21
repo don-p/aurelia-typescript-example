@@ -1,101 +1,8 @@
 <template>
+	<require from="./lib/loading-mask/loading-mask"></require>
 
-    <!--<div style="vertical-align:top;" class="container">-->
-      <!--
-      <div class="row">
-      </div>
-      <div class="row" repeat.for="member of selectedCommunityMembers" class="container">
-        <div class="col-md-1">${member.memberId}</div>
-        <div>${member.physicalPersonProfile.firstName}</div>
-        <div>${member.physicalPersonProfile.lastName}</div>
-        <div>${member.physicalPersonProfile.jobTitle}</div>
-        <div>${member.physicalPersonProfile.organization.organizationName}</div>
-        <div>${member.physicalPersonProfile.locationProfile.city}</div>
-        <div>${member.physicalPersonProfile.locationProfile.stateCode}</div>
-        <div>${member.physicalPersonProfile.locationProfile.zipCode}</div>
-      </div>
--->
-   <!-- 
-      <table class="container bg-primary table table-bordered">
-        <tr  class="container">
-          <th>Member ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Title</th>
-          <th>Organization</th>
-          <th>City</th>
-          <th>State</th>
-          <th>ZIP</th>
-        </tr>
-        <tr repeat.for="member of selectedCommunityMembers" class="container">
-          <td>${member.memberId}</td>
-          <td>${member.physicalPersonProfile.firstName}</td>
-          <td>${member.physicalPersonProfile.lastName}</td>
-          <td>${member.physicalPersonProfile.jobTitle}</td>
-          <td>${member.physicalPersonProfile.organization.organizationName}</td>
-          <td>${member.physicalPersonProfile.locationProfile.city}</td>
-          <td>${member.physicalPersonProfile.locationProfile.stateCode}</td>
-          <td>${member.physicalPersonProfile.locationProfile.zipCode}</td>
-        </tr>
-      </table>
-      -->
-   <!-- </div>-->
-
-<!--
-	<section if.bind="(selectedCmty && selectedCmty!==null)" id="membersTable" class="members-table">
- -->
 	<section id="membersTable" class="members-table">
 		
-
-<!--
-<m-grid>
-  <data-source read.bind="selectedCommunityMembers.get"></data-source>
-  <pagination size="10" all.bind="[5,10,20,40]"></pagination>
-  <columns>
-    <column heading="First Name" field="physicalPersonProfile.firstName"></column>
-    <column heading="Last Name" field="physicalPersonProfile.lastName"></column>
-  </columns>
-</m-grid>
--->
-	<!--
-        <ej-grid e-data-source.bind="selectedCommunityMembers" e-allow-paging=true e-allow-sorting=true>
-            <ej-column e-field="physicalPersonProfile.firstName" e-header-text="Order ID" e-text-align="right"></ej-column>
-            <ej-column e-field="physicalPersonProfile.lastName" e-header-text="Customer ID"></ej-column>
-            <ej-column e-field="EmployeeID" e-header-text="Employee ID" e-text-align="right"></ej-column>
-            <ej-column e-field="Freight" e-header-text="Freight" e-format="{0:C}" e-text-align="right"></ej-column>
-            <ej-column e-field="OrderDate" e-header-text="Order Date" e-format="{0:MM/dd/yyyy}" e-text-align="right"></ej-column>
-        </ej-grid>
--->
-
-<!--
-<v-grid show.bind="(selectedCommunityMembers && selectedCommunityMembers!==null)"
-      class="col-md-6"
-      style="height:250px"
-      v-row-height="25"
-      v-header-height="50"
-      v-footer-height="50"
-      v-multi-select="true"
-      v-current-entity.bind=currentMember
-      v-remote-index="id"
-      v-event-onremote.call="callRemoteServer($event)"
-      v-collection.bind=selectedCommunityMembers
-      v-grid-context.bind=membersGrid>
-	  
-      <v-grid-col col-width="50" col-type="selection" col-add-row-attributes="v-key-move"></v-grid-col>
-
-      <v-grid-col col-width="120" col-type="text" col-field="startIndex" col-header-name="Full name" col-add-row-attributes="v-row-menu='name' v-key-move" col-add-filter-attributes="v-col-header-name-menu='name'"></v-grid-col>
-
-      <v-grid-col col-width="100" col-field="number | numberFormat & updateTrigger:'blur':'paste'" col-sort="number" col-header-name="Salery" col-filter="number|>=" col-filter-top="true" col-add-row-attributes="v-row-menu='number' v-key-move" col-add-filter-attributes="v-col-header-name-menu='number'" col-css="color:${tempRef.numberColor};font-weight:${tempRef.numberFont}"></v-grid-col>
-      <v-grid-col col-width="105" col-type="text" col-field="date | dateFormat & updateTrigger:'blur':'paste'" col-sort="date" col-header-name="Created" col-filter="date|>|dateFormat" col-filter-top="true" col-add-row-attributes="v-row-menu='date' v-key-move" col-add-filter-attributes="v-col-header-name-menu='date'"></v-grid-col>
-      <v-grid-col col-width="100" col-type="checkbox" col-field="bool" col-sort="bool" col-header-name="Booked" col-filter="bool|=" col-filter-top="true" col-add-row-attributes="v-row-menu='bool' v-key-move" col-add-filter-attributes="v-col-header-name-menu='bool'"></v-grid-col>
-      <v-grid-col col-width="107" col-type="image" col-field="images" col-header-name="Profile Img"  col-filter-top="true" col-add-row-attributes="v-row-menu='images' v-key-move tabindex='0'" col-add-filter-attributes="v-col-header-name-menu='images'"></v-grid-col>
-    </v-grid>
-
--->
-
-
-
-
 		<div class="members-table-header" id="membersTableHeader">
 			${selectedCmty.communityName}
 		</div>
@@ -143,55 +50,10 @@
 		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
 <div class="members-table-content" id="membersTableContent">				  
-	<require from="./lib/loading-mask/loading-mask"></require>
-	<require from="./lib/ag-grid.ts"></require>
-	<!--<loading promise.bind="'membersPromise'">-->
-	<div id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
-	<!--</loading>-->
-					
-<!--
-		<div class="members-table-content" id="membersTableContent">
-		
-			<table id="example" class="table table-striped blg-dataTable" cellspacing="0" width="100%">
-				<thead>
-					<tr>
-						<th>
-							<div class="checkbox checkbox-info">
-								<input id="checkbox-members-all" type="checkbox" class="styled styled-info" value="">
-								<label></label>
-							</div>
-						</th>
-						<th i18n="members.name"></th>
-						<th i18n="members.jobTitle"></th>
-						<th i18n="members.industryName"></th>
-						<th i18n="members.city"></th>
-						<th i18n="members.state"></th>
-						<th i18n="members.zip"></th>										 
-					</tr>
-				</thead>
-				
-				<tbody id="community-member-list" class="community-member-list">
-					<tr repeat.for="member of selectedCommunityMembers">
-						<td>
-							<div class="checkbox checkbox-info">
-								<input id="checkbox-members-XX" type="checkbox" class="styled styled-info" value="">
-								<label></label>
-							</div>
-						</td>
-						<td>${member.physicalPersonProfile.firstName} ${member.physicalPersonProfile.lastName}</td>
-						<td>${member.physicalPersonProfile.jobTitle}</td>
-						<td>${member.physicalPersonProfile.organization.organizationName}</td>
-						<td>${member.physicalPersonProfile.locationProfile.city}</td>
-						<td>${member.physicalPersonProfile.locationProfile.stateCode}</td>
-						<td>${member.physicalPersonProfile.locationProfile.zipCode}</td>
-					</tr>
-				</tbody>
-		
-			</table>														
-		
-		</div>
--->		
+	<div id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" >
+	</div>
 </div>
+
 		<!--<div class="blg-btns-content panel-footer"></div>										-->
 
 	</section>

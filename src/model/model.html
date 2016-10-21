@@ -22,7 +22,8 @@
 
     <div class="modal-footer">
       <button class="btn btn-default-blg" click.trigger="controller.cancel()">Cancel</button>
-      <button class="btn btn-info" click.trigger="!!(model.submit)?model.submit(model.item):controller.ok(model.item)">${model.okText}</button>
+      <button class="btn btn-info" disabled.bind="(model.isSubmitDisabled)" 
+        click.trigger="!!(model.submit)?model.submit(model.item):controller.ok(model.item)">${model.okText}</button>
     </div>
   </ai-dialog>
 </loading>

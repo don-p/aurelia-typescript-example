@@ -10,7 +10,7 @@ import {I18N} from 'aurelia-i18n';
 import {DialogService, DialogController} from 'aurelia-dialog';
 import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
-import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid';
+import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid/main';
 // import {RemoteData} from './services/remoteData';
 
 @inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager) // SCROLL
@@ -21,7 +21,8 @@ export class CommunityDetail {
   selectedCommunityMembers: Array<Object>;
   selectedOrganizationMembers: Array<Object>;
   selectedCmty: any;
-  communityMembers: { get: () => any[] };
+  // communityMembers: { get: () => any[] };
+  communityMembers: Array<Object>;
   membersGrid: Object;
   cmtyMembersGrid: any;
   addCmtyMembersGrid: any;
@@ -29,6 +30,7 @@ export class CommunityDetail {
   // remoteData: RemoteData;
 
   membersPromise: Promise<Response>;
+  cmtyMembersCachePromise:  Promise<void>;
   // @bindable columns;
   // @bindable rows;
   @bindable pageSize;
@@ -44,7 +46,7 @@ export class CommunityDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, 
-    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) { // SCROLL
+    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
 
     this.communityMembers = null;
     // this.membersGrid = {};
@@ -66,9 +68,15 @@ export class CommunityDetail {
 
         // this.initGrid(this);
 
-        // me.setGridDataSource(me);
+        // Save selected communityId.
         me.gridOptions['communityId'] = me.selectedCmty.communityId;
+        // Set up the virtual scrolling grid displaying community members.
         me.setCommunityMembersGridDataSource(me.gridOptions, me.pageSize, me.communityService);
+        // Set up collection to track available community members.
+        me.gridOptions.api.showLoadingOverlay();
+        me.getCommunityMemberIDs(me.selectedCmty.communityId, 20000).then(() => {
+          me.gridOptions.api.hideOverlay();
+        });
       }
     });
     this.logger = LogManager.getLogger(this.constructor.name);
@@ -137,7 +145,6 @@ export class CommunityDetail {
     let me = this;
       return {
       columnDefs: this.getGridColumns(type),
-      // rowData: this.communityMembers,
       rowSelection: 'multiple',
       rowHeight: 30,
       headerHeight: 40,
@@ -213,7 +220,7 @@ export class CommunityDetail {
         getRows: function(params: IGetRowsParams) {
             gridOptions.api.showLoadingOverlay();
           if(!this.loading) {
-            me.logger.debug("..... Loading Grid row | startIndex: " + params.startRow);
+            me.logger.debug("..... setCommunityMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
@@ -252,7 +259,7 @@ export class CommunityDetail {
         getRows: function(params: IGetRowsParams) {
             gridOptions.api.showLoadingOverlay();
           if(!this.loading) {
-            me.logger.debug("..... Loading Grid row | startIndex: " + params.startRow);
+            me.logger.debug("..... setOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
@@ -261,11 +268,21 @@ export class CommunityDetail {
             let orgPromise = communityService.getOrgMembers(organizationId, params.startRow, pageSize);
             orgPromise.then(response => response.json())
               .then(data => {
+                // Filter out existing community members.
+                let totalCount = data.totalCount;
+                let filteredData = data.responseCollection.filter(function(item) {
+                  if(me.communityMembers.indexOf(item.memberId) < 0) {
+                    return true;
+                  } else {
+                    totalCount--;
+                    return false;
+                  }
+                });
                 if(gridDataSource.rowCount === null) {
-                  gridDataSource.rowCount = data.totalCount;
+                  gridDataSource.rowCount = totalCount;
                 }
                 gridOptions.api.hideOverlay();
-                params.successCallback(data.responseCollection, data.totalCount);
+                params.successCallback(filteredData, totalCount);
                 this.loading = false;
             });
           }
@@ -289,6 +306,7 @@ export class CommunityDetail {
 
         /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
         getRows: function(params: IGetRowsParams) {
+          me.logger.debug("..... setSelectedOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
           gridOptions.api.showLoadingOverlay();
           params.successCallback(selection, selection.length);
           gridOptions.api.hideOverlay();
@@ -308,6 +326,23 @@ export class CommunityDetail {
       me.logger.debug(data);
 //      this.session=me.session;
       me.communityMembers = data.responseCollection;
+      // me.agGridWrap.rowsChanged(me.communityMembers, null);
+    }).catch(error => {
+      me.logger.error("Communities members() failed."); 
+      me.logger.error(error); 
+    });
+  }
+
+  async getCommunityMemberIDs(communityId: string, pageSize: number) : Promise<void> {
+    let me = this;
+    return this.communityService.getCommunity(communityId, 0, pageSize)
+    .then(response => response.json())
+    .then((data: any) => {
+      me.logger.debug(data);
+//      this.session=me.session;
+      me.communityMembers = data.responseCollection.map(function(item) {
+        return item.memberId;
+      });
       // me.agGridWrap.rowsChanged(me.communityMembers, null);
     }).catch(error => {
       me.logger.error("Communities members() failed."); 
@@ -339,7 +374,7 @@ export class CommunityDetail {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
       message,
-      communityMembers, this.i18n.tr('button.delete'), 'modelPromise')
+      communityMembers, this.i18n.tr('button.remove'), 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
@@ -351,6 +386,11 @@ export class CommunityDetail {
         this.communityService.removeCommunityMembers(this.selectedCmty.communityId, commMemberIds)
         .then(response => response.json())
         .then(data => {
+            // Update local cache of community members.
+            me.communityMembers = me.communityMembers.filter(function(item:any) {
+              return !(commMemberIds.indexOf(item.memberId >= 0));
+            })
+
             me.gridOptions.api.refreshVirtualPageCache();
             me.gridOptions.api.refreshView();
             me.gridOptions.api.deselectAll();
@@ -393,9 +433,12 @@ export class CommunityDetail {
       // });
 
       let cols = me.getGridColumns('addMembers');
+      let model = controller.settings.model;
       let gridOptions = this.getGridOptions('addMembers');
+      model.isSubmitDisabled = true;
       gridOptions.onSelectionChanged = function() {
-        me.orgMembersSelectionChanged(this)
+        me.orgMembersSelectionChanged(this);
+        model.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
       };
       gridOptions.getRowNodeId = function(item) {
         return item.memberId.toString();
@@ -406,7 +449,7 @@ export class CommunityDetail {
       me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.communityService);
 
 
-      let model = controller.settings.model;
+      // let model = controller.settings.model;
       model.gridOptions = gridOptions;
       // Callback function for submitting the dialog.
       model.submit = () => {
@@ -419,6 +462,9 @@ export class CommunityDetail {
         this.communityService.addCommunityMembers(this.selectedCmty.communityId, orgMemberIds)
         .then(response => response.json())
         .then(data => {
+            // Update local cache of community members.
+            Array.prototype.splice.apply(me.communityMembers,[].concat(me.communityMembers.length,0,orgMemberIds));
+
             me.gridOptions.api.refreshVirtualPageCache();
             me.gridOptions.api.refreshView();
             me.gridOptions.api.deselectAll();
