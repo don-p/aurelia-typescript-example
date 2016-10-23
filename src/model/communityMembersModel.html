@@ -1,16 +1,16 @@
 <template>
-<div class="row textMessage">
-    <div if.bind="model.gridOptions.api.rowModel.datasource.name ==='organizationMembers'" style="display:inline-block;float:right">
-		<button type="button" class="btn btn-primary btn-sm" click.delegate="model.showSelectedOrganizationMembers(true)">Show selected</button>
+	<div class="row textMessage">
+		<div if.bind="model.gridOptions.api.rowModel.datasource.name ==='organizationMembers'" class.bind="(model.isSubmitDisabled) ? 'float-right invisible':'float-right'">
+			<button type="button" class="btn btn-primary btn-link btn-sm" click.delegate="model.showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
+		</div>
+		<div if.bind="model.gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" class="float-right">
+			<button type="button" class="btn btn-primary btn-link btn-sm" click.delegate="model.showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i>Show all</button>
+		</div>
 	</div>
-    <div if.bind="model.gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" style="display:inline-block;float:right">
-		<button type="button" class="btn btn-primary btn-sm" click.delegate="model.showSelectedOrganizationMembers(false)">Show list</button>
+	<div class="members-table-content organization-members-table" id="membersTableContent">				  
+		<!--<require from="../lib/loading-mask/loading-mask"></require>-->
+		<!--<loading promise.bind="'membersPromise'">-->
+		<div id="addCmtyMembersGrid" ref="addCmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
 	</div>
-</div>
-<div class="members-table-content organization-members-table" id="membersTableContent">				  
-	<!--<require from="../lib/loading-mask/loading-mask"></require>-->
-	<!--<loading promise.bind="'membersPromise'">-->
-	<div id="addCmtyMembersGrid" ref="addCmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
-</div>
-<input type="hidden" value.bind="model.item.communityId" />
+	<input type="hidden" value.bind="model.item.communityId" />
 </template>
