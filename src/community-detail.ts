@@ -10,7 +10,7 @@ import {I18N} from 'aurelia-i18n';
 import {DialogService, DialogController} from 'aurelia-dialog';
 import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
-import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid';
+import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid/main';
 // import {RemoteData} from './services/remoteData';
 
 @inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager) // SCROLL
@@ -30,6 +30,7 @@ export class CommunityDetail {
   // remoteData: RemoteData;
 
   membersPromise: Promise<Response>;
+  cmtyMembersCachePromise:  Promise<void>;
   // @bindable columns;
   // @bindable rows;
   @bindable pageSize;
@@ -45,7 +46,7 @@ export class CommunityDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, 
-    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) { // SCROLL
+    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
 
     this.communityMembers = null;
     // this.membersGrid = {};
@@ -67,12 +68,15 @@ export class CommunityDetail {
 
         // this.initGrid(this);
 
-        // me.setGridDataSource(me);
+        // Save selected communityId.
         me.gridOptions['communityId'] = me.selectedCmty.communityId;
+        // Set up the virtual scrolling grid displaying community members.
+        me.setCommunityMembersGridDataSource(me.gridOptions, me.pageSize, me.communityService);
+        // Set up collection to track available community members.
+        me.gridOptions.api.showLoadingOverlay();
         me.getCommunityMemberIDs(me.selectedCmty.communityId, 20000).then(() => {
-          me.setCommunityMembersGridDataSource(me.gridOptions, me.pageSize, me.communityService);
-        }
-        );
+          me.gridOptions.api.hideOverlay();
+        });
       }
     });
     this.logger = LogManager.getLogger(this.constructor.name);
@@ -98,11 +102,6 @@ export class CommunityDetail {
       field: "physicalPersonProfile.lastName", 
       filter: 'text'
     });
-    columns.push({
-      headerName: this.i18n.tr('community.members.title'), 
-      field: "physicalPersonProfile.jobTitle",
-      filter: 'text'
-    });
     if(type == 'listMembers') {
       columns.push({
         headerName: this.i18n.tr('community.members.organization'), 
@@ -112,7 +111,7 @@ export class CommunityDetail {
     } else if (type === 'addMembers') {
       columns.push({
         headerName: this.i18n.tr('community.members.title'), 
-        field: "physicalPersonProfile.title",
+        field: "physicalPersonProfile.jobTitle",
         filter: 'text'
       });
     }
@@ -141,7 +140,6 @@ export class CommunityDetail {
     let me = this;
       return {
       columnDefs: this.getGridColumns(type),
-      // rowData: this.communityMembers,
       rowSelection: 'multiple',
       rowHeight: 30,
       headerHeight: 40,
@@ -217,7 +215,7 @@ export class CommunityDetail {
         getRows: function(params: IGetRowsParams) {
             gridOptions.api.showLoadingOverlay();
           if(!this.loading) {
-            me.logger.debug("..... Loading Grid row | startIndex: " + params.startRow);
+            me.logger.debug("..... setCommunityMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
@@ -256,7 +254,7 @@ export class CommunityDetail {
         getRows: function(params: IGetRowsParams) {
             gridOptions.api.showLoadingOverlay();
           if(!this.loading) {
-            me.logger.debug("..... Loading Grid row | startIndex: " + params.startRow);
+            me.logger.debug("..... setOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
@@ -303,6 +301,7 @@ export class CommunityDetail {
 
         /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
         getRows: function(params: IGetRowsParams) {
+          me.logger.debug("..... setSelectedOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
           gridOptions.api.showLoadingOverlay();
           params.successCallback(selection, selection.length);
           gridOptions.api.hideOverlay();
@@ -429,9 +428,12 @@ export class CommunityDetail {
       // });
 
       let cols = me.getGridColumns('addMembers');
+      let model = controller.settings.model;
       let gridOptions = this.getGridOptions('addMembers');
+      model.isSubmitDisabled = true;
       gridOptions.onSelectionChanged = function() {
-        me.orgMembersSelectionChanged(this)
+        me.orgMembersSelectionChanged(this);
+        model.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
       };
       gridOptions.getRowNodeId = function(item) {
         return item.memberId.toString();
@@ -442,7 +444,7 @@ export class CommunityDetail {
       me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.communityService);
 
 
-      let model = controller.settings.model;
+      // let model = controller.settings.model;
       model.gridOptions = gridOptions;
       // Callback function for submitting the dialog.
       model.submit = () => {
@@ -464,6 +466,7 @@ export class CommunityDetail {
             // update the community member count.
             me.selectedCmty.memberCount = data.totalCount;
             // Close dialog on success.
+            gridOptions.api.destroy();
             controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
@@ -487,6 +490,7 @@ export class CommunityDetail {
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.
+          gridOptions.api.destroy();
           this.logger.debug('Cancel');
         }
       })
