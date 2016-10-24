@@ -96,7 +96,7 @@ export class Community {
     .then(response => {return response.json()
       .then(data => {
         me.communities = data.responseCollection;
-        me.logger.debug('cmtyPromise resolved');
+        me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
       }).catch(error => {
         me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
         return Promise.reject(error);
@@ -178,8 +178,14 @@ export class Community {
               }
             }
             */
-            me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
-              me.selectCommunity(me.selectedItem);
+            let idx = me.communities.indexOf(community);
+            me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(data){
+              // After deleting community, select the next available community.
+              if(me.selectedItem === community) {
+                idx = idx===0?0:idx-1;
+                let cmty = me.communities[idx];
+                me.selectCommunity(cmty);
+              }
             });
             // Close dialog on success.
             controller.ok();
