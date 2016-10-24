@@ -110,10 +110,15 @@ export class Community {
     });
   }
 
-  selectCommunityType(communityType:string) {
+  selectCommunityType(communityType:string, selectedCommunity:Object) {
     let me = this;
+    if(this.commType !== communityType) {
+      this.commType = communityType;
+    }
     this.getCommunitiesPage(communityType, 0, this.pageSize).then(function(){
-      me.selectDefaultCommunity();
+      if(typeof selectedCommunity !== 'object') {
+        me.selectDefaultCommunity();
+      }
     })
   }
 
@@ -124,7 +129,11 @@ export class Community {
   }
 
   selectCommunity(community: Object) {
+    let type = community['communityType'];
     this.selectedItem = community;
+    if(this.commType !== type) {
+      this.selectCommunityType(type, community);
+    }
     this.selectedCommunities = [];
     this.evt.publish('cmtySelected', {community: community});
   }
@@ -239,12 +248,13 @@ export class Community {
         me.communityService.createCommunity(comm)
           .then(response => response.json())
           .then(data => {
-            me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
-              if(community === null || typeof community.communityId !== 'string') {
-                me.selectedItem = data;
-              }
-              me.selectCommunity(me.selectedItem);
-            });
+            if(community === null || typeof community.communityId !== 'string') {
+              me.selectCommunity(data);
+            } else {
+              me.getCommunitiesPage(data.communityType, 0, this.pageSize).then(function(){
+                // me.selectCommunity(me.selectedItem);
+              });
+            }
             // Close dialog on success.
             controller.ok();
           }, error => {
