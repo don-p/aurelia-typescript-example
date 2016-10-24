@@ -68,6 +68,7 @@ export class CommunityDetail {
 
         // this.initGrid(this);
 
+        me.gridOptions.api.deselectAll();
         // Save selected communityId.
         me.gridOptions['communityId'] = me.selectedCmty.communityId;
         // Set up the virtual scrolling grid displaying community members.
@@ -378,7 +379,7 @@ export class CommunityDetail {
           return obj.memberId;
         });
         // Call the delete service.
-        this.communityService.removeCommunityMembers(this.selectedCmty.communityId, commMemberIds)
+        this.communityService.removeCommunityMembers(me.selectedCmty.communityId, commMemberIds)
         .then(response => response.json())
         .then(data => {
             // Update local cache of community members.
