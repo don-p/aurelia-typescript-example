@@ -129,8 +129,16 @@ export class Community {
   }
 
   selectCommunity(community: Object) {
-    let type = community['communityType'];
     this.selectedItem = community;
+    // Scroll selected item into view.
+    let container = $('#community-list')[0];
+    let element = $('#'+community['communityId'])[0];
+    let offset = element.offsetTop;
+    if(offset > (container.clientHeight - element.clientHeight)) {
+      container.scrollTop = offset;
+    }
+    // Ensure correct community type view.
+    let type = community['communityType'];
     if(this.commType !== type) {
       this.selectCommunityType(type, community);
     }
