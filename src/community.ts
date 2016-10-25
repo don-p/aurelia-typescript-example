@@ -110,10 +110,15 @@ export class Community {
     });
   }
 
-  selectCommunityType(communityType:string) {
+  selectCommunityType(communityType:string, selectedCommunity:Object) {
     let me = this;
+    if(this.commType !== communityType) {
+      this.commType = communityType;
+    }
     this.getCommunitiesPage(communityType, 0, this.pageSize).then(function(){
-      me.selectDefaultCommunity();
+      if(typeof selectedCommunity !== 'object') {
+        me.selectDefaultCommunity();
+      }
     })
   }
 
@@ -124,7 +129,11 @@ export class Community {
   }
 
   selectCommunity(community: Object) {
+    let type = community['communityType'];
     this.selectedItem = community;
+    if(this.commType !== type) {
+      this.selectCommunityType(type, community);
+    }
     this.selectedCommunities = [];
     this.evt.publish('cmtySelected', {community: community});
   }
@@ -181,7 +190,7 @@ export class Community {
             let idx = me.communities.indexOf(community);
             me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(data){
               // After deleting community, select the next available community.
-              if(me.selectedItem === community) {
+              if(me.selectedItem['communityId'] === community.communityId) {
                 idx = idx===0?0:idx-1;
                 let cmty = me.communities[idx];
                 me.selectCommunity(cmty);
@@ -239,11 +248,10 @@ export class Community {
         me.communityService.createCommunity(comm)
           .then(response => response.json())
           .then(data => {
-            me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
+            me.getCommunitiesPage(data.communityType, 0, this.pageSize).then(function(){
               if(community === null || typeof community.communityId !== 'string') {
-                me.selectedItem = data;
+               me.selectCommunity(data);
               }
-              me.selectCommunity(me.selectedItem);
             });
             // Close dialog on success.
             controller.ok();
