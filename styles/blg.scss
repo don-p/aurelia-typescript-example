@@ -632,7 +632,7 @@ header .navbar-nav {
 
 .panel-title {
   font-size: 15px;
-  line-height: 1.292;
+  line-height: 1.22;
   font-weight: normal;
 }
 
@@ -1031,6 +1031,7 @@ table.blg-dataTable.display tbody td {
 
 .panel-title > a > i {
   margin-left: 3px;
+  margin-top: 2px;
 }
 .ag-blg .ag-menu {
   border-radius: 4px;
@@ -1113,7 +1114,6 @@ border-bottom: 1px solid $blg-grey-light-more;
 .community-name {
   display: inline-block;
   max-width: 288px;
-  max-height: 19px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1144,4 +1144,5 @@ ai-dialog-container {
 
 .btn-link i {
   margin-right: 5px;
+  font-size: 15px;
 } 
