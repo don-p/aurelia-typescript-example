@@ -190,7 +190,7 @@ export class Community {
             let idx = me.communities.indexOf(community);
             me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(data){
               // After deleting community, select the next available community.
-              if(me.selectedItem === community) {
+              if(me.selectedItem['communityId'] === community.communityId) {
                 idx = idx===0?0:idx-1;
                 let cmty = me.communities[idx];
                 me.selectCommunity(cmty);
@@ -248,13 +248,11 @@ export class Community {
         me.communityService.createCommunity(comm)
           .then(response => response.json())
           .then(data => {
-            if(community === null || typeof community.communityId !== 'string') {
-              me.selectCommunity(data);
-            } else {
-              me.getCommunitiesPage(data.communityType, 0, this.pageSize).then(function(){
-                // me.selectCommunity(me.selectedItem);
-              });
-            }
+            me.getCommunitiesPage(data.communityType, 0, this.pageSize).then(function(){
+              if(community === null || typeof community.communityId !== 'string') {
+               me.selectCommunity(data);
+              }
+            });
             // Close dialog on success.
             controller.ok();
           }, error => {
