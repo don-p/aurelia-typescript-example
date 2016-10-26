@@ -12,4 +12,8 @@ export class Prompt {
   activate(model) {
     this.model = model;
   }
+
+  attached() {
+    document.getElementById('model-submit-button').focus();
+  }
 }

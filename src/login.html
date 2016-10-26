@@ -37,7 +37,7 @@
 			<section class="container">
 				<section class="login-form">
 
-					<form method="post" role="login" submit.delegate="router.currentInstruction.config.route==='login-2'?loginConfirm(mfaCode):login()">
+					<form method="post" id="login-form" role="login" submit.delegate="router.currentInstruction.config.route==='login-2'?loginConfirm(mfaCode):login()">
 						<img class="login-logo" src="../images/logo.png">				
 						<h3><img src="../images/gridcommand.png"></h3>
 						<div class="row errorMessage">
@@ -73,8 +73,8 @@
 							</div>
 						</div>
 
-						<button if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''" i18n='login.submit' type="submit" class="btn btn-lg btn-block btn-info"></button>
-						<button if.bind="router.currentInstruction.config.route==='login-2'" i18n='login.confirm' type="submit" class="btn btn-lg btn-block btn-info"></button>
+						<button if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''" i18n='login.submit' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
+						<button if.bind="router.currentInstruction.config.route==='login-2'" i18n='login.confirm' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
 
 						<section>
 							<a href="#">Forgot password?</a>
