@@ -154,7 +154,8 @@ export class CommunityDetail {
       rowModelType: 'virtual',
       maxPagesInCache: 2,
       onViewportChanged: function() {
-        me.gridOptions['api'].sizeColumnsToFit();
+        if(!this.api) return;
+        this.api.sizeColumnsToFit();
       },
       onGridSizeChanged: function(){
         if(!this.api) return;

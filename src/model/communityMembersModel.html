@@ -1,5 +1,5 @@
 <template>
-	<div class="row textMessage">
+	<div class="row toggleSelectedLink">
 		<div if.bind="model.gridOptions.api.rowModel.datasource.name ==='organizationMembers'"  class="pull-right" class.bind="(model.isSubmitDisabled) ? 'invisible':''">
 			<button type="button" class="btn btn-primary btn-link btn-sm" click.delegate="model.showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
 		</div>

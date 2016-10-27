@@ -5,6 +5,15 @@
 	outline: none;
 }
 
+*:focus {
+  outline: none !important;
+}
+
+.checkbox input[type="checkbox"]:focus + label:before, 
+.checkbox input[type="radio"]:focus + label:before {
+    outline: none !important;
+}
+
 .spinner {
   padding-top: 75% !important;
   opacity: 0.75 !important;
@@ -1136,6 +1145,7 @@ ai-dialog-container {
 .organization-members-table {
   width: 1000px;
   height: 400px;
+  margin: 0px 15px;
 }
 
 .invisible {
@@ -1145,4 +1155,8 @@ ai-dialog-container {
 .btn-link i {
   margin-right: 5px;
   font-size: 15px;
+}
+
+.toggleSelectedLink {
+  margin-right: 10px;
 } 
