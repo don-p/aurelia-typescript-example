@@ -130,13 +130,7 @@ export class Community {
 
   selectCommunity(community: Object) {
     this.selectedItem = community;
-    // Scroll selected item into view.
-    let container = $('#community-list')[0];
-    let element = $('#'+community['communityId'])[0];
-    let offset = element.offsetTop;
-    if(offset > (container.clientHeight - element.clientHeight)) {
-      container.scrollTop = offset;
-    }
+    this.scrollToCommunityInList(community);
     // Ensure correct community type view.
     let type = community['communityType'];
     if(this.commType !== type) {
@@ -144,6 +138,22 @@ export class Community {
     }
     this.selectedCommunities = [];
     this.evt.publish('cmtySelected', {community: community});
+  }
+
+  scrollToCommunityInList(community:any) {
+    let me = this;
+    setTimeout(function() {
+      // Scroll selected item into view.
+      let container = $('#community-list')[0];
+      let element = $('#cmty-'+community['communityId'])[0];
+      if(typeof element === 'object') {
+        me.logger.debug("scrolTo element: " + element);
+        let offset = element.offsetTop;
+        if(offset > (container.clientHeight - element.clientHeight)) {
+          container.scrollTop = offset;
+        }
+      }
+    }, 0);
   }
 
   selectAllCommunities(selected: boolean) {
