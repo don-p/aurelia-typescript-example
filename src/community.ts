@@ -158,7 +158,7 @@ export class Community {
 
   selectAllCommunities(selected: boolean) {
     if(selected) {
-      this.selectedCommunities = this.communities;
+      this.selectedCommunities = this.communities.slice(0);
     } else {
       this.selectedCommunities = [];
     }
