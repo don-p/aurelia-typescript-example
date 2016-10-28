@@ -304,7 +304,7 @@ export class Community {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.call.title'),
       message,
-      communities, this.i18n.tr('button.ok'), true, 'modelPromise')
+      communities, this.i18n.tr('button.call'), true, 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
@@ -321,7 +321,7 @@ export class Community {
         .then(data => {
             // Update the message for success.
             controller.viewModel.model.message = this.i18n.tr('community.members.call.callSuccessMessage');
-            controller.viewModel.model.okText = this.i18n.tr('button.done');
+            controller.viewModel.model.okText = this.i18n.tr('button.ok');
             controller.viewModel.model.showCancel = false;
             // Close dialog on success.
             delete model.submit;

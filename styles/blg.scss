@@ -5,6 +5,15 @@
 	outline: none;
 }
 
+*:focus {
+  outline: none !important;
+}
+
+.checkbox input[type="checkbox"]:focus + label:before, 
+.checkbox input[type="radio"]:focus + label:before {
+    outline: none !important;
+}
+
 .spinner {
   padding-top: 75% !important;
   opacity: 0.75 !important;
@@ -632,7 +641,7 @@ header .navbar-nav {
 
 .panel-title {
   font-size: 15px;
-  line-height: 1.292;
+  line-height: 1.22;
   font-weight: normal;
 }
 
@@ -1031,6 +1040,7 @@ table.blg-dataTable.display tbody td {
 
 .panel-title > a > i {
   margin-left: 3px;
+  margin-top: 2px;
 }
 .ag-blg .ag-menu {
   border-radius: 4px;
@@ -1117,9 +1127,40 @@ border-bottom: 1px solid $blg-grey-light-more;
 .community-name {
   display: inline-block;
   max-width: 288px;
-  max-height: 19px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+.icon-rotate-180 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=180);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+  display: inline-block;
+}
+
+ai-dialog-container {
+  overflow-y: hidden !important; 
+}
+
+.organization-members-table {
+  width: 1000px;
+  height: 400px;
+  margin: 0px 15px;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.btn-link i {
+  margin-right: 5px;
+  font-size: 15px;
+}
+
+.toggleSelectedLink {
+  margin-right: 10px;
+} 

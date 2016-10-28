@@ -154,7 +154,8 @@ export class CommunityDetail {
       rowModelType: 'virtual',
       maxPagesInCache: 2,
       onViewportChanged: function() {
-        me.gridOptions['api'].sizeColumnsToFit();
+        if(!this.api) return;
+        this.api.sizeColumnsToFit();
       },
       onGridSizeChanged: function(){
         if(!this.api) return;
@@ -499,19 +500,6 @@ export class CommunityDetail {
     
   }
 
-  makeCallCommunityMembers_() {
-    // Get the set of selected community members.
-    let rows = this.gridOptions.api.getSelectedRows();
-    let memberIDs = rows.map(function(value) {
-      return {
-        "participantId": value.memberId,
-        "participantType": "MEMBER"
-      }
-    });
-    // Call the service to start the call.
-    this.communityService.startConferenceCall({participantRef:memberIDs});
-  }
-
   makeCallCommunityMembers() {
     let message = null;
     var me = this;
@@ -527,7 +515,7 @@ export class CommunityDetail {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.members.call.title'),
       message,
-      communityMembers, this.i18n.tr('button.ok'), true, 'modelPromise')
+      communityMembers, this.i18n.tr('button.call'), true, 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
@@ -544,7 +532,7 @@ export class CommunityDetail {
         .then(data => {
             // Update the message for success.
             controller.viewModel.model.message = this.i18n.tr('community.members.call.callSuccessMessage');
-            controller.viewModel.model.okText = this.i18n.tr('button.done');
+            controller.viewModel.model.okText = this.i18n.tr('button.ok');
             controller.viewModel.model.showCancel = false;
             // Close dialog on success.
             delete model.submit;

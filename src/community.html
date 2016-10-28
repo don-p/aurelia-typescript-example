@@ -23,18 +23,18 @@
           <loading id="communities-loading" promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
 
           <div class="conv-buttons-bar">
-            <a id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]community.createCommunity'>
+            <button id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]community.createCommunity'>
               <i class="ico-users-plus"></i>
-            </a>
-            <a id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]community.makeCall">
+            </button>
+            <button id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]community.makeCall" disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-phone2"></i>
-            </a>            
-            <a id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]community.sendAlert'>
+            </button>            
+            <button id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]community.sendAlert' disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-bullhorn center"></i>
-            </a>
-            <a id="btn-communities-send-voice" class="btn btn-primary btn-xs-square disabled" i18n='[title]community.sendVoiceAlert'>
+            </button>
+            <button id="btn-communities-send-voice" class="btn btn-primary btn-xs-square" i18n='[title]community.sendVoiceAlert' disabled>
               <i class="ico-mic5 center"></i>
-            </a>            
+            </button>            
             <div class="right-select">
               <span  class="community-select-label" i18n='[prepend]community.commType'>: </span>
               <select class="form-control select select-default-blg" value.bind="commType" change.delegate="selectCommunityType(commType)">
@@ -58,7 +58,7 @@
             <input id="checkbox-community-all" type="checkbox" checked.bind="selectAll" change.delegate="selectAllCommunities($event.target.checked)" class="styled styled-info" value="">
             <label></label>
           </div>
-          <div class="community-list-info pull-right">Showing X to XX of XXX entries</div>
+          <div class="community-list-info pull-right">${communities.length} items total</div>
         </div>
 
         <div class="blg-inner-content tab-pane active" id="communities">

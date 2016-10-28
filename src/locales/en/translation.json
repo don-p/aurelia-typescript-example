@@ -111,7 +111,8 @@
         "delete": "Delete",
         "remove": "Remove",
         "save": "Save",
-        "done": "Done"
+        "done": "Done",
+        "call": "Call"
     },
 
     "global": {
