@@ -1,12 +1,17 @@
 <template>
 <require from="../lib/loading-mask/loading-mask"></require>
 
-<loading id="model-loading" promise.bind="'modelPromise'" message-key.bind="'app.loading'">
   <ai-dialog id="model-dialog" class="blg-dialog">
     <div class="modal-header">
         <h4 class="modal-title">${model.title}</h4>
     </div>
-    <ai-dialog-body>
+    <ai-dialog-body id="model-dialog-body">
+    <!--
+    <div ref="loadingMask" id="loadingMask-model" class="spinner">
+        <div id="loadingTitle" class="loadingTitle">'Loading'</div>
+        <div class="mask"></div>
+    </div>
+    -->
         <section>
             <div class="row errorMessage">
                 <div class="col-xs-12">
@@ -18,15 +23,14 @@
                 <form id="model-form">
                 <compose view="${model.modelView}" containerless></compose>
                 </form>
-            </div>
+             </div>
       </section>
     </ai-dialog-body>
 
     <div class="modal-footer">
-      <button class="btn btn-default-blg" click.trigger="controller.cancel()">Cancel</button>
+      <button class="btn btn-default-blg" if.bind="model.showCancel && !!model.showCancel" click.trigger="controller.cancel()">Cancel</button>
       <button id="model-submit-button" type="submit" form="model-form" class="btn btn-info" disabled.bind="(model.isSubmitDisabled)" 
         click.trigger="!!(model.submit)?model.submit(model.item):controller.ok(model.item)">${model.okText}</button>
     </div>
-  </ai-dialog>
-</loading>
+ </ai-dialog>
 </template>
