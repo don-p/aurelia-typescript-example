@@ -124,6 +124,19 @@ export class CommunityService {
         return response;
     }
 
+    async startConferenceCall(callConfig:Object) {
+        await fetch;
+
+        let response = this.getHttpClient().fetch('v2/conferences', 
+            {
+                method: 'POST',
+                body: JSON.stringify(callConfig)
+
+            }
+        );
+        return response;
+    }
+
 
     // ORGANIZATION
 

@@ -10,6 +10,9 @@ export class Prompt {
   }
 
   activate(model) {
+    if(!(typeof model.showCancel === 'boolean')) {
+      model.showCancel = true;
+    }
     this.model = model;
   }
 

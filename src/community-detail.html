@@ -8,7 +8,7 @@
 		</div>
 		
 		<div class="members-table-buttons-bar">
-			<button id="btn-members-make-call" class="btn btn-success btn-xs-square" i18n="[title]members.makeCall" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+			<button id="btn-members-make-call" click.delegate="makeCallCommunityMembers()" class="btn btn-success btn-xs-square" i18n="[title]members.makeCall" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
 				<i class="ico-phone2"></i>
 			</button>
 			<button id="btn-members-send-alert" class="btn btn-primary btn-xs-square" i18n="[title]members.sendAlert" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
