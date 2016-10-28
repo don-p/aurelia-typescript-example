@@ -334,7 +334,8 @@ export class DataService {
                 modelView: modelView,
                 title: title, 
                 item: item, 
-                okText: okText
+                okText: okText,
+                showCancel: true
             }
         })
     }
