@@ -26,7 +26,7 @@ export class Community {
 
   navigationInstruction: NavigationInstruction;
   selectedItem: Object;
-  selectedCommunities: Array<String>;
+  selectedCommunities: Array<Object>;
   selectAll: boolean;
   _virtualRepeat: VirtualRepeat;
 
@@ -158,9 +158,7 @@ export class Community {
 
   selectAllCommunities(selected: boolean) {
     if(selected) {
-      this.selectedCommunities = this.communities.map(function(com:any){
-        return com.communityId;
-      });
+      this.selectedCommunities = this.communities;
     } else {
       this.selectedCommunities = [];
     }
@@ -180,7 +178,7 @@ export class Community {
     this.modelPromise = null;
     this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
       this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
-      community, this.i18n.tr('button.delete'), 'modelPromise')
+      community, this.i18n.tr('button.delete'), true, 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
@@ -290,9 +288,63 @@ export class Community {
         }
       })
     });
-
-
   }
+
+  makeCallCommunity() {
+    let message = null;
+    var me = this;
+    let communities = this.selectedCommunities;
+
+    if(communities.length === 1) {
+      message = this.i18n.tr('community.call.callConfirmMessageSingle', 
+          {communityName: communities[0]['communityName']});
+    } else if(communities.length >= 1) {
+      message = this.i18n.tr('community.call.callConfirmMessage',
+          {communityCount: communities.length});
+    }
+    this.dataService.openPromptDialog(this.i18n.tr('community.call.title'),
+      message,
+      communities, this.i18n.tr('button.ok'), true, 'modelPromise')
+    .then((controller:any) => {
+      let model = controller.settings.model;
+      // Callback function for submitting the dialog.
+      model.submit = (communityMembers) => {
+        let memberIDs = communityMembers.map(function(value) {
+          return {
+            "participantId": value.memberId,
+            "participantType": "MEMBER"
+          }
+        });
+        // Call the service to start the call.
+        controller.viewModel.modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs})
+        .then(response => response.json())
+        .then(data => {
+            // Update the message for success.
+            controller.viewModel.model.message = this.i18n.tr('community.members.call.callSuccessMessage');
+            controller.viewModel.model.okText = this.i18n.tr('button.done');
+            controller.viewModel.model.showCancel = false;
+            // Close dialog on success.
+            delete model.submit;
+          }, error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member call() rejected."); 
+          }).catch(error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member call() failed."); 
+            me.logger.error(error); 
+            return Promise.reject(error);
+          })
+      };
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          this.logger.debug('Cancel');
+        }
+      })
+    });
+  }
+
+  
 
 }
 

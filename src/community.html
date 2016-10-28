@@ -26,7 +26,7 @@
             <a id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]community.createCommunity'>
               <i class="ico-users-plus"></i>
             </a>
-            <a id="btn-community-make-call" class="btn btn-success btn-xs-square " i18n="[title]community.makeCall">
+            <a id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]community.makeCall">
               <i class="ico-phone2"></i>
             </a>            
             <a id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]community.sendAlert'>
@@ -78,7 +78,7 @@
                     <div id="cmty-${community.communityId}" repeat.for="community of communities" class='list-item'>
                       <div class="checkbox checkbox-info">
                           <input id="checkbox-community-${$index}" type="checkbox" class="styled styled-info" 
-                            change.delegate="onCommunitySelectionChanged()" value.bind="community.communityId" checked.bind="selectedCommunities">
+                            change.delegate="onCommunitySelectionChanged(community)" model.bind="community" checked.bind="selectedCommunities">
                           <label></label>
                       </div>
                       <div class='panel panel-default'>

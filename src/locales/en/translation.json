@@ -78,9 +78,20 @@
                 "messageSingle": "Remove the community member '{{memberName}}'?",
                 "message": "Remove {{memberCount}} selected community members?"
             },
+            "call": {
+                "title": "Start conference call",
+                "callConfirmMessageSingle": "Start conference call with the community member '{{memberName}}'?",
+                "callConfirmMessage": "Start conference call with {{memberCount}} selected community members?",
+                "callSuccessMessage": "The conference call has been initiated."
+            },
             "addMembers": "Add Community Members"
-
-        }            
+        },          
+        "call": {
+            "title": "Start conference call",
+            "callConfirmMessageSingle": "Start conference call with the community '{{communityName}}'?",
+            "callConfirmMessage": "Start conference call with {{communityCount}} selected communities?",
+            "callSuccessMessage": "The conference call has been initiated."
+        }
     },
 
     "members":{
@@ -99,7 +110,8 @@
         "cancel": "Cancel",
         "delete": "Delete",
         "remove": "Remove",
-        "save": "Save"
+        "save": "Save",
+        "done": "Done"
     },
 
     "global": {
