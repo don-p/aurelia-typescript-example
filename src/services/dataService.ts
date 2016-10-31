@@ -198,7 +198,7 @@ export class DataService {
                 };
         var params = QueryString.stringify(obj, {});
         var me = this;
-        var response = this.auth.login(params, null);
+        let response = this.auth.login(params, null);
         return response;
     }
 
@@ -286,7 +286,7 @@ export class DataService {
 
     async loginFactor2(token): Promise<Response> {
         await fetch;
-        var response = this.getHttpClient().fetch('v1/mfa-tokens/'+token, 
+        let response = this.getHttpClient().fetch('v1/mfa-tokens/'+token, 
             {
                 method: 'PUT',
             }
@@ -303,7 +303,7 @@ export class DataService {
                 };
         let params = QueryString.stringify(obj, {});
         let token = this.session.auth['access_token'];
-        var response = http.fetch('oauth/token/' + token + '?' +params, 
+        let response = http.fetch('oauth/token/' + token + '?' +params, 
             {
                 method: 'DELETE'
             }
@@ -354,6 +354,19 @@ export class DataService {
                 showCancel: showCancel
             }
         });
+    }
+
+    async getCallServiceConfig() {
+        await fetch;
+        const http =  this.getHttpClient();
+        let response = http.fetch('v1/service-configurations/grid-call', 
+            {
+                method: 'GET'
+            }
+        );
+        
+        return response;
+        
     }
 
 }
