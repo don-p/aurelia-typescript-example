@@ -503,7 +503,8 @@ export class CommunityDetail {
   makeCallCommunityMembers() {
     let message = null;
     var me = this;
-    let communityMembers = this.gridOptions.api.getSelectedRows();
+    let communityMembers:any[];
+    communityMembers = this.gridOptions.api.getSelectedRows();
 
     if(communityMembers.length === 1) {
       message = this.i18n.tr('community.members.call.callConfirmMessageSingle', 
@@ -519,7 +520,9 @@ export class CommunityDetail {
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.
-      model.submit = (communityMembers) => {
+      model.submit = (communityMembers:any[]) => {
+        // Add logged-in user to the call list.
+        communityMembers.unshift(me.session.auth['member']);
         let memberIDs = communityMembers.map(function(value) {
           return {
             "participantId": value.memberId,
@@ -527,8 +530,8 @@ export class CommunityDetail {
           }
         });
         // Call the service to start the call.
-        controller.viewModel.modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs})
-        .then(response => response.json())
+        controller.viewModel.modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
+        controller.viewModel.modelPromise.then(response => response.json())
         .then(data => {
             // Update the message for success.
             controller.viewModel.model.message = this.i18n.tr('community.members.call.callSuccessMessage');
