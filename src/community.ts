@@ -61,7 +61,8 @@ export class Community {
     this.ps.initialize(container);
     this.ps.update(container);
     let me = this;
-    this.getCommunitiesPage('COI', 0, this.pageSize).then(function(){
+    this.commType = 'TEAM';
+    this.getCommunitiesPage(this.commType, 0, this.pageSize).then(function(){
       me.selectDefaultCommunity();
     });
   }
