@@ -20,6 +20,15 @@ export class DataService {
     clientId: string;
     clientSecret: string;
     httpClient: HttpClient;
+    // Filter and sort criteria operator mapping.
+    static gridSortCriteria: Object = {
+        asc:'ASC',
+        desc:'DESC'
+    };
+    static gridFilterCriteria: Object = {
+        contains:'LIKE'
+    };
+
     logger: Logger;
 
     constructor(private getHttpClient: () => HttpClient, private appConfig: Configure, 
@@ -85,9 +94,10 @@ export class DataService {
                 // Add special interceptor to force inclusion of access_token when token is expired, 
                 // to support refreshing the token.
                 .withInterceptor(this.includeExpiredTokenResponseInterceptor)
-                .withInterceptor(this.responseErrorInterceptor)
+                // .withInterceptor(this.responseErrorInterceptor)
 ;
         });
+
         this.logger = LogManager.getLogger(this.constructor.name);
     }
 
@@ -138,16 +148,21 @@ export class DataService {
                 //     return result;
                 // };
 
-                if((response.status === 401 || response.status === 400) && 
-                    request.url.indexOf('/oauth/token')===-1 &&
-                    me.session.auth['access_token'] && !me.auth.isAuthenticated()) { 
-                    me.logger.debug('Received expiredToken response error ${response.status} ${response.url}');
-                    // Special case, refresh expired token.
-                    // Request and save a new access token, using the refresh token.
-                    me.logger.debug('responseErrorInterceptor - wait for refreshToken()');
-                    let result = me.waitRefresh(request, response);
-                    me.logger.debug('responseErrorInterceptor - result from wait(): '+ result);
-                   return result===null?response:result;
+                if((response.status === 401 || response.status === 400)) {
+                    if(request.url.indexOf('/oauth/token')===-1 &&
+                    me.session.auth['access_token'] && !me.auth.isAuthenticated()) {
+                        me.logger.debug('Received expiredToken response error ${response.status} ${response.url}');
+                        // Special case, refresh expired token.
+                        // Request and save a new access token, using the refresh token.
+                        me.logger.debug('responseErrorInterceptor - wait for refreshToken()');
+                        let result = me.waitRefresh(request, response);
+                        me.logger.debug('responseErrorInterceptor - result from wait(): '+ result);
+                        return result===null?response:result;
+                    } else {
+                        me.evt.publish('responseError', response);
+                        return response;
+
+                    }
                 } 
             }
         };
@@ -367,6 +382,41 @@ export class DataService {
         
         return response;
         
+    }
+
+    static getAPIFilterSortFromParams(params:Object) {
+        let result = {};
+        // Create the server-compatible filter criteria.
+        if(params['filterModel'] && typeof params['filterModel'] === 'object' && Object.keys(params['filterModel']).length !== 0) {
+            result['paramaters'] = [];
+            let keys = Object.keys(params['filterModel']);
+            for(let i=0; i < keys.length; i++) {
+                let param = {};
+                let key = keys[i];
+                let filter = params['filterModel'][key];
+                let op = filter.type;
+                let operator = this.gridFilterCriteria[op];
+                let values = [filter.filter];
+                param['operationType'] = operator;
+                param['parameterType'] = key;
+                param['values'] = values;
+                result['paramaters'].push(param);
+            }
+        }
+        // Create the server-compatible sort criteria.
+        if(params['sortModel'] && Array.isArray(params['sortModel']) && params['sortModel'].length > 0) {
+            result['paramaterSortings'] = [];
+            for(let sort of params['sortModel']) {
+                let param = {};
+                let parameterType = sort.colId;
+                let sortDirection = this.gridSortCriteria[sort.sort];
+                param['parameterType'] = parameterType;
+                param['sortDirection'] = sortDirection;
+                result['paramaterSortings'].push(param);
+            }
+        }
+
+        return result;
     }
 
 }
