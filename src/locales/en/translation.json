@@ -94,6 +94,10 @@
         }
     },
 
+    "grid": {
+        "filter": "Filter..."
+    },
+    
     "members":{
         "makeCall":"Make GridCall",
         "sendAlert":"Send alert",
