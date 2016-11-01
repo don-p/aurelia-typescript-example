@@ -153,6 +153,7 @@ export class CommunityDetail {
       suppressMenuHide: true,
       // pageSize: this.pageSize,
       paginationPageSize: this.pageSize,
+      sortingOrder: ['desc','asc'],
       enableServerSideSorting: true,
       enableServerSideFilter: true,
       enableColResize: true,
@@ -321,7 +322,7 @@ export class CommunityDetail {
 
   bind() {
   }
-  
+
 /*  
   async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
     let me = this;
