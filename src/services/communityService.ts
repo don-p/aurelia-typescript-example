@@ -5,10 +5,11 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
 import {Prompt} from '../model/prompt';
+import {DataService} from './dataService';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(Lazy.of(HttpClient), EventAggregator, DialogService, Session, QueryString)
+@inject(Lazy.of(HttpClient), EventAggregator, DialogService, Session, QueryString, DataService)
 export class CommunityService {  
 
     // Service object for retreiving application data from REST services.
@@ -19,7 +20,7 @@ export class CommunityService {
     httpClient: HttpClient;
 
     constructor(private getHttpClient: () => HttpClient, 
-        private evt: EventAggregator, private dialogService:DialogService,private session: Session){
+        private evt: EventAggregator, private dialogService:DialogService, private session: Session, private dataService:DataService){
 
     }
 
@@ -43,14 +44,22 @@ export class CommunityService {
     }
 
    /**
-     * Get an individual community detail for logged-in user.
+     * Get an individual community's members for logged-in user.
      */
-    async getCommunity(communityId: string, startIndex: number, pageSize:number): Promise<Response> {
+    async getCommunity(communityId: string, startIndex: number, pageSize:number, params:Object): Promise<Response> {
         await fetch;
+        let criteriaParams;
+        if((params && typeof params === 'object') &&
+            ((params['filterModel'] && typeof params['filterModel'] === 'object' && Object.keys(params['filterModel']).length !== 0) || 
+                (params['sortModel'] && Array.isArray(params['sortModel']) && params['sortModel'].length > 0))) {
+            criteriaParams = DataService.getAPIFilterSortFromParams(params);
+        }
+        let method = /*(criteriaParams && typeof criteriaParams === 'object')?'POST':*/'GET';
         let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members?start_index=' + 
             startIndex + '&page_size=' + pageSize, 
             {
-                method: 'GET',
+                method: method,
+                body: JSON.stringify(criteriaParams)
             }
         );
         return response;

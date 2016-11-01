@@ -80,7 +80,7 @@ export class Login {
         throw "Login(): Authentication failed."
       }
     }).catch(error => {
-      // me.errorMessage = this.utils.parseFetchError('');
+      me.errorMessage = this.utils.parseFetchError({errorMessage: 'error.badCredentials'});
       me.logger.debug("Authentication failed."); 
       me.logger.debug(error); 
     });

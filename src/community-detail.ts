@@ -10,8 +10,8 @@ import {I18N} from 'aurelia-i18n';
 import {DialogService, DialogController} from 'aurelia-dialog';
 import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
-import {Grid, GridOptions, IGetRowsParams, IDatasource} from 'ag-grid/main';
-// import {RemoteData} from './services/remoteData';
+import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
+import {TextSearchFilter} from './lib/grid/textSearchFilter';
 
 @inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager) // SCROLL
 export class CommunityDetail {
@@ -57,6 +57,12 @@ export class CommunityDetail {
 
     this.pageSize = 200;
 
+    const sortAsc = Column.SORT_ASC;
+    const sortDesc = Column.SORT_DESC;
+    const filterEquals = TextFilter.EQUALS;
+    const filterContains = TextFilter.CONTAINS;
+
+
     var me = this;
     this.evt.subscribe('cmtySelected', payload => {
       if((!me.selectedCmty || me.selectedCmty === null) || (me.selectedCmty.communityId !== payload.community.communityId)) {
@@ -96,41 +102,41 @@ export class CommunityDetail {
     columns.push({
       headerName: this.i18n.tr('community.members.firstname'), 
       field: "physicalPersonProfile.firstName",
-      filter: 'text'
+      filter: TextSearchFilter
     });
     columns.push({
       headerName: this.i18n.tr('community.members.lastname'), 
       field: "physicalPersonProfile.lastName", 
-      filter: 'text'
+      filter: TextSearchFilter
     });
     if(type == 'listMembers') {
       columns.push({
         headerName: this.i18n.tr('community.members.organization'), 
         field: "physicalPersonProfile.organization.organizationName",
-        filter: 'text'
+        filter: TextSearchFilter
       });
     } else if (type === 'addMembers') {
       columns.push({
         headerName: this.i18n.tr('community.members.title'), 
         field: "physicalPersonProfile.jobTitle",
-        filter: 'text'
+        filter: TextSearchFilter
       });
     }
     columns.push({
       headerName: this.i18n.tr('community.members.city'), 
       field: "physicalPersonProfile.locationProfile.city",
-      filter: 'text'
+      filter: TextSearchFilter
     });
     columns.push({
       headerName: this.i18n.tr('community.members.state'), 
       field: "physicalPersonProfile.locationProfile.stateCode", 
-      filter: 'text',
+      filter: TextSearchFilter,
       width: 100
     });
     columns.push({
       headerName: this.i18n.tr('community.members.zip'), 
       field: "physicalPersonProfile.locationProfile.zipCode", 
-      filter: 'text',
+      filter: TextSearchFilter,
       width: 80
     });
 
@@ -222,8 +228,9 @@ export class CommunityDetail {
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
             let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
+            me.logger.debug('Filter >> :' + JSON.stringify(params.filterModel));
             let  communityId = gridOptions.communityId;
-            let membersPromise = communityService.getCommunity(communityId, params.startRow, pageSize);
+            let membersPromise = communityService.getCommunity(communityId, params.startRow, pageSize, params);
             membersPromise.then(response => response.json())
               .then(data => {
                 if(gridDataSource.rowCount === null) {
@@ -315,9 +322,10 @@ export class CommunityDetail {
   bind() {
   }
   
+/*  
   async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
     let me = this;
-    return this.communityService.getCommunity(communityId, startIndex, this.pageSize)
+    return this.communityService.getCommunity(communityId, startIndex, this.pageSize, null)
     .then(response => response.json())
     .then((data: any) => {
       me.logger.debug(data);
@@ -329,10 +337,10 @@ export class CommunityDetail {
       me.logger.error(error); 
     });
   }
-
+*/
   async getCommunityMemberIDs(communityId: string, pageSize: number) : Promise<void> {
     let me = this;
-    return this.communityService.getCommunity(communityId, 0, pageSize)
+    return this.communityService.getCommunity(communityId, 0, pageSize, null)
     .then(response => response.json())
     .then((data: any) => {
       me.logger.debug(data);

@@ -51,8 +51,8 @@ export class App {
       //   break;
       case 401:
         this.logger.debug("handler - ResponseError: 401 Unauthorized");
+        let messageKey = 'error.badCredentials';
         if((this.session.auth['access_token'] && !(this.authService.isAuthenticated()))) {
-          let messageKey = 'error.badCredentials';
           messageKey = 'error.sessionExpired';
           this.router.navigateToRoute('login', {errorMessage: messageKey});
         }
