@@ -341,17 +341,26 @@ export class DataService {
      * 
      * Returns a Promise upon opening the dialog.
      */
-    async openResourceEditDialog(modelView:string, title:string, item: any, okText:string): Promise<DialogController> {
+    async openResourceEditDialog(modelView:string, title:string, item: any, okText:string, validationRules: any): Promise<DialogController> {
         return this.dialogService.openAndYieldController({
             viewModel: Model, 
             view: 'model/model.html', 
-            model: {
-                modelView: modelView,
-                title: title, 
-                item: item, 
-                okText: okText,
-                showCancel: true
-            }
+            modelView: modelView,
+            title: title, 
+            item: item, 
+            rules: validationRules,
+            okText: okText,
+            showCancel: true,
+            isSubmitDisabled: true
+            
+            // model: {
+            //     modelView: modelView,
+            //     title: title, 
+            //     item: item, 
+            //     rules: validationRules,
+            //     okText: okText,
+            //     showCancel: true
+            // }
         })
     }
 
@@ -388,7 +397,7 @@ export class DataService {
         let result = {};
         // Create the server-compatible filter criteria.
         if(params['filterModel'] && typeof params['filterModel'] === 'object' && Object.keys(params['filterModel']).length !== 0) {
-            result['paramaters'] = [];
+            result['parameters'] = [];
             let keys = Object.keys(params['filterModel']);
             for(let i=0; i < keys.length; i++) {
                 let param = {};
@@ -400,23 +409,26 @@ export class DataService {
                 param['operationType'] = operator;
                 param['parameterType'] = key;
                 param['values'] = values;
-                result['paramaters'].push(param);
+                result['parameters'].push(param);
             }
         }
         // Create the server-compatible sort criteria.
         if(params['sortModel'] && Array.isArray(params['sortModel']) && params['sortModel'].length > 0) {
-            result['paramaterSortings'] = [];
+            result['parameterSortings'] = [];
             for(let sort of params['sortModel']) {
                 let param = {};
                 let parameterType = sort.colId;
                 let sortDirection = this.gridSortCriteria[sort.sort];
                 param['parameterType'] = parameterType;
                 param['sortDirection'] = sortDirection;
-                result['paramaterSortings'].push(param);
+                result['parameterSortings'].push(param);
             }
         }
-
-        return result;
+        // Base64-encode.
+        let str = btoa(JSON.stringify(result));
+        // URL encode.
+        str = encodeURIComponent(str);
+        return str;
     }
 
 }

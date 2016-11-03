@@ -1,4 +1,4 @@
-import {inject, Lazy, LogManager} from 'aurelia-framework';
+import {inject, NewInstance, Lazy, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
@@ -10,11 +10,12 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {DialogService, DialogController} from 'aurelia-dialog';
 import * as Ps from 'perfect-scrollbar';
+import {ValidationRules, ValidationController} from 'aurelia-validation';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager)
+@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, NewInstance.of(ValidationController), LogManager)
 export class Community {
   communities: Array<Object>;
   items:Array<Object>;
@@ -33,7 +34,7 @@ export class Community {
   logger: Logger;
 
   constructor(private session: Session, private router: Router, private dataService: DataService, 
-    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
+    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService, private controller: ValidationController) {
 
     // var Ps = require('perfect-scrollbar');
 
@@ -247,12 +248,22 @@ export class Community {
       title = this.i18n.tr('community.createCommunity');
     } else {
       // Clone the object so we do not edit the live/bound model.
-      community = Object.assign({}, community);
+      // community = Object.assign({}, community);
+      community = {
+        communityName: community.communityName, 
+        communityDescription: community.communityDescription, 
+        communityType: community.communityType, 
+        communityId: community.communityId
+      };
       title = this.i18n.tr('community.editCommunity');
     }
-    this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'))
+    const vRules = ValidationRules
+      .ensure((community: any) => community.communityName).required()
+      .rules;
+    this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'), vRules)
     .then((controller:any) => {
-      let model = controller.settings.model;
+      // let model = controller.settings.model;
+      let model = controller.settings;
       // Callback function for submitting the dialog.
       model.submit = (community) => {
         let comm = {

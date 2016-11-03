@@ -1,4 +1,7 @@
-import {IFilter, IFilterParams, IDoesFilterPassParams} from "ag-grid/main";
+import {LogManager} from 'aurelia-framework';
+import {Logger} from 'aurelia-logging';
+import {IFilter, IFilterParams, IDoesFilterPassParams} from 'ag-grid/main';
+import * as debounce from 'debounce';
 
 export class TextSearchFilter implements IFilter {
 
@@ -15,6 +18,13 @@ export class TextSearchFilter implements IFilter {
     private eFilterTextField: HTMLInputElement;
     private eTypeSelect: HTMLSelectElement;
     private eApplyButton: HTMLButtonElement;
+
+    private logger: Logger;
+
+    constructor() {
+        this.logger = LogManager.getLogger(this.constructor.name);
+    }
+
 
     public init(params: IFilterParams): void {
         this.filterParams = params;
@@ -60,7 +70,7 @@ export class TextSearchFilter implements IFilter {
     }
 
     public isFilterActive() {
-        return this.filterText !== null;
+        return (this.filterText !== null && this.filterText !== '');
     }
 
     private createTemplate() {
@@ -76,11 +86,14 @@ export class TextSearchFilter implements IFilter {
     }
 
     private createGui() {
+        let me = this;
         this.eGui = this.loadTemplate(this.createTemplate());
         this.eFilterTextField = <HTMLInputElement> this.eGui.querySelector("#filterText");
         // this.eFilterTextField.addEventListener("changed", this.onFilterChanged.bind(this));
 
-        this.addChangeListener(this.eFilterTextField, this.onFilterChanged.bind(this));
+        // Debounce the user keyboard events, to avoid multiple http calls.
+        this.addChangeListener(this.eFilterTextField, 
+            debounce.default(this.onFilterChanged.bind(this), 500));
     }
 
     private loadTemplate(template: string): HTMLElement {
@@ -103,6 +116,7 @@ export class TextSearchFilter implements IFilter {
 
 
     private onFilterChanged() {
+        this.logger.debug('--- Input chenged, runnung search.');
         var filterText = this.eFilterTextField.value;
         if (filterText && filterText.trim() === '') {
             filterText = null;
