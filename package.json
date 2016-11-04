@@ -35,7 +35,8 @@
     "server:dev:hmr": "npm run server:dev -- --hot",
     "server:prod": "http-server dist --cors",
     "webpack": "cross-env ./node_modules/.bin/webpack",
-    "webpack-dev-server": "cross-env ./node_modules/.bin/webpack-dev-server"
+    "webpack-dev-server": "cross-env ./node_modules/.bin/webpack-dev-server",
+    "postinstall": "typings install"
   },
   "repository": {
     "type": "git",
@@ -88,11 +89,13 @@
     "aurelia-route-recognizer": "^1.0.0",
     "aurelia-router": "^1.0.2",
     "aurelia-templating-binding": "^1.0.0",
-    "aurelia-templating-resources": "^1.0.0",
+    "aurelia-templating-resources": "^1.1.0",
     "aurelia-templating-router": "^1.0.0",
     "aurelia-ui-virtualization": "^1.0.0-beta.2.0.0",
+    "aurelia-validation": "^0.13.0",
     "bluebird": "^3.4.1",
     "bootstrap-sass": "^3.3.7",
+    "debounce": "^1.0.0",
     "font-awesome": "^4.6.3",
     "i18next-browser-languagedetector": "^1.0.0",
     "i18next-xhr-backend": "^1.1.0",
@@ -143,6 +146,7 @@
     "stylus-loader": "^2.3.1",
     "ts-node": "^1.2.1",
     "typescript": "^2.0.0",
+    "typings": "^1.5.0",
     "wait-on": "^1.5.2",
     "webpack": "2.1.0-beta.22 || ^2.1.0",
     "webpack-dev-server": ">=2.1.0-beta.0 || ^2.1.0"

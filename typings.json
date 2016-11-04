@@ -1,0 +1,7 @@
+{
+  "globalDependencies": {
+    "debounce": "registry:dt/debounce#0.0.0+20151130120024",
+    "i18next-browser-languagedetector": "registry:dt/i18next-browser-languagedetector#0.0.14+20160805131847",
+    "i18next-xhr-backend": "registry:dt/i18next-xhr-backend#1.2.0+20160921203958"
+  }
+}

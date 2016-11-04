@@ -18,8 +18,9 @@ import {bootstrap} from 'aurelia-bootstrapper-webpack';
 import {Configure} from "aurelia-configuration";
 import {AuthConfig} from './config/authConfig';
 import {I18N} from 'aurelia-i18n';
-import LngDetector from 'i18next-browser-languagedetector/dist/commonjs/index.js';
-import Backend from 'i18next-xhr-backend/dist/commonjs/index.js';
+import {DataService} from './services/dataService';
+import LngDetector from 'i18next-browser-languagedetector';
+import Backend from 'i18next-xhr-backend';
 import 'intl';
 
 // comment out if you don't want a Promise polyfill (remove also from webpack.config.js)
@@ -110,6 +111,7 @@ export async function configure(aurelia: Aurelia) {
         });
         return pr;
       })
+      .plugin('aurelia-validation')
       .plugin('aurelia-dialog')
       // .plugin('aurelia-ui-virtualization')
       .postTask(function() {
@@ -129,6 +131,11 @@ export async function configure(aurelia: Aurelia) {
 
   await aurelia.start();
   aurelia.setRoot('app');
+  // Fetch the application configuration information, then start application.
+  let dataInstance = aurelia.container.get(DataService);
+  dataInstance.getCallServiceConfig().then(response => {
+    let maxCalls = response;
+  })
 
 
  

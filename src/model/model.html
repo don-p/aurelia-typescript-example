@@ -3,7 +3,7 @@
 
   <ai-dialog id="model-dialog" class="blg-dialog">
     <div class="modal-header">
-        <h4 class="modal-title">${model.title}</h4>
+        <h4 class="modal-title">${title}</h4>
     </div>
     <ai-dialog-body id="model-dialog-body">
     <!--
@@ -15,22 +15,26 @@
         <section>
             <div class="row errorMessage">
                 <div class="col-xs-12">
-                    <div i18n="[append]${model.errorMessage}" if.bind="(model.errorMessage && !(model.errorMessage===undefined))" class="alert alert-danger fade in">
+                    <div i18n="[append]${errorMessage}" if.bind="(model.errorMessage && !(model.errorMessage===undefined)) || (vController && vController.errors && vController.errors.length > 0)" class="alert alert-danger fade in">
+                        <ul>
+                            <li repeat.for="error of vController.errors">${error.message}</li>
+                        </ul>
                     </div>	
                 </div>
-            </div>			
+            </div>	
+            <div>errors: ${vController.errors} count: ${vController.errors.length}</div>	
             <div class="row textMessage">
                 <form id="model-form">
-                <compose view="${model.modelView}" containerless></compose>
+                <compose view="${modelView}" containerless></compose>
                 </form>
              </div>
       </section>
     </ai-dialog-body>
 
     <div class="modal-footer">
-      <button class="btn btn-default-blg" if.bind="model.showCancel && !!model.showCancel" click.trigger="controller.cancel()">Cancel</button>
-      <button id="model-submit-button" type="submit" form="model-form" class="btn btn-info" disabled.bind="(model.isSubmitDisabled)" 
-        click.trigger="!!(model.submit)?model.submit(model.item):controller.ok(model.item)">${model.okText}</button>
+      <button class="btn btn-default-blg" if.bind="showCancel && !!showCancel" click.trigger="controller.cancel()">Cancel</button>
+      <button id="model-submit-button" type="submit" form="model-form" class="btn btn-info" disabled.bind="(!( (isDirty) || (!isSubmitDisabled)))" 
+        click.trigger="!!(submit)?submit(item):controller.ok(item)">${okText}</button>
     </div>
- </ai-dialog>
+</ai-dialog>
 </template>
