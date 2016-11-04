@@ -278,7 +278,7 @@ export class Community {
         me.communityService.createCommunity(comm)
           .then(response => response.json())
           .then(data => {
-            me.getCommunitiesPage(data.communityType, 0, this.pageSize).then(function(){
+            me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
               if(community === null || typeof community.communityId !== 'string') {
                me.selectCommunity(data);
               }
