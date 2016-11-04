@@ -326,6 +326,12 @@ export class CommunityDetail {
   bind() {
   }
 
+  clearGridFilters(grid) {
+      grid.gridOptions.api.setFilterModel(null);
+      grid.gridOptions.api.onFilterChanged();
+  }
+  
+
 /*  
   async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
     let me = this;
@@ -385,9 +391,9 @@ export class CommunityDetail {
       message,
       communityMembers, this.i18n.tr('button.remove'), true, 'modelPromise')
     .then((controller:any) => {
-      let model = controller.settings.model;
+      let model = controller.settings;
       // Callback function for submitting the dialog.
-      model.submit = (communityMembers) => {
+      controller.viewModel.submit = (communityMembers) => {
         let commMemberIds = communityMembers.map(function(obj){ 
           return obj.memberId;
         });

@@ -13,11 +13,9 @@ export class Model {
   showCancel: boolean;
   isSubmitDisabled: boolean;
   submit: Function;
-  // model: any;
   errorMessage: string;
   modelPromise: string;
   modelView: string;
-  // _gridOptions: any;
 
   item: any;
   originalItem: any;
