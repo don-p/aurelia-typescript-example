@@ -445,6 +445,7 @@ export class CommunityDetail {
       model.isSubmitDisabled = true;
       gridOptions.onSelectionChanged = function() {
         me.orgMembersSelectionChanged(this);
+        controller.viewModel.item = gridOptions.api.getSelectedRows();
         controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
       };
       gridOptions.getRowNodeId = function(item) {

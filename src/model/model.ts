@@ -1,9 +1,9 @@
 import {DialogController} from 'aurelia-dialog';
-import {inject, NewInstance, LogManager, computedFrom, BindingEngine} from 'aurelia-framework';
+import {inject, NewInstance, LogManager} from 'aurelia-framework';
 import {ValidationRules, ValidationController, Rules, validateTrigger} from 'aurelia-validation';
 import {Logger} from 'aurelia-logging';
 
-@inject(DialogController, NewInstance.of(ValidationController), BindingEngine, LogManager)
+@inject(DialogController, NewInstance.of(ValidationController), LogManager)
 /**
  *  Generic controller for model-mutating dialogs. 
  * */
@@ -25,7 +25,7 @@ export class Model {
   logger: Logger;
 
 
-  constructor(private controller:DialogController, private vController:ValidationController, private bindingEngine:BindingEngine) {
+  constructor(private controller:DialogController, private vController:ValidationController) {
     this.vController.validateTrigger = validateTrigger.changeOrBlur;
     this.modelView = this.controller.settings.modelView;
     this.modelPromise = this.controller.settings.modelPromise;
@@ -35,20 +35,26 @@ export class Model {
     this.isSubmitDisabled = this.controller.settings.isSubmitDisabled && this.controller.settings.isSubmitDisabled === true?
       this.controller.settings.isSubmitDisabled:false;
     this.item = this.controller.settings.item;
-    // Clone the model item.
-    this.originalItem = Object.assign({}, this.item);
     this.errorMessage = null;
 
     if(this.controller.settings.rules) {
       Rules.set(this.item, this.controller.settings.rules);
     }
 
-    // let subscription = this.bindingEngine.collectionObserver(this.item).subscribe(this.itemChanged);
-
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
   activate(model){
+  }
+  attached() {
+    // Clone the model item.
+    if(Array.isArray(this.item )) {
+      this.originalItem = this.item.splice(0);
+    } else if(typeof this.item === 'object') {
+      this.originalItem = Object.assign({}, this.item);
+    } 
+
+    this.logger.debug('attached');
   }
 
   bind(bindingContext: Object, overrideContext: Object) {
@@ -60,13 +66,19 @@ export class Model {
   }
 
   $isDirty() {
+    if(!(this.originalItem) || !(this.item)) {
+      return false;
+    }
     let me = this;
     let isEqual = function(obj1, obj2) {
-      let dirty = Object.keys(obj2).every((key) => 
-        obj1.hasOwnProperty(key) && (obj2[key] === obj1[key])
-      );
-      me.logger.debug('... dirty-checking in Model: ' + !dirty);
-      return dirty;
+      let equal = true;
+      if(Array.isArray(obj1)) {
+        equal = me.isArrayEqual(obj2, obj1);
+      } else if(typeof obj1 === 'object') {
+        equal = me.isObjectEqual(obj1, obj2);
+      }
+      me.logger.debug('... dirty-checking in Model: ' + !equal);
+      return equal;
     };
     return !(isEqual(this.item, this.originalItem));
   //  return Object.keys(this.originalItem).every((key) => 
@@ -75,9 +87,36 @@ export class Model {
 
   }
 
-  @computedFrom('item.communityName')
+  isObjectEqual(obj1, obj2) {
+    let me = this;
+    return Object.keys(obj2).every((key) => 
+      obj1.hasOwnProperty(key) && 
+      ((obj2[key] === obj1[key]) || (me.isEmpty(obj2[key]) && me.isEmpty(obj1[key])))
+    );
+  }
+
+  isArrayEqual(obj1:Array<any>, obj2:Array<any>) {
+    let me = this;
+    return obj2.every(
+      function(key) { 
+        return obj1.indexOf(key) !== -1
+      }
+    );
+  }
+  
   get isDirty() {
     return this.$isDirty();
+  }
+
+  isEmpty(obj) {
+    if(obj === undefined || obj === null) {
+      return true;
+    }
+    if(typeof obj === 'string' && (obj === '')) {
+      return true;
+    }
+
+    return false;
   }
 }
 

@@ -1,11 +1,11 @@
 import {LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {IFilter, IFilterParams, IDoesFilterPassParams} from 'ag-grid/main';
-import * as debounce from 'debounce';
+import  debounce from 'debounce';
 
 export class TextSearchFilter implements IFilter {
 
-    public static CONTAINS = 'contains';//1;
+    public static CONTAINS = 'contains';
     private filterParams: IFilterParams;
 
     private filterText: string;
@@ -93,7 +93,7 @@ export class TextSearchFilter implements IFilter {
 
         // Debounce the user keyboard events, to avoid multiple http calls.
         this.addChangeListener(this.eFilterTextField, 
-            debounce.default(this.onFilterChanged.bind(this), 500));
+            debounce(this.onFilterChanged.bind(this), 500));
     }
 
     private loadTemplate(template: string): HTMLElement {
