@@ -182,9 +182,9 @@ export class Community {
       this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
       community, this.i18n.tr('button.delete'), true, 'modelPromise')
     .then((controller:any) => {
-      let model = controller.settings.model;
+      let model = controller.settings;
       // Callback function for submitting the dialog.
-      model.submit = (community) => {
+      controller.viewModel.submit = (community) => {
         let comm = {
           communityId: community.communityId, 
           communityType: community.communityType
@@ -267,7 +267,7 @@ export class Community {
       // let model = controller.settings.model;
       let model = controller.settings;
       // Callback function for submitting the dialog.
-      model.submit = (community) => {
+      controller.viewModel.submit = (community) => {
         let comm = {
           communityId: community.communityId, 
           communityName: community.communityName, 
