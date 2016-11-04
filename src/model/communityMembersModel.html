@@ -1,10 +1,10 @@
 <template>
 	<div class="row toggleSelectedLink">
-		<div if.bind="model.gridOptions.api.rowModel.datasource.name ==='organizationMembers'"  class="pull-right" class.bind="(model.isSubmitDisabled) ? 'invisible':''">
-			<button type="button" class="btn btn-primary btn-link btn-sm" click.delegate="model.showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
+		<div if.bind="gridOptions.api.rowModel.datasource.name ==='organizationMembers'"  class="pull-right" class.bind="(isSubmitDisabled) ? 'invisible':''">
+			<button type="button" class="btn btn-primary btn-link btn-sm" click.delegate="showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
 		</div>
-		<div if.bind="model.gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" class="pull-right" class.bind="(model.isSubmitDisabled) ? 'invisible':''">
-			<button type="button" class="btn btn-primary btn-link btn-sm" click.delegate="model.showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i>Show all</button>
+		<div if.bind="gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" class="pull-right" class.bind="(isSubmitDisabled) ? 'invisible':''">
+			<button type="button" class="btn btn-primary btn-link btn-sm" click.delegate="showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i>Show all</button>
 		</div>
 	</div>
 	<div class="members-table-content organization-members-table" id="membersTableContent">				  
@@ -12,5 +12,5 @@
 		<!--<loading promise.bind="'membersPromise'">-->
 		<div id="addCmtyMembersGrid" ref="addCmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
 	</div>
-	<input type="hidden" value.bind="model.item.communityId" />
+	<input type="hidden" value.bind="item.communityId" />
 </template>

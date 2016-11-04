@@ -1,32 +1,122 @@
 import {DialogController} from 'aurelia-dialog';
-import {inject} from 'aurelia-framework';
+import {inject, NewInstance, LogManager} from 'aurelia-framework';
+import {ValidationRules, ValidationController, Rules, validateTrigger} from 'aurelia-validation';
+import {Logger} from 'aurelia-logging';
 
-@inject(DialogController)
+@inject(DialogController, NewInstance.of(ValidationController), LogManager)
 /**
  *  Generic controller for model-mutating dialogs. 
  * */
 export class Model {
   title: string;
   okText: string;
-  item: any;
+  showCancel: boolean;
+  isSubmitDisabled: boolean;
   submit: Function;
-  model: Object;
+  // model: any;
   errorMessage: string;
   modelPromise: string;
+  modelView: string;
+  // _gridOptions: any;
 
-  constructor(private controller:DialogController) {
+  item: any;
+  originalItem: any;
 
+  logger: Logger;
+
+
+  constructor(private controller:DialogController, private vController:ValidationController) {
+    this.vController.validateTrigger = validateTrigger.changeOrBlur;
+    this.modelView = this.controller.settings.modelView;
+    this.modelPromise = this.controller.settings.modelPromise;
+    this.title = this.controller.settings.title;
+    this.okText = this.controller.settings.okText;
+    this.showCancel = this.controller.settings.showCancel;
+    this.isSubmitDisabled = this.controller.settings.isSubmitDisabled && this.controller.settings.isSubmitDisabled === true?
+      this.controller.settings.isSubmitDisabled:false;
+    this.item = this.controller.settings.item;
+    this.errorMessage = null;
+
+    if(this.controller.settings.rules) {
+      Rules.set(this.item, this.controller.settings.rules);
+    }
+
+    this.logger = LogManager.getLogger(this.constructor.name);
   }
 
   activate(model){
-    this.model = model;
-    this.errorMessage = null;
-    this.modelPromise = model.modelPromise;
+  }
+  attached() {
+    // Clone the model item.
+    if(Array.isArray(this.item )) {
+      this.originalItem = this.item.splice(0);
+    } else if(typeof this.item === 'object') {
+      this.originalItem = Object.assign({}, this.item);
+    } 
+
+    this.logger.debug('attached');
   }
 
   bind(bindingContext: Object, overrideContext: Object) {
     console.debug("Model | bind()");
   }
 
+  itemChanged(splices) {
+    this.logger.debug('... itemChanged');
+  }
+
+  $isDirty() {
+    if(!(this.originalItem) || !(this.item)) {
+      return false;
+    }
+    let me = this;
+    let isEqual = function(obj1, obj2) {
+      let equal = true;
+      if(Array.isArray(obj1)) {
+        equal = me.isArrayEqual(obj2, obj1);
+      } else if(typeof obj1 === 'object') {
+        equal = me.isObjectEqual(obj1, obj2);
+      }
+      me.logger.debug('... dirty-checking in Model: ' + !equal);
+      return equal;
+    };
+    return !(isEqual(this.item, this.originalItem));
+  //  return Object.keys(this.originalItem).every((key) => 
+  //     this.item.hasOwnProperty(key) && (this.originalItem[key] === this.item[key])
+  //   );
+
+  }
+
+  isObjectEqual(obj1, obj2) {
+    let me = this;
+    return Object.keys(obj2).every((key) => 
+      obj1.hasOwnProperty(key) && 
+      ((obj2[key] === obj1[key]) || (me.isEmpty(obj2[key]) && me.isEmpty(obj1[key])))
+    );
+  }
+
+  isArrayEqual(obj1:Array<any>, obj2:Array<any>) {
+    let me = this;
+    return obj2.every(
+      function(key) { 
+        return obj1.indexOf(key) !== -1
+      }
+    );
+  }
+  
+  get isDirty() {
+    return this.$isDirty();
+  }
+
+  isEmpty(obj) {
+    if(obj === undefined || obj === null) {
+      return true;
+    }
+    if(typeof obj === 'string' && (obj === '')) {
+      return true;
+    }
+
+    return false;
+  }
 }
 

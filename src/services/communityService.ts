@@ -49,17 +49,18 @@ export class CommunityService {
     async getCommunity(communityId: string, startIndex: number, pageSize:number, params:Object): Promise<Response> {
         await fetch;
         let criteriaParams;
+        let criteriaParamsQueryString = ''
         if((params && typeof params === 'object') &&
             ((params['filterModel'] && typeof params['filterModel'] === 'object' && Object.keys(params['filterModel']).length !== 0) || 
                 (params['sortModel'] && Array.isArray(params['sortModel']) && params['sortModel'].length > 0))) {
             criteriaParams = DataService.getAPIFilterSortFromParams(params);
+            // FOR ENCODED DISCOVERY RULE:
+            criteriaParamsQueryString = 'discovery_rule=' + criteriaParams;
         }
-        let method = /*(criteriaParams && typeof criteriaParams === 'object')?'POST':*/'GET';
         let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members?start_index=' + 
-            startIndex + '&page_size=' + pageSize, 
+            startIndex + '&page_size=' + pageSize + '&' + criteriaParamsQueryString, 
             {
-                method: method,
-                body: JSON.stringify(criteriaParams)
+                method: 'GET'
             }
         );
         return response;
@@ -149,10 +150,19 @@ export class CommunityService {
 
     // ORGANIZATION
 
-    async getOrgMembers(organizationId: string, startIndex: number, pageSize:number): Promise<Response> {
+    async getOrgMembers(organizationId: string, startIndex: number, pageSize:number, params:Object): Promise<Response> {
         await fetch;
+        let criteriaParams;
+        let criteriaParamsQueryString = ''
+        if((params && typeof params === 'object') &&
+            ((params['filterModel'] && typeof params['filterModel'] === 'object' && Object.keys(params['filterModel']).length !== 0) || 
+                (params['sortModel'] && Array.isArray(params['sortModel']) && params['sortModel'].length > 0))) {
+            criteriaParams = DataService.getAPIFilterSortFromParams(params);
+            // FOR ENCODED DISCOVERY RULE:
+            criteriaParamsQueryString = 'discovery_rule=' + criteriaParams;
+        }
         let response = this.getHttpClient().fetch('v1/organizations/' + organizationId + '/members?start_index=' + 
-            startIndex + '&page_size=' + pageSize, 
+            startIndex + '&page_size=' + pageSize + '&' + criteriaParamsQueryString, 
             {
                 method: 'GET',
             }
