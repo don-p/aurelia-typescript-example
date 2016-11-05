@@ -541,3 +541,13 @@ input[type="radio"] {
     }
   }
 }
+
+//BUTTONS
+
+.btn {
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    pointer-events: none;
+  }
+}
