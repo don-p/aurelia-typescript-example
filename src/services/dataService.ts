@@ -351,7 +351,7 @@ export class DataService {
             rules: validationRules,
             okText: okText,
             showCancel: true,
-            isSubmitDisabled: true
+            isSubmitDisabled: false
             
             // model: {
             //     modelView: modelView,
