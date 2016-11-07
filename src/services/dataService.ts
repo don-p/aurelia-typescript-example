@@ -368,15 +368,14 @@ export class DataService {
         return this.dialogService.openAndYieldController({ 
             viewModel: Prompt, 
             view: 'model/model.html', 
-            model: {
-                modelView: 'model/prompt.html',
-                title: question, 
-                message: message,
-                modelPromise: modelPromise,
-                item: item, 
-                okText: okText,
-                showCancel: showCancel
-            }
+            modelView: 'model/prompt.html',
+            title: question, 
+            message: message,
+            modelPromise: modelPromise,
+            item: item, 
+            okText: okText,
+            showCancel: showCancel,
+            isSubmitDisabled: false
         });
     }
 

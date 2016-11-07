@@ -326,6 +326,12 @@ export class CommunityDetail {
   bind() {
   }
 
+  clearGridFilters() {
+      this.gridOptions.api.setFilterModel(null);
+      this.gridOptions.api.onFilterChanged();
+  }
+  
+
 /*  
   async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
     let me = this;
@@ -385,9 +391,9 @@ export class CommunityDetail {
       message,
       communityMembers, this.i18n.tr('button.remove'), true, 'modelPromise')
     .then((controller:any) => {
-      let model = controller.settings.model;
+      let model = controller.settings;
       // Callback function for submitting the dialog.
-      model.submit = (communityMembers) => {
+      controller.viewModel.submit = (communityMembers) => {
         let commMemberIds = communityMembers.map(function(obj){ 
           return obj.memberId;
         });
@@ -525,9 +531,9 @@ export class CommunityDetail {
       message,
       communityMembers, this.i18n.tr('button.call'), true, 'modelPromise')
     .then((controller:any) => {
-      let model = controller.settings.model;
+      let model = controller.settings;
       // Callback function for submitting the dialog.
-      model.submit = (communityMembers:any[]) => {
+      controller.viewModel.submit = (communityMembers:any[]) => {
         // Add logged-in user to the call list.
         communityMembers.unshift(me.session.auth['member']);
         let memberIDs = communityMembers.map(function(value) {
@@ -541,11 +547,11 @@ export class CommunityDetail {
         controller.viewModel.modelPromise.then(response => response.json())
         .then(data => {
             // Update the message for success.
-            controller.viewModel.model.message = this.i18n.tr('community.members.call.callSuccessMessage');
-            controller.viewModel.model.okText = this.i18n.tr('button.ok');
-            controller.viewModel.model.showCancel = false;
+            controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
+            controller.viewModel.okText = this.i18n.tr('button.ok');
+            controller.viewModel.showCancel = false;
             // Close dialog on success.
-            delete model.submit;
+            delete controller.viewModel.submit;
           }, error => {
             model.errorMessage = "Failed"; 
             me.logger.error("Community member call() rejected."); 
