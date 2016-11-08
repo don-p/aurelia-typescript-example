@@ -90,7 +90,8 @@
             "title": "Start conference call",
             "callConfirmMessageSingle": "Start conference call with the community '{{communityName}}'?",
             "callConfirmMessage": "Start conference call with {{communityCount}} selected communities?",
-            "callSuccessMessage": "The conference call has been initiated."
+            "callSuccessMessage": "The conference call has been initiated.",
+            "callParticipantMaxCountError":"Call cannot be started with more than {{count}} participants."
         }
     },
 
