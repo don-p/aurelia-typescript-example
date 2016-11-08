@@ -59,6 +59,17 @@ export class Model {
     console.debug("Model | bind()");
   }
 
+  doCancel(event) {
+    event.stopPropagation()
+    let me = this;
+    // if(this.vController) {
+    // me.vController.reset();
+    // }
+      setTimeout(function(){
+        me.controller.cancel();
+      }, 0);
+  }
+
   itemChanged(splices) {
     this.logger.debug('... itemChanged');
   }
@@ -116,5 +127,18 @@ export class Model {
 
     return false;
   }
+
+  get vControlerJSON() {
+    return JSON.stringify(this.vController.errors);
+  }
+  
+  get hasValidationErrors() {
+    return Array.isArray(this.vController.errors) && this.vController.errors.length > 0;
+  }
+
+  get validationErrors() {
+    return this.vController.errors;
+  }
+ 
 }
 

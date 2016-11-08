@@ -76,6 +76,8 @@ export class CommunityDetail {
 
         me.gridOptions.api.deselectAll();
         me.gridOptions.api.setFilterModel(null)
+        me.gridOptions.api.setSortModel(null);
+
         // Save selected communityId.
         me.gridOptions['communityId'] = me.selectedCmty.communityId;
         // Set up the virtual scrolling grid displaying community members.

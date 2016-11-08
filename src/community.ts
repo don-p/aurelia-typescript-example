@@ -245,7 +245,7 @@ export class Community {
     if(community === null) {
       // Create an empty object model for creation.
       community = {
-        communityId: ''
+        communityId: null
       };
       title = this.i18n.tr('community.createCommunity');
     } else {
@@ -297,7 +297,7 @@ export class Community {
       }
       controller.result.then((response) => {
         if (response.wasCancelled) {
-          // Cancel.
+          // Reset validation error state.
           this.logger.debug('Cancel');
         }
       })
