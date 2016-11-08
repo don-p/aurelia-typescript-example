@@ -14,6 +14,9 @@ export class Prompt {
   modelPromise: string;
   modelView: string;
   item: any;
+  isDirty: boolean = true;
+  hasValidationErrors: boolean = false;
+
  
   constructor(private controller:DialogController) {
     this.modelView = this.controller.settings.modelView;
