@@ -32,6 +32,7 @@ export async function configure(aurelia: Aurelia) {
   let environment = '%RUNTIME_ENVIRONMENT%';
 
   let authConfig = aurelia.container.get(AuthConfig);
+  
   // Language detector options.
   var options = {
     // order and from where i18n user language should be detected
@@ -114,12 +115,20 @@ export async function configure(aurelia: Aurelia) {
       .plugin('aurelia-validation')
       .plugin('aurelia-dialog')
       // .plugin('aurelia-ui-virtualization')
-      .postTask(function() {
+      .postTask(function() {  // Additional bootstraping after framework start-up.
         // Use config to set logging level.
         let configInstance = aurelia.container.get(Configure);
         let logLevel = configInstance.get('logLevel');
         LogManager.setLevel(LogManager.logLevel[logLevel]);
         LogManager.addAppender(new ConsoleAppender());
+        // Merge server config with local.
+        let dataInstance = aurelia.container.get(DataService);
+        dataInstance.getCallServiceConfig()
+        .then(response => response.json())
+        .then((data) => {
+          // Merge configs.
+          configInstance.merge(data);
+        })
       });
 
   // Uncomment the line below to enable animation.
@@ -131,14 +140,6 @@ export async function configure(aurelia: Aurelia) {
 
   await aurelia.start();
   aurelia.setRoot('app');
-  // Fetch the application configuration information, then start application.
-  let dataInstance = aurelia.container.get(DataService);
-  dataInstance.getCallServiceConfig().then(response => {
-    let maxCalls = response;
-  })
-
-
- 
 
   // if you would like your website to work offline (Service Worker), 
   // install and enable the @easy-webpack/config-offline package in webpack.config.js and uncomment the following code:
