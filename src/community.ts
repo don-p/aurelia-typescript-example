@@ -2,6 +2,7 @@ import {inject, NewInstance, Lazy, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
+import {Configure} from 'aurelia-configuration';
 import {Session} from './services/session';
 import {DataService} from './services/dataService';
 import {CommunityService} from './services/communityService';
@@ -15,7 +16,7 @@ import {ValidationRules, ValidationController} from 'aurelia-validation';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, NewInstance.of(ValidationController), LogManager)
+@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, NewInstance.of(ValidationController), Configure, LogManager)
 export class Community {
   communities: Array<Object>;
   items:Array<Object>;
@@ -34,7 +35,7 @@ export class Community {
   logger: Logger;
 
   constructor(private session: Session, private router: Router, private dataService: DataService, 
-    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService, private controller: ValidationController) {
+    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService, private appConfig: Configure) {
 
     // var Ps = require('perfect-scrollbar');
 
@@ -180,7 +181,7 @@ export class Community {
     this.modelPromise = null;
     this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
       this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
-      community, this.i18n.tr('button.delete'), true, 'modelPromise')
+      community, this.i18n.tr('button.delete'), true, null, 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.
@@ -305,9 +306,12 @@ export class Community {
   }
 
   makeCallCommunity() {
+    // let maxParticipants = this.appConfig.get('api.serverUrl');
+    let maxParticipants = 2;
     let message = null;
     var me = this;
     let communities = this.selectedCommunities;
+    // let maxParticipants = ;
 
     if(communities.length === 1) {
       message = this.i18n.tr('community.call.callConfirmMessageSingle', 
@@ -316,9 +320,13 @@ export class Community {
       message = this.i18n.tr('community.call.callConfirmMessage',
           {communityCount: communities.length});
     }
+    const vRules = ValidationRules
+      .ensure('item').maxItems(maxParticipants).withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:maxParticipants}))
+      .rules;
+
     this.dataService.openPromptDialog(this.i18n.tr('community.call.title'),
       message,
-      communities, this.i18n.tr('button.call'), true, 'modelPromise')
+      communities, this.i18n.tr('button.call'), true, null, 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings.model;
       // Callback function for submitting the dialog.

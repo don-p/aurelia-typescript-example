@@ -364,7 +364,7 @@ export class DataService {
         })
     }
 
-    async openPromptDialog(question:string, message:string, item: any, okText:string, showCancel: boolean, modelPromise: string): Promise<DialogController> {
+    async openPromptDialog(question:string, message:string, item: any, okText:string, showCancel: boolean, validationRules: any, modelPromise: string): Promise<DialogController> {
         return this.dialogService.openAndYieldController({ 
             viewModel: Prompt, 
             view: 'model/model.html', 
@@ -373,6 +373,7 @@ export class DataService {
             message: message,
             modelPromise: modelPromise,
             item: item, 
+            rules: validationRules,
             okText: okText,
             showCancel: showCancel,
             isSubmitDisabled: false

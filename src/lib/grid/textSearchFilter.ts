@@ -80,7 +80,7 @@ export class TextSearchFilter implements IFilter {
                         Filter:
                     </div>
                     <div>
-                        <input class="ag-filter-filter" id="filterText" type="text" placeholder="Filter..."/>
+                        <input class="ag-filter-filter" id="filterText" type="text" />
                     </div>
                 </div>`;
     }

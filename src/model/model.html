@@ -15,7 +15,7 @@
         <section>
             <div class="row errorMessage">
                 <div class="col-xs-12">
-                    <div i18n="[append]${errorMessage}" if.bind="(model.errorMessage && !(model.errorMessage===undefined)) || (hasValidationErrors)" class="alert alert-danger fade in">
+                    <div i18n="[append]${errorMessage}" if.bind="(errorMessage && !(errorMessage===undefined)) || (hasValidationErrors)" class="alert alert-danger fade in">
                         <ul>
                             <li repeat.for="error of validationErrors">${error.message}</li>
                         </ul>

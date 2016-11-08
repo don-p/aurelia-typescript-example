@@ -20,6 +20,8 @@ export class Model {
   item: any;
   originalItem: any;
 
+  gridOptions: any;
+
   logger: Logger;
 
 
@@ -138,6 +140,11 @@ export class Model {
 
   get validationErrors() {
     return this.vController.errors;
+  }
+
+  get isGridFiltered() {
+    window.console.debug('--- isGridFiltered ---');
+    return this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent();
   }
  
 }

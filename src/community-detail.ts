@@ -2,6 +2,8 @@ import {inject, Lazy, bindable, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
+import {Configure} from 'aurelia-configuration';
+import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {Session} from './services/session';
 import {DataService} from './services/dataService';
 import {CommunityService} from './services/communityService';
@@ -13,7 +15,7 @@ import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from './lib/grid/textSearchFilter';
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, LogManager) // SCROLL
+@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, Configure, LogManager) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -46,7 +48,7 @@ export class CommunityDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, 
-    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService) {
+    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService, private appConfig: Configure) {
 
     this.communityMembers = null;
     // this.membersGrid = {};
@@ -206,6 +208,10 @@ export class CommunityDetail {
     });
   }
 
+  get isGridFiltered() {
+    return this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent();
+  }
+
   initGrid(me) {
     // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
     new Grid(this.cmtyMembersGrid, this.gridOptions); //create a new grid
@@ -239,9 +245,9 @@ export class CommunityDetail {
             let membersPromise = communityService.getCommunity(communityId, params.startRow, pageSize, params);
             membersPromise.then(response => response.json())
               .then(data => {
-                if(gridDataSource.rowCount === null) {
+                // if(gridDataSource.rowCount === null) {
                   gridDataSource.rowCount = data.totalCount;
-                }
+                // }
                 gridOptions.api.hideOverlay();
                 params.successCallback(data.responseCollection, data.totalCount);
                 this.loading = false;
@@ -328,9 +334,11 @@ export class CommunityDetail {
   bind() {
   }
 
-  clearGridFilters() {
-      this.gridOptions.api.setFilterModel(null);
-      this.gridOptions.api.onFilterChanged();
+  clearGridFilters(gridOptions) {
+      // gridOptions.api.setFilterModel({});
+//      gridOptions.api.destroyFilter(gridOptions.api.getFilterModel);
+      // gridOptions.api.refreshView();
+      gridOptions.api.onFilterChanged();
   }
   
 
@@ -391,7 +399,7 @@ export class CommunityDetail {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
       message,
-      communityMembers, this.i18n.tr('button.remove'), true, 'modelPromise')
+      communityMembers, this.i18n.tr('button.remove'), true, null, 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.
@@ -463,6 +471,13 @@ export class CommunityDetail {
       gridOptions['api'].sizeColumnsToFit();
       me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.communityService);
 
+      // controller.isGridFiltered = Object.defineProperty(controller, 'isGridFiltered', {get: function() {
+      //   window.console.debug('--- isGridFiltered ---');
+      //     return controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent();
+      //   }
+      // });
+      controller.viewModel.clearGridFilters = me.clearGridFilters;
+
       // Callback function for submitting the dialog.
       controller.viewModel.submit = () => {
         let selection = gridOptions.api.getSelectedRows();
@@ -516,6 +531,9 @@ export class CommunityDetail {
   }
 
   makeCallCommunityMembers() {
+    // let maxParticipants = this.appConfig.get('api.serverUrl');
+    let maxParticipants = 2;
+
     let message = null;
     var me = this;
     let communityMembers:any[];
@@ -529,9 +547,13 @@ export class CommunityDetail {
       message = this.i18n.tr('community.members.call.callConfirmMessage',
           {memberCount: communityMembers.length});
     }
+    const vRules = ValidationRules
+      .ensure('item').maxItems(maxParticipants).withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:maxParticipants}))
+      .rules;
+
     this.dataService.openPromptDialog(this.i18n.tr('community.members.call.title'),
       message,
-      communityMembers, this.i18n.tr('button.call'), true, 'modelPromise')
+      communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise')
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.
