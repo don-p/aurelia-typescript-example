@@ -1,13 +1,13 @@
 <template>
-        <div class="col-xs-12">
+        <div class="form-line">
             <label class="blg-form-required" i18n='[prepend]global.name'>: </label>
             <input id="name" attach-focus="true" value.bind="item.communityName & validate" class="form-control input-lg" />
         </div>
-        <div class="col-xs-12">
+        <div class="form-line">
             <label i18n='[prepend]global.description'>: </label>
             <input id="name" value.bind="item.communityDescription" class="form-control input-lg" />
         </div>
-        <div if.bind="(!(item.communityId) || item.communityId == null)" class="col-xs-12">
+        <div class="form-line" if.bind="(!(item.communityId) || item.communityId == null)">
             <label class="blg-form-required community-select-label" i18n='[prepend]global.type'>: </label>
             <select class="form-control select select-default-blg" value.bind="item.communityType">
             <option value="TEAM" i18n="community.team"></option>
