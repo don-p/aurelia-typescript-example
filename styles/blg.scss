@@ -190,6 +190,11 @@ form[role=login] button:hover {
 	min-height: 60px;
 }
 
+.errorMessage .alert li {
+  list-style: none;
+  margin-left: -38px;  
+}
+
 .textMessage > div {
   padding: 0px 15px;
 }
@@ -1163,4 +1168,8 @@ ai-dialog-container {
 
 .toggleSelectedLink {
   margin-right: 10px;
+}
+
+.ag-filter {
+  margin: 4px;
 } 
