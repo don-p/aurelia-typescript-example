@@ -49,11 +49,13 @@
 		</div>		
 		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
-<div class="members-table-content" id="membersTableContent">				  
+<div class="members-table-content" id="membersTableContent">	
+	<div class="row toggleSelectedLink">
+		<button type="button" if.bind="isGridFiltered" class="btn btn-link btn-sm" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
+	</div>
 	<div id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" >
 	</div>
 </div>
-
 		<!--<div class="blg-btns-content panel-footer"></div>										-->
 
 	</section>
