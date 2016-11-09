@@ -23,16 +23,16 @@
           <loading id="communities-loading" promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
 
           <div class="conv-buttons-bar">
-            <button id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]community.createCommunity'>
+            <button id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]button.createCommunity'>
               <i class="ico-users-plus"></i>
             </button>
-            <button id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]community.makeCall" disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
+            <button id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]button.makeCall" disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-phone2"></i>
             </button>            
-            <button id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]community.sendAlert' disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
+            <button id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]button.sendAlert' disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-bullhorn center"></i>
             </button>
-            <button id="btn-communities-send-voice" class="btn btn-primary btn-xs-square" i18n='[title]community.sendVoiceAlert' disabled>
+            <button id="btn-communities-send-voice" class="btn btn-primary btn-xs-square" i18n='[title]button.sendVoiceAlert' disabled>
               <i class="ico-mic5 center"></i>
             </button>            
             <div class="right-select">
@@ -90,11 +90,11 @@
                               <span class="members-count">(<i class='ico-users'></i> ${community.memberCount})</span>
                               <span class='community-buttons'>
                                 <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                  click.delegate="deleteCommunity(community)" i18n='[title]community.deleteCommunity'>
+                                  click.delegate="deleteCommunity(community)" i18n='[title]button.deleteCommunity'>
                                   <i class="ico-bin float-right"></i>
                                 </a>
                                 <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                  click.delegate="editCommunity(community)" i18n='[title]community.editCommunity'>
+                                  click.delegate="editCommunity(community)" i18n='[title]button.editCommunity'>
                                   <i class="ico-pencil7 float-right"></i>
                                 </a>
                               </span>                               

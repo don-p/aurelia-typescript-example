@@ -45,16 +45,14 @@
 
     "community":{
         "discover":"Discover",
-        "makeCall":"Make GridCall",
         "connect":"Connects",
         "communities":"Communities",
         "commType":"Type",
         "coi":"Community of interest",
         "team":"Team",
         "search":"Search",
-        "createCommunity":"Create community",
-        "editCommunity":"Edit community",                
-        "deleteCommunity":"Delete community",
+        "createCommunity":"Create Community",
+        "editCommunity":"Update Community",                
         "confirmDelete": {
             "title": "Delete Community?",
             "message": "Delete the community '{{communityName}}'?"
@@ -62,8 +60,6 @@
         "communityName": "Community Name",
         "communityDesc": "Community Description",
         "communityType": "Community Type",
-        "sendAlert":"Send alert",
-        "sendVoiceAlert":"Send voice alert",        
         "owner":"OWNER",
         "members": {
             "firstname": "First Name",
@@ -99,17 +95,6 @@
         "filter": "Filter..."
     },
     
-    "members":{
-        "makeCall":"Make GridCall",
-        "sendAlert":"Send alert",
-        "startConversation":"Start conversation",
-        "addMember":"Add member",
-        "deleteMember":"Remove members",
-        "transferOwnership":"Transfer ownership",
-        "deleteCommunity":"Delete community",
-        "renameCommunity":"Rename community"
-    },
-
     "button": {
         "ok": "OK",
         "cancel": "Cancel",
@@ -117,12 +102,23 @@
         "remove": "Remove",
         "save": "Save",
         "done": "Done",
-        "call": "Call"
+        "call": "Call",
+        "makeCall":"Make GridCall",
+        "sendAlert":"Send alert",
+        "sendVoiceAlert":"Send voice alert",        
+        "startConversation":"Start conversation",
+        "addMembers":"Add members",
+        "deleteMembers":"Remove members",
+        "transferOwnership":"Transfer ownership",
+        "deleteCommunity":"Delete community",
+        "editCommunity":"Update community",
+        "createCommunity":"Create community"
     },
 
     "global": {
         "name": "Name",
         "description": "Description",
-        "type": "Type"
+        "type": "Type",
+        "filter":"Filter"
     }
 }

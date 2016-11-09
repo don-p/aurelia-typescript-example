@@ -1,5 +1,8 @@
 <template>
 	<div class="row toggleSelectedLink">
+		<div class="pull-left">
+			<button type="button" if.bind="isGridFiltered" class="btn btn-link btn-sm" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
+		</div>
 		<div if.bind="gridOptions.api.rowModel.datasource.name ==='organizationMembers'"  class="pull-right" class.bind="(isSubmitDisabled) ? 'invisible':''">
 			<button type="button" class="btn btn-link btn-sm" click.delegate="showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
 		</div>
