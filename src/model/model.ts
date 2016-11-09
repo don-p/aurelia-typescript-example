@@ -92,18 +92,15 @@ export class Model {
       return equal;
     };
     return !(isEqual(this.item, this.originalItem));
-  //  return Object.keys(this.originalItem).every((key) => 
-  //     this.item.hasOwnProperty(key) && (this.originalItem[key] === this.item[key])
-  //   );
-
   }
 
   isObjectEqual(obj1, obj2) {
     let me = this;
-    return Object.keys(obj2).every((key) => 
+     let isEqual = Object.keys(obj2).every((key) => 
       obj1.hasOwnProperty(key) && 
       ((obj2[key] === obj1[key]) || (me.isEmpty(obj2[key]) && me.isEmpty(obj1[key])))
     );
+    return isEqual;
   }
 
   isArrayEqual(obj1:Array<any>, obj2:Array<any>) {
