@@ -23,7 +23,7 @@
                 </div>
             </div>	
             <div class="row textMessage">
-                <form id="model-form">
+                <form id="model-form" submit.delegate="!!(submit)?submit(item):controller.ok(item)">
                 <compose view="${modelView}" containerless></compose>
                 </form>
              </div>
@@ -33,8 +33,7 @@
     <div class="modal-footer">
       <button class="btn btn-default-blg" if.bind="showCancel && !!showCancel" click.trigger="controller.cancel()">Cancel</button>
       <button id="model-submit-button" type="submit" form="model-form" class="btn btn-info" 
-        disabled.bind="!((isDirty) && (!hasValidationErrors))" 
-        click.trigger="!!(submit)?submit(item):controller.ok(item)">${okText}</button>
+        disabled.bind="!((isDirty) && (!hasValidationErrors))">${okText}</button>
     </div>
     <!--
     <div>errors: ${vController.errors} hasErrors: ${hasValidationErrors} count: ${vController.errors.length} model.errorMessage:${model.errorMessage} isSubmitDisabled:${isSubmitDisabled}</div>
