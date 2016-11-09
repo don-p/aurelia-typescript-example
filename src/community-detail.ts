@@ -456,6 +456,10 @@ export class CommunityDetail {
     this.dataService.openResourceEditDialog('model/communityMembersModel.html', this.i18n.tr('community.members.addMembers'),
       membersList, this.i18n.tr('button.save'), null)
     .then((controller:any) => {
+      // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
+      let activeElement = <HTMLElement> document.activeElement;
+      activeElement.blur();
+
       controller.viewModel.gridOptions = gridOptions;
       let model = controller.settings;
       model.isSubmitDisabled = true;
