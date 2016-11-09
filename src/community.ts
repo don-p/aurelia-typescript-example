@@ -244,8 +244,11 @@ export class Community {
     let me = this;
     let title = '';
     if(community === null) {
-      // Create an empty object model for creation.
+      // Create an empty or cloned object model for the edit dialog.
       community = {
+        communityName: null, 
+        communityDescription: null, 
+        communityType: 'TEAM', 
         communityId: null
       };
       title = this.i18n.tr('community.createCommunity');
