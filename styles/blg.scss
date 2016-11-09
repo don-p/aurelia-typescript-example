@@ -698,24 +698,30 @@ header .navbar-nav {
   box-shadow: inset 0px 0px 0px 1px $brand-secondary;
 }
 
-.btn-default-blg-new {
-  @include button-variant($btn-default-blg-color, $btn-default-blg-bg, $btn-hover-blg-bg);
-  box-shadow: inset 0px 0px 0px 1px $brand-secondary;
-}
-
-.btn-default-blg-new:hover, .btn-default-blg-new.hover, .btn-default-blg-new:focus, .btn-default-blg-new:active, .btn-default-blg-new.active, .open > .dropdown-toggle.btn-default-blg-new {
-    color: $blg-white;
-    background-color: $brand-secondary;
-    border-color: $brand-secondary;
-}
-
 .btn-default-blg:hover {
     background-color: $blg-blue-grey;
+}
+
+.btn-default-blg:active {
+    background-color: $blg-grey-lightest;
+    -webkit-box-shadow: inset 0px 0px 0px 1px $brand-secondary;
+    box-shadow: inset 0px 0px 0px 1px $brand-secondary;
+}
+
+.btn-default-blg:focus {
+    background-color: $blg-white;
+    -webkit-box-shadow: inset 0px 0px 0px 1px $brand-secondary;
+    box-shadow: inset 0px 0px 0px 1px $brand-secondary;
+}
+
+.btn-default-blg:active:focus {
+    background-color: $blg-grey-lighter;
 }
 
 .community-select-label {
   display: table-cell;
   vertical-align: middle;
+  padding-right: 5px;
 }
 
 .select-default-blg {
@@ -730,7 +736,6 @@ header .navbar-nav {
   cursor: pointer;
   margin-top: 2px;
   display: table-cell;
-  margin-left: 5px;
 }
 
 .form-control:focus {
@@ -1166,9 +1171,15 @@ ai-dialog-container {
   font-size: 15px;
 }
 
+.btn-link:hover  {
+  background-color: $brand-primary;
+  color: $blg-white;
+  text-decoration: none;
+}
+
 .toggleSelectedLink {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .ag-filter {
