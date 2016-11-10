@@ -804,7 +804,7 @@ header .navbar-nav {
 .received-table .received-table-content {
   padding: 0px 5px 0px 5px;
   position: absolute;
-  top: 155px;
+  top: 137px;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -1022,6 +1022,14 @@ table.blg-dataTable.display tbody td {
   white-space: nowrap;  
 }
 
+.clear-filters-link {
+  position: relative;
+  bottom: 2px;
+  height: 31px;
+  display: table-cell;
+  white-space: nowrap;  
+}
+
 .filter-labels {
   display: table-cell;
   vertical-align: top;
@@ -1174,6 +1182,10 @@ ai-dialog-container {
 .btn-link:hover  {
   background-color: $brand-primary;
   color: $blg-white;
+  text-decoration: none;
+}
+
+.btn-link:focus  {
   text-decoration: none;
 }
 
