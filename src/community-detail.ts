@@ -338,7 +338,11 @@ export class CommunityDetail {
       // gridOptions.api.setFilterModel({});
 //      gridOptions.api.destroyFilter(gridOptions.api.getFilterModel);
       // gridOptions.api.refreshView();
+      // gridOptions.api.setDatasource(gridOptions.api.rowModel.datasource);
       gridOptions.api.onFilterChanged();
+      // gridOptions.api.refreshVirtualPageCache();
+      // gridOptions.api.refreshView();
+
   }
   
 
