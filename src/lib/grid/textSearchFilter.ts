@@ -77,10 +77,7 @@ export class TextSearchFilter implements IFilter {
 
         return `<div>
                     <div>
-                        Filter:
-                    </div>
-                    <div>
-                        <input class="ag-filter-filter" id="filterText" type="text" />
+                        <input class="ag-filter-filter" id="filterText" type="text" style="width: 100px;" placeholder="Filter..."/>
                     </div>
                 </div>`;
     }
