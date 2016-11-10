@@ -264,7 +264,7 @@ export class Community {
       title = this.i18n.tr('community.editCommunity');
     }
     const vRules = ValidationRules
-      .ensure((community: any) => community.communityName).required()
+      .ensure((community: any) => community.communityName).displayName(this.i18n.tr('community.communityName')).required().maxLength(120)
       .rules;
     this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'), vRules)
     .then((controller:any) => {
