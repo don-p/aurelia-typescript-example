@@ -35,7 +35,13 @@
 		</div>
 		
 		<div class="members-table-info-bar">
+			
+			
 			<div role="status" id="example_info" class="members-table-info">
+				<div class="filter-label-text">
+					<button type="button" if.bind="isGridFiltered" class="btn btn-link btn-sm" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
+				</div>
+				<!--
 				<div class="filter-label-text">Applied filters: </div>
 				<div class="filter-labels">
 					<span class="label label-primary table-label-blg">First Name contans: ALEX <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
@@ -44,15 +50,13 @@
 					<span class="label label-primary table-label-blg">Last Name ends with: EN <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
 					<span class="label label-primary table-label-blg">Title contans: ADMIN <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
 					<span class="label label-primary table-label-blg">City starts with: T <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
-				</div>			
+				</div>	
+				-->		
 			</div>
 		</div>		
 		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
 <div class="members-table-content" id="membersTableContent">	
-	<div class="row toggleSelectedLink">
-		<button type="button" if.bind="isGridFiltered" class="btn btn-link btn-sm" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
-	</div>
 	<div id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" >
 	</div>
 </div>
