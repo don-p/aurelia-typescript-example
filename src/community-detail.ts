@@ -232,7 +232,7 @@ export class CommunityDetail {
     } else {
       gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', true);      
       gridOptions.api.sizeColumnsToFit();
-      // gridOptions.columnApi.autoSizeColumn('physicalPersonProfile.organization.organizationName');
+      gridOptions.columnApi.autoSizeColumn('physicalPersonProfile.organization.organizationName');
    }
     let gridDataSource = {
         /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
