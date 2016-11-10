@@ -120,7 +120,8 @@ export class CommunityDetail {
       columns.push({
         headerName: this.i18n.tr('community.members.organization'), 
         field: "physicalPersonProfile.organization.organizationName",
-        filter: TextSearchFilter
+        filter: TextSearchFilter,
+        hide: true
       });
     } else if (type === 'addMembers') {
       columns.push({
@@ -222,6 +223,17 @@ export class CommunityDetail {
   setCommunityMembersGridDataSource(gridOptions, pageSize, communityService) {
     const me = this;
 
+    // Adjust column visibility based on community type - TEAM or COI.
+    let type = this.selectedCmty.communityType;
+    if(type === 'TEAM') {
+      // Hide org column.
+      gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', false);
+      gridOptions.api.sizeColumnsToFit();
+    } else {
+      gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', true);      
+      gridOptions.api.sizeColumnsToFit();
+      // gridOptions.columnApi.autoSizeColumn('physicalPersonProfile.organization.organizationName');
+   }
     let gridDataSource = {
         /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
         rowCount: null,
@@ -233,7 +245,7 @@ export class CommunityDetail {
 
         /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
         getRows: function(params: IGetRowsParams) {
-            gridOptions.api.showLoadingOverlay();
+          gridOptions.api.showLoadingOverlay();
           if(!this.loading) {
             me.logger.debug("..... setCommunityMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
@@ -335,14 +347,8 @@ export class CommunityDetail {
   }
 
   clearGridFilters(gridOptions) {
-      // gridOptions.api.setFilterModel({});
-//      gridOptions.api.destroyFilter(gridOptions.api.getFilterModel);
-      // gridOptions.api.refreshView();
-      // gridOptions.api.setDatasource(gridOptions.api.rowModel.datasource);
-      gridOptions.api.onFilterChanged();
-      // gridOptions.api.refreshVirtualPageCache();
-      // gridOptions.api.refreshView();
-
+      gridOptions.api.setFilterModel({});
+      gridOptions.api.refreshView();
   }
   
 
