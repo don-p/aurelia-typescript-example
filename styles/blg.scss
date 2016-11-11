@@ -1024,7 +1024,7 @@ table.blg-dataTable.display tbody td {
 
 .clear-filters-link {
   position: relative;
-  bottom: 2px;
+  bottom: 1px;
   height: 31px;
   display: table-cell;
   white-space: nowrap;  
@@ -1174,18 +1174,18 @@ ai-dialog-container {
   visibility: hidden;
 }
 
-.btn-link i {
+.btn-filter i {
   margin-right: 5px;
   font-size: 15px;
 }
 
-.btn-link:hover  {
+.btn-filter:hover  {
   background-color: $brand-primary;
   color: $blg-white;
   text-decoration: none;
 }
 
-.btn-link:focus  {
+.btn-filter:focus  {
   text-decoration: none;
 }
 
@@ -1201,4 +1201,15 @@ ai-dialog-container {
 .dialog-section {
   margin-left: 15px;
   margin-right: 15px;
+}
+
+.btn-filter.btn-xs {
+  padding: 3px 8px 4px;
+  box-shadow: inset 0px 0px 0px 1px $blg-grey;
+}
+
+.btn-filter[disabled],
+.btn-filter[disabled]:focus {
+  color: $blg-white;
+  box-shadow: none;
 }
