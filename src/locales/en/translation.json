@@ -75,19 +75,19 @@
                 "message": "Remove {{memberCount}} selected community members?"
             },
             "call": {
-                "title": "Start conference call",
-                "callConfirmMessageSingle": "Start conference call with '{{memberName}}'?",
-                "callConfirmMessage": "Start conference call with {{memberCount}} selected community members?",
-                "callSuccessMessage": "The conference call has been initiated."
+                "title": "Start GridCall",
+                "callConfirmMessageSingle": "Start GridCall with '{{memberName}}'?",
+                "callConfirmMessage": "Start GridCall with {{memberCount}} selected community members?",
+                "callSuccessMessage": "The GridCall has been initiated."
             },
             "addMembers": "Add Community Members"
         },          
         "call": {
-            "title": "Start conference call",
-            "callConfirmMessageSingle": "Start conference call with the community '{{communityName}}'?",
-            "callConfirmMessage": "Start conference call with {{communityCount}} selected communities?",
-            "callSuccessMessage": "The conference call has been initiated.",
-            "callParticipantMaxCountError":"Call cannot be started with more than {{count}} participants."
+            "title": "Start GridCall",
+            "callConfirmMessageSingle": "Start GridCall with the community '{{communityName}}'?",
+            "callConfirmMessage": "Start GridCall with {{communityCount}} selected communities?",
+            "callSuccessMessage": "The GridCall has been initiated.",
+            "callParticipantMaxCountError":"GridCall cannot be started with more than {{count}} participants."
         }
     },
 
