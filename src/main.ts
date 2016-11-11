@@ -127,7 +127,7 @@ export async function configure(aurelia: Aurelia) {
         .then(response => response.json())
         .then((data) => {
           // Merge configs.
-          configInstance.merge(data);
+          configInstance.merge({server: data});
         })
       });
 
