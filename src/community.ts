@@ -99,7 +99,7 @@ export class Community {
     .then(response => {return response.json()
       .then(data => {
         me.communities = data.responseCollection;
-        me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
+        // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
       }).catch(error => {
         me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
         return Promise.reject(error);
