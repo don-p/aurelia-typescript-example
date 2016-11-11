@@ -264,8 +264,20 @@ export class Community {
       title = this.i18n.tr('community.editCommunity');
     }
     const vRules = ValidationRules
-      .ensure((community: any) => community.communityName).displayName(this.i18n.tr('community.communityName')).required().maxLength(120)
-      .rules;
+      .ensure((community: any) => community.communityName)
+      .displayName(this.i18n.tr('community.communityName'))
+      .required()
+      .then()
+      .minLength(3)
+      .maxLength(120)
+      .ensure((community: any) => community.communityDescription)
+      .displayName(this.i18n.tr('community.communityDesc'))
+      .required()
+      .then()
+      .maxLength(120)
+      // .on(community)
+      .rules
+      ;
     this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'), vRules)
     .then((controller:any) => {
       // let model = controller.settings.model;
@@ -331,9 +343,9 @@ export class Community {
       message,
       communities, this.i18n.tr('button.call'), true, null, 'modelPromise')
     .then((controller:any) => {
-      let model = controller.settings.model;
+      let model = controller.settings;
       // Callback function for submitting the dialog.
-      model.submit = (communityMembers) => {
+      controller.viewModel.submit = (communityMembers) => {
         let memberIDs = communityMembers.map(function(value) {
           return {
             "participantId": value.memberId,
