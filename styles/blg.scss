@@ -419,7 +419,7 @@ header .navbar-nav {
   top: 75px;
   background: transparent;
   border-radius: 3px;
-  min-height: 565px;
+  min-height: 660px;
   bottom: 0;
 }
 
@@ -774,7 +774,7 @@ header .navbar-nav {
   margin: 75px 15px 10px 530px;
   position: absolute;
   box-sizing: border-box;
-  min-height: 565px;
+  min-height: 644px;
   bottom: 5px;
   top: 2px;
   right: 0;
@@ -1180,7 +1180,7 @@ ai-dialog-container {
 }
 
 .btn-filter:hover  {
-  background-color: $brand-primary;
+  background-color: $brand-primary !important;
   color: $blg-white;
   text-decoration: none;
 }
@@ -1205,11 +1205,13 @@ ai-dialog-container {
 
 .btn-filter.btn-xs {
   padding: 3px 8px 4px;
-  box-shadow: inset 0px 0px 0px 1px $blg-grey;
+  background-color: $blg-wet-asphalt-lighter;
+  color: $blg-white;
 }
 
 .btn-filter[disabled],
 .btn-filter[disabled]:focus {
   color: $blg-white;
   box-shadow: none;
+  background-color: $btn-link-disabled-color !important;
 }
