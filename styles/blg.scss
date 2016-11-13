@@ -484,7 +484,7 @@ header .navbar-nav {
 }
 
 .conversation-list, .community-list {
-  padding: 0px 5px 5px 0px;
+  padding: 4px 5px 5px 0px;
   height: 100%;
   position: relative;
 }
@@ -580,7 +580,7 @@ header .navbar-nav {
 }
 
 .panel-default {
-  padding: 5px 0px 0px 0px;
+  padding: 2px 0px 0px 0px;
   border: none;
   display: inline-block;
   width: 100%;
@@ -954,7 +954,7 @@ table.blg-dataTable.display tbody td {
 .list-item .checkbox {
   display: table-cell;
   position: relative;
-  top: 2px;
+  top: -8px;
   right: 1px;
 }
 
@@ -1058,7 +1058,7 @@ table.blg-dataTable.display tbody td {
 
 .panel-title > a > i {
   margin-left: 3px;
-  margin-top: 2px;
+  margin-top: 7px;
 }
 .ag-blg .ag-menu {
   border-radius: 4px;
@@ -1133,9 +1133,10 @@ border-bottom: 1px solid $blg-grey-light-more;
 }
 
 .members-count {
-  margin: 0px 3px;
   letter-spacing: -0.5px;
-  vertical-align: top;
+  position: relative;
+  bottom: 3px;
+  left: 3px;
 }
 
 .checkbox-info {
@@ -1214,4 +1215,21 @@ ai-dialog-container {
   color: $blg-white;
   box-shadow: none;
   background-color: $btn-link-disabled-color !important;
+}
+
+.community-description {
+  font-size: 12px;
+  position: relative;
+  top: -3px;
+  line-height: 10px;
+  color: $blg-grey;
+}
+
+.community-item-head.active .community-description,
+.community-item-head.active:hover .community-description {
+  color: $blg-white;  
+}
+
+.community-item-head:hover .community-description {
+  color: $blg-blue;  
 }

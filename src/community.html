@@ -97,7 +97,8 @@
                                   click.delegate="editCommunity(community)" i18n='[title]button.editCommunity'>
                                   <i class="ico-pencil7 float-right"></i>
                                 </a>
-                              </span>                               
+                              </span>
+                              <div class="community-description" innerhtml.bind="(community.communityDescription !==null) ? community.communityDescription:'Community without any description'"></div>                               
                             </h4>
                           </a>
                         </div>
