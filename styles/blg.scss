@@ -419,7 +419,7 @@ header .navbar-nav {
   top: 75px;
   background: transparent;
   border-radius: 3px;
-  min-height: 565px;
+  min-height: 660px;
   bottom: 0;
 }
 
@@ -484,7 +484,7 @@ header .navbar-nav {
 }
 
 .conversation-list, .community-list {
-  padding: 0px 5px 5px 0px;
+  padding: 4px 5px 5px 0px;
   height: 100%;
   position: relative;
 }
@@ -580,7 +580,7 @@ header .navbar-nav {
 }
 
 .panel-default {
-  padding: 5px 0px 0px 0px;
+  padding: 2px 0px 0px 0px;
   border: none;
   display: inline-block;
   width: 100%;
@@ -774,7 +774,7 @@ header .navbar-nav {
   margin: 75px 15px 10px 530px;
   position: absolute;
   box-sizing: border-box;
-  min-height: 565px;
+  min-height: 644px;
   bottom: 5px;
   top: 2px;
   right: 0;
@@ -954,7 +954,7 @@ table.blg-dataTable.display tbody td {
 .list-item .checkbox {
   display: table-cell;
   position: relative;
-  top: 2px;
+  top: -8px;
   right: 1px;
 }
 
@@ -1058,7 +1058,7 @@ table.blg-dataTable.display tbody td {
 
 .panel-title > a > i {
   margin-left: 3px;
-  margin-top: 2px;
+  margin-top: 7px;
 }
 .ag-blg .ag-menu {
   border-radius: 4px;
@@ -1133,9 +1133,10 @@ border-bottom: 1px solid $blg-grey-light-more;
 }
 
 .members-count {
-  margin: 0px 3px;
   letter-spacing: -0.5px;
-  vertical-align: top;
+  position: relative;
+  bottom: 3px;
+  left: 3px;
 }
 
 .checkbox-info {
@@ -1180,7 +1181,7 @@ ai-dialog-container {
 }
 
 .btn-filter:hover  {
-  background-color: $brand-primary;
+  background-color: $brand-primary !important;
   color: $blg-white;
   text-decoration: none;
 }
@@ -1205,11 +1206,30 @@ ai-dialog-container {
 
 .btn-filter.btn-xs {
   padding: 3px 8px 4px;
-  box-shadow: inset 0px 0px 0px 1px $blg-grey;
+  background-color: $blg-wet-asphalt-lighter;
+  color: $blg-white;
 }
 
 .btn-filter[disabled],
 .btn-filter[disabled]:focus {
   color: $blg-white;
   box-shadow: none;
+  background-color: $btn-link-disabled-color !important;
+}
+
+.community-description {
+  font-size: 12px;
+  position: relative;
+  top: -3px;
+  line-height: 10px;
+  color: $blg-grey;
+}
+
+.community-item-head.active .community-description,
+.community-item-head.active:hover .community-description {
+  color: $blg-white;  
+}
+
+.community-item-head:hover .community-description {
+  color: $blg-blue;  
 }
