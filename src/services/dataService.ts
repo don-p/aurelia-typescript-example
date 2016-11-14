@@ -7,6 +7,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {FetchConfig, AuthService} from 'aurelia-auth';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
+import {WizardModel} from '../model/wizardModel';
 import {Prompt} from '../model/prompt';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
@@ -352,15 +353,26 @@ export class DataService {
             okText: okText,
             showCancel: true,
             isSubmitDisabled: false
-            
-            // model: {
-            //     modelView: modelView,
-            //     title: title, 
-            //     item: item, 
-            //     rules: validationRules,
-            //     okText: okText,
-            //     showCancel: true
-            // }
+        })
+    }
+
+    /**
+     * Opens a dialog for a wizard.
+     * modelView: the path to the hteml template.
+     * title: title of the dialog.
+     * item: the resource object instance.
+     * okText: text for the submit button.
+     * 
+     * Returns a Promise upon opening the dialog.
+     */
+    async openWizardDialog(views:string, item: any, validationRules: any): Promise<DialogController> {
+        return this.dialogService.openAndYieldController({
+            viewModel: WizardModel, 
+            view: 'model/wizardModel.html', 
+            item: item, 
+            rules: validationRules,
+            showCancel: true,
+            isSubmitDisabled: false
         })
     }
 

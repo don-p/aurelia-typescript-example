@@ -99,6 +99,8 @@
         "ok": "OK",
         "cancel": "Cancel",
         "delete": "Delete",
+        "previous": "Previous",
+        "next": "Next",
         "remove": "Remove",
         "save": "Save",
         "done": "Done",
