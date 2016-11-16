@@ -8,6 +8,8 @@ import {FetchConfig, AuthService} from 'aurelia-auth';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
 import {WizardModel} from '../model/wizardModel';
+import {WizardController} from '../lib/aurelia-easywizard/controller/wizard-controller';
+
 import {Prompt} from '../model/prompt';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
@@ -365,10 +367,12 @@ export class DataService {
      * 
      * Returns a Promise upon opening the dialog.
      */
-    async openWizardDialog(views:string, item: any, validationRules: any): Promise<DialogController> {
+    async openWizardDialog(steps:Array<any>, item: any, validationRules: any): Promise<DialogController> {
+        // let wizardCtrl = new Wizard([{name:'step1'}]);
         return this.dialogService.openAndYieldController({
-            viewModel: WizardModel, 
+            viewModel: WizardController, 
             view: 'model/wizardModel.html', 
+            steps: steps,
             item: item, 
             rules: validationRules,
             showCancel: true,
