@@ -7,7 +7,6 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {FetchConfig, AuthService} from 'aurelia-auth';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
-import {WizardModel} from '../model/wizardModel';
 import {WizardController} from '../lib/aurelia-easywizard/controller/wizard-controller';
 
 import {Prompt} from '../model/prompt';
