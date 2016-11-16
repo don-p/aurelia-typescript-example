@@ -7,6 +7,9 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {FetchConfig, AuthService} from 'aurelia-auth';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
+import {WizardModel} from '../model/wizardModel';
+import {WizardController} from '../lib/aurelia-easywizard/controller/wizard-controller';
+
 import {Prompt} from '../model/prompt';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
@@ -334,7 +337,7 @@ export class DataService {
 
     /**
      * Opens a dialog for creating/editing a resource type.
-     * modelView: the path to the hteml template.
+     * modelView: the path to the html template.
      * title: title of the dialog.
      * item: the resource object instance.
      * okText: text for the submit button.
@@ -352,15 +355,27 @@ export class DataService {
             okText: okText,
             showCancel: true,
             isSubmitDisabled: false
-            
-            // model: {
-            //     modelView: modelView,
-            //     title: title, 
-            //     item: item, 
-            //     rules: validationRules,
-            //     okText: okText,
-            //     showCancel: true
-            // }
+        })
+    }
+
+    /**
+     * Opens a dialog for a wizard.
+     * title: title of the dialog.
+     * item: the resource object instance.
+     * okText: text for the submit button.
+     * 
+     * Returns a Promise upon opening the dialog.
+     */
+    async openWizardDialog(steps:Array<any>, item: any, validationRules: any): Promise<DialogController> {
+        // let wizardCtrl = new Wizard([{name:'step1'}]);
+        return this.dialogService.openAndYieldController({
+            viewModel: WizardController, 
+            view: 'model/wizardModel.html', 
+            steps: steps,
+            item: item, 
+            rules: validationRules,
+            showCancel: true,
+            isSubmitDisabled: false
         })
     }
 
