@@ -91,6 +91,10 @@
         }
     },
 
+    "organization":{
+        "organizations":"Organizations"
+    },
+
     "grid": {
         "filter": "Filter..."
     },
