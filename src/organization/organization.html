@@ -1,5 +1,5 @@
 <template>
-<require from="./lib/loading-mask/loading-mask"></require>
+<require from="../lib/loading-mask/loading-mask"></require>
 
   <div class="blg-fixed-wrapper">
 
@@ -7,46 +7,13 @@
 
       <ul class="nav nav-tabs nav-append-content">
         <li class="active">
-          <a href="#communities" i18n="community.communities" id="tabCommunitiesTitle"></a>
+          <a href="#communities" i18n="organization.organizations" id="tabCommunitiesTitle"></a>
         </li>
-        <!-- FIXME: temp removal of non-admin functions. -->
-        <!--
-        <li>
-          <a href="#discover" i18n="community.discover" id="tabDiscoverTitle"></a>
-        </li>
-        <li>
-          <a href="#connects" i18n="community.connect" id="tabConnectsTitle"></a>
-        </li>
-        -->
-        <!-- FIXME: temp removal of non-admin functions. -->
       </ul>
       <div class="blg-tab-section tab-content">
         <div class="blg-inner-content tab-pane active" id="communities">
-
           
           <loading id="communities-loading" promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
-
-          <div class="conv-buttons-bar">
-            <button id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]button.createCommunity'>
-              <i class="ico-users-plus"></i>
-            </button>
-            <button id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]button.makeCall" disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
-              <i class="ico-phone2"></i>
-            </button>            
-            <button id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]button.sendAlert' disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
-              <i class="ico-bullhorn center"></i>
-            </button>
-            <button id="btn-communities-send-voice" class="btn btn-primary btn-xs-square" i18n='[title]button.sendVoiceAlert' disabled>
-              <i class="ico-mic5 center"></i>
-            </button>            
-            <div class="right-select">
-              <span  class="community-select-label" i18n='[prepend]community.commType'>: </span>
-              <select class="form-control select select-default-blg" value.bind="commType" change.delegate="selectCommunityType(commType)">
-                <option value="COI" i18n="community.coi"></option>
-                <option value="TEAM" i18n="community.team"></option>
-              </select>
-            </div>
-          </div>											
            
           <div class="conv-form-group">
             <div class="input-group input-group-sm">
@@ -66,14 +33,6 @@
         </div>
 
         <div class="blg-inner-content tab-pane active" id="communities">
-
-
-          <!-- communities list elements -->
-<!--
-            <div bindingContext.bind="$parent" class="virtual-repeated-item" virtual-repeat.for="community of communities.response_collection" virtual-repeat-next="getMore">
-              ${$index} ${community.communityName}
-            </div>
--->
 
             <div class="blg-location-content">
               <div id="community-list" class="community-list">
@@ -113,20 +72,13 @@
                 </ul>
               </div>
             </div>
-
-            <!--<div class="paging-line-bottom"></div>-->
-
-        </div>
         </loading>
        
         </div>
       </div>
     </aside>
-    <!-- community members list element -->
-    <!--
-    <div id="community-members"  style="display: inline-block;width:720px;/* vertical-align:top; */height: 100%;/* float: right; */top: 0;position: absolute;">
--->
-    <compose view-model="./community-detail"></compose>
+    <!-- organization members list element -->
+    <compose view-model="./organization-detail"></compose>
 
 </div>
 </template>

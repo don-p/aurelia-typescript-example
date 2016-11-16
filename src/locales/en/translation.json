@@ -9,6 +9,7 @@
             "login":"Login",
             "login2":"Confirm Login",
             "community":"Community",
+            "organization":"Organization",
             "alerts":"Alerts",
             "tracker":"Tracker",
             "conversations":"Conversations"
@@ -91,6 +92,10 @@
         }
     },
 
+    "organization":{
+        "organizations":"Organizations"
+    },
+
     "grid": {
         "filter": "Filter..."
     },
@@ -99,6 +104,8 @@
         "ok": "OK",
         "cancel": "Cancel",
         "delete": "Delete",
+        "previous": "Previous",
+        "next": "Next",
         "remove": "Remove",
         "save": "Save",
         "done": "Done",

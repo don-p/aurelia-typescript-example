@@ -124,6 +124,15 @@ export class App {
         className: 'ico-users',   
         title: this.i18n.tr('router.nav.community') 
       },
+      { 
+        route: 'organization',   
+        name: 'organization',  
+        moduleId: './organization/organization',  
+        nav: true,      
+        settings: {roles: ['admin']},
+        className: 'ico-users',   
+        title: this.i18n.tr('router.nav.organization') 
+      },
       // { 
       //   route: 'community/:id', 
       //   name: 'community',  

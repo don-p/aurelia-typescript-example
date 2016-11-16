@@ -263,14 +263,29 @@ export class Community {
       };
       title = this.i18n.tr('community.editCommunity');
     }
+    // const vRules = ValidationRules
+    //   .ensure((community: any) => community.communityName)
+    //   .displayName(this.i18n.tr('community.communityName'))
+    //   .required()
+    //   .then()
+    //   .minLength(3)
+    //   .maxLength(120)
+    //   .ensure((community: any) => community.communityDescription)
+    //   .displayName(this.i18n.tr('community.communityDesc'))
+    //   .required()
+    //   .then()
+    //   .maxLength(120)
+    //   // .on(community)
+    //   .rules
+    //   ;
     const vRules = ValidationRules
-      .ensure((community: any) => community.communityName)
+      .ensure('communityName')
       .displayName(this.i18n.tr('community.communityName'))
       .required()
       .then()
       .minLength(3)
       .maxLength(120)
-      .ensure((community: any) => community.communityDescription)
+      .ensure('communityDescription')
       .displayName(this.i18n.tr('community.communityDesc'))
       .required()
       .then()
