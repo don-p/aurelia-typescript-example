@@ -1127,6 +1127,10 @@ border-bottom: 1px solid $blg-grey-light-more;
   font-size: 14px;  
 }
 
+.modal-footer button.pull-left  {
+  margin-left: 0px;
+}
+
 .blg-form-required:after { 
    content: "*";
    color: $blg-red-light;

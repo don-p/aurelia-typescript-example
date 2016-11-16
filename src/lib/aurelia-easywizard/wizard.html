@@ -1,0 +1,11 @@
+<template>
+  <require from="./wizard/wizard-steps"></require>
+  <require from="./wizard/wizard-step-container"></require>
+  <require from="./wizard/wizard-actions"></require>
+  <div id="wizard" data-target="#step-container">
+    <wizard-steps></wizard-steps>
+
+    <wizard-step-container></wizard-step-container>
+    <wizard-actions controller.bind="controller"></wizard-actions>
+  </div>
+</template>

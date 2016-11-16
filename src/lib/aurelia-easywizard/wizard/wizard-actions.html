@@ -1,0 +1,17 @@
+<template>
+
+<div show.bind="hasSteps" class="wizard-actions" click.delegate="process($event)">
+  <div class="modal-footer">
+    <button class="btn btn-default-blg pull-left" if.bind="controller.showCancel && !!controller.showCancel" click.trigger="controller.dialogController.cancel()">Cancel</button>
+    <button if.bind="isNotFirstStep" class="btn-prev btn" data-action="prev">
+      <i class="ace-icon fa fa-arrow-left"></i> Prev
+    </button>
+    <button if.bind="isLastStep" class="btn-prev btn" data-action="submit">
+       Finish
+    </button>
+    <button if.bind="isNotLastStep" class="btn-next btn btn-success" data-action="next" data-last="Finish ">
+      Next <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+    </button>
+  </div>
+</div> 
+</template>
