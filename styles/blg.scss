@@ -1151,6 +1151,23 @@ border-bottom: 1px solid $blg-grey-light-more;
   text-overflow: ellipsis;
 }
 
+.community-description {
+  font-size: 12px;
+  position: relative;
+  top: -1px;
+  line-height: 10px;
+  color: $blg-grey;
+}
+
+.community-item-head.active .community-description,
+.community-item-head.active:hover .community-description {
+  color: $blg-white;  
+}
+
+.community-item-head:hover .community-description {
+  color: $blg-blue;  
+}
+
 .icon-rotate-180 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=180);
   -webkit-transform: rotate(180deg);
@@ -1215,21 +1232,4 @@ ai-dialog-container {
   color: $blg-white;
   box-shadow: none;
   background-color: $btn-link-disabled-color !important;
-}
-
-.community-description {
-  font-size: 12px;
-  position: relative;
-  top: -3px;
-  line-height: 10px;
-  color: $blg-grey;
-}
-
-.community-item-head.active .community-description,
-.community-item-head.active:hover .community-description {
-  color: $blg-white;  
-}
-
-.community-item-head:hover .community-description {
-  color: $blg-blue;  
 }
