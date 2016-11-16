@@ -1,6 +1,6 @@
 import {inject, computedFrom, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
-import {Router, RouterConfiguration} from 'aurelia-router';
+import {Router, RouterConfiguration, NavigationInstruction, Next} from 'aurelia-router';
 import {Session} from './services/session';
 import {FetchConfig} from 'aurelia-auth';
 import {I18N} from 'aurelia-i18n';
@@ -72,6 +72,7 @@ export class App {
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = this.i18n.tr('app.title');
+    config.addAuthorizeStep(AuthorizeRolesStep);        
     config.map([
       { 
         route: ['', 'login'], 
@@ -91,7 +92,8 @@ export class App {
         route: 'tracker',     
         name: 'tracker',    
         moduleId: './community',  
-        nav: true,   
+        nav: true,
+        settings: {roles: ['user']},
         className: 'ico-location4',   
         title: this.i18n.tr('router.nav.tracker') 
       },
@@ -100,6 +102,7 @@ export class App {
         name: 'conversations',  
         moduleId: './conversations',  
         nav: true,      
+        settings: {roles: ['user']},
         className: 'ico-bubbles10',   
         title: this.i18n.tr('router.nav.conversations') 
       },
@@ -108,6 +111,7 @@ export class App {
         name: 'alerts', 
         moduleId: './alerts', 
         nav: true, 
+        settings: {roles: ['user']},
         className: 'ico-bullhorn',   
         title: this.i18n.tr('router.nav.alerts') 
       },
@@ -116,6 +120,7 @@ export class App {
         name: 'community',  
         moduleId: './community',  
         nav: true,      
+        settings: {roles: ['admin']},
         className: 'ico-users',   
         title: this.i18n.tr('router.nav.community') 
       },
@@ -169,4 +174,17 @@ export class App {
   }
 
 
+}
+
+export class AuthorizeRolesStep
+{
+  run(navigationInstruction: NavigationInstruction, next: Next): Promise<any> {  
+    let user = {role: 'admin'};
+    let requiredRoles = navigationInstruction.getAllInstructions().map(i => i.config.settings.roles)[0];
+    let isUserPermited = requiredRoles? requiredRoles.some(r => r === user.role) : true;
+    if(isUserPermited) {
+      return next();
+    }
+    return next.cancel();
+  }
 }
