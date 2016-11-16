@@ -337,7 +337,7 @@ export class DataService {
 
     /**
      * Opens a dialog for creating/editing a resource type.
-     * modelView: the path to the hteml template.
+     * modelView: the path to the html template.
      * title: title of the dialog.
      * item: the resource object instance.
      * okText: text for the submit button.
@@ -360,7 +360,6 @@ export class DataService {
 
     /**
      * Opens a dialog for a wizard.
-     * modelView: the path to the hteml template.
      * title: title of the dialog.
      * item: the resource object instance.
      * okText: text for the submit button.
