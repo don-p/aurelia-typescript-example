@@ -30,15 +30,15 @@
             <button id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]button.createCommunity'>
               <i class="ico-users-plus"></i>
             </button>
-            <button id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]button.makeCall" disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
+            <!--<button id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]button.makeCall" disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-phone2"></i>
-            </button>            
+            </button>            -->
             <button id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]button.sendAlert' disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-bullhorn center"></i>
             </button>
-            <button id="btn-communities-send-voice" class="btn btn-primary btn-xs-square" i18n='[title]button.sendVoiceAlert' disabled>
+            <!--<button id="btn-communities-send-voice" class="btn btn-primary btn-xs-square" i18n='[title]button.sendVoiceAlert' disabled>
               <i class="ico-mic5 center"></i>
-            </button>            
+            </button>            -->
             <div class="right-select">
               <span  class="community-select-label" i18n='[prepend]community.commType'>: </span>
               <select class="form-control select select-default-blg" value.bind="commType" change.delegate="selectCommunityType(commType)">
