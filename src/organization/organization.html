@@ -7,11 +7,11 @@
 
       <ul class="nav nav-tabs nav-append-content">
         <li class="active">
-          <a href="#communities" i18n="organization.organizations" id="tabCommunitiesTitle"></a>
+          <a href="#organizations" i18n="organization.organizations" id="tabOrganizationsTitle"></a>
         </li>
       </ul>
       <div class="blg-tab-section tab-content">
-        <div class="blg-inner-content tab-pane active" id="communities">
+        <div class="blg-inner-content tab-pane active" id="organizations">
           
           <loading id="communities-loading" promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
            
@@ -24,7 +24,7 @@
             </div>
           </div>
 
-        <div class="community-list-info-bar">
+        <div class="organization-list-info-bar">
           <div class="checkbox checkbox-info">
             <input id="checkbox-community-all" type="checkbox" checked.bind="selectAll" change.delegate="selectAllCommunities($event.target.checked)" class="styled styled-info" value="">
             <label></label>
