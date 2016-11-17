@@ -428,7 +428,7 @@ header .navbar-nav {
   border-bottom: 1px solid $blg-grey-lighter;
 }
 
-.blg-left-panel .blg-location-content {
+.blg-left-panel .blg-community-content {
   padding: 12px 10px 0px 0px;
   position: absolute;
   top: 170px;
@@ -443,7 +443,25 @@ header .navbar-nav {
   background-color: $blg-white;
   z-index: 0;
 }
-.blg-left-panel .blg-location-content .blg-address-content {
+
+.blg-left-panel .blg-organization-content {
+  padding: 12px 10px 0px 0px;
+  position: absolute;
+  top: 130px;
+  bottom: 15px;
+  left: 0px;
+  right: 0px;
+  border-right: 2px solid $blg-grey-light;
+  border-top: 1px solid $blg-grey-lighter;
+  border-left: 2px solid $blg-grey-light;
+  border-bottom: 2px solid $blg-grey-light;
+  border-radius: 0px 0px 6px 6px;
+  background-color: $blg-white;
+  z-index: 0;
+}
+
+.blg-left-panel .blg-community-content .blg-address-content,
+.blg-left-panel .blg-organization-content .blg-address-content {
   min-height: 287px;
   position: absolute;
   top: 0;
@@ -453,7 +471,8 @@ header .navbar-nav {
   overflow: hidden;
   width: auto;
 }
-.blg-left-panel .blg-location-content ul li {
+.blg-left-panel .blg-community-content ul li,
+.blg-left-panel .blg-organization-content ul li {
   cursor: pointer;
 }
 .blg-left-panel .blg-btns-content {
@@ -553,7 +572,26 @@ header .navbar-nav {
   width: 100%;
 }
 
-.community-list-info-bar .checkbox-info {
+.organization-list-info-bar {
+  padding: 0px 15px 0px 10px;
+  position: absolute;
+  top: 97px;
+  left: 0px;
+  right: 0px;
+  border-bottom: 1px solid $blg-grey-lighter;
+  border-right: 2px solid $blg-grey-light;
+  border-top: 0px;
+  border-left: 2px solid $blg-grey-light;
+  border-radius: 0px;
+  background-color: $blg-white;
+  z-index: 999;
+  font-size: 14px;
+  display: table;
+  width: 100%;
+}
+
+.community-list-info-bar .checkbox-info,
+.organization-list-info-bar .checkbox-info {
   display: table-cell;
   position: relative;
   left: 29px;
@@ -563,11 +601,13 @@ header .navbar-nav {
     padding-top: 0px;
 }
 
-.community-list-info-bar .checkbox input[type="checkbox"] {
+.community-list-info-bar .checkbox input[type="checkbox"],
+.organization-list-info-bar .checkbox input[type="checkbox"] {
     cursor: pointer;
 }
 
-.community-list-info-bar .checkbox input[type="checkbox"]:disabled {
+.community-list-info-bar .checkbox input[type="checkbox"]:disabled,
+.organization-list-info-bar .checkbox input[type="checkbox"]:disabled {
     cursor: no-drop;
 }
 
