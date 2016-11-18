@@ -4,10 +4,11 @@
     <form>
         <input type="file" accept=".txt,.csv" files.bind="parent.parent.controller.item.files"></input>
     </form>
+    <!--
     <div>
 item.files: ${parent.parent.controller.gWindow.JSON.stringify(item)}  controler: ${parent.parent.controller.gWindow.JSON.stringify(parent.controller)} <br>
 doImport: ${parent.parent.controller.doImport} parent: ${parent.parent.controller} <br>
 parent.parent.controller.item: ${parent.parent.controller.gWindow.JSON.stringify(parent.parent.controller.item)}  this: ${parent.parent.controller.gWindow.JSON.stringify($this.controller)}
-    </div>
+    </div> -->
     <button click.delegate='parent.parent.controller.doImport($this)'>Import</button>
 </template>
