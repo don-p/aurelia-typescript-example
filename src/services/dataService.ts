@@ -445,4 +445,20 @@ export class DataService {
         return str;
     }
 
+
+    doImport(orgId, files) {
+        var form = new FormData();
+        form.append('file', files[0]);
+        const http =  this.getHttpClient();
+
+        let response = http.fetch('v1/organizations/' + orgId + '/bulkload-member-updates', {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            method: 'POST',
+            body: form
+        });
+        return response;
+    }
+
 }

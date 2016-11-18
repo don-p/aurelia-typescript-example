@@ -71,6 +71,9 @@ var doNextAction = function() {
    this.nextAction = undefined
 }
 var doAction = function(action) {
+  if(this.currentStep.callback) {
+    this.currentStep.callback.call(this, this.currentStep.model);
+  }
   this.nextAction = action
   if (this.currentStep.getCanValidate()) {
     publish.call(this, "validate:current:step", this.currentStep)
