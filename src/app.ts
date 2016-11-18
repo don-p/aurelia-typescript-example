@@ -130,7 +130,7 @@ export class App {
         moduleId: './organization/organization',  
         nav: true,      
         settings: {roles: ['admin']},
-        className: 'ico-users',   
+        className: 'ico-tree7',   
         title: this.i18n.tr('router.nav.organization') 
       },
       // { 
