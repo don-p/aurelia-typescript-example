@@ -77,7 +77,8 @@ export class Login {
         if(data.mfa.isRequired) {
           me.router.navigateToRoute('login-2');          
         } else {
-          me.router.navigateToRoute('community');
+          // me.router.navigateToRoute('/#', { replace: true });
+          me.router.navigateToRoute('organization');
         }
       } else {
         throw "Login(): Authentication failed."
