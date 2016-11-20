@@ -31,7 +31,7 @@
     </ai-dialog-body>
 
     <div class="modal-footer">
-      <button class="btn btn-default-blg pull-left" if.bind="showCancel && !!showCancel" click.trigger="controller.cancel()">Cancel</button>
+      <button class="btn btn-default-blg" if.bind="showCancel && !!showCancel" click.trigger="controller.cancel()">Cancel</button>
       <button id="model-submit-button" type="submit" form="model-form" class="btn btn-info" 
         disabled.bind="!((isDirty) && (!hasValidationErrors))">${okText}</button>
     </div>

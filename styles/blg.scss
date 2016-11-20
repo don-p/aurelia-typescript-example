@@ -1280,3 +1280,87 @@ ai-dialog-container {
   box-shadow: none;
   background-color: $btn-link-disabled-color !important;
 }
+
+.circle-steps ul {
+	position: relative;
+	width: 625px;
+	height: 30px;
+	text-align: center;
+	overflow: hidden;
+	margin: 0 auto;
+}
+.circle-steps ul:before {
+	content: "";
+	position: absolute;
+	top: 15px;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background: $blg-blue;
+}
+.circle-steps i {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background: $blg-white;
+}
+.circle-steps li {
+	display: inline-block;
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	border: 2px solid $blg-blue;
+	border-radius: 50%;
+	background: $blg-white;
+	padding: 2px;
+	overflow: hidden;
+}
+.circle-steps li.select {
+	left: 0;
+}
+
+.circle-steps li.validate,
+.label-steps li.validate {
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+.circle-steps li.process  {
+	right: 0;
+}
+
+.circle-steps li.active i {
+	background: $blg-blue;
+}
+
+.circle-steps li.completed i {
+	background: $blg-green;
+}
+
+.label-steps ul {
+	position: relative;
+	width: 675px;
+	height: 30px;
+	text-align: center;
+	overflow: hidden;
+	margin: 0 auto;
+}
+
+.label-steps li.select {
+	float: left;
+	position: relative;
+	right: 30px;
+}
+
+.label-steps li {
+	display: inline-block;
+}
+
+.label-steps li.process  {
+	float: right;
+	position: relative;
+	right: 15px;	
+}
