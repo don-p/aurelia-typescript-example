@@ -77,7 +77,8 @@ export class Login {
         if(data.mfa.isRequired) {
           me.router.navigateToRoute('login-2');          
         } else {
-          me.router.navigateToRoute('community');
+          // me.router.navigateToRoute('/#', { replace: true });
+          me.router.navigateToRoute('organization');
         }
       } else {
         throw "Login(): Authentication failed."
@@ -99,7 +100,8 @@ async loginConfirm(token): Promise<void> {
     // .then(response => response.json())
     .then(data => {
       // Successfully validated confirmation code.
-      me.router.navigateToRoute('community');
+      // me.router.navigateToRoute('community');
+      me.router.navigateToRoute('organization');
     })
     .catch(error => {
       er = error;
@@ -111,7 +113,8 @@ async loginConfirm(token): Promise<void> {
           me.errorMessage = me.i18n.tr('error.invalidConfirmationCode');
         } else {
       // DEBUG
-          me.router.navigateToRoute('community');
+          // me.router.navigateToRoute('community');
+          me.router.navigateToRoute('organization');
     // DEBUG
         }
       })

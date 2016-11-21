@@ -1,8 +1,13 @@
-import $ from 'jquery'
+import $ from 'jquery';
+import {Events} from '../events';
 
 export class WizardStepPane {
   static inject() {return [Element]}
 
+  element:any;
+  wizardStepView: string;
+  parent:any;
+  events:Events;
   
   
   constructor(element) {

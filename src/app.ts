@@ -71,7 +71,18 @@ export class App {
   }
 
   configureRouter(config: RouterConfiguration, router: Router) {
+    let me = this;
     config.title = this.i18n.tr('app.title');
+    config.mapUnknownRoutes((instruction: NavigationInstruction) => {
+      let user = me.session.auth['member'];
+      let route = './community';
+      if (user && user['role']) {
+        if (user['role'] === 'admin') {
+          route = './organization/organization';
+        }
+      }
+      return route;
+    });
     config.addAuthorizeStep(AuthorizeRolesStep);        
     config.map([
       { 
@@ -116,15 +127,6 @@ export class App {
         title: this.i18n.tr('router.nav.alerts') 
       },
       { 
-        route: 'community',   
-        name: 'community',  
-        moduleId: './community',  
-        nav: true,      
-        settings: {roles: ['admin']},
-        className: 'ico-users',   
-        title: this.i18n.tr('router.nav.community') 
-      },
-      { 
         route: 'organization',   
         name: 'organization',  
         moduleId: './organization/organization',  
@@ -132,6 +134,15 @@ export class App {
         settings: {roles: ['admin']},
         className: 'ico-tree7',   
         title: this.i18n.tr('router.nav.organization') 
+      },
+      { 
+        route: 'community',   
+        name: 'community',  
+        moduleId: './community',  
+        nav: true,      
+        settings: {roles: ['admin']},
+        className: 'ico-users',   
+        title: this.i18n.tr('router.nav.community') 
       },
       // { 
       //   route: 'community/:id', 
@@ -180,6 +191,18 @@ export class App {
       me.logger.error(error); 
       me.router.navigateToRoute('login');
     });
+  }
+
+  handleUnknownRoutes(instruction): string {
+    // return default route for role
+    let route = './community';
+    let user = this.session.auth;
+    if (user && user['roles']) {
+      if (user['roles'].indexOf('admin') !== -1) {
+        route = './organization/organization';
+      }
+    }
+    return route;
   }
 
 

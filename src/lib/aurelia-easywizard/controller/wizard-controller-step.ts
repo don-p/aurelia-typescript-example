@@ -10,6 +10,7 @@ export class WizardControllerStep {
   viewsPrefix:string;
   model:any;
   initialize:boolean;
+  callback: Function;
   
   get view() { 
     if (this.id) {
@@ -45,6 +46,7 @@ export class WizardControllerStep {
     this.canValidate = config.canValidate;
     this.viewsPrefix = config.viewsPrefix;
     this.model = config.model;
+    this.callback = config.callback;
     this.initialize = config.initialize;    
   }
   getModel() {
