@@ -100,7 +100,8 @@ async loginConfirm(token): Promise<void> {
     // .then(response => response.json())
     .then(data => {
       // Successfully validated confirmation code.
-      me.router.navigateToRoute('community');
+      // me.router.navigateToRoute('community');
+      me.router.navigateToRoute('organization');
     })
     .catch(error => {
       er = error;
