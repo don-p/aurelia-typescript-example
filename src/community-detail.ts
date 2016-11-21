@@ -123,7 +123,7 @@ export class CommunityDetail {
         headerName: this.i18n.tr('community.members.organization'), 
         field: "physicalPersonProfile.organization.organizationName",
         filter: TextSearchFilter,
-        hide: true
+        hide: false
       });
     } // else if (type === 'addMembers') {
       columns.push({
@@ -227,16 +227,16 @@ export class CommunityDetail {
 
     // Adjust column visibility based on community type - TEAM or COI.
     let type = this.selectedCmty.communityType;
-    if(type === 'TEAM') {
-      // Hide org column.
-      gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', false);
-      gridOptions.columnApi.setColumnVisible('physicalPersonProfile.jobTitle', true);      
-      gridOptions.api.sizeColumnsToFit();
-    } else {
-      gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', true);      
-      gridOptions.api.sizeColumnsToFit();
-      gridOptions.columnApi.autoSizeColumn('physicalPersonProfile.organization.organizationName');
-   }
+  //   if(type === 'TEAM') {
+  //     // Show title and org column.
+  //     gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', true);
+  //     gridOptions.columnApi.setColumnVisible('physicalPersonProfile.jobTitle', true);      
+  //     gridOptions.api.sizeColumnsToFit();
+  //   } else {
+  //     gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', true);      
+  //     gridOptions.api.sizeColumnsToFit();
+  //     gridOptions.columnApi.autoSizeColumn('physicalPersonProfile.organization.organizationName');
+  //  }
     let gridDataSource = {
         /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
         rowCount: null,
