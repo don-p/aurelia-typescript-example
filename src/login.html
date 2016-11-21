@@ -51,11 +51,11 @@
 						<div if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''">
 							<div class="row">
 								<div class="col-xs-12">
-									<input  id="un" i18n='[placeholder]login.emailAddr' value.bind="username" type="email" name="email" class="form-control input-lg" />
+									<input  id="un" i18n='[placeholder]login.emailAddr' autofocus value.bind="username" type="email" name="email" class="form-control input-lg" />
 									<span class="glyphicon glyphicon-user"></span>
 								</div>
 								<div class="col-xs-12">
-									<input id="pw" i18n='[placeholder]login.password' type="password" value.bind="password" name="password" class="form-control input-lg" />
+									<input id="pw" i18n='[placeholder]login.password'  type="password" value.bind="password" name="password" class="form-control input-lg" />
 									<span class="glyphicon glyphicon-lock"></span>
 								</div>
 							</div>
@@ -67,14 +67,16 @@
 							</div>					
 							<div class="row">
 								<div class="col-xs-12">
-									<input type="password" name="code" value.bind="mfaCode" placeholder="Confirmation code" class="form-control input-lg" />
+									<input id="mfa" type="password" name="code" autofocus value.bind="mfaCode" placeholder="Confirmation code" class="form-control input-lg" />
 									<span class="glyphicon glyphicon-lock"></span>
 								</div>
 							</div>
 						</div>
 
-						<button if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''" i18n='login.submit' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
-						<button if.bind="router.currentInstruction.config.route==='login-2'" i18n='login.confirm' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
+						<button if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''" 
+							disabled.bind="(!(password) || !(username))" i18n='login.submit' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
+						<button if.bind="router.currentInstruction.config.route==='login-2'" 
+							disabled.bind="!(mfaCode)" i18n='login.confirm' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
 
 						<section>
 							<a href="#">Forgot password?</a>

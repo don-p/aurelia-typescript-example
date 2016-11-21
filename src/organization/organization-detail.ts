@@ -617,7 +617,10 @@ export class OrganizationDetail {
     this.logger.debug('addOrganizationMembers()');
 
     var me = this;
-    let organizationMembers: any[];
+    let orgModel:Object = {
+      orgId:'',
+      files: []
+    }
     // const vRules = ValidationRules
     //   .ensure('item').maxItems(maxParticipants)
     //   .withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:maxParticipants}))
@@ -631,31 +634,54 @@ export class OrganizationDetail {
         id:'select_file',
         title:'Select File',
         canValidate: false,
-        model: organizationMembers
+        model: orgModel,
+        callback: function(model) {
+          me.dataService.doImport(model.orgId, model.files).then(response => response.json())
+          .then(data => {
+            me.logger.debug('doImport response: ' + data);
+            // Update the message for success.
+            // controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
+            // controller.viewModel.okText = this.i18n.tr('button.ok');
+            // controller.viewModel.showCancel = false;
+            // // Close dialog on success.
+            // delete controller.viewModel.submit;
+          }, error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member call() rejected."); 
+          }).catch(error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member call() failed."); 
+            me.logger.error(error); 
+            return Promise.reject(error);
+          });
+        }
       };
     step2.config = {
         viewsPrefix: '../../../organization/importWizard',
         id:'validate_file',
         title:'Validate',
         canValidate: false,
-        model: organizationMembers
+        model: orgModel
       };
     step3.config = {
         viewsPrefix: '../../../organization/importWizard',
         id:'process_file',
         title:'Process',
         canValidate: false,
-        model: organizationMembers
+        model: orgModel
       };
 
     const steps = [step1, step2, step3];
 
-
+    orgModel['orgId'] = me.session.auth['organization'].organizationId;
     this.dataService.openWizardDialog(steps,
-      organizationMembers, null)
+      orgModel, null)
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.
+      controller.viewModel.doImport = (files:any[]) => {
+        this.dataService.doImport(model.orgId, model.files);
+      }
       controller.viewModel.submit = (communityMembers:any[]) => {
         // Add logged-in user to the call list.
         communityMembers.unshift(me.session.auth['member']);
