@@ -44,6 +44,10 @@ export class DataService {
         this.clientId = this.appConfig.get('api.clientId');
         this.clientSecret = this.appConfig.get('api.clientSecret');
 
+        /**
+         * DataService is loaded in application bootstrapping, so 
+         * configure the application-wide http and fetch client settings here.
+         */
         // Configure custom fetch for aurelia-auth service.
         fetchConfig.configure();
 
@@ -102,9 +106,9 @@ export class DataService {
         });
         httpBase.configure(config => {
             config
-                // Add the baseUrl for API server.
-                .withBaseUrl(this.apiServerUrl)
-                .withHeader('Authorization', 'Bearer ' + this.session.auth['access_token']);
+            // Add the baseUrl for API server.
+            .withBaseUrl(this.apiServerUrl)
+            .withHeader('Authorization', 'Bearer ' + this.session.auth['access_token']);
         });
 
         this.logger = LogManager.getLogger(this.constructor.name);
@@ -451,20 +455,4 @@ export class DataService {
         str = encodeURIComponent(str);
         return str;
     }
-
-
-    doImport(orgId, files) {
-        var form = new FormData();
-        form.append('DataFile', files[0]);
-        const http =  this.getHttpClient();
-
-        // Use base http-client, instead of Fetch, for multipart-form file upload.
-         let response = this.httpBase.createRequest('v1/organizations/' + orgId + '/bulkload-member-updates')
-        .asPost()
-        .withContent(form)
-        .send();
-
-        return response;
-    }
-
 }

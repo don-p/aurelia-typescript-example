@@ -1,4 +1,7 @@
 ﻿import {Aurelia, LogManager} from 'aurelia-framework';
+import {HttpClient} from 'aurelia-fetch-client';
+import {HttpClient as Http} from 'aurelia-http-client';
+import {FetchConfig} from 'aurelia-auth';
 import {ConsoleAppender} from "aurelia-logging-console";
 // we want font-awesome to load as soon as possible to show the fa-spinner
  // Vendor CSS libs:
@@ -116,13 +119,14 @@ export async function configure(aurelia: Aurelia) {
       .plugin('aurelia-dialog')
       // .plugin('aurelia-ui-virtualization')
       .postTask(function() {  // Additional bootstraping after framework start-up.
+        let dataInstance = aurelia.container.get(DataService);
+        let fetchConfigInstance = aurelia.container.get(FetchConfig);
         // Use config to set logging level.
         let configInstance = aurelia.container.get(Configure);
         let logLevel = configInstance.get('logLevel');
         LogManager.setLevel(LogManager.logLevel[logLevel]);
         LogManager.addAppender(new ConsoleAppender());
         // Merge server config with local.
-        let dataInstance = aurelia.container.get(DataService);
         dataInstance.getCallServiceConfig()
         .then(response => response.json())
         .then((data) => {
