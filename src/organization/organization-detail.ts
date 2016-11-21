@@ -6,6 +6,7 @@ import {Configure} from 'aurelia-configuration';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {Session} from '../services/session';
 import {DataService} from '../services/dataService';
+import {OrganizationService} from '../services/organizationService';
 import {CommunityService} from '../services/communityService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
@@ -16,7 +17,7 @@ import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, Configure, LogManager) // SCROLL
+@inject(Session, Router, DataService, OrganizationService, CommunityService, EventAggregator, Ps, I18N, DialogService, Configure, LogManager) // SCROLL
 export class OrganizationDetail {
   member: Object;
 
@@ -48,7 +49,7 @@ export class OrganizationDetail {
   logger: Logger;
   
   constructor(private session: Session, private router: Router, 
-    private dataService: DataService, private communityService: CommunityService, 
+    private dataService: DataService, private organizationService: OrganizationService, private communityService: CommunityService, 
     private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService, private appConfig: Configure) {
 
     this.communityMembers = null;
@@ -636,7 +637,8 @@ export class OrganizationDetail {
         canValidate: false,
         model: orgModel,
         callback: function(model) {
-          me.dataService.doImport(model.orgId, model.files).then(response => response.json())
+          me.organizationService.doImport(model.orgId, model.files)
+          .then(response => response.content)
           .then(data => {
             me.logger.debug('doImport response: ' + data);
             // Update the message for success.
@@ -680,7 +682,7 @@ export class OrganizationDetail {
       let model = controller.settings;
       // Callback function for submitting the dialog.
       controller.viewModel.doImport = (files:any[]) => {
-        this.dataService.doImport(model.orgId, model.files);
+        this.organizationService.doImport(model.orgId, model.files);
       }
       controller.viewModel.submit = (communityMembers:any[]) => {
         // Add logged-in user to the call list.

@@ -1,6 +1,7 @@
 import {inject, Lazy} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {Session} from './session';
+import {FetchConfig} from 'aurelia-auth';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
@@ -9,7 +10,7 @@ import {DataService} from './dataService';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(Lazy.of(HttpClient), EventAggregator, DialogService, Session, QueryString, DataService)
+@inject(HttpClient, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService)
 export class CommunityService {  
 
     // Service object for retreiving application data from REST services.
@@ -17,13 +18,16 @@ export class CommunityService {
     apiServerUrl: string;
     clientId: string;
     clientSecret: string;
-    httpClient: HttpClient;
 
-    constructor(private getHttpClient: () => HttpClient, 
-        private evt: EventAggregator, private dialogService:DialogService, private session: Session, private dataService:DataService){
+    constructor(private httpClient: HttpClient, 
+        private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
+        private fetchConfig: FetchConfig, private dataService:DataService){
 
     }
 
+    getHttpClient() {
+        return this.httpClient;
+    }
 
     // COMMUNITIES
 

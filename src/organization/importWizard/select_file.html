@@ -1,8 +1,30 @@
 <template>
-    <div style="padding:12px;">Select file.</div>
+
+    <!--<div class="label-steps">
+        <ul>
+            <li class="select">Select file</li>
+            <li class="validate">Validate</li>
+            <li class="process">Process</li>			
+        </ul>
+    </div>	
+    <div class="circle-steps">
+        <ul>
+            <li class="select completed">
+                <i></i>
+            </li>
+            <li class="validate active">
+                <i></i>
+            </li>
+            <li class="process">
+                <i></i>	
+            </li>
+        </ul>
+    </div>-->
+
+    <!--<div style="padding:12px;">Select file.</div>-->
 
     <form>
-        <input type="file" accept=".txt,.csv" files.bind="parent.parent.controller.item.files"></input>
+        <input type="file" accept=".csv" files.bind="parent.parent.controller.item.files"></input>
     </form>
     <!--
     <div>

@@ -7,6 +7,7 @@ import {ValidationRules, ValidationController, Validator} from 'aurelia-validati
 import {Session} from './services/session';
 import {DataService} from './services/dataService';
 import {CommunityService} from './services/communityService';
+import {OrganizationService} from './services/organizationService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {DialogService, DialogController} from 'aurelia-dialog';
@@ -14,8 +15,9 @@ import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from './lib/grid/textSearchFilter';
+import {WizardControllerStep} from './lib/aurelia-easywizard/controller/wizard-controller-step';
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, Configure, LogManager) // SCROLL
+@inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, Ps, I18N, DialogService, Configure, LogManager) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -47,7 +49,7 @@ export class CommunityDetail {
   logger: Logger;
   
   constructor(private session: Session, private router: Router, 
-    private dataService: DataService, private communityService: CommunityService, 
+    private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
     private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService, private appConfig: Configure) {
 
     this.communityMembers = null;
@@ -123,13 +125,13 @@ export class CommunityDetail {
         filter: TextSearchFilter,
         hide: true
       });
-    } else if (type === 'addMembers') {
+    } // else if (type === 'addMembers') {
       columns.push({
         headerName: this.i18n.tr('community.members.title'), 
         field: "physicalPersonProfile.jobTitle",
         filter: TextSearchFilter
       });
-    }
+    // }
     columns.push({
       headerName: this.i18n.tr('community.members.city'), 
       field: "physicalPersonProfile.locationProfile.city",
@@ -228,6 +230,7 @@ export class CommunityDetail {
     if(type === 'TEAM') {
       // Hide org column.
       gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', false);
+      gridOptions.columnApi.setColumnVisible('physicalPersonProfile.jobTitle', true);      
       gridOptions.api.sizeColumnsToFit();
     } else {
       gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', true);      
@@ -270,7 +273,7 @@ export class CommunityDetail {
     gridOptions.api.setDatasource(gridDataSource);
   }
 
-  setOrganizationMembersGridDataSource(gridOptions, pageSize, communityService) {
+  setOrganizationMembersGridDataSource(gridOptions, pageSize, organizationService) {
     const me = this;
 
     let gridDataSource = {
@@ -293,7 +296,7 @@ export class CommunityDetail {
             this.loading = true;
             let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
             let  organizationId = gridOptions.organizationId;
-            let orgPromise = communityService.getOrgMembers(organizationId, params.startRow, pageSize, params);
+            let orgPromise = organizationService.getOrgMembers(organizationId, params.startRow, pageSize, params);
             orgPromise.then(response => response.json())
               .then(data => {
                 // Filter out existing community members.
@@ -483,7 +486,7 @@ export class CommunityDetail {
       };
       let addMembersGrid = new Grid(controller.viewModel.addCmtyMembersGrid, gridOptions); //create a new grid
       gridOptions['api'].sizeColumnsToFit();
-      me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.communityService);
+      me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
 
       // controller.isGridFiltered = Object.defineProperty(controller, 'isGridFiltered', {get: function() {
       //   window.console.debug('--- isGridFiltered ---');
@@ -529,7 +532,7 @@ export class CommunityDetail {
           let selection = gridOptions.api.getSelectedRows();
           me.setSelectedOrganizationMembersGridDataSource(gridOptions, me.pageSize, selection);
         } else {
-          me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.communityService);
+          me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
         }
       };
 
@@ -611,6 +614,90 @@ export class CommunityDetail {
     });
   }
 
+  sendAlertCommunityMembers() {
+    // let maxParticipants = this.appConfig.get('server.MAX_CONFERENCE_PARTICIPANTS');
+    let maxParticipants = 5;
+    this.logger.debug('makeCallCommunityMembers() => MAX_CONFERENCE_PARTICIPANTS = ' + maxParticipants);
+
+    let message = null;
+    var me = this;
+    let communityMembers:any[];
+    communityMembers = this.gridOptions.api.getSelectedRows();
+
+    if(communityMembers.length === 1) {
+      message = this.i18n.tr('community.members.call.callConfirmMessageSingle', 
+          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
+          communityMembers[0].physicalPersonProfile.lastName});
+    } else if(communityMembers.length >= 1) {
+      message = this.i18n.tr('community.members.call.callConfirmMessage',
+          {memberCount: communityMembers.length});
+    }
+    const vRules = ValidationRules
+      .ensure('item').maxItems(maxParticipants)
+      .withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:maxParticipants}))
+      .rules;
+    const step1 = new WizardControllerStep();
+    const step2 = new WizardControllerStep();
+
+    step1.config = {
+        viewsPrefix: 'community/alertWizard',
+        id:'alert_type',
+        title:'Select Alert Type',
+        canValidate: false,
+        model: communityMembers
+      };
+    step2.config = {
+        id:'alert_recipients',
+        title:'Select Alert Recipients',
+        canValidate: false,
+        model: communityMembers
+      };
+
+    const steps = [step1, step2];
+
+
+    this.dataService.openWizardDialog(steps,
+      communityMembers, vRules)
+    .then((controller:any) => {
+      let model = controller.settings;
+      // Callback function for submitting the dialog.
+      controller.viewModel.submit = (communityMembers:any[]) => {
+        // Add logged-in user to the call list.
+        communityMembers.unshift(me.session.auth['member']);
+        let memberIDs = communityMembers.map(function(value) {
+          return {
+            "participantId": value.memberId,
+            "participantType": "MEMBER"
+          }
+        });
+        // Call the service to start the call.
+        controller.viewModel.modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
+        controller.viewModel.modelPromise.then(response => response.json())
+        .then(data => {
+            // Update the message for success.
+            controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
+            controller.viewModel.okText = this.i18n.tr('button.ok');
+            controller.viewModel.showCancel = false;
+            // Close dialog on success.
+            delete controller.viewModel.submit;
+          }, error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member call() rejected."); 
+          }).catch(error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member call() failed."); 
+            me.logger.error(error); 
+            return Promise.reject(error);
+          })
+      };
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          this.logger.debug('Cancel');
+        }
+      })
+    });
+  }
 
 /*
   loadData() {

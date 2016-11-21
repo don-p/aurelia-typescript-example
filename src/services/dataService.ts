@@ -1,6 +1,7 @@
 import {inject, Lazy, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {HttpClient, json} from 'aurelia-fetch-client';
+import {HttpClient as Http} from 'aurelia-http-client';
 import {Configure} from "aurelia-configuration";
 import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
@@ -13,7 +14,7 @@ import {Prompt} from '../model/prompt';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(Lazy.of(HttpClient), Configure, EventAggregator, AuthService, FetchConfig, DialogService, Session, QueryString, LogManager)
+@inject(Lazy.of(HttpClient), Http, Configure, EventAggregator, AuthService, FetchConfig, DialogService, Session, QueryString, LogManager)
 export class DataService {  
 
     // Service object for retreiving application data from REST services.
@@ -33,7 +34,7 @@ export class DataService {
 
     logger: Logger;
 
-    constructor(private getHttpClient: () => HttpClient, private appConfig: Configure, 
+    constructor(private getHttpClient: () => HttpClient, private httpBase: Http, private appConfig: Configure, 
         private evt: EventAggregator, private auth: AuthService,  
         private fetchConfig: FetchConfig, private dialogService:DialogService,private session: Session){
 
@@ -43,6 +44,10 @@ export class DataService {
         this.clientId = this.appConfig.get('api.clientId');
         this.clientSecret = this.appConfig.get('api.clientSecret');
 
+        /**
+         * DataService is loaded in application bootstrapping, so 
+         * configure the application-wide http and fetch client settings here.
+         */
         // Configure custom fetch for aurelia-auth service.
         fetchConfig.configure();
 
@@ -98,6 +103,12 @@ export class DataService {
                 .withInterceptor(this.includeExpiredTokenResponseInterceptor)
                 // .withInterceptor(this.responseErrorInterceptor)
 ;
+        });
+        httpBase.configure(config => {
+            config
+            // Add the baseUrl for API server.
+            .withBaseUrl(this.apiServerUrl)
+            .withHeader('Authorization', 'Bearer ' + this.session.auth['access_token']);
         });
 
         this.logger = LogManager.getLogger(this.constructor.name);
@@ -444,21 +455,4 @@ export class DataService {
         str = encodeURIComponent(str);
         return str;
     }
-
-
-    doImport(orgId, files) {
-        var form = new FormData();
-        form.append('DataFile', files[0]);
-        const http =  this.getHttpClient();
-
-        let response = http.fetch('v1/organizations/' + orgId + '/bulkload-member-updates', {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            method: 'POST',
-            body: form
-        });
-        return response;
-    }
-
 }
