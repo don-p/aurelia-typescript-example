@@ -112,7 +112,8 @@ async loginConfirm(token): Promise<void> {
           me.errorMessage = me.i18n.tr('error.invalidConfirmationCode');
         } else {
       // DEBUG
-          me.router.navigateToRoute('community');
+          // me.router.navigateToRoute('community');
+          me.router.navigateToRoute('organization');
     // DEBUG
         }
       })
