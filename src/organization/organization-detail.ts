@@ -85,15 +85,7 @@ export class OrganizationDetail {
 
   getGridColumns(type: string) { 
     let columns = [];
-    // return [
-    columns.push({
-      headerName: '', 
-      width: 30, 
-      minWidth: 30, 
-      checkboxSelection: true, 
-      suppressMenu: true
-    });
-    columns.push({
+     columns.push({
       headerName: this.i18n.tr('community.members.firstname'), 
       field: "physicalPersonProfile.firstName",
       filter: TextSearchFilter
@@ -103,20 +95,11 @@ export class OrganizationDetail {
       field: "physicalPersonProfile.lastName", 
       filter: TextSearchFilter
     });
-    if(type == 'listMembers') {
-      columns.push({
-        headerName: this.i18n.tr('community.members.organization'), 
-        field: "physicalPersonProfile.organization.organizationName",
-        filter: TextSearchFilter,
-        hide: true
-      });
-    } else if (type === 'addMembers') {
-      columns.push({
-        headerName: this.i18n.tr('community.members.title'), 
-        field: "physicalPersonProfile.jobTitle",
-        filter: TextSearchFilter
-      });
-    }
+    columns.push({
+      headerName: this.i18n.tr('community.members.title'), 
+      field: "physicalPersonProfile.jobTitle",
+      filter: TextSearchFilter
+    });
     columns.push({
       headerName: this.i18n.tr('community.members.city'), 
       field: "physicalPersonProfile.locationProfile.city",
