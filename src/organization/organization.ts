@@ -101,7 +101,7 @@ export class Organization {
     setTimeout(function() {
       // Scroll selected item into view.
       let container = $('#community-list')[0];
-      let element = $('#cmty-'+community['communityId'])[0];
+      let element = $('#org-'+community['id'])[0];
       if(typeof element === 'object') {
         me.logger.debug("scrolTo element: " + element);
         let offset = element.offsetTop;
@@ -132,43 +132,7 @@ export class Organization {
       //throw error;
       return Promise.reject(error);
     });
-  }
-
-
-/*  
-  async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
-    let me = this;
-    return this.communityService.getCommunity(communityId, startIndex, this.pageSize, null)
-    .then(response => response.json())
-    .then((data: any) => {
-      me.logger.debug(data);
-//      this.session=me.session;
-      me.communityMembers = data.responseCollection;
-      // me.agGridWrap.rowsChanged(me.communityMembers, null);
-    }).catch(error => {
-      me.logger.error("Communities members() failed."); 
-      me.logger.error(error); 
-    });
-  }
-*/
-  async getCommunityMemberIDs(communityId: string, pageSize: number) : Promise<void> {
-    let me = this;
-    return this.communityService.getCommunity(communityId, 0, pageSize, null)
-    .then(response => response.json())
-    .then((data: any) => {
-      me.logger.debug(data);
-//      this.session=me.session;
-      me.communityMembers = data.responseCollection.map(function(item) {
-        return item.memberId;
-      });
-      // me.agGridWrap.rowsChanged(me.communityMembers, null);
-    }).catch(error => {
-      me.logger.error("Communities members() failed."); 
-      me.logger.error(error); 
-    });
-  }
-
-  
+  }  
 
 }
 
