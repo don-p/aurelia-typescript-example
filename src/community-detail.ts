@@ -10,14 +10,13 @@ import {CommunityService} from './services/communityService';
 import {OrganizationService} from './services/organizationService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
-import {DialogService, DialogController} from 'aurelia-dialog';
 import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from './lib/grid/textSearchFilter';
 import {WizardControllerStep} from './lib/aurelia-easywizard/controller/wizard-controller-step';
 
-@inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, Ps, I18N, DialogService, Configure, LogManager) // SCROLL
+@inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, Ps, I18N, Configure, LogManager) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -50,12 +49,9 @@ export class CommunityDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
-    private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService, private appConfig: Configure) {
+    private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: Configure) {
 
     this.communityMembers = null;
-    // this.membersGrid = {};
-    // this.currentMember = {};
-    // this.remoteData = new RemoteData(appConfig.apiServerUrl, null);
 
     // this.ps = Ps; // SCROLL
 
