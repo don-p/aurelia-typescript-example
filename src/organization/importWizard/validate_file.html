@@ -1,23 +1,23 @@
 <template>
     <!--<div style="padding:12px;">Validating.</div>-->
-    <div class="label-steps">
-        <ul>
-            <li class="select">Select file</li>
-            <li class="validate">Validate</li>
-            <li class="process">Process</li>			
-        </ul>
-    </div>	
-    <div class="circle-steps">
-        <ul>
-            <li class="select completed">
-                <i></i>
-            </li>
-            <li class="validate active">
-                <i></i>
-            </li>
-            <li class="process">
-                <i></i>	
-            </li>
-        </ul>
-    </div>
+		<div class="circle-steps">
+			<ul>
+
+				<span class="title step-first">Select file</span>
+				<li class="step-first completed">
+					<i></i>
+				</li>
+				
+				<span class="title step-2-3">Validate</span>				
+				<li class="step-2-3 active">
+					<i></i>	
+				</li>
+				
+				<span class="title step-last">Process</span>				
+				<li class="step-last">
+					<i></i>	
+				</li>
+
+			</ul>
+		</div>
 </template>
