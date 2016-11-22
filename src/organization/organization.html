@@ -25,11 +25,7 @@
           </div>
 
         <div class="organization-list-info-bar">
-          <div class="checkbox checkbox-info">
-            <input id="checkbox-community-all" type="checkbox" checked.bind="selectAll" change.delegate="selectAllCommunities($event.target.checked)" class="styled styled-info" value="">
-            <label></label>
-          </div>
-          <div class="community-list-info pull-right">${communities.length} items total</div>
+          <div class="community-list-info pull-right">${organizations.length} items total</div>
         </div>
 
         <div class="blg-inner-content tab-pane active" id="communities">
@@ -38,19 +34,14 @@
               <div id="community-list" class="community-list">
                 <ul>
                   <div class="panel-group communities-panel-list list1" id="accordion_communities">
-                    <div id="cmty-${community.communityId}" repeat.for="community of communities" class='list-item'>
-                      <div class="checkbox checkbox-info">
-                          <input id="checkbox-community-${$index}" type="checkbox" class="styled styled-info" 
-                            change.delegate="onCommunitySelectionChanged(community)" model.bind="community" checked.bind="selectedCommunities">
-                          <label></label>
-                      </div>
+                    <div id="org-${organization.id}" repeat.for="organization of organizations" class='list-item'>
                       <div class='panel panel-default'>
-                        <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
+                        <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (organization.id == selectedItem.id) ? 'active':''"
                           role='tab'>
-                          <a class='collapsed' click.trigger="selectCommunity(community)" role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
+                          <a class='collapsed' click.trigger="selectOrganization(organization)" role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
                             <h4 class='panel-title'>
-                              <span class="community-name">${community.communityName}</span>
-                              <span class="members-count">(<i class='ico-users'></i> ${community.memberCount})</span>
+                              <span class="community-name">${organization.name}</span>
+                              <span class="members-count">(<i class='ico-users'></i> ${organization.memberCount})</span>
                               <span class='community-buttons'>
                                 <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
                                   click.delegate="deleteCommunity(community)" i18n='[title]button.deleteCommunity'>
@@ -61,7 +52,7 @@
                                   <i class="ico-pencil7 float-right"></i>
                                 </a>
                               </span>
-                              <div class="community-description" >${(community.communityDescription !==null) ? community.communityDescription:'&nbsp;'}</div>                               
+                              <div class="community-description" >${(organization.organizationDescription !==null) ? organization.organizationDescription:'&nbsp;'}</div>                               
                             </h4>
                           </a>
                         </div>
