@@ -345,6 +345,18 @@ export class DataService {
  
 // GLOBAL SERVICES //
 
+    async getAlertCategories(startIndex: number, pageSize:number): Promise<Response> {
+        await fetch;
+        let response = this.getHttpClient().fetch('v1/notifications/categories?start_index=' + 
+            startIndex + '&page_size=' + pageSize, 
+            {
+                method: 'GET',
+            }
+        );
+        return response;
+    }
+
+
     /**
      * Opens a dialog for creating/editing a resource type.
      * modelView: the path to the html template.
