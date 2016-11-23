@@ -1,11 +1,16 @@
 <template>
+    <div ">
         <div class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]global.name'>: </label>
-            <input id="name" attach-focus="true" value.bind="item.communityName & validate" class="form-control input-lg" />
+            <input id="name" attach-focus="true" value.bind="item.communityName & validate" 
+            change.delegate="vController.validate({ object: $this.item, rules: vRules })" 
+            class="form-control input-lg" />
         </div>
         <div class="dialog-section">
-            <label i18n='[prepend]global.description'>: </label>
-            <input id="name" value.bind="item.communityDescription" class="form-control input-lg" />
+            <label class="blg-form-required" i18n='[prepend]global.description'>: </label>
+            <input id="name" value.bind="item.communityDescription & validate" 
+            change.delegate="vController.validate({ object: $this.item, rules: vRules })" 
+            class="form-control input-lg" />
         </div>
         <div class="dialog-section" if.bind="(!(item.communityId) || item.communityId == null)">
             <label class="blg-form-required community-select-label" i18n='[prepend]global.type'>: </label>
@@ -15,5 +20,5 @@
             </select>
         </div>
         <input type="hidden" value.bind="item.communityId" />
-
+    </div>
 </template>
