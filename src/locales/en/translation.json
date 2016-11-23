@@ -89,6 +89,10 @@
             "callConfirmMessage": "Start GridCall with {{communityCount}} selected communities?",
             "callSuccessMessage": "The GridCall has been initiated.",
             "callParticipantMaxCountError":"GridCall cannot be started with more than {{count}} participants."
+        },
+        "alert": {
+            "selectTypeRecipients": "Type and Recipients",
+            "selectMessage": "Send Message"
         }
     },
 
