@@ -94,7 +94,12 @@
 
     "organization":{
         "organization":"Organization",
-        "organizations":"Organizations"
+        "organizations":"Organizations",
+        "onboard": {
+            "selectFile": "Select File",
+            "validate": "Validate",
+            "process": "Process"
+        }
     },
 
     "grid": {

@@ -287,8 +287,8 @@ export class OrganizationDetail {
 
     step1.config = {
         viewsPrefix: '../../../organization/importWizard',
-        id:'select_file',
-        title:'Select File',
+        id: 'select_file',
+        title: this.i18n.tr('organization.onboard.selectFile'),
         canValidate: false,
         model: orgModel,
         callback: function(model) {
@@ -319,8 +319,8 @@ export class OrganizationDetail {
       };
     step2.config = {
         viewsPrefix: '../../../organization/importWizard',
-        id:'validate_file',
-        title:'Validate',
+        id: 'validate_file',
+        title: this.i18n.tr('organization.onboard.validate'),
         canValidate: false,
         model: orgModel,
         callback: function(model) {
@@ -356,8 +356,8 @@ export class OrganizationDetail {
       };
     step3.config = {
         viewsPrefix: '../../../organization/importWizard',
-        id:'process_file',
-        title:'Process',
+        id: 'process_file',
+        title: this.i18n.tr('organization.onboard.process'),
         canValidate: false,
         model: orgModel
       };
