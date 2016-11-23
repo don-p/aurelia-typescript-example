@@ -9,14 +9,13 @@ import {CommunityService} from './services/communityService';
 import {VirtualRepeat} from 'aurelia-ui-virtualization';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
-import {DialogService, DialogController} from 'aurelia-dialog';
 import * as Ps from 'perfect-scrollbar';
 import {ValidationRules, ValidationController} from 'aurelia-validation';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, DialogService, NewInstance.of(ValidationController), Configure, LogManager)
+@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, NewInstance.of(ValidationController), Configure, LogManager)
 export class Community {
   communities: Array<Object>;
   items:Array<Object>;
@@ -35,7 +34,7 @@ export class Community {
   logger: Logger;
 
   constructor(private session: Session, private router: Router, private dataService: DataService, 
-    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private dialogService: DialogService, private appConfig: Configure) {
+    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: Configure) {
 
     // var Ps = require('perfect-scrollbar');
 
@@ -263,29 +262,16 @@ export class Community {
       };
       title = this.i18n.tr('community.editCommunity');
     }
-    // const vRules = ValidationRules
-    //   .ensure((community: any) => community.communityName)
-    //   .displayName(this.i18n.tr('community.communityName'))
-    //   .required()
-    //   .then()
-    //   .minLength(3)
-    //   .maxLength(120)
-    //   .ensure((community: any) => community.communityDescription)
-    //   .displayName(this.i18n.tr('community.communityDesc'))
-    //   .required()
-    //   .then()
-    //   .maxLength(120)
-    //   // .on(community)
-    //   .rules
-    //   ;
     const vRules = ValidationRules
-      .ensure('communityName')
+      .ensure((community: any) => community.communityName)
       .displayName(this.i18n.tr('community.communityName'))
       .required()
       .then()
       .minLength(3)
+      .then()
       .maxLength(120)
-      .ensure('communityDescription')
+      .then()
+      .ensure((community: any) => community.communityDescription)
       .displayName(this.i18n.tr('community.communityDesc'))
       .required()
       .then()
@@ -293,7 +279,22 @@ export class Community {
       // .on(community)
       .rules
       ;
-    this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'), vRules)
+    // const vRules = ValidationRules
+    //   .ensure('communityName')
+    //   .displayName(this.i18n.tr('community.communityName'))
+    //   .required()
+    //   .then()
+    //   .minLength(3)
+    //   .maxLength(120)
+    //   .ensure('communityDescription')
+    //   .displayName(this.i18n.tr('community.communityDesc'))
+    //   .required()
+    //   .then()
+    //   .maxLength(120)
+    //   // .on(community)
+    //   .rules
+    //   ;
+    this.dataService.openResourceEditDialog({modelView:'model/communityModel.html', title:title, item:community, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
       // let model = controller.settings.model;
       let model = controller.settings;

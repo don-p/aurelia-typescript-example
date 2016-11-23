@@ -1,5 +1,11 @@
 <template>
 	<div class="row toggleSelectedLink">
+            <div class="left-select">
+              <span  class="community-select-label" i18n='[prepend]organization.organization'>: </span>
+              <select class="form-control select select-default-blg" change.delegate="selectOrganization($event)">
+				<option repeat.for="organization of organizations" value="${organization.id}" model.bind="organization">${organization.name}</option>
+              </select>
+            </div>
 		<div class="pull-left">
 			<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
 		</div>

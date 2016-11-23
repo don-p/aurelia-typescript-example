@@ -46,17 +46,46 @@ export class OrganizationService {
 
     }
 
+    async getMemberOrgs(startIndex: number, pageSize:number): Promise<Response> {
+        await fetch;
+        let response = this.getHttpClient().fetch('v1/organizations?start_index=' + 
+            startIndex + '&page_size=' + pageSize, 
+            {
+                method: 'GET',
+            }
+        );
+        return response;
 
-    doImport(orgId, files) {
+    }
+
+
+    importValidate(orgId, files) {
         var form = new FormData();
-        form.append('DataFile', files[0]);
+        form.append('dataFile', files[0]);
         const http =  this.httpBase;
 
         // Use base http-client, instead of Fetch, for multipart-form file upload.
-         let response = http.createRequest('v1/organizations/' + orgId + '/bulkload-member-updates')
+        let response = http.createRequest('v1/organizations/' + orgId + '/member-metadata-crs')
         .asPost()
         .withContent(form)
         .send();
+
+        return response;
+    }
+    
+    importProcess(orgId, importId) {
+        var form = new FormData();
+        // form.append('DataFile', files[0]);
+        const http =  this.getHttpClient();
+
+        // Use base http-client, instead of Fetch, for multipart-form file upload.
+        let response = http.fetch('v1/organizations/' + orgId + '/member-metadata-crs/' + importId + '/PROCESS',
+        {
+            method: 'PUT'//,
+            // body: {
+            //     crId: importId
+            // }
+        });
 
         return response;
     }
