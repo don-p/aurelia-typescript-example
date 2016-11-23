@@ -13,7 +13,7 @@
     </div>
     -->
         <section>
-            <div class="row errorMessage">
+            <div if.bind="showErrors && !!showErrors" class="row errorMessage">
                 <div class="col-xs-12">
                     <div i18n="[append]${errorMessage}" if.bind="(errorMessage && !(errorMessage===undefined)) || (hasValidationErrors)" class="alert alert-danger fade in">
                         <ul>

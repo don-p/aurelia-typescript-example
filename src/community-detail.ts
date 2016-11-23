@@ -24,6 +24,7 @@ export class CommunityDetail {
   selectedCommunityMembers: Array<Object>;
   selectedOrganizationMembers: Array<Object>;
   selectedCmty: any;
+  organizations: Array<Object>;
   // communityMembers: { get: () => any[] };
   communityMembers: Array<Object>;
   membersGrid: Object;
@@ -199,6 +200,9 @@ export class CommunityDetail {
     };
     this.gridOptions = gridOptions;
     this.initGrid(this);
+
+    // Get list of organizations the logged-in user has rights to.
+    this.getOrganizationsPage(0, 500);
   }
 
   findGridColumnDef(fieldName: string):Object {
@@ -290,7 +294,6 @@ export class CommunityDetail {
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
-            let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
             let  organizationId = gridOptions.organizationId;
             let orgPromise = organizationService.getOrgMembers(organizationId, params.startRow, pageSize, params);
             orgPromise.then(response => response.json())
@@ -451,25 +454,42 @@ export class CommunityDetail {
     });
   }
 
+  getOrganizationsPage(startIndex: number, pageSize: number): Promise<void> {
+    var me = this;
+    var orgPromise = this.organizationService.getMemberOrgs(startIndex,  pageSize);
+    return orgPromise
+    .then(response => {return response.json()
+      .then(data => {
+        me.organizations = data.responseCollection;
+        // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
+      }).catch(error => {
+        me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
+        return Promise.reject(error);
+      })
+    })
+    .catch(error => {
+      me.logger.error('Communities list() failed in then(response). Error: ' + error); 
+      me.logger.error(error); 
+      //throw error;
+      return Promise.reject(error);
+    });
+  }  
+
   addCommunityMembers() {
     let message = null;
     let membersList = [];
-    let organizationId = this.session.auth['organization'].organizationId;
     let me = this;
 
     let cols = me.getGridColumns('addMembers');
     let gridOptions = this.getGridOptions('addMembers');
-    gridOptions['organizationId'] = organizationId;
-    
 
-    this.dataService.openResourceEditDialog('model/communityMembersModel.html', this.i18n.tr('community.members.addMembers'),
-      membersList, this.i18n.tr('button.save'), null)
+    this.dataService.openResourceEditDialog({modelView:'model/communityMembersModel.html', title:this.i18n.tr('community.members.addMembers'),
+      item:membersList, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
     .then((controller:any) => {
       // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
       let activeElement = <HTMLElement> document.activeElement;
       activeElement.blur();
 
-      controller.viewModel.gridOptions = gridOptions;
       let model = controller.settings;
       model.isSubmitDisabled = true;
       gridOptions.onSelectionChanged = function() {
@@ -490,6 +510,22 @@ export class CommunityDetail {
       //   }
       // });
       controller.viewModel.clearGridFilters = me.clearGridFilters;
+      controller.viewModel.organizations = me.organizations;
+      controller.viewModel.communityMembers = me.communityMembers;
+      controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
+      controller.viewModel.gridOptions = gridOptions;
+      let organizationId = me.organizations[0]['id'];
+      gridOptions['organizationId'] = organizationId;
+
+      // Get list of members in a selected organization.
+      controller.viewModel.selectOrganization = function(event: any) {
+        if(this.selectedOrganization !== event.target.value) {
+          this.selectedOrganization = event.target.value;
+          gridOptions['organizationId'] = this.selectedOrganization;
+          this.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService, this.selectedOrganization);
+        }
+      }
+
 
       // Callback function for submitting the dialog.
       controller.viewModel.submit = () => {
