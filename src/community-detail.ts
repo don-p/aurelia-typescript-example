@@ -703,6 +703,7 @@ export class CommunityDetail {
         model: communityMembers
       };
     step2.config = {
+        viewsPrefix: 'community/alertWizard',
         id: 'alert_message',
         title: this.i18n.tr('community.alert.selectMessage'),
         canValidate: false,
