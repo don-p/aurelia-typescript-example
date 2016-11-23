@@ -294,7 +294,7 @@ export class Community {
     //   // .on(community)
     //   .rules
     //   ;
-    this.dataService.openResourceEditDialog('model/communityModel.html', title, community, this.i18n.tr('button.save'), vRules)
+    this.dataService.openResourceEditDialog({modelView:'model/communityModel.html', title:title, item:community, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
       // let model = controller.settings.model;
       let model = controller.settings;

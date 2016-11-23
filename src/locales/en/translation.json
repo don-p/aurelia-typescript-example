@@ -93,6 +93,7 @@
     },
 
     "organization":{
+        "organization":"Organization",
         "organizations":"Organizations"
     },
 
