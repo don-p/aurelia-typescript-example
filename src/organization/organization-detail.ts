@@ -287,8 +287,8 @@ export class OrganizationDetail {
 
     step1.config = {
         viewsPrefix: '../../../organization/importWizard',
-        id:'select_file',
-        title:'Select File',
+        id: 'select_file',
+        title: this.i18n.tr('organization.onboard.selectFile'),
         canValidate: false,
         model: orgModel,
         callback: function(model) {
@@ -319,8 +319,8 @@ export class OrganizationDetail {
       };
     step2.config = {
         viewsPrefix: '../../../organization/importWizard',
-        id:'validate_file',
-        title:'Validate',
+        id: 'validate_file',
+        title: this.i18n.tr('organization.onboard.validate'),
         canValidate: false,
         model: orgModel,
         callback: function(model) {
@@ -356,8 +356,8 @@ export class OrganizationDetail {
       };
     step3.config = {
         viewsPrefix: '../../../organization/importWizard',
-        id:'process_file',
-        title:'Process',
+        id: 'process_file',
+        title: this.i18n.tr('organization.onboard.process'),
         canValidate: false,
         model: orgModel
       };
@@ -369,37 +369,11 @@ export class OrganizationDetail {
       orgModel, null)
     .then((controller:any) => {
       let model = controller.settings;
-      /*
-      controller.viewModel.submit = (organizationMembers:any[]) => {
-        // Add logged-in user to the call list.
-        organizationMembers.unshift(me.session.auth['member']);
-        let memberIDs = organizationMembers.map(function(value) {
-          return {
-            "participantId": value.memberId,
-            "participantType": "MEMBER"
-          }
-        });
-        // Call the service to start the call.
-        controller.viewModel.modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
-        controller.viewModel.modelPromise.then(response => response.json())
-        .then(data => {
-            // Update the message for success.
-            controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
-            controller.viewModel.okText = this.i18n.tr('button.ok');
-            controller.viewModel.showCancel = false;
-            // Close dialog on success.
-            delete controller.viewModel.submit;
-          }, error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member call() rejected."); 
-          }).catch(error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member call() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
-          })
+      controller.viewModel.submit = (output) => {
+        // Close the dialog, Done.
+        controller.ok();
       };
-      */
+
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.

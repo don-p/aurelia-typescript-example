@@ -11,6 +11,7 @@ export class Model {
   title: string;
   okText: string;
   showCancel: boolean;
+  showErrors: boolean = true;
   isSubmitDisabled: boolean;
   submit: Function;
   errorMessage: string;
@@ -19,6 +20,7 @@ export class Model {
 
   item: any;
   originalItem: any;
+  vRules: ValidationRules;
 
   gridOptions: any;
 
@@ -32,13 +34,16 @@ export class Model {
     this.title = this.controller.settings.title;
     this.okText = this.controller.settings.okText;
     this.showCancel = this.controller.settings.showCancel;
-    this.isSubmitDisabled = this.controller.settings.isSubmitDisabled && this.controller.settings.isSubmitDisabled === true?
+    this.showErrors = typeof this.controller.settings.showErrors === 'boolean'?this.controller.settings.showErrors:true;
+    this.isSubmitDisabled = typeof this.controller.settings.isSubmitDisabled === 'boolean' && this.controller.settings.isSubmitDisabled === true?
       this.controller.settings.isSubmitDisabled:false;
     this.item = this.controller.settings.item;
     this.errorMessage = null;
-
+    this.vRules = this.controller.settings.rules;
     if(this.controller.settings.rules) {
       Rules.set(this.item, this.controller.settings.rules);
+      // this.vController.addObject(this.item, this.controller.settings.rules);
+      
     }
 
     this.logger = LogManager.getLogger(this.constructor.name);

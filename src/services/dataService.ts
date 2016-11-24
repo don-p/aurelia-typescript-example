@@ -345,6 +345,18 @@ export class DataService {
  
 // GLOBAL SERVICES //
 
+    async getAlertCategories(startIndex: number, pageSize:number): Promise<Response> {
+        await fetch;
+        let response = this.getHttpClient().fetch('v1/notifications/categories?start_index=' + 
+            startIndex + '&page_size=' + pageSize, 
+            {
+                method: 'GET',
+            }
+        );
+        return response;
+    }
+
+
     /**
      * Opens a dialog for creating/editing a resource type.
      * modelView: the path to the html template.
@@ -354,15 +366,16 @@ export class DataService {
      * 
      * Returns a Promise upon opening the dialog.
      */
-    async openResourceEditDialog(modelView:string, title:string, item: any, okText:string, validationRules: any): Promise<DialogController> {
+    async openResourceEditDialog(settings: any): Promise<DialogController> {
         return this.dialogService.openAndYieldController({
             viewModel: Model, 
             view: 'model/model.html', 
-            modelView: modelView,
-            title: title, 
-            item: item, 
-            rules: validationRules,
-            okText: okText,
+            modelView: settings.modelView,
+            title: settings.title, 
+            item: settings.item, 
+            rules: settings.validationRules,
+            okText: settings.okText,
+            showErrors: settings.showErrors,
             showCancel: true,
             isSubmitDisabled: false
         })

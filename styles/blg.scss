@@ -784,6 +784,11 @@ header .navbar-nav {
   border-color: $blg-blue;
 }
 
+.left-select {
+  float: left;
+  display: table;
+}
+
 .right-select {
   float: right;
   display: table;
