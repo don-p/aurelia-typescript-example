@@ -1,13 +1,10 @@
 <template>
 	<div class="row toggleSelectedLink">
-            <div class="left-select">
-              <span  class="community-select-label" i18n='[prepend]organization.organization'>: </span>
-              <select class="form-control select select-default-blg" change.delegate="selectOrganization($event)">
-				<option repeat.for="organization of organizations" value="${organization.id}" model.bind="organization">${organization.name}</option>
-              </select>
-            </div>
-		<div class="pull-left">
-			<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
+		<div class="left-select">
+			<span  class="organization-select-label" i18n='[prepend]organization.organization'>: </span>
+			<select class="form-control select select-default-blg" change.delegate="selectOrganization($event)">
+			<option repeat.for="organization of organizations" value="${organization.id}" model.bind="organization">${organization.name}</option>
+			</select>
 		</div>
 		<div if.bind="gridOptions.api.rowModel.datasource.name ==='organizationMembers'"  class="pull-right" >
 			<button disabled.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
@@ -15,6 +12,9 @@
 		<div if.bind="gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" class="pull-right" >
 			<button class.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i>Show all</button>
 		</div>
+		<div class="pull-right">
+			<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
+		</div>		
 	</div>
 	<div class="members-table-content organization-members-table" id="membersTableContent">				  
 		<!--<require from="../lib/loading-mask/loading-mask"></require>-->
