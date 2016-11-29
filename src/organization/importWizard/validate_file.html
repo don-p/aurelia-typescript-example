@@ -1,23 +1,101 @@
 <template>
     <!--<div style="padding:12px;">Validating.</div>-->
-		<div class="circle-steps">
-			<ul>
+	<div class="map">
+		<table class="map-container">
+			<tr class="map-steps">	
 
-				<span class="title step-first">Select file</span>
-				<li class="step-first completed">
-					<i></i>
-				</li>
-				
-				<span class="title step-2-3">Validate</span>				
-				<li class="step-2-3 active">
-					<i></i>	
-				</li>
-				
-				<span class="title step-last">Process</span>				
-				<li class="step-last">
-					<i></i>	
-				</li>
+				<td class="step">
+					<table class="step-box">
+						<tr>
+							<td colspan="3" class="step-label">Select File</td>
+						</tr>						
+						<tr>
+							<td class="line-left"><hr></td>
+							<td class="step-circle">
+								<li class="completed"><i></i></li>
+							</td>
+							<td class="line-right"><hr></td>								
+						</tr>
+					</table>
+				</td>
 
-			</ul>
-		</div>
+				<td class="step">
+					<table class="step-box">
+						<tr>
+							<td colspan="3" class="step-label">Prepare</td>
+						</tr>						
+						<tr>
+							<td class="line-left"><hr></td>
+							<td class="step-circle">
+								<li class="completed"><i></i></li>
+							</td>
+							<td class="line-right"><hr></td>								
+						</tr>
+					</table>
+				</td>
+
+
+				<td class="step">
+					<table class="step-box">
+						<tr>
+							<td colspan="3" class="step-label">Explore</td>
+						</tr>						
+						<tr>
+							<td class="line-left"><hr></td>
+							<td class="step-circle">
+								<li class="completed"><i></i></li>
+							</td>
+							<td class="line-right"><hr></td>								
+						</tr>
+					</table>
+				</td>								
+				
+				<td class="step">
+					<table class="step-box">
+						<tr>
+							<td colspan="3" class="step-label">Validate</td>
+						</tr>						
+						<tr>
+							<td class="line-left"><hr></td>
+							<td class="step-circle">
+								<li class="active"><i></i></li>
+							</td>
+							<td class="line-right"><hr></td>								
+						</tr>
+					</table>
+				</td>
+				
+				<td class="step">
+					<table class="step-box">
+						<tr>
+							<td colspan="3" class="step-label">Process</td>
+						</tr>						
+						<tr>
+							<td class="line-left"><hr></td>
+							<td class="step-circle">
+								<li class=""><i></i></li>
+							</td>
+							<td class="line-right"><hr></td>								
+						</tr>
+					</table>
+				</td>
+
+				<td class="step">
+					<table class="step-box">
+						<tr>
+							<td colspan="3" class="step-label">Finish</td>
+						</tr>						
+						<tr>
+							<td class="line-left"><hr></td>
+							<td class="step-circle">
+								<li class=""><i></i></li>
+							</td>
+							<td class="line-right"><hr></td>								
+						</tr>
+					</table>
+				</td>				
+						
+			</tr>
+		</table>					
+	</div>
 </template>

@@ -25,6 +25,7 @@ export class CommunityDetail {
   selectedOrganizationMembers: Array<Object>;
   selectedCmty: any;
   organizations: Array<Object>;
+  alertCategories: Array<Object>;
   // communityMembers: { get: () => any[] };
   communityMembers: Array<Object>;
   membersGrid: Object;
@@ -203,6 +204,8 @@ export class CommunityDetail {
 
     // Get list of organizations the logged-in user has rights to.
     this.getOrganizationsPage(0, 500);
+    // Get list of alert/notification categories.
+    this.getAlertCategoriesPage(0, 500);
   }
 
   findGridColumnDef(fieldName: string):Object {
@@ -454,6 +457,27 @@ export class CommunityDetail {
     });
   }
 
+  getAlertCategoriesPage(startIndex: number, pageSize: number): Promise<void> {
+    var me = this;
+    var alertPromise = this.dataService.getAlertCategories(startIndex,  pageSize);
+    return alertPromise
+    .then(response => {return response.json()
+      .then(data => {
+        me.alertCategories = data.responseCollection;
+        // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
+      }).catch(error => {
+        me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
+        return Promise.reject(error);
+      })
+    })
+    .catch(error => {
+      me.logger.error('Communities list() failed in then(response). Error: ' + error); 
+      me.logger.error(error); 
+      //throw error;
+      return Promise.reject(error);
+    });
+  }  
+
   getOrganizationsPage(startIndex: number, pageSize: number): Promise<void> {
     var me = this;
     var orgPromise = this.organizationService.getMemberOrgs(startIndex,  pageSize);
@@ -673,14 +697,15 @@ export class CommunityDetail {
 
     step1.config = {
         viewsPrefix: 'community/alertWizard',
-        id:'alert_type',
-        title:'Select Alert Type',
+        id: 'alert_type',
+        title: this.i18n.tr('community.alert.selectTypeRecipients'),
         canValidate: false,
         model: communityMembers
       };
     step2.config = {
-        id:'alert_recipients',
-        title:'Select Alert Recipients',
+        viewsPrefix: 'community/alertWizard',
+        id: 'alert_message',
+        title: this.i18n.tr('community.alert.selectMessage'),
         canValidate: false,
         model: communityMembers
       };
