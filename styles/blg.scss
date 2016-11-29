@@ -447,7 +447,7 @@ header .navbar-nav {
 .blg-left-panel .blg-organization-content {
   padding: 12px 10px 0px 0px;
   position: absolute;
-  top: 130px;
+  top: 120px;
   bottom: 15px;
   left: 0px;
   right: 0px;
@@ -763,6 +763,13 @@ header .navbar-nav {
   display: table-cell;
   vertical-align: middle;
   padding-right: 5px;
+}
+
+.organization-select-label {
+  display: table-cell;
+  vertical-align: middle;
+  padding-right: 5px;
+  font-size: 16px;
 }
 
 .select-default-blg {
@@ -1277,6 +1284,7 @@ ai-dialog-container {
   padding: 3px 8px 4px;
   background-color: $blg-wet-asphalt-lighter;
   color: $blg-white;
+  margin-left: 5px;
 }
 
 .btn-filter[disabled],
@@ -1286,33 +1294,28 @@ ai-dialog-container {
   background-color: $btn-link-disabled-color !important;
 }
 
-.circle-steps ul {
-	position: relative;
-	width: 625px;
-	height: 30px;
-	text-align: center;
-	overflow: hidden;
-	margin: 0 auto;
+
+.map {
+  width: 100%;
+  text-align: center;
+  text-align: -moz-center;
 }
-.circle-steps ul:before {
-	content: "";
-	position: absolute;
-	top: 15px;
-	left: 0;
-	right: 0;
-	height: 2px;
-	background: $blg-blue;
+
+.map-container {
+	width: 1030px;
+	border-collapse: collapse;
+	table-layout: fixed;	
 }
-.circle-steps i {
+
+.map-steps i {
 	display: block;
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
 	background: $blg-white;
 }
-.circle-steps li {
+.map-steps li {
 	display: inline-block;
-	position: absolute;
 	width: 30px;
 	height: 30px;
 	border: 2px solid $blg-blue;
@@ -1321,51 +1324,53 @@ ai-dialog-container {
 	padding: 2px;
 	overflow: hidden;
 }
-.circle-steps li.select {
-	left: 0;
-}
 
-.circle-steps li.validate,
-.label-steps li.validate {
-	left: 50%;
-	-webkit-transform: translateX(-50%);
-	-ms-transform: translateX(-50%);
-	transform: translateX(-50%);
-}
-
-.circle-steps li.process  {
-	right: 0;
-}
-
-.circle-steps li.active i {
+.map-steps li.active i {
 	background: $blg-blue;
 }
 
-.circle-steps li.completed i {
+.map-steps li.completed i {
 	background: $blg-green;
 }
 
-.label-steps ul {
-	position: relative;
-	width: 675px;
-	height: 30px;
+.step:first-child .line-left hr {
+	visibility: hidden;
+}
+
+.step:last-child .line-right hr {
+	visibility: hidden;
+}
+
+.step-box {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.step-label {
+	white-space: nowrap;
 	text-align: center;
-	overflow: hidden;
-	margin: 0 auto;
 }
 
-.label-steps li.select {
-	float: left;
+.line-left hr,
+.line-right hr {
 	position: relative;
-	right: 30px;
+	bottom: 2px;
 }
 
-.label-steps li {
-	display: inline-block;
+.step hr {
+	width: 100%;
+	border: 1px solid $blg-blue;	
 }
 
-.label-steps li.process  {
-	float: right;
-	position: relative;
-	right: 15px;	
+.step-circle {
+	width: 30px;
+}
+
+.organization-panel-list {
+  width: 475px;  
+}
+
+.blg-organization-content ul {
+  position: relative;
+  right: 29px;
 }
