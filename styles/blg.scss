@@ -1374,3 +1374,62 @@ ai-dialog-container {
   position: relative;
   right: 29px;
 }
+
+.select-file {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 70px 0 50px;
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    max-width: 80%;
+    font-size: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.625rem 1.25rem;
+    color: $blg-blue;	
+}
+
+.inputfile + label:hover {
+    color:  mix($blg-blue, black, 80%);
+}
+
+.inputfile + label svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-top: -0.25em;
+    margin-right: 0.25em;
+    width: 100%;
+    height: 100%;
+    fill: $blg-white;
+}
+
+.inputfile + label figure {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: $blg-blue;
+    display: block;
+    padding: 15px;
+    margin: 0 auto 5px;
+}
+
+.inputfile + label:hover figure {
+    background-color:  mix($blg-blue, black, 80%);
+}
