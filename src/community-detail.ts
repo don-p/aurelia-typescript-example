@@ -713,7 +713,7 @@ export class CommunityDetail {
     const steps = [step1, step2];
 
 
-    this.dataService.openWizardDialog(steps,
+    this.dataService.openWizardDialog('Send Alert', steps,
       communityMembers, vRules)
     .then((controller:any) => {
       let model = controller.settings;
