@@ -1,13 +1,15 @@
 <template>
-<require from="./wizard-step"></require>
-
 	<div class="map">
 		<table class="map-container">
 			<tr class="map-steps">
-    <wizard-step repeat.for="step of steps" step.bind="step"></wizard-step>        
+
+        <require from="./wizard-step"></require>
+        <td class="step" repeat.for="step of steps" step.bind="step" as-element="wizard-step"></td> 
+
 			</tr>
 		</table>					
 	</div>
+           
 <!--
   <ul class="steps">
     <wizard-step repeat.for="step of steps" step.bind="step"></wizard-step>
