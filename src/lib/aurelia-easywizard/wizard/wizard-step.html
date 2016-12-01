@@ -1,6 +1,26 @@
 <template>
+
+            <!-- Step loop start -->
+				<td class="step">
+					<table class="step-box">
+						<tr>
+							<td colspan="3" class="step-label">${title}</td> <!-- Title -->
+						</tr>						
+						<tr>
+							<td class="line-left"><hr></td>
+							<td class="step-circle">
+								<li class="completed"><i></i></li> <!-- State: completed or active -->
+							</td>
+							<td class="line-right"><hr></td>								
+						</tr>
+					</table>
+				</td>
+            <!-- Step loop end -->
+
+
+<!--
   <li style="display: inline-block; border:solid 1px;" class.bind="class">
     <span></span>
     <span>${title}</span>
-  </li>
+  </li> -->
 </template>

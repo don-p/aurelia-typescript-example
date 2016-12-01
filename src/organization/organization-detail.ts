@@ -291,12 +291,19 @@ export class OrganizationDetail {
         title: this.i18n.tr('organization.onboard.selectFile'),
         canValidate: false,
         model: orgModel,
-        callback: function(model) {
+        callback: function(model, resolve, reject): Promise<Response> {
           // Callback function for submitting the upload file.
-          me.organizationService.importValidate(model.orgId, model.files)
+          return me.organizationService.importValidate(model.orgId, model.files)
           .then(response => {return {'res': response.content, 'model': model}})
           .then(data => {
             let res = data['res'];
+            if(res.errors && res.errors.length > 0) {
+              me.logger.error("Upload errors: " + res.errors.length); 
+              return Promise.reject(res);
+            }
+            if(res.warnings && res.warnings.length > 0) {
+              me.logger.error("Upload warnings: " + res.warnings.length); 
+            }
             let viewModel = data['model'];
             viewModel['validateResponse'] = res;
             me.logger.debug('doImportValidate response: ', res);
@@ -306,14 +313,10 @@ export class OrganizationDetail {
             // controller.viewModel.showCancel = false;
             // // Close dialog on success.
             // delete controller.viewModel.submit;
+            return res;
           }, error => {
             model.errorMessage = "Failed"; 
             me.logger.error("Community member call() rejected."); 
-          }).catch(error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member call() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
           });
         }
       };
@@ -365,8 +368,7 @@ export class OrganizationDetail {
     const steps = [step1, step2, step3];
 
     orgModel['orgId'] = me.selectedOrg.id;
-    this.dataService.openWizardDialog(steps,
-      orgModel, null)
+    this.dataService.openWizardDialog('Import Organization Members', steps, orgModel, null)
     .then((controller:any) => {
       let model = controller.settings;
       controller.viewModel.submit = (output) => {
