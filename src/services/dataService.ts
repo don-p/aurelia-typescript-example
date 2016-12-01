@@ -389,11 +389,12 @@ export class DataService {
      * 
      * Returns a Promise upon opening the dialog.
      */
-    async openWizardDialog(steps:Array<any>, item: any, validationRules: any): Promise<DialogController> {
+    async openWizardDialog(title: string, steps:Array<any>, item: any, validationRules: any): Promise<DialogController> {
         // let wizardCtrl = new Wizard([{name:'step1'}]);
         return this.dialogService.openAndYieldController({
             viewModel: WizardController, 
             view: 'model/wizardModel.html', 
+            title: title, 
             steps: steps,
             item: item, 
             rules: validationRules,
