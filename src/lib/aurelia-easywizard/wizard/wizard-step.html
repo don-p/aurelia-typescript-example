@@ -1,5 +1,4 @@
 <template>
-
             <!-- Step loop start -->
 <!--				<td class="step">-->
 					<table class="step-box">
@@ -9,7 +8,7 @@
 						<tr>
 							<td class="line-left"><hr></td>
 							<td class="step-circle">
-								<li class="completed"><i></i></li> <!-- State: completed or active -->
+								<li class.bind="step.isCurrent?'active':isComplete?'complete':''"><i></i></li> <!-- State: completed or active -->
 							</td>
 							<td class="line-right"><hr></td>								
 						</tr>

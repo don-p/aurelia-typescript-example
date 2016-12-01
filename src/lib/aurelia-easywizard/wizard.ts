@@ -39,6 +39,9 @@ export class Wizard {
   }
 }
 var setStep = function(newStep) {
+  if(this.wizardSteps.currentStep && this.wizardSteps.currentStep.stepErrors) {
+    newStep.stepErrors = this.wizardSteps.currentStep.stepErrors;
+  }
   this.wizardSteps.setCurrent(newStep)
 }
 var getStep = function(action) {
