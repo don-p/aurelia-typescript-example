@@ -7,6 +7,7 @@ export class WizardControllerStep {
   id:string;
   isCurrent:boolean;
   canValidate:boolean;
+  stepErrors: Array<any>;
   viewsPrefix:string;
   model:any;
   initialize:boolean;
@@ -58,6 +59,7 @@ export class WizardControllerStep {
     })
   }
   ensureValidation() {
+    return (!(this.stepErrors) || this.stepErrors.length === 0);
   }
 }
 

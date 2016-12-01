@@ -1,7 +1,6 @@
 <template>
-
             <!-- Step loop start -->
-				<td class="step">
+<!--				<td class="step">-->
 					<table class="step-box">
 						<tr>
 							<td colspan="3" class="step-label">${title}</td> <!-- Title -->
@@ -9,12 +8,13 @@
 						<tr>
 							<td class="line-left"><hr></td>
 							<td class="step-circle">
-								<li class="completed"><i></i></li> <!-- State: completed or active -->
+								<li class.bind="step.isCurrent?'active':isComplete?'complete':''"><i></i></li> <!-- State: completed or active -->
 							</td>
 							<td class="line-right"><hr></td>								
 						</tr>
 					</table>
-				</td>
+<!--				</td>-->
+
             <!-- Step loop end -->
 
 
