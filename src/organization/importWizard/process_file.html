@@ -1,3 +1,12 @@
 <template>
-    <div style="padding:12px;">Processing.</div>
+	<div if.bind="(step.stepErrors) && step.stepErrors.length>0">
+	<div>Processing Errors:</div>
+	<div style="overflow:auto;max-height:180px;border:solid 1px;">
+		<div repeat.for="error of step.stepErrors" >Row ${error.index}: ${error.errorType}</div>
+	</div>
+	</div>
+
+	<div if.bind="!(step.stepErrors) || step.stepErrors.length===0">
+	<div>Processing completed successfully with no errors, with ${processResponse.rowCount} members imported.</div>
+	</div>
 </template>

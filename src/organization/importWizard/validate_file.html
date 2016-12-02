@@ -1,106 +1,13 @@
 <template>
-    <!--<div style="padding:12px;">Validating.</div>-->
-	<!--<div class="map">
-		<table class="map-container">
-			<tr class="map-steps">	
-
-				<td class="step">
-					<table class="step-box">
-						<tr>
-							<td colspan="3" class="step-label">Select File</td>
-						</tr>						
-						<tr>
-							<td class="line-left"><hr></td>
-							<td class="step-circle">
-								<li class="completed"><i></i></li>
-							</td>
-							<td class="line-right"><hr></td>								
-						</tr>
-					</table>
-				</td>
-
-				<td class="step">
-					<table class="step-box">
-						<tr>
-							<td colspan="3" class="step-label">Prepare</td>
-						</tr>						
-						<tr>
-							<td class="line-left"><hr></td>
-							<td class="step-circle">
-								<li class="completed"><i></i></li>
-							</td>
-							<td class="line-right"><hr></td>								
-						</tr>
-					</table>
-				</td>
-
-
-				<td class="step">
-					<table class="step-box">
-						<tr>
-							<td colspan="3" class="step-label">Explore</td>
-						</tr>						
-						<tr>
-							<td class="line-left"><hr></td>
-							<td class="step-circle">
-								<li class="completed"><i></i></li>
-							</td>
-							<td class="line-right"><hr></td>								
-						</tr>
-					</table>
-				</td>								
-				
-				<td class="step">
-					<table class="step-box">
-						<tr>
-							<td colspan="3" class="step-label">Validate</td>
-						</tr>						
-						<tr>
-							<td class="line-left"><hr></td>
-							<td class="step-circle">
-								<li class="active"><i></i></li>
-							</td>
-							<td class="line-right"><hr></td>								
-						</tr>
-					</table>
-				</td>
-				
-				<td class="step">
-					<table class="step-box">
-						<tr>
-							<td colspan="3" class="step-label">Process</td>
-						</tr>						
-						<tr>
-							<td class="line-left"><hr></td>
-							<td class="step-circle">
-								<li class=""><i></i></li>
-							</td>
-							<td class="line-right"><hr></td>								
-						</tr>
-					</table>
-				</td>
-
-				<td class="step">
-					<table class="step-box">
-						<tr>
-							<td colspan="3" class="step-label">Finish</td>
-						</tr>						
-						<tr>
-							<td class="line-left"><hr></td>
-							<td class="step-circle">
-								<li class=""><i></i></li>
-							</td>
-							<td class="line-right"><hr></td>								
-						</tr>
-					</table>
-				</td>				
-						
-			</tr>
-		</table>					
-	</div>-->
+	<div if.bind="(step.stepErrors) && step.stepErrors.length>0">
 	<div>Validation Errors:</div>
 	<div style="overflow:auto;max-height:180px;border:solid 1px;">
 		<div repeat.for="error of step.stepErrors" >Row ${error.index}: ${error.errorType}</div>
+	</div>
+	</div>
+
+	<div if.bind="!(step.stepErrors) || step.stepErrors.length===0">
+	<div>Validation completed successfully with no errors, for ${validateResponse.rowCount} members to be imported.</div>
 	</div>
 
 </template>
