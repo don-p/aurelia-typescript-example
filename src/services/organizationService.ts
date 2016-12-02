@@ -74,18 +74,12 @@ export class OrganizationService {
     }
     
     importProcess(orgId, importId) {
-        var form = new FormData();
-        // form.append('DataFile', files[0]);
-        const http =  this.getHttpClient();
-
         // Use base http-client, instead of Fetch, for multipart-form file upload.
-        let response = http.fetch('v1/organizations/' + orgId + '/member-metadata-crs/' + importId + '/PROCESS',
-        {
-            method: 'PUT'//,
-            // body: {
-            //     crId: importId
-            // }
-        });
+        const http =  this.httpBase;
+
+        let response = http.createRequest('v1/organizations/' + orgId + '/member-metadata-crs/' + importId + '/PROCESS')
+        .asPut()
+        .send();
 
         return response;
     }
