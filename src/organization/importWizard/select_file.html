@@ -1,8 +1,5 @@
 <template>
-
-
     <form class="select-file">
-        <!--input type="file" accept=".csv" files.bind="parent.parent.controller.item.files"></input-->
 		<input type="file" id="inputfile" class="inputfile" accept=".csv" files.bind="parent.parent.controller.item.files"/>
 		<label for="inputfile">
 			<figure>
@@ -11,10 +8,4 @@
 			<span>Select a file&hellip;</span>
 		</label>
     </form>
-    <!--
-    <div>
-item.files: ${parent.parent.controller.gWindow.JSON.stringify(item)}  controler: ${parent.parent.controller.gWindow.JSON.stringify(parent.controller)} <br>
-doImport: ${parent.parent.controller.doImport} parent: ${parent.parent.controller} <br>
-parent.parent.controller.item: ${parent.parent.controller.gWindow.JSON.stringify(parent.parent.controller.item)}  this: ${parent.parent.controller.gWindow.JSON.stringify($this.controller)}
-    </div> -->
 </template>

@@ -1160,6 +1160,19 @@ padding: 15px 20px;
 border-bottom: 1px solid $blg-grey-light-more;
 }
 
+.modal-header-wizard {
+padding: 15px 20px;
+}
+
+.modal-header-wizard-border {
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  border-top: 1px solid $blg-grey-light-more;    
+}
+
+
 .modal-title {
   color: $blg-blue;  
   margin: 0;
@@ -1343,7 +1356,8 @@ ai-dialog-container {
 
 .step-box {
 	width: 100%;
-	border-collapse: collapse;
+  border: 1px transparent;
+  border-left-style: dashed;
 }
 
 .step-label {
@@ -1432,4 +1446,40 @@ ai-dialog-container {
 
 .inputfile + label:hover figure {
     background-color:  mix($blg-blue, black, 80%);
+}
+
+.step-container {
+  padding: 0px 15px;
+  min-height: 220px;
+}
+
+.step-container.success {
+  display: flex;
+  justify-content: center;
+  min-height: 250px;  
+}
+
+.step-error {
+  overflow: auto;
+  max-height: 218px;
+  border: 1px solid $blg-grey-light-more;  
+}
+
+.step-message {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.step-message.success {
+  align-self: center;
+}
+
+.step-row {
+    margin-left: 5px;
+    color: $blg-red-light;  
+}
+
+.btn-default-blg.cancel {
+  margin-right: 20px;
 }
