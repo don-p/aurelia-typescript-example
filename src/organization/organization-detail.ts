@@ -307,12 +307,6 @@ export class OrganizationDetail {
             let viewModel = data['model'];
             viewModel['validateResponse'] = res;
             me.logger.debug('doImportValidate response: ', res);
-            // Update the message for success.
-            // controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
-            // controller.viewModel.okText = this.i18n.tr('button.ok');
-            // controller.viewModel.showCancel = false;
-            // // Close dialog on success.
-            // delete controller.viewModel.submit;
             return res;
           }, error => {
             model.errorMessage = "Failed"; 
@@ -330,33 +324,32 @@ export class OrganizationDetail {
           let validateResponse = model.validateResponse;
           let viewModel = model;
           // Callback function for submitting the upload file.
-          me.organizationService.importProcess(model.orgId, validateResponse.crId)
-          .then(response => {
-          let viewModel2 = viewModel;
-            return response.json().then(data => {
-              let res = data;
-              // let viewModel = data['model'];
-              // viewModel['processResponse'] = res;
-              me.logger.debug('doImportProcess response: ', res);
-              // Update the message for success.
-              // controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
-              // controller.viewModel.okText = this.i18n.tr('button.ok');
-              // controller.viewModel.showCancel = false;
-              // // Close dialog on success.
-              // delete controller.viewModel.submit;
-            })
+          return me.organizationService.importProcess(model.orgId, validateResponse.crId)
+          .then(response => {return {'res': response.content, 'model': model}})
+          .then(data => {
+            let res = data.res;
+            if(res.errors && res.errors.length > 0) {
+              me.logger.error("Process errors: " + res.errors.length); 
+              return Promise.reject(res);
+            }
+            if(res.warnings && res.warnings.length > 0) {
+              me.logger.error("Process warnings: " + res.warnings.length); 
+            }
+            let viewModel = data['model'];
+            viewModel['processResponse'] = res;
+            return res;
           }, error => {
             model.errorMessage = "Failed"; 
-            me.logger.error("Community member call() rejected."); 
+            me.logger.error("Org member call() rejected."); 
           }).catch(error => {
             model.errorMessage = "Failed"; 
-            me.logger.error("Community member call() failed."); 
+            me.logger.error("Org member call() failed."); 
             me.logger.error(error); 
             return Promise.reject(error);
           });
+          
         }
-        
-      };
+    };
     step3.config = {
         viewsPrefix: '../../../organization/importWizard',
         id: 'process_file',
@@ -372,7 +365,11 @@ export class OrganizationDetail {
     .then((controller:any) => {
       let model = controller.settings;
       controller.viewModel.submit = (output) => {
-        // Close the dialog, Done.
+        me.gridOptions.api.refreshVirtualPageCache();
+        me.gridOptions.api.refreshView();
+        // update the community member count.
+        ////me.selectedOrg.memberCount = data.totalCount;
+        // Close dialog on success.
         controller.ok();
       };
 
