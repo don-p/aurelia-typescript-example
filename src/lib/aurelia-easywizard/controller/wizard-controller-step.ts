@@ -8,6 +8,7 @@ export class WizardControllerStep {
   isCurrent:boolean;
   canValidate:boolean;
   stepErrors: Array<any>;
+  stepStatus: any;
   viewsPrefix:string;
   model:any;
   initialize:boolean;
