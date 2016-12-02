@@ -6,15 +6,6 @@
     <div class="modal-header-wizard">
       <h4 class="modal-title">${controller.title}</h4>
       <hr class="modal-header-wizard-border">
-      <div class="row errorMessage">
-        <div class="col-xs-12">
-          <div i18n="[append]${errorMessage}" if.bind="(errorMessage && !(errorMessage===undefined)) || (hasValidationErrors)" class="alert alert-danger fade in">
-            <ul>
-              <li repeat.for="error of validationErrors">${error.message}</li>
-            </ul>
-          </div>	
-        </div>
-      </div>
       <wizard-steps></wizard-steps>
     </div>
     <wizard-step-container></wizard-step-container>
