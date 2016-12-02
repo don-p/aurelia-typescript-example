@@ -42,6 +42,7 @@ var setStep = function(newStep) {
   if(this.wizardSteps.currentStep && this.wizardSteps.currentStep.stepErrors) {
     newStep.stepErrors = this.wizardSteps.currentStep.stepErrors;
   }
+  newStep.stepStatus = this.wizardSteps.currentStep.stepStatus;
   this.wizardSteps.setCurrent(newStep)
 }
 var getStep = function(action) {
