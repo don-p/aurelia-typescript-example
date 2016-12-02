@@ -3,13 +3,11 @@
   <require from="./wizard/wizard-step-container"></require>
   <require from="./wizard/wizard-actions"></require>
   <div id="wizard" data-target="#step-container">
-    <div class="modal-header">
+    <div class="modal-header-wizard">
       <h4 class="modal-title">${controller.title}</h4>
-
-    <wizard-steps></wizard-steps>
-
-  </div>
-
+      <hr class="modal-header-wizard-border">
+      <wizard-steps></wizard-steps>
+    </div>
     <wizard-step-container></wizard-step-container>
     <wizard-actions controller.bind="controller"></wizard-actions>
   </div>
