@@ -73,44 +73,59 @@ var doNextAction = function() {
 var doAction = function(action) {
   const me = this;
 
-  if(this.currentStep.callback) {
+  if(action === 'next' && this.currentStep.callback) { // submitting the step.
     // Assumes that 'callback' will return a Promise, resolved or rejected.
     this.currentStep.callback.call(this, this.currentStep.model)
     .then(response => {
         console.debug('callback ---');
         // Set state as valid.
-        me.currentStep.stepErrors = response.errors.concat(response.warnings);
+        if(response.errors) {
+          me.currentStep.stepErrors = response.errors.concat(response.warnings);
+        } else {
+          me.currentStep.stepErrors = response.warnings;
+        }
+        me.currentStep.stepStatus = response.stepStatus;
         return response;
       }, response => {
-        console.error("Community member call() rejected."); 
+        console.error("Wizard callback rejected."); 
         // Set state as invalid.
-        me.currentStep.stepErrors = response.errors.concat(response.warnings);
-        return response;
-      })
-      .catch(error => {
-        console.error('catch'); 
-      }).then(response => {
-        // do next action
-        console.debug('finally');
-        me.nextAction = action
-        if(me.currentStep.stepErrors) {
-          me.currentStep.stepErrors.sort(function(o1, o2){
-            if(o1.index < o2.index){
-              return -1;
-            } else if(o2.index < o1.index){
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        }
-        if (me.currentStep.getCanValidate()) {
-          publish.call(this, "validate:current:step", me.currentStep)
+        if(response.errors) {
+          me.currentStep.stepErrors = response.errors.concat(response.warnings);
         } else {
-          doNextAction.call(me)
+          me.currentStep.stepErrors = response.warnings;
         }
-      })
-  ;
+        me.currentStep.stepStatus = response.stepStatus;
+        return response;
+      }
+    )
+    .catch(error => { // server error.
+      console.error('catch'); 
+      // Set state as invalid.
+      me.currentStep.stepErrors = [];
+      me.currentStep.stepStatus = error.stepStatus;
+      return error;
+    })
+    .then(response => {
+      // do next action
+      console.debug('finally');
+      me.nextAction = action
+      if(me.currentStep.stepErrors) {
+        me.currentStep.stepErrors.sort(function(o1, o2){
+          if(o1.index < o2.index){
+            return -1;
+          } else if(o2.index < o1.index){
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+      }
+      if (me.currentStep.getCanValidate()) {
+        publish.call(this, "validate:current:step", me.currentStep)
+      } else {
+        doNextAction.call(me)
+      }
+    });
   } else {
     this.nextAction = action
     if (this.currentStep.getCanValidate()) {

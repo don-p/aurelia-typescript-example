@@ -297,20 +297,25 @@ export class OrganizationDetail {
           .then(response => {return {'res': response.content, 'model': model}})
           .then(data => {
             let res = data['res'];
+            let viewModel = data['model'];
             if(res.errors && res.errors.length > 0) {
               me.logger.error("Upload errors: " + res.errors.length); 
+              viewModel['validateResponse'] = res;
+              res.stepStatus = 'ERROR';
               return Promise.reject(res);
             }
             if(res.warnings && res.warnings.length > 0) {
               me.logger.error("Upload warnings: " + res.warnings.length); 
             }
-            let viewModel = data['model'];
             viewModel['validateResponse'] = res;
             me.logger.debug('doImportValidate response: ', res);
+            res.stepStatus = 'OK';
             return res;
           }, error => {
             model.errorMessage = "Failed"; 
             me.logger.error("Community member call() rejected."); 
+            error.stepStatus = 'ERROR';
+           return Promise.reject(error);
           });
         }
       };
@@ -330,6 +335,7 @@ export class OrganizationDetail {
             let res = data.res;
             if(res.errors && res.errors.length > 0) {
               me.logger.error("Process errors: " + res.errors.length); 
+              res.stepStatus = 'ERROR';
               return Promise.reject(res);
             }
             if(res.warnings && res.warnings.length > 0) {
@@ -337,14 +343,18 @@ export class OrganizationDetail {
             }
             let viewModel = data['model'];
             viewModel['processResponse'] = res;
+            res.stepStatus = 'OK';
             return res;
           }, error => {
             model.errorMessage = "Failed"; 
             me.logger.error("Org member call() rejected."); 
+            error.stepStatus = 'ERROR';
+            return Promise.reject(error);
           }).catch(error => {
             model.errorMessage = "Failed"; 
             me.logger.error("Org member call() failed."); 
             me.logger.error(error); 
+            error.stepStatus = 'ERROR';
             return Promise.reject(error);
           });
           

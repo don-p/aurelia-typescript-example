@@ -1,12 +1,14 @@
 <template>
-	<div class="step-container error" if.bind="(step.stepErrors) && step.stepErrors.length>0">
+	<div class="step-container error" if.bind="step.stepStatus==='ERROR' && ((step.stepErrors) && step.stepErrors.length>0)">
 		<div class="step-message error">Processing completed with ${step.stepErrors.length} errors:</div>
 		<div class="step-error">
 			<div class="step-row" repeat.for="error of step.stepErrors" >Row ${error.index}: ${error.errorType}</div>
 		</div>
 	</div>
-
-	<div class="step-container success" if.bind="!(step.stepErrors) || step.stepErrors.length===0">
+	<div class="step-container error" if.bind="step.stepStatus==='ERROR' && (!(step.stepErrors) || step.stepErrors.length===0)">
+		<div class="step-message success">Processing failed with a server error.</div>
+	</div>
+	<div class="step-container success" if.bind="step.stepStatus==='OK' && (!(step.stepErrors) || step.stepErrors.length===0)">
 		<div class="step-message success">Processing completed successfully with no errors, with ${processResponse.rowCount} members imported.</div>
 	</div>
 </template>
