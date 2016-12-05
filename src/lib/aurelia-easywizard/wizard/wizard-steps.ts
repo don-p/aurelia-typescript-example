@@ -10,7 +10,7 @@ export class WizardSteps {
   events:any;
 
   constructor() {
-    this.currentStep = new WizardControllerStep();
+    this.currentStep = new WizardControllerStep(null);
 
   }
   bind(parent) {

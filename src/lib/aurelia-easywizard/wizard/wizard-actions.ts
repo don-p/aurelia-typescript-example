@@ -3,6 +3,7 @@ import $ from 'jquery'
 
 export class WizardActions {
   @bindable controller;
+  @bindable wizardSteps;
   nextAction:any;
   isValidCurrentStep:boolean;
   parent:any;

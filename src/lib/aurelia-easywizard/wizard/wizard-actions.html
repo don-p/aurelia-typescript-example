@@ -6,12 +6,14 @@
     <button if.bind="isNotFirstStep" class="btn-prev btn btn-info" data-action="prev">
       <i class="ico-arrow-left3"></i> ${'button.previous' | t}
     </button>
-    <button if.bind="isLastStep" class="btn-prev btn btn-info" data-action="submit">
+    <button disabled.bind="!(wizardSteps.currentStep.isValid)" if.bind="isLastStep" class="btn-prev btn btn-info" data-action="submit">
        ${'button.done' | t}
     </button>
-    <button if.bind="isNotLastStep" class="btn-next btn btn-info" data-action="next" data-last="Finish ">
+    <button disabled.bind="!(wizardSteps.currentStep.isValid)" if.bind="isNotLastStep" class="btn-next btn btn-info" data-action="next" data-last="Finish ">
+
       ${'button.next' | t} <i class="ico-arrow-right3"></i>
     </button>
   </div>
 </div> 
+isValid:${wizardSteps.currentStep.isValid} <!--  controller${controller}-->
 </template>
