@@ -12,9 +12,9 @@ import {Prompt} from '../model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
-import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
+import {WizardControllerStep, WizardControllerStepFactory} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
 
-@inject(Session, Router, DataService, OrganizationService, EventAggregator, Ps, I18N, LogManager) // SCROLL
+@inject(Session, Router, DataService, OrganizationService, EventAggregator, Ps, I18N, WizardControllerStepFactory, LogManager) // SCROLL
 export class OrganizationDetail {
   member: Object;
 
@@ -45,7 +45,7 @@ export class OrganizationDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private organizationService: OrganizationService,  
-    private evt: EventAggregator, Ps, private i18n: I18N) {
+    private evt: EventAggregator, Ps, private i18n: I18N, private wizardStepFactory: WizardControllerStepFactory) {
 
     this.organizationMembers = null;
 
@@ -281,15 +281,30 @@ export class OrganizationDetail {
     //   .ensure('item').maxItems(maxParticipants)
     //   .withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:maxParticipants}))
     //   .rules;
-    const step1 = new WizardControllerStep();
-    const step2 = new WizardControllerStep();
-    const step3 = new WizardControllerStep();
+/*    let step1Rules = ValidationRules
+      .ensure((item: any) => item.files)
+      // .displayName(this.i18n.tr('community.communityName'))
+      .minItems(1)
+      .maxItems(1)
+      .rules
+      ;
+*/
+    ///// TEMP
+    let step1Rules = "((Array.isArray(this.model.files)) || (this.model.files.constructor.name === 'FileList')) && ( this.model.files.length > 0)";  
+    let step2Rules = "this.stepStatus !== 'ERROR'";  
+    let step3Rules = "this.stepStatus !== 'ERROR'";  
+
+    const step1 = this.wizardStepFactory.newInstance();
+    const step2 = this.wizardStepFactory.newInstance();
+    const step3 = this.wizardStepFactory.newInstance();
+
 
     step1.config = {
         viewsPrefix: '../../../organization/importWizard',
         id: 'select_file',
         title: this.i18n.tr('organization.onboard.selectFile'),
         canValidate: false,
+        vRules: step1Rules,
         model: orgModel,
         callback: function(model, resolve, reject): Promise<Response> {
           // Callback function for submitting the upload file.
@@ -324,6 +339,7 @@ export class OrganizationDetail {
         id: 'validate_file',
         title: this.i18n.tr('organization.onboard.validate'),
         canValidate: false,
+        vRules: step2Rules,
         model: orgModel,
         callback: function(model) {
           let validateResponse = model.validateResponse;
@@ -365,6 +381,7 @@ export class OrganizationDetail {
         id: 'process_file',
         title: this.i18n.tr('organization.onboard.process'),
         canValidate: false,
+        vRules: step3Rules,
         model: orgModel
       };
 

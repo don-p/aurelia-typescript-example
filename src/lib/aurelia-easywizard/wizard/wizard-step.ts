@@ -10,7 +10,7 @@ export class WizardStep {
   @bindable current: WizardControllerStep;
 
   contstructor() {
-    this.step = new WizardControllerStep();
+    this.step = new WizardControllerStep(null);
     this.steps = [];
   }
 

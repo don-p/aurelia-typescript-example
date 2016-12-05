@@ -77,7 +77,7 @@ export class OrganizationService {
         // Use base http-client, instead of Fetch, for multipart-form file upload.
         const http =  this.httpBase;
 
-        let response = http.createRequest('v1/organizations/' + orgId + '/member-metadata-crs/' + importId + '/PROCESS')
+        let response = http.createRequest('v1/organizations/' + orgId + '/member-metadata-crs/' + importId + '/insert')
         .asPut()
         .send();
 
