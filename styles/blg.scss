@@ -1326,11 +1326,12 @@ ai-dialog-container {
 	height: 100%;
 	border-radius: 50%;
 	background: $blg-white;
+  text-align: center;
 }
 .map-steps li {
 	display: inline-block;
-	width: 30px;
-	height: 30px;
+	width: 40px;
+	height: 40px;
 	border: 2px solid $blg-blue;
 	border-radius: 50%;
 	background: $blg-white;
@@ -1356,8 +1357,12 @@ ai-dialog-container {
 
 .step-box {
 	width: 100%;
-  border: 1px transparent;
-  border-left-style: dashed;
+}
+
+.line-left,
+.line-right {
+    border-left: 1px dashed transparent;
+    border-right: 3px dashed transparent;    
 }
 
 .step-label {
@@ -1378,6 +1383,17 @@ ai-dialog-container {
 
 .step-circle {
 	width: 30px;
+}
+
+.map-check {
+  font-size: 20px;
+  color: $blg-white;
+  margin-top: 5px;
+  visibility: hidden;
+}
+
+li.complete .map-check {
+  visibility: visible;
 }
 
 .organization-panel-list {
