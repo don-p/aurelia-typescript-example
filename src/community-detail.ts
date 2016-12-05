@@ -692,8 +692,8 @@ export class CommunityDetail {
       .ensure('item').maxItems(maxParticipants)
       .withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:maxParticipants}))
       .rules;
-    const step1 = new WizardControllerStep();
-    const step2 = new WizardControllerStep();
+    const step1 = new WizardControllerStep(null);
+    const step2 = new WizardControllerStep(null);
 
     step1.config = {
         viewsPrefix: 'community/alertWizard',

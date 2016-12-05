@@ -9,6 +9,6 @@
       <wizard-steps></wizard-steps>
     </div>
     <wizard-step-container></wizard-step-container>
-    <wizard-actions controller.bind="controller"></wizard-actions>
+    <wizard-actions wizard-steps.bind="wizardSteps" controller.bind="controller"></wizard-actions>
   </div>
 </template>
