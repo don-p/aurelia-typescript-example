@@ -420,7 +420,7 @@ header .navbar-nav {
   background: transparent;
   border-radius: 3px;
   min-height: 660px;
-  bottom: 0;
+  bottom: 30px;
 }
 
 
@@ -716,6 +716,7 @@ header .navbar-nav {
   border: none;
   &.disabled,
   &[disabled],
+  &[disabled]:focus,  
   fieldset[disabled] & {
     background-color: $btn-link-disabled-color;
     color: fade($btn-default-color, 75%);
@@ -1392,6 +1393,38 @@ ai-dialog-container {
   visibility: hidden;
 }
 
+.step-container {
+  padding: 0px 15px;
+  min-height: 220px;
+}
+
+.step-container.success {
+  display: flex;
+  justify-content: center;
+  min-height: 250px;  
+}
+
+.step-error {
+  overflow: auto;
+  max-height: 218px;
+  border: 1px solid $blg-grey-light-more;  
+}
+
+.step-message {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.step-message.success {
+  align-self: center;
+}
+
+.step-row {
+    margin-left: 5px;
+    color: $blg-red-light;  
+}
+
 li.complete .map-check {
   visibility: visible;
 }
@@ -1464,38 +1497,16 @@ li.complete .map-check {
     background-color:  mix($blg-blue, black, 80%);
 }
 
-.step-container {
-  padding: 0px 15px;
-  min-height: 220px;
-}
-
-.step-container.success {
-  display: flex;
-  justify-content: center;
-  min-height: 250px;  
-}
-
-.step-error {
-  overflow: auto;
-  max-height: 218px;
-  border: 1px solid $blg-grey-light-more;  
-}
-
-.step-message {
-  font-size: 16px;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.step-message.success {
-  align-self: center;
-}
-
-.step-row {
-    margin-left: 5px;
-    color: $blg-red-light;  
-}
-
 .btn-default-blg.cancel {
   margin-right: 20px;
+}
+
+.copyright {
+  bottom: -15px;
+  position: absolute;
+  font-size: 14px;
+}
+
+.copyright a {
+  color: $blg-blue;
 }
