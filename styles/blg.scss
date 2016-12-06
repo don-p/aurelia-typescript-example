@@ -716,7 +716,8 @@ header .navbar-nav {
   border: none;
   &.disabled,
   &[disabled],
-  &[disabled]:focus,  
+  &[disabled]:focus,
+  &[disabled]:hover,   
   fieldset[disabled] & {
     background-color: $btn-link-disabled-color;
     color: fade($btn-default-color, 75%);
@@ -1363,7 +1364,7 @@ ai-dialog-container {
 .line-left,
 .line-right {
     border-left: 1px dashed transparent;
-    border-right: 3px dashed transparent;    
+    border-right: 7px dashed transparent;    
 }
 
 .step-label {
@@ -1378,7 +1379,7 @@ ai-dialog-container {
 }
 
 .step hr {
-	width: 100%;
+	width: 102%;
 	border: 1px solid $blg-blue;	
 }
 
@@ -1398,7 +1399,7 @@ ai-dialog-container {
   min-height: 220px;
 }
 
-.step-container.success {
+.step-container.nodetail {
   display: flex;
   justify-content: center;
   min-height: 250px;  
@@ -1416,7 +1417,7 @@ ai-dialog-container {
   margin-bottom: 10px;
 }
 
-.step-message.success {
+.step-message.nodetail {
   align-self: center;
 }
 
