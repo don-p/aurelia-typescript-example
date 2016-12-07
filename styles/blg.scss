@@ -556,16 +556,16 @@ header .navbar-nav {
 
 .community-list-info-bar {
   padding: 0px 15px 0px 10px;
-  position: absolute;
-  top: 94px;
-  left: 0px;
-  right: 0px;
-  border-bottom: 1px solid $blg-grey-lighter;
-  border-right: 2px solid $blg-grey-light;
-  border-top: 0px;
-  border-left: 2px solid $blg-grey-light;
-  border-radius: 0px;
-  background-color: $blg-white;
+  //position: absolute;
+  //top: 94px;
+  //left: 0px;
+  //right: 0px;
+  //border-bottom: 1px solid $blg-grey-lighter;
+  //border-right: 2px solid $blg-grey-light;
+  //border-top: 0px;
+  //border-left: 2px solid $blg-grey-light;
+  //border-radius: 0px;
+  //background-color: $blg-white;
   z-index: 999;
   font-size: 14px;
   display: table;
@@ -575,7 +575,7 @@ header .navbar-nav {
 .organization-list-info-bar {
   padding: 0px 15px 0px 10px;
   position: absolute;
-  top: 41px;
+  //top: 44px;
   left: 0px;
   right: 0px;
   border-bottom: 1px solid $blg-grey-lighter;
@@ -588,18 +588,19 @@ header .navbar-nav {
   font-size: 14px;
   display: table;
   width: 100%;
-  height: 35px;
+  height: 37px;
 }
 
 .community-list-info-bar .checkbox-info,
 .organization-list-info-bar .checkbox-info {
   display: table-cell;
   position: relative;
-  left: 29px;
+  left: 31px;
+  bottom: 2px;
 }
 
 .community-list-info {
-    padding-top: 4px;
+    padding-top: 7px;
 }
 
 .community-list-info-bar .checkbox input[type="checkbox"],
@@ -1347,7 +1348,7 @@ ai-dialog-container {
 }
 
 .map-steps li.complete i {
-	background: $blg-green;
+	background: $blg-blue-light;
 }
 
 .step:first-child .line-left hr {
