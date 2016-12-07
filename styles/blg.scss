@@ -431,7 +431,7 @@ header .navbar-nav {
 .blg-left-panel .blg-community-content {
   padding: 12px 10px 0px 0px;
   position: absolute;
-  top: 170px;
+  top: 131px;
   bottom: 15px;
   left: 0px;
   right: 0px;
@@ -447,7 +447,7 @@ header .navbar-nav {
 .blg-left-panel .blg-organization-content {
   padding: 12px 10px 0px 0px;
   position: absolute;
-  top: 120px;
+  top: 75px;
   bottom: 15px;
   left: 0px;
   right: 0px;
@@ -556,26 +556,26 @@ header .navbar-nav {
 
 .community-list-info-bar {
   padding: 0px 15px 0px 10px;
-  position: absolute;
-  top: 147px;
-  left: 0px;
-  right: 0px;
-  border-bottom: 1px solid $blg-grey-lighter;
-  border-right: 2px solid $blg-grey-light;
-  border-top: 0px;
-  border-left: 2px solid $blg-grey-light;
-  border-radius: 0px;
-  background-color: $blg-white;
+  //position: absolute;
+  //top: 94px;
+  //left: 0px;
+  //right: 0px;
+  //border-bottom: 1px solid $blg-grey-lighter;
+  //border-right: 2px solid $blg-grey-light;
+  //border-top: 0px;
+  //border-left: 2px solid $blg-grey-light;
+  //border-radius: 0px;
+  //background-color: $blg-white;
   z-index: 999;
   font-size: 14px;
   display: table;
   width: 100%;
 }
-
+ 
 .organization-list-info-bar {
   padding: 0px 15px 0px 10px;
   position: absolute;
-  top: 97px;
+  //top: 44px;
   left: 0px;
   right: 0px;
   border-bottom: 1px solid $blg-grey-lighter;
@@ -588,17 +588,19 @@ header .navbar-nav {
   font-size: 14px;
   display: table;
   width: 100%;
+  height: 37px;
 }
 
 .community-list-info-bar .checkbox-info,
 .organization-list-info-bar .checkbox-info {
   display: table-cell;
   position: relative;
-  left: 29px;
+  left: 31px;
+  bottom: 2px;
 }
 
 .community-list-info {
-    padding-top: 0px;
+    padding-top: 7px;
 }
 
 .community-list-info-bar .checkbox input[type="checkbox"],
@@ -716,6 +718,8 @@ header .navbar-nav {
   border: none;
   &.disabled,
   &[disabled],
+  &[disabled]:focus,
+  &[disabled]:hover,   
   fieldset[disabled] & {
     background-color: $btn-link-disabled-color;
     color: fade($btn-default-color, 75%);
@@ -1326,11 +1330,12 @@ ai-dialog-container {
 	height: 100%;
 	border-radius: 50%;
 	background: $blg-white;
+  text-align: center;
 }
 .map-steps li {
 	display: inline-block;
-	width: 30px;
-	height: 30px;
+	width: 40px;
+	height: 40px;
 	border: 2px solid $blg-blue;
 	border-radius: 50%;
 	background: $blg-white;
@@ -1343,7 +1348,7 @@ ai-dialog-container {
 }
 
 .map-steps li.complete i {
-	background: $blg-green;
+	background: $blg-blue-light;
 }
 
 .step:first-child .line-left hr {
@@ -1356,8 +1361,12 @@ ai-dialog-container {
 
 .step-box {
 	width: 100%;
-  border: 1px transparent;
-  border-left-style: dashed;
+}
+
+.line-left,
+.line-right {
+    border-left: 1px dashed transparent;
+    border-right: 7px dashed transparent;    
 }
 
 .step-label {
@@ -1372,12 +1381,55 @@ ai-dialog-container {
 }
 
 .step hr {
-	width: 100%;
+	width: 102%;
 	border: 1px solid $blg-blue;	
 }
 
 .step-circle {
 	width: 30px;
+}
+
+.map-check {
+  font-size: 20px;
+  color: $blg-white;
+  margin-top: 5px;
+  visibility: hidden;
+}
+
+.step-container {
+  padding: 0px 15px;
+  min-height: 220px;
+}
+
+.step-container.nodetail {
+  display: flex;
+  justify-content: center;
+  min-height: 250px;  
+}
+
+.step-error {
+  overflow: auto;
+  max-height: 218px;
+  border: 1px solid $blg-grey-light-more;  
+}
+
+.step-message {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.step-message.nodetail {
+  align-self: center;
+}
+
+.step-row {
+    margin-left: 5px;
+    color: $blg-red-light;  
+}
+
+li.complete .map-check {
+  visibility: visible;
 }
 
 .organization-panel-list {
@@ -1448,38 +1500,16 @@ ai-dialog-container {
     background-color:  mix($blg-blue, black, 80%);
 }
 
-.step-container {
-  padding: 0px 15px;
-  min-height: 220px;
-}
-
-.step-container.success {
-  display: flex;
-  justify-content: center;
-  min-height: 250px;  
-}
-
-.step-error {
-  overflow: auto;
-  max-height: 218px;
-  border: 1px solid $blg-grey-light-more;  
-}
-
-.step-message {
-  font-size: 16px;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.step-message.success {
-  align-self: center;
-}
-
-.step-row {
-    margin-left: 5px;
-    color: $blg-red-light;  
-}
-
 .btn-default-blg.cancel {
   margin-right: 20px;
+}
+
+.copyright {
+  bottom: -15px;
+  position: absolute;
+  font-size: 14px;
+}
+
+.copyright a {
+  color: $blg-blue;
 }

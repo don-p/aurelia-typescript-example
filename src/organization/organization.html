@@ -14,15 +14,15 @@
         <div class="blg-inner-content tab-pane active" id="organizations">
           
           <loading id="communities-loading" promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
-           
-          <div class="conv-form-group">
+
+          <!--div class="conv-form-group">
             <div class="input-group input-group-sm">
               <input type="text" class="form-control" i18n='[placeholder]community.search'>
               <span class="input-group-btn">
                 <button type="submit" class="btn"><span class="ico-search"></span></button>
               </span>												
             </div>
-          </div>
+          </div-->
 
         <div class="organization-list-info-bar">
           <div class="community-list-info pull-right">${organizations.length} items total</div>
@@ -67,6 +67,7 @@
        
         </div>
       </div>
+
     </aside>
     <!-- organization members list element -->
     <compose view-model="./organization-detail"></compose>

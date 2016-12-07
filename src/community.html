@@ -46,24 +46,24 @@
                 <option value="TEAM" i18n="community.team"></option>
               </select>
             </div>
-          </div>											
-           
-          <div class="conv-form-group">
+          </div>
+
+          <!--div class="conv-form-group">
             <div class="input-group input-group-sm">
               <input type="text" class="form-control" i18n='[placeholder]community.search'>
               <span class="input-group-btn">
                 <button type="submit" class="btn"><span class="ico-search"></span></button>
               </span>												
             </div>
-          </div>
+          </div-->
 
-        <div class="community-list-info-bar">
-          <div class="checkbox checkbox-info">
-            <input id="checkbox-community-all" type="checkbox" checked.bind="selectAll" change.delegate="selectAllCommunities($event.target.checked)" class="styled styled-info" value="">
-            <label></label>
+          <div class="community-list-info-bar">
+            <div class="checkbox checkbox-info">
+              <input id="checkbox-community-all" type="checkbox" checked.bind="selectAll" change.delegate="selectAllCommunities($event.target.checked)" class="styled styled-info" value="">
+              <label></label>
+            </div>
+            <div class="community-list-info pull-right">${communities.length} items total</div>
           </div>
-          <div class="community-list-info pull-right">${communities.length} items total</div>
-        </div>
 
         <div class="blg-inner-content tab-pane active" id="communities">
 
@@ -121,6 +121,7 @@
        
         </div>
       </div>
+
     </aside>
     <!-- community members list element -->
     <!--
