@@ -1,5 +1,6 @@
-import {noView, inject} from 'aurelia-framework'
+import {noView, inject, bindable} from 'aurelia-framework'
 import {Validator, ValidationController, ValidationRules, ValidationError} from 'aurelia-validation';
+import {WizardController} from './wizard-controller';
 
 // @noView
 @inject(Validator)
@@ -15,8 +16,11 @@ export class WizardControllerStep {
   model:any;
   initialize:boolean;
   callback: Function;
+  attachedFn: Function;
 
   vRules: ValidationRules;
+
+  @bindable controller;
   
   constructor(private validation:ValidationController) {
 
@@ -55,6 +59,7 @@ export class WizardControllerStep {
     this.viewsPrefix = config.viewsPrefix;
     this.model = config.model;
     this.callback = config.callback;
+    this.attachedFn= config.attachedFn;
     this.initialize = config.initialize;    
   }
   getModel() {
@@ -80,7 +85,7 @@ export class WizardControllerStep {
 
     // return (Array.isArray(result) && result.length === 0);
 
-  return eval(this.vRules.toString());
+  return this.vRules?eval(this.vRules.toString()):true;
   }
 
   // async doValidate(object, property, rules): Promise<Array<ValidationError>> {
