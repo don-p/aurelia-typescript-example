@@ -1,3 +1,4 @@
+import {bindable} from 'aurelia-framework'
 import $ from 'jquery';
 import {Events} from '../events';
 
@@ -9,15 +10,17 @@ export class WizardStepPane {
   parent:any;
   events:Events;
   
+  @bindable controller;
   
   constructor(element) {
     this.element = element;
     this.wizardStepView = "./wizard-step-view";
   }
   bind(parent) {
-    this.parent = parent
-    this.events = parent.events
-    initEvents.call(this)
+    this.parent = parent;
+    this.controller = parent.controller;
+    this.events = parent.events;
+    initEvents.call(this);
   }
   
   get isActive() {
@@ -42,9 +45,10 @@ var getForm = function() {
   return $(this.element).find('form')
 }
 var initEvents = function() {
+  const me = this;
   this.events.subscribe("wizard:validate:current:step", () => {
-     if (this.currentStep.getIsCurrent()) {
-        this.submit()
+     if (me.currentStep.getIsCurrent()) {
+        me.submit()
      } 
   })
 }

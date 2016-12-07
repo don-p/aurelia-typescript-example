@@ -726,7 +726,7 @@ export class CommunityDetail {
 
       gridOptions.onSelectionChanged = function() {
         let rows = gridOptions.api.getSelectedRows();
-        communityMembers = rows;
+        alertModel.communityMembers = rows;
         // controller.viewModel.item = controller.viewModel.gridOptions.api.getSelectedRows();
         // controller.viewModel.isSubmitDisabled = controller.viewModel.gridOptions.api.getSelectedRows().length === 0;
       };
@@ -811,6 +811,7 @@ export class CommunityDetail {
 
       // }
       let model = controller.settings;
+      controller.alertModel = alertModel;
       controller.viewModel.alertCategories = me.alertCategories;
       // Get selected alert category.
       controller.viewModel.selectAlertCategory = function(event: any) {
