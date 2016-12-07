@@ -61,7 +61,7 @@ export class OrganizationDetail {
 
     var me = this;
     this.evt.subscribe('orgSelected', payload => {
-      if((!me.selectedOrg || me.selectedOrg === null) || (me.selectedOrg.id !== payload.organization.id)) {
+      if((!me.selectedOrg || me.selectedOrg === null) || (me.selectedOrg.organizationId !== payload.organization.organizationId)) {
         me.selectedOrg = payload.organization;
         // this.remoteData.setDataApi('v1/communities/' + selectedCmty + '/members')
         // DEBUG TEMP - this.getorganizationMembers(this.selectedCmty, 0);
@@ -75,7 +75,7 @@ export class OrganizationDetail {
         me.gridOptions.api.setSortModel(null);
 
         // Save selected orgId.
-        me.gridOptions['organizationId'] = me.selectedOrg.id;
+        me.gridOptions['organizationId'] = me.selectedOrg.organizationId;
         // Set up the virtual scrolling grid displaying community members.
         me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
      }
