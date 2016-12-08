@@ -83,7 +83,7 @@ export class CommunityDetail {
         // Save selected communityId.
         me.gridOptions['communityId'] = me.selectedCmty.communityId;
         // Set up the virtual scrolling grid displaying community members.
-        me.setCommunityMembersGridDataSource(me.gridOptions, me.pageSize, me.communityService);
+        me.setCommunityMembersGridDataSource(me.gridOptions, me.pageSize, me.communityService, null);
         // Set up collection to track available community members.
         me.gridOptions.api.showLoadingOverlay();
         // FIXME: Query for IDs, in order to exclude community members from organization search.
@@ -811,6 +811,7 @@ export class CommunityDetail {
 
       // }
       let model = controller.settings;
+      controller.errorMessage = '';
       controller.alertModel = alertModel;
       controller.viewModel.alertCategories = me.alertCategories;
       // Get selected alert category.
@@ -822,17 +823,20 @@ export class CommunityDetail {
         }
       };
       // Callback function for submitting the dialog.
-      controller.viewModel.submit = (communityMembers:any[]) => {/*
-        // Call the service to send the alert.
-        controller.viewModel.modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
-        controller.viewModel.modelPromise.then(response => response.json())
+      controller.viewModel.submit = (communityMembers:any[]) => {
+       // Call the service to send the alert.
+        let modelPromise = this.communityService.sendNotification(controller.alertModel.communityMembers[0].memberId, 
+        {message: controller.alertModel.alertMessage, notificationCategory: controller.alertModel.alertType.categoryId});
+        
+        modelPromise.then(response => response.json())
         .then(data => {
             // Update the message for success.
-            controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
-            controller.viewModel.okText = this.i18n.tr('button.ok');
+            controller.viewModel.message = this.i18n.tr('community.members.alert.alertSuccessMessage', {alertCategory: controller.alertModel.alertType.categoryName});
             controller.viewModel.showCancel = false;
             // Close dialog on success.
             delete controller.viewModel.submit;
+            controller.gridOptions.api.destroy();
+            controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
             me.logger.error("Community member call() rejected."); 
@@ -841,7 +845,7 @@ export class CommunityDetail {
             me.logger.error("Community member call() failed."); 
             me.logger.error(error); 
             return Promise.reject(error);
-          })*/
+          })
       };
       controller.viewModel.showSelectedOrganizationMembers = function(showSelected:boolean) {
         if(showSelected) {
