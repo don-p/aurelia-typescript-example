@@ -3,10 +3,12 @@ import {inject, noView, NewInstance, LogManager} from 'aurelia-framework';
 import {ValidationRules, ValidationController, Rules, validateTrigger} from 'aurelia-validation';
 import {Logger} from 'aurelia-logging';
 import {WizardControllerStep} from './wizard-controller-step';
+import {Wizard} from '../wizard';
 import {StepList} from '../step-list'
 
 @noView()
 export class WizardController {
+  wizard: Wizard;
   _steps: Array<WizardControllerStep>;
   stepList: StepList;
   title: string;
@@ -80,6 +82,10 @@ export class WizardController {
   }
   doSubmit(currentStep) {
     console.log('TODO SUBMIT HERE', this.steps)
+  }
+
+  get gWindow () {
+    return window;
   }
 }
 var initStepList = function() {
