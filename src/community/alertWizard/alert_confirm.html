@@ -1,0 +1,18 @@
+<template>
+
+    <div class="row toggleSelectedLink" style="padding: 6px;
+        margin: 6px;
+        border: 1px solid #ccc;
+        border-radius: 5px;background-color: rgba(51, 153, 255, 0.24);">
+        <div style="text-align: left;"><span style="font-weight: bold;vertical-align: baseline;">Confirm Alert:</span></div>
+    </div>
+    <div class="members-table-content" style="height:240px;padding: 3px;
+margin: 6px;
+border: 1px solid #ccc;
+border-radius: 5px;" id="membersTableContent">		
+		  
+        <div if.bind="(!(controller.dialogController.errorMessage) || controller.dialogController.errorMessage.length===0)">Send ${controller.dialogController.alertModel.alertType.categoryName} alert to ${controller.dialogController.alertModel.communityMembers.length} recipient(s)?</div>
+        <div if.bind="(controller.dialogController.errorMessage && controller.dialogController.errorMessage.length>==0)">${controller.errorMessage}</div>
+    </div>
+
+</template>

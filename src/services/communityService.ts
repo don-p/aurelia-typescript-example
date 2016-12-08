@@ -150,4 +150,18 @@ export class CommunityService {
         );
         return response;
     }
+
+        async sendNotification(memberId:string, notificationConfig:Object) {
+        await fetch;
+
+        let response = this.getHttpClient().fetch('v1/members/' + memberId + '/notifications', 
+            {
+                method: 'POST',
+                body: JSON.stringify(notificationConfig)
+
+            }
+        );
+        return response;
+    }
+
 }

@@ -81,6 +81,9 @@
                 "callConfirmMessage": "Start GridCall with {{memberCount}} selected community members?",
                 "callSuccessMessage": "The GridCall has been initiated."
             },
+            "alert": {
+                "alertSuccessMessage": "{{alertCategory}} alert has been sent."
+            },
             "addMembers": "Add Community Members"
         },          
         "call": {
