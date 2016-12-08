@@ -831,7 +831,7 @@ export class CommunityDetail {
       controller.viewModel.submit = (communityMembers:any[]) => {
        // Call the service to send the alert.
         let modelPromise = this.communityService.sendNotification(controller.alertModel.communityMembers[0].memberId, 
-        {message: controller.alertModel.alertMessage, notificationCategory: controller.alertModel.alertType.categoryId});
+        {message: controller.alertModel.alertMessage, notificationCategory: controller.alertModel.alertType.categoryId, attachmentRefs: controller.alertModel.files});
         
         modelPromise.then(response => response.json())
         .then(data => {
