@@ -153,11 +153,15 @@ export class CommunityService {
 
         async sendNotification(memberId:string, notificationConfig:Object) {
         await fetch;
+        var form = new FormData();
+        form.append('notificationCategory', notificationConfig['notificationCategory']);
+        form.append('message', notificationConfig['message']);
+        form.append('attachmentRefs', notificationConfig['attachmentRefs']);
 
         let response = this.getHttpClient().fetch('v1/members/' + memberId + '/notifications', 
             {
                 method: 'POST',
-                body: JSON.stringify(notificationConfig)
+                body: form
 
             }
         );
