@@ -19,6 +19,7 @@
                 <div class="divTableCell">
                     <div class="send-alert-message-text">				  
                         <textarea style="width: 100%;height: 100%;" value.bind="controller.dialogController.alertModel.alertMessage"></textarea>
+                        <span>Characters: ${controller.dialogController.alertModel.alertMessage?controller.dialogController.alertModel.alertMessage.length:0} / ??</span>
                     </div>                    
                 </div>
             </div>
@@ -26,9 +27,17 @@
                 <div class="divTableCell label-column">
                     <span class="wizard-content-label">Attachment:</span>
                 </div>
-                <div class="divTableCell">&nbsp;</div>
+                <div class="divTableCell">
+                    <form class="select-file">
+                        <input type="file" id="inputfile" class="" accept=".csv" files.bind="controller.dialogController.alertModel.files"/>
+                        <label for="inputfile">
+                            <span if.bind="!(step.model.files) || step.model.files.length === 0">Select a file&hellip;</span>
+                            <span if.bind="step.model.files.length !== 0">${step.model.files[0].name}</span>
+                        </label>
+                    </form>
+                </div>
             </div>
         </div>
     </div>    
-    
+
 </template>
