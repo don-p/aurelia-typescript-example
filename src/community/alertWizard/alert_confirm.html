@@ -10,9 +10,9 @@
 margin: 6px;
 border: 1px solid #ccc;
 border-radius: 5px;" id="membersTableContent">		
+        <div if.bind="(!(cstep.errorMessage) || step.errorMessage.length===0)">${step.errorMessage}</div>
 		  
-        <div if.bind="(!(controller.dialogController.errorMessage) || controller.dialogController.errorMessage.length===0)">Send ${controller.dialogController.alertModel.alertType.categoryName} alert to ${controller.dialogController.alertModel.communityMembers.length} recipient(s)?</div>
-        <div if.bind="(controller.dialogController.errorMessage && controller.dialogController.errorMessage.length>==0)">${controller.errorMessage}</div>
+        <!--<div if.bind="(!(controller.dialogController.errorMessage) || controller.dialogController.errorMessage.length===0)">Send ${controller.dialogController.alertModel.alertType.categoryName} alert to ${controller.dialogController.alertModel.communityMembers.length} recipient(s)?</div>
+        <div if.bind="(controller.dialogController.errorMessage && controller.dialogController.errorMessage.length>==0)">${controller.errorMessage}</div>-->
     </div>
-
 </template>

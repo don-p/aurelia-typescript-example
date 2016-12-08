@@ -758,7 +758,12 @@ export class CommunityDetail {
         id: 'alert_confirm',
         title: this.i18n.tr('community.alert.confirm'),
         canValidate: false,
-        model: alertModel
+        model: alertModel,
+        attachedFn: function(){
+          me.logger.debug( "------attached");
+          this.step.errorMessage = 'Send ' + this.controller.dialogController.alertModel.alertType.categoryName + ' alert to ' + this.controller.dialogController.alertModel.communityMembers.length + ' recipient(s)?';
+          this.controller.gridOptions.toString();
+        }
       };
 
 
@@ -831,12 +836,15 @@ export class CommunityDetail {
         modelPromise.then(response => response.json())
         .then(data => {
             // Update the message for success.
-            controller.viewModel.message = this.i18n.tr('community.members.alert.alertSuccessMessage', {alertCategory: controller.alertModel.alertType.categoryName});
+            controller.viewModel.wizard.currentStep.errorMessage = this.i18n.tr('community.members.alert.alertSuccessMessage', {alertCategory: controller.alertModel.alertType.categoryName});
             controller.viewModel.showCancel = false;
             // Close dialog on success.
             delete controller.viewModel.submit;
-            controller.gridOptions.api.destroy();
-            controller.ok();
+            controller.viewModel.gridOptions.api.destroy();
+            setTimeout(function() {
+              controller.ok();
+            }, 1000);
+            // controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
             me.logger.error("Community member call() rejected."); 

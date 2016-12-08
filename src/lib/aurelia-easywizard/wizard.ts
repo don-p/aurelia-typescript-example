@@ -16,6 +16,12 @@ export class Wizard {
     this.events = events
     initEvents.call(this)
   }
+
+  bind(model) {
+
+    this.controller.wizard = this;
+  }
+  
   get steps() {
     return this.controller.steps
   }
