@@ -360,6 +360,8 @@ export class OrganizationDetail {
             let viewModel = data['model'];
             viewModel['processResponse'] = res;
             res.stepStatus = 'OK';
+            // update the organization member count.
+             me.selectedOrg.memberCount = data.res.totalCount;
             return res;
           }, error => {
             model.errorMessage = "Failed"; 
@@ -387,15 +389,15 @@ export class OrganizationDetail {
 
     const steps = [step1, step2, step3];
 
-    orgModel['orgId'] = me.selectedOrg.id;
+    orgModel['orgId'] = me.selectedOrg.organizationId;
     this.dataService.openWizardDialog('Import Organization Members', steps, orgModel, null)
     .then((controller:any) => {
       let model = controller.settings;
       controller.viewModel.submit = (output) => {
         me.gridOptions.api.refreshVirtualPageCache();
         me.gridOptions.api.refreshView();
-        // update the community member count.
-        ////me.selectedOrg.memberCount = data.totalCount;
+        // update the organization member count.
+        // me.selectedOrg.memberCount = data.totalCount;
         // Close dialog on success.
         controller.ok();
       };
