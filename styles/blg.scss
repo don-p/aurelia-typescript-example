@@ -1165,7 +1165,7 @@ border-bottom: 1px solid $blg-grey-light-more;
 }
 
 .modal-header-wizard {
-padding: 15px 20px;
+padding: 15px 20px 20px 20px;
 }
 
 .modal-header-wizard-border {
@@ -1512,4 +1512,50 @@ li.complete .map-check {
 
 .copyright a {
   color: $blg-blue;
+}
+
+.send-alert-members-table {
+  height: 320px;
+  padding: 3px;
+  border: 1px solid $blg-grey-light;
+  border-radius: 5px;
+  margin: 5px 15px 0px;
+}
+
+.wizard-content-label {
+  font-size: 18px;
+  position: relative;
+  top: 5px;
+  font-weight: 700;
+  color: $blg-wet-asphalt-lighter;
+}
+
+.send-alert-message-text {
+  height: 240px;
+  padding: 3px;
+  border: 1px solid $blg-grey-light;
+  border-radius: 5px;
+  margin: 5px 15px 0px;
+}
+
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableBody {
+	display: table-row-group;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableCell {
+	border: 1px solid #ff0000;
+	display: table-cell;
+	padding: 3px 10px;
+}
+
+.label-column {
+  text-align: right;
+  vertical-align: top;
+  width: 15%;  
 }

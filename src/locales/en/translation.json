@@ -94,10 +94,10 @@
             "callParticipantMaxCountError":"GridCall cannot be started with more than {{count}} participants."
         },
         "alert": {
-            "selectTypeRecipients": "Type/Recipients",
-            "selectMessage": "Message",
+            "selectTypeRecipients": "Recipients",
+            "selectMessage": "Type/Message",
             "confirm": "Confirm",
-            "alertType": "Alert category"
+            "alertType": "Alert type"
         }
     },
 

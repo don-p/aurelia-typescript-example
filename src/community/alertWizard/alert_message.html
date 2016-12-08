@@ -1,22 +1,34 @@
 <template>
 
-    <div class="row toggleSelectedLink" style="padding: 6px;
-        margin: 6px;
-        border: 1px solid #ccc;
-        border-radius: 5px;background-color: rgba(51, 153, 255, 0.24);">
-        <div class="right-select">
-            <span  class="organization-select-label" i18n='[prepend]community.alert.alertType' change.delegate="step.model.selectAlertCategory($event)">: </span>
-            <select class="form-control select select-default-blg" style="display:inline-block;" value.bind="controller.dialogController.alertModel.alertType">
-                <option repeat.for="alertCategory of controller.alertCategories" value="${alertCategory.categoryId}" model.bind="alertCategory">${alertCategory.categoryName}</option>
-            </select>
+    <div class="divTable">
+        <div class="divTableBody">
+            <div class="divTableRow">
+                <div class="divTableCell label-column">            
+                    <span class="wizard-content-label" i18n='[prepend]community.alert.alertType' change.delegate="step.model.selectAlertCategory($event)">:</span>
+                </div>
+                <div class="divTableCell">
+                    <select class="form-control select select-default-blg" style="display:inline-block;" value.bind="controller.dialogController.alertModel.alertType">
+                        <option repeat.for="alertCategory of controller.alertCategories" value="${alertCategory.categoryId}" model.bind="alertCategory">${alertCategory.categoryName}</option>
+                    </select>                    
+                </div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell label-column">
+                    <span class="wizard-content-label">Alert message:</span>
+                </div>
+                <div class="divTableCell">
+                    <div class="send-alert-message-text">				  
+                        <textarea style="width: 100%;height: 100%;" value.bind="controller.dialogController.alertModel.alertMessage"></textarea>
+                    </div>                    
+                </div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell label-column">
+                    <span class="wizard-content-label">Attachment:</span>
+                </div>
+                <div class="divTableCell">&nbsp;</div>
+            </div>
         </div>
-    <div style="text-align: left;"><span style="font-weight: bold;vertical-align: baseline;">Alert Message:</span></div>
-    </div>
-    <div class="members-table-content" style="height:240px;padding: 3px;
-margin: 6px;
-border: 1px solid #ccc;
-border-radius: 5px;" id="membersTableContent">				  
-        <textarea style="width: 100%;height: 100%;" value.bind="controller.dialogController.alertModel.alertMessage"></textarea>
-    </div>
+    </div>    
     
 </template>

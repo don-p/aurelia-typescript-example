@@ -1,25 +1,19 @@
 <template>
 
-		<div class="row toggleSelectedLink" style="padding: 6px;
-			margin: 6px;
-			border: 1px solid #ccc;
-			border-radius: 5px;background-color: rgba(51, 153, 255, 0.24);">
-			<div if.bind="controller.gridOptions.api.rowModel.datasource.name ==='alertCommunityRecipients'"  class="pull-right" >
-				<button disabled.bind="(!(communityMembers) || (communityMembers.length === 0))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
-			</div>
-			<div if.bind="controller.gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" class="pull-right" >
-				<button class.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i>Show all</button>
-			</div>
-			<div class="pull-right">
-				<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(controller.gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
-			</div>		
-	    <div style="text-align: left;"><span style="font-weight: bold;vertical-align: baseline;">Recipients:</span></div>
+	<div class="row toggleSelectedLink">
+		<span class="wizard-content-label">Recipients:</span>		
+		<div if.bind="controller.gridOptions.api.rowModel.datasource.name ==='alertCommunityRecipients'"  class="pull-right" >
+			<button disabled.bind="(!(communityMembers) || (communityMembers.length === 0))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
 		</div>
-		<div class="members-table-content" style="height:240px;padding: 3px;
-    margin: 6px;
-    border: 1px solid #ccc;
-    border-radius: 5px;" id="membersTableContent">				  
-			<div id="cmtyAlertGrid" ref="cmtyAlertGrid" style="height: 100%;" class="ag-blg" ></div>
+		<div if.bind="controller.gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" class="pull-right" >
+			<button class.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i>Show all</button>
 		</div>
+		<div class="pull-right">
+			<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(controller.gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
+		</div>		
+	</div>
+	<div class="send-alert-members-table">				  
+		<div id="cmtyAlertGrid" ref="cmtyAlertGrid" style="height: 100%;" class="ag-blg" ></div>
+	</div>
 		
 </template>
