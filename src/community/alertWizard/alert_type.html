@@ -2,11 +2,11 @@
 
 	<div class="row toggleSelectedLink">
 		<span class="wizard-content-label blg-form-required">Recipients:</span>		
-		<div if.bind="controller.gridOptions.api.rowModel.datasource.name ==='alertCommunityRecipients'"  class="pull-right" >
-			<button disabled.bind="(!(communityMembers) || (communityMembers.length === 0))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
+		<div if.bind="controller.gridOptions.api.rowModel.datasource.name ==='communityMembers'"  class="pull-right" >
+			<button disabled.bind="(!(communityMembers) || (communityMembers.length === 0))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedMembers(true)"><i class="ico-filter4"></i>Show selected</button>
 		</div>
-		<div if.bind="controller.gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" class="pull-right" >
-			<button class.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i>Show all</button>
+			<div if.bind="controller.gridOptions.api.rowModel.datasource.name === 'selectedCommunityMembers' || controller.gridOptions.api.rowModel.datasource.name === 'alertCommunityRecipients'" class="pull-right" >
+				<button class.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedMembers(false)"> <i class="ico-filter3"></i>Show all</button>
 		</div>
 		<div class="pull-right">
 			<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(controller.gridOptions)"><i class="ico-filter4"></i>Clear filters</button>

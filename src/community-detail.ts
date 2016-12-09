@@ -719,6 +719,7 @@ export class CommunityDetail {
     const step1 = this.wizardStepFactory.newInstance();
     const step2 = this.wizardStepFactory.newInstance();
     const step3 = this.wizardStepFactory.newInstance();
+    const step4 = this.wizardStepFactory.newInstance();
 
     step1.config = {
         viewsPrefix: 'community/alertWizard',
@@ -775,13 +776,48 @@ export class CommunityDetail {
         model: alertModel,
         attachedFn: function(){
           me.logger.debug( "------attached");
-          this.step.errorMessage = 'Send ' + this.controller.dialogController.alertModel.alertType.categoryName + ' alert to ' + this.controller.dialogController.alertModel.communityMembers.length + ' recipient(s)?';
+          this.step.errorMessage = "Click 'Next' to send this " + this.controller.dialogController.alertModel.alertType.categoryName + " alert with " + ((this.controller.dialogController.alertModel.files)?this.controller.dialogController.alertModel.files.length:0) + " attachments to " + this.controller.dialogController.alertModel.communityMembers.length + " recipient(s).";
           this.controller.gridOptions.toString();
+        }
+      };
+    step4.config = {
+        viewsPrefix: 'community/alertWizard',
+        id: 'alert_result',
+        title: this.i18n.tr('community.alert.finish'),
+        canValidate: false,
+        model: alertModel,
+        attachedFn: function(){
+          me.logger.debug( "------attached");
+          // Call the service to send the alert.
+          let view = this;
+          let modelPromise = me.communityService.sendNotification(this.controller.dialogController.alertModel.communityMembers[0].memberId, 
+          {message: this.controller.dialogController.alertModel.alertMessage, notificationCategory: this.controller.dialogController.alertModel.alertType.categoryId, attachmentRefs: this.controller.dialogController.alertModel.files});
+          
+          modelPromise.then(response => response.json())
+          .then(data => {
+              // Update the message for success.
+              view.controller.wizard.currentStep.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', {alertCategory: view.controller.dialogController.alertModel.alertType.categoryName, recipientCount: this.controller.dialogController.alertModel.communityMembers.length});
+              view.controller.showCancel = false;
+              // Close dialog on success.
+              // delete this.controller.viewModel.submit;
+              if(view.controller.gridOptions.api) {
+                view.controller.gridOptions.api.destroy();
+              }
+              // controller.ok();
+            }, error => {
+              view.model.errorMessage = "Failed"; 
+              me.logger.error("Community member call() rejected."); 
+            }).catch(error => {
+              view.model.errorMessage = "Failed"; 
+              me.logger.error("Community member call() failed."); 
+              me.logger.error(error); 
+              return Promise.reject(error);
+            })
         }
       };
 
 
-    const steps = [step1, step2, step3];
+    const steps = [step1, step2, step3, step4];
 
 
     this.dataService.openWizardDialog('Send Alert', steps,
@@ -843,31 +879,33 @@ export class CommunityDetail {
       };
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (communityMembers:any[]) => {
-       // Call the service to send the alert.
-        let modelPromise = this.communityService.sendNotification(controller.alertModel.communityMembers[0].memberId, 
-        {message: controller.alertModel.alertMessage, notificationCategory: controller.alertModel.alertType.categoryId, attachmentRefs: controller.alertModel.files});
+      //  // Call the service to send the alert.
+      //   let modelPromise = this.communityService.sendNotification(controller.alertModel.communityMembers[0].memberId, 
+      //   {message: controller.alertModel.alertMessage, notificationCategory: controller.alertModel.alertType.categoryId, attachmentRefs: controller.alertModel.files});
         
-        modelPromise.then(response => response.json())
-        .then(data => {
-            // Update the message for success.
-            controller.viewModel.wizard.currentStep.errorMessage = this.i18n.tr('community.members.alert.alertSuccessMessage', {alertCategory: controller.alertModel.alertType.categoryName});
-            controller.viewModel.showCancel = false;
-            // Close dialog on success.
-            delete controller.viewModel.submit;
-            controller.viewModel.gridOptions.api.destroy();
-            setTimeout(function() {
-              controller.ok();
-            }, 1000);
-            // controller.ok();
-          }, error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member call() rejected."); 
-          }).catch(error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member call() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
-          })
+      //   modelPromise.then(response => response.json())
+      //   .then(data => {
+      //       // Update the message for success.
+      //       controller.viewModel.wizard.currentStep.errorMessage = this.i18n.tr('community.members.alert.alertSuccessMessage', {alertCategory: controller.alertModel.alertType.categoryName});
+      //       controller.viewModel.showCancel = false;
+      //       // Close dialog on success.
+      //       delete controller.viewModel.submit;
+      //       controller.viewModel.gridOptions.api.destroy();
+      //       setTimeout(function() {
+      //         controller.ok();
+      //       }, 1000);
+      //       // controller.ok();
+      //     }, error => {
+      //       model.errorMessage = "Failed"; 
+      //       me.logger.error("Community member call() rejected."); 
+      //     }).catch(error => {
+      //       model.errorMessage = "Failed"; 
+      //       me.logger.error("Community member call() failed."); 
+      //       me.logger.error(error); 
+      //       return Promise.reject(error);
+      //     })
+
+      controller.ok();
       };
       controller.viewModel.showSelectedMembers = function(showSelected:boolean) {
         let selection = controller.viewModel.gridOptions.api.getSelectedRows();
