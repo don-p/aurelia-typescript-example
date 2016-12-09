@@ -96,7 +96,7 @@
         "alert": {
             "selectTypeRecipients": "Recipients",
             "selectMessage": "Type/Message/Attachment",
-            "confirm": "Confirm",
+            "confirm": "Review/Send",
             "alertType": "Alert type"
         }
     },

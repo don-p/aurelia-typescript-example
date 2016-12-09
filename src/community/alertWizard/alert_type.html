@@ -1,7 +1,7 @@
 <template>
 
 	<div class="row toggleSelectedLink">
-		<span class="wizard-content-label">Recipients:</span>		
+		<span class="wizard-content-label blg-form-required">Recipients:</span>		
 		<div if.bind="controller.gridOptions.api.rowModel.datasource.name ==='alertCommunityRecipients'"  class="pull-right" >
 			<button disabled.bind="(!(communityMembers) || (communityMembers.length === 0))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
 		</div>
