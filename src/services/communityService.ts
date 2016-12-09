@@ -161,7 +161,7 @@ export class CommunityService {
         let response = this.getHttpClient().fetch('v1/members/' + memberId + '/notifications', 
             {
                 method: 'POST',
-                body: form
+                body: JSON.stringify(notificationConfig)
 
             }
         );

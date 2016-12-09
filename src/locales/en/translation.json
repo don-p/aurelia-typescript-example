@@ -82,7 +82,7 @@
                 "callSuccessMessage": "The GridCall has been initiated."
             },
             "alert": {
-                "alertSuccessMessage": "{{alertCategory}} alert has been sent."
+                "alertSuccessMessage": "{{alertCategory}} alert has been sent to {{recipientCount}} recipient(s)."
             },
             "addMembers": "Add Community Members"
         },          
@@ -94,9 +94,10 @@
             "callParticipantMaxCountError":"GridCall cannot be started with more than {{count}} participants."
         },
         "alert": {
-            "selectTypeRecipients": "Recipients",
-            "selectMessage": "Type/Message/Attachment",
-            "confirm": "Review/Send",
+            "selectTypeRecipients": "Select Recipients",
+            "selectMessage": "Create Alert",
+            "confirm": "Review & Send",
+            "finish": "Finish",
             "alertType": "Alert type"
         }
     },
