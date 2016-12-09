@@ -170,7 +170,7 @@ form[role=login] button {
 }
 
 form[role=login] button:hover {
-	background: #4eaccf;
+	background: $blg-blue-tint;
 }
 	
 .login-form .form-control {
@@ -1051,7 +1051,8 @@ table.blg-dataTable.display tbody td {
   cursor: no-drop;
 }
 
-.members-table-content .ag-header-cell {
+.members-table-content .ag-header-cell,
+.send-alert-members-table .ag-header-cell {
   text-align: left !important;
   margin-left: 5px !important;  
 }
@@ -1165,7 +1166,7 @@ border-bottom: 1px solid $blg-grey-light-more;
 }
 
 .modal-header-wizard {
-padding: 15px 20px;
+padding: 15px 20px 20px 20px;
 }
 
 .modal-header-wizard-border {
@@ -1227,7 +1228,7 @@ padding: 15px 20px;
 .community-description {
   font-size: 12px;
   position: relative;
-  top: -1px;
+  top: -2px;
   color: $blg-grey;
   max-width: 355px;
   white-space: nowrap;
@@ -1442,63 +1443,110 @@ li.complete .map-check {
 }
 
 .select-file {
-    width: 100%;
-    max-width: 800px;
-    text-align: center;
-    margin: 0 auto;
-    padding: 70px 0 50px;
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  margin: 0 auto;
+  padding: 70px 0 50px;
 }
 
-.inputfile {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
+.inputfile,
+.inputfile2 {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 .inputfile + label {
-    max-width: 80%;
-    font-size: 18px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-    display: inline-block;
-    overflow: hidden;
-    padding: 0.625rem 1.25rem;
-    color: $blg-blue;	
+  max-width: 80%;
+  font-size: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.625rem 1.25rem;
+  color: $blg-blue;	
 }
 
 .inputfile + label:hover {
-    color:  mix($blg-blue, black, 80%);
+  color:  mix($blg-blue, black, 80%);
 }
 
 .inputfile + label svg {
-    width: 1em;
-    height: 1em;
-    vertical-align: middle;
-    fill: currentColor;
-    margin-top: -0.25em;
-    margin-right: 0.25em;
-    width: 100%;
-    height: 100%;
-    fill: $blg-white;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+  margin-top: -0.25em;
+  margin-right: 0.25em;
+  width: 100%;
+  height: 100%;
+  fill: $blg-white;
 }
 
 .inputfile + label figure {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    background-color: $blg-blue;
-    display: block;
-    padding: 15px;
-    margin: 0 auto 5px;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background-color: $blg-blue;
+  display: block;
+  padding: 15px;
+  margin: 0 auto 5px;
 }
 
-.inputfile + label:hover figure {
-    background-color:  mix($blg-blue, black, 80%);
+.inputfile + label:hover figure,
+.inputfile2 + label:hover strong {
+  background-color:  mix($blg-blue, black, 80%);
 }
+
+.inputfile2 + label {
+  max-width: 80%;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0;
+  color: $blg-blue;
+  border: 1px solid $blg-blue-light;
+  background-color: $blg-white;
+  border-radius: 5px;    	
+}
+
+.inputfile2 + label svg {
+  fill: currentColor;
+  position: relative;
+  top: 2px;
+  margin-right: 4px;  
+}
+
+.inputfile2 + label strong {
+  color: $blg-white;
+  height: 100%;
+  background-color: $blg-blue;
+  display: inline-block;
+  padding: 5px 10px;
+  font-weight: normal;          
+}
+
+.inputfile2 + label span {
+  width: 400px;
+  min-height: 2em;    
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 5px 10px;
+  text-align: center;
+  font-weight: normal;      
+}
+
 
 .btn-default-blg.cancel {
   margin-right: 20px;
@@ -1512,4 +1560,62 @@ li.complete .map-check {
 
 .copyright a {
   color: $blg-blue;
+}
+
+.send-alert-members-table {
+  height: 320px;
+  padding: 3px;
+  border: 1px solid $blg-grey-light;
+  border-radius: 5px;
+  margin: 5px 15px 0px;
+}
+
+.wizard-content-label {
+  font-size: 18px;
+  position: relative;
+  font-weight: 700;
+  color: $blg-wet-asphalt-lighter;
+}
+
+.send-alert-message-text {
+  height: 232px;
+  padding: 3px 5px;
+  border: 1px solid $blg-blue-light;
+  border-radius: 5px;
+}
+
+.div-table{
+	display: table;
+	width: 100%;
+  padding: 0px 15px;
+}
+.div-table-body {
+	display: table-row-group;
+}
+.div-table-row {
+	display: table-row;
+}
+.div-table-cell {
+	display: table-cell;
+	padding: 0px 0px 15px 0px;
+}
+
+.column-label {
+  text-align: right;
+  vertical-align: top;
+  width: 15%;
+  padding-right: 10px;  
+}
+
+.alert-counter {
+  position: relative;
+  top: 15px;
+}
+
+.send-alert-textarea {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  outline: none;  
+  border: none;    
 }
