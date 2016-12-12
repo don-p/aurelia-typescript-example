@@ -263,7 +263,7 @@ export class CommunityDetail {
         /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
         getRows: function(params: IGetRowsParams) {
           gridOptions.api.showLoadingOverlay();
-          if(!this.loading) {
+          // if(!this.loading) {
             me.logger.debug("..... setCommunityMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
@@ -308,7 +308,7 @@ export class CommunityDetail {
                 
                 this.loading = false;
             });
-          }
+          // }
         }
     }
     gridOptions.api.setDatasource(gridDataSource);
