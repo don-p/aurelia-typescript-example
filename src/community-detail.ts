@@ -2,7 +2,7 @@ import {inject, Lazy, bindable, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
-import {Configure} from 'aurelia-configuration';
+import {AureliaConfiguration} from 'aurelia-configuration';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {Session} from './services/session';
 import {DataService} from './services/dataService';
@@ -16,7 +16,7 @@ import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from
 import {TextSearchFilter} from './lib/grid/textSearchFilter';
 import {WizardControllerStep, WizardControllerStepFactory} from './lib/aurelia-easywizard/controller/wizard-controller-step';
 
-@inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, Ps, I18N, WizardControllerStepFactory, Configure, LogManager) // SCROLL
+@inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, Ps, I18N, WizardControllerStepFactory, AureliaConfiguration, LogManager) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -51,7 +51,7 @@ export class CommunityDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
-    private evt: EventAggregator, Ps, private i18n: I18N, private wizardStepFactory: WizardControllerStepFactory, private appConfig: Configure) {
+    private evt: EventAggregator, Ps, private i18n: I18N, private wizardStepFactory: WizardControllerStepFactory, private appConfig: AureliaConfiguration) {
 
     this.communityMembers = null;
 

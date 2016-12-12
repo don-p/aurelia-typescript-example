@@ -2,19 +2,20 @@ import {inject, Lazy, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {HttpClient as Http} from 'aurelia-http-client';
-import {Configure} from "aurelia-configuration";
+import {AureliaConfiguration} from "aurelia-configuration";
 import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {FetchConfig, AuthService} from 'aurelia-auth';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
 import {WizardController} from '../lib/aurelia-easywizard/controller/wizard-controller';
+// import {HttpConfig} from '../lib/auth/auth-http-config';
 
 import {Prompt} from '../model/prompt';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(Lazy.of(HttpClient), Http, Configure, EventAggregator, AuthService, FetchConfig, DialogService, Session, QueryString, LogManager)
+@inject(Lazy.of(HttpClient), Http, AureliaConfiguration, EventAggregator, AuthService, FetchConfig/*, HttpConfig*/, DialogService, Session, QueryString, LogManager)
 export class DataService {  
 
     // Service object for retreiving application data from REST services.
@@ -34,9 +35,9 @@ export class DataService {
 
     logger: Logger;
 
-    constructor(private getHttpClient: () => HttpClient, private httpBase: Http, private appConfig: Configure, 
+    constructor(private getHttpClient: () => HttpClient, private httpBase: Http, private appConfig: AureliaConfiguration, 
         private evt: EventAggregator, private auth: AuthService,  
-        private fetchConfig: FetchConfig, private dialogService:DialogService,private session: Session){
+        private fetchConfig: FetchConfig/*, private httpConfig: HttpConfig*/, private dialogService:DialogService,private session: Session){
 
         // Base Url for REST API service.
         this.apiServerUrl = this.appConfig.get('api.serverUrl');
@@ -50,6 +51,7 @@ export class DataService {
          */
         // Configure custom fetch for aurelia-auth service.
         fetchConfig.configure();
+        // httpConfig.configure();
 
         // Set up global http configuration; API url, request/response error handlers.
         var me = this;
@@ -441,14 +443,16 @@ export class DataService {
             for(let i=0; i < keys.length; i++) {
                 let param = {};
                 let key = keys[i];
-                let filter = params['filterModel'][key];
-                let op = filter.type;
-                let operator = this.gridFilterCriteria[op];
-                let values = [filter.filter];
-                param['operationType'] = operator;
-                param['parameterType'] = key;
-                param['values'] = values;
-                result['parameters'].push(param);
+                if(key !== 'select') { // Don't do external filter on selection checkbox.
+                    let filter = params['filterModel'][key];
+                    let op = filter.type;
+                    let operator = this.gridFilterCriteria[op];
+                    let values = [filter.filter];
+                    param['operationType'] = operator;
+                    param['parameterType'] = key;
+                    param['values'] = values;
+                    result['parameters'].push(param);
+                }
             }
         }
         // Create the server-compatible sort criteria.

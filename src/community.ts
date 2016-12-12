@@ -2,7 +2,7 @@ import {inject, NewInstance, Lazy, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
-import {Configure} from 'aurelia-configuration';
+import {AureliaConfiguration} from 'aurelia-configuration';
 import {Session} from './services/session';
 import {DataService} from './services/dataService';
 import {CommunityService} from './services/communityService';
@@ -15,7 +15,7 @@ import {ValidationRules, ValidationController} from 'aurelia-validation';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, NewInstance.of(ValidationController), Configure, LogManager)
+@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, NewInstance.of(ValidationController), AureliaConfiguration, LogManager)
 export class Community {
   communities: Array<Object>;
   items:Array<Object>;
@@ -34,7 +34,7 @@ export class Community {
   logger: Logger;
 
   constructor(private session: Session, private router: Router, private dataService: DataService, 
-    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: Configure) {
+    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration) {
 
     // var Ps = require('perfect-scrollbar');
 

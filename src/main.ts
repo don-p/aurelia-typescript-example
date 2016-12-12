@@ -18,7 +18,7 @@ import '../styles/theme-blg.styl';
 import 'bootstrap-sass/assets/javascripts/bootstrap.js';
 // Framework modules:
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
-import {Configure} from "aurelia-configuration";
+import {AureliaConfiguration} from "aurelia-configuration";
 import {AuthConfig} from './config/authConfig';
 import {I18N} from 'aurelia-i18n';
 import {DataService} from './services/dataService';
@@ -73,7 +73,7 @@ export async function configure(aurelia: Aurelia) {
     })
     .plugin('aurelia-auth', (baseConfig)=>{
       // Use config to set auth Url.
-      let configInstance = aurelia.container.get(Configure);
+      let configInstance = aurelia.container.get(AureliaConfiguration);
       let apiServerUrl = configInstance.get('api.serverUrl'); 
       authConfig.config.baseUrl = apiServerUrl;
       baseConfig.configure(authConfig.config);
@@ -122,7 +122,7 @@ export async function configure(aurelia: Aurelia) {
         let dataInstance = aurelia.container.get(DataService);
         let fetchConfigInstance = aurelia.container.get(FetchConfig);
         // Use config to set logging level.
-        let configInstance = aurelia.container.get(Configure);
+        let configInstance = aurelia.container.get(AureliaConfiguration);
         let logLevel = configInstance.get('logLevel');
         LogManager.setLevel(LogManager.logLevel[logLevel]);
         LogManager.addAppender(new ConsoleAppender());
