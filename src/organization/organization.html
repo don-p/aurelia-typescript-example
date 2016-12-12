@@ -40,7 +40,7 @@
                           role='tab'>
                           <a class='collapsed' click.trigger="selectOrganization(organization)" role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
                             <h4 class='panel-title'>
-                              <span class="community-name">${organization.name}</span>
+                              <span class="community-name">${organization.organizationName}</span>
                               <span class="members-count">(<i class='ico-users'></i> ${organization.memberCount})</span>
                               <span class='community-buttons'>
                                 <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
