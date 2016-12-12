@@ -3,7 +3,7 @@
 		<div class="left-select">
 			<span  class="organization-select-label" i18n='[prepend]organization.organization'>: </span>
 			<select class="form-control select select-default-blg" change.delegate="selectOrganization($event)">
-			<option repeat.for="organization of organizations" value="${organization.organizationId}" model.bind="organization">${organization.name}</option>
+			<option repeat.for="organization of organizations" value="${organization.organizationId}" model.bind="organization">${organization.organizationName}</option>
 			</select>
 		</div>
 		<div if.bind="gridOptions.api.rowModel.datasource.name ==='organizationMembers'"  class="pull-right" >
