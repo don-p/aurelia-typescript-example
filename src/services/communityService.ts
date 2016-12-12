@@ -151,14 +151,16 @@ export class CommunityService {
         return response;
     }
 
-        async sendNotification(memberId:string, notificationConfig:Object) {
+    async sendNotification(members:Array<any>, notificationConfig:Object) {
         await fetch;
+        let memberIds = members[0].memberId;
+
         var form = new FormData();
         form.append('notificationCategory', notificationConfig['notificationCategory']);
         form.append('message', notificationConfig['message']);
         form.append('attachmentRefs', notificationConfig['attachmentRefs']);
 
-        let response = this.getHttpClient().fetch('v1/members/' + memberId + '/notifications', 
+        let response = this.getHttpClient().fetch('v1/members/' + memberIds + '/notifications', 
             {
                 method: 'POST',
                 body: JSON.stringify(notificationConfig)
