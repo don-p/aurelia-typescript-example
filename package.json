@@ -74,7 +74,7 @@
     "ag-grid": "^6.0.1",
     "aurelia-auth": "^3.0.2",
     "aurelia-bootstrapper-webpack": "^1.0.0",
-    "aurelia-configuration": "^1.0.13",
+    "aurelia-configuration": "1.0.14",
     "aurelia-dialog": "^1.0.0-beta.3.0.0",
     "aurelia-event-aggregator": "^1.0.0",
     "aurelia-fetch-client": "^1.0.0",
