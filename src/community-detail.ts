@@ -442,9 +442,9 @@ export class CommunityDetail {
                 if(gridDataSource.rowCount === null) {
                   gridDataSource.rowCount = totalCount;
                 }
-                gridOptions.api.hideOverlay();
                 params.successCallback(filteredData, totalCount);
-                this.loading = false;
+                gridOptions.api.hideOverlay();
+               this.loading = false;
             });
           }
         }
