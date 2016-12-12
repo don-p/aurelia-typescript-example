@@ -8,7 +8,7 @@
 	<div class="step-container nodetail" if.bind="step.stepStatus==='ERROR' && (!(step.stepErrors) || step.stepErrors.length===0)">
 		<div class="step-message nodetail">Processing failed with a server error.</div>
 	</div>
-	<div class="step-container nodetail" if.bind="step.stepStatus==='OK' && (!(step.stepErrors) || step.stepErrors.length===0)">
+	<div class="step-container nodetail" if.bind="step.model.stepStatus==='OK' && (!(step.stepErrors) || step.stepErrors.length===0)">
 		<div class="step-message nodetail">Processing completed successfully with no errors, with ${processResponse.rowCount} members imported.</div>
 	</div>
 </template>

@@ -76,27 +76,27 @@ var doAction = function(action) {
 
   if(action === 'next' && this.currentStep.callback) { // submitting the step.
     // Assumes that 'callback' will return a Promise, resolved or rejected.
-    this.currentStep.callback.call(this, this.currentStep.model)
+    this.currentStep.callback.call(this, this.currentStep)
     .then(response => {
         console.debug('callback ---');
         // Set state as valid.
-        if(response.errors) {
-          me.currentStep.stepErrors = response.errors.concat(response.warnings);
+        if(response.res.errors) {
+          me.currentStep.stepErrors = response.res.errors.concat(response.res.warnings);
         } else {
-          me.currentStep.stepErrors = response.warnings;
+          me.currentStep.stepErrors = response.res.warnings;
         }
-        me.currentStep.stepStatus = response.stepStatus;
+        me.currentStep.stepStatus = response.currentStep.stepStatus;
         return response;
       }, response => {
         console.error("Wizard callback rejected."); 
         // Set state as invalid.
-        if(response.errors) {
-          me.currentStep.stepErrors = response.errors.concat(response.warnings);
+        if(response.res.errors) {
+          me.currentStep.stepErrors = response.res.errors.concat(response.res.warnings);
         } else {
-          me.currentStep.stepErrors = response.warnings;
+          me.currentStep.stepErrors = response.res.warnings;
         }
-        me.currentStep.stepStatus = response.stepStatus;
-        return response;
+        me.currentStep.stepStatus = response.currentStep.stepStatus;
+        return response.res;
       }
     )
     .catch(error => { // server error.
