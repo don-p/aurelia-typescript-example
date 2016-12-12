@@ -306,28 +306,30 @@ export class OrganizationDetail {
         canValidate: false,
         vRules: step1Rules,
         model: orgModel,
-        callback: function(model, resolve, reject): Promise<Response> {
+        callback: function(step, resolve, reject): Promise<Response> {
           // Callback function for submitting the upload file.
-          return me.organizationService.importValidate(model.orgId, model.files)
-          .then(response => {return {'res': response.content, 'model': model}})
+          return me.organizationService.importValidate(step.model.orgId, step.model.files)
+          .then(response => {return {'res': response.content, 'model': step}})
           .then(data => {
             let res = data['res'];
             let viewModel = data['model'];
             if(res.errors && res.errors.length > 0) {
               me.logger.error("Upload errors: " + res.errors.length); 
-              viewModel['validateResponse'] = res;
-              res.stepStatus = 'ERROR';
+              viewModel.model['validateResponse'] = res;
+              viewModel.stepStatus = 'ERROR';
               return Promise.reject(res);
             }
             if(res.warnings && res.warnings.length > 0) {
+              viewModel.model['validateResponse'] = res;
+              viewModel.stepStatus = 'WARNING';
               me.logger.error("Upload warnings: " + res.warnings.length); 
             }
-            viewModel['validateResponse'] = res;
+            viewModel.model['validateResponse'] = res;
             me.logger.debug('doImportValidate response: ', res);
-            res.stepStatus = 'OK';
-            return res;
+            viewModel.stepStatus = 'OK';
+            return {currentStep:viewModel, res:res};
           }, error => {
-            model.errorMessage = "Failed"; 
+            step.errorMessage = "Failed"; 
             me.logger.error("Community member call() rejected."); 
             error.stepStatus = 'ERROR';
            return Promise.reject(error);
@@ -341,38 +343,43 @@ export class OrganizationDetail {
         canValidate: false,
         vRules: step2Rules,
         model: orgModel,
-        callback: function(model) {
-          let validateResponse = model.validateResponse;
-          let viewModel = model;
+        callback: function(step) {
+          let validateResponse = step.model.validateResponse;
+          let viewModel = step.model;
           // Callback function for submitting the upload file.
-          return me.organizationService.importProcess(model.orgId, validateResponse.crId)
-          .then(response => {return {'res': response.content, 'model': model}})
+          return me.organizationService.importProcess(step.orgId, validateResponse.crId)
+          .then(response => {return {'res': response, 'model': viewModel}})
+          .then(res => { return res.res.json() 
           .then(data => {
-            let res = data.res;
-            if(res.errors && res.errors.length > 0) {
-              me.logger.error("Process errors: " + res.errors.length); 
-              res.stepStatus = 'ERROR';
+            if(data.errors && data.errors.length > 0) {
+              me.logger.error("Process errors: " + data.errors.length); 
+              data.stepStatus = 'ERROR';
               return Promise.reject(res);
             }
-            if(res.warnings && res.warnings.length > 0) {
-              me.logger.error("Process warnings: " + res.warnings.length); 
+            if(data.warnings && data.warnings.length > 0) {
+              me.logger.error("Process warnings: " + data.warnings.length); 
             }
-            let viewModel = data['model'];
-            viewModel['processResponse'] = res;
-            res.stepStatus = 'OK';
+            let viewModel = res['model'];
+            viewModel['processResponse'] = data;
+            viewModel.stepStatus = 'OK';
             // update the organization member count.
-             me.selectedOrg.memberCount = data.res.totalCount;
+             me.selectedOrg.memberCount = data.totalCount;
             return res;
+          });
           }, error => {
-            model.errorMessage = "Failed"; 
+            step.errorMessage = "Failed"; 
             me.logger.error("Org member call() rejected."); 
-            error.stepStatus = 'ERROR';
+            let viewModel = error['model'];
+            viewModel['processResponse'] = error;
+            viewModel.stepStatus = 'OK';
             return Promise.reject(error);
           }).catch(error => {
-            model.errorMessage = "Failed"; 
+            step.errorMessage = "Failed"; 
             me.logger.error("Org member call() failed."); 
             me.logger.error(error); 
-            error.stepStatus = 'ERROR';
+            let viewModel = error['model'];
+            viewModel['processResponse'] = error;
+            viewModel.stepStatus = 'OK';
             return Promise.reject(error);
           });
           
