@@ -313,20 +313,18 @@ export class OrganizationDetail {
           .then(data => {
             let res = data['res'];
             let viewModel = data['model'];
+            viewModel.model['validateResponse'] = res;
             if(res.errors && res.errors.length > 0) {
               me.logger.error("Upload errors: " + res.errors.length); 
-              viewModel.model['validateResponse'] = res;
               viewModel.stepStatus = 'ERROR';
-              return Promise.reject(res);
+              return Promise.reject({currentStep:viewModel, res:res});
             }
-            if(res.warnings && res.warnings.length > 0) {
-              viewModel.model['validateResponse'] = res;
-              viewModel.stepStatus = 'WARNING';
-              me.logger.error("Upload warnings: " + res.warnings.length); 
-            }
-            viewModel.model['validateResponse'] = res;
             me.logger.debug('doImportValidate response: ', res);
             viewModel.stepStatus = 'OK';
+            if(res.warnings && res.warnings.length > 0) {
+              viewModel.stepStatus = 'OK'; // Warnings are ignored.
+              me.logger.error("Upload warnings: " + res.warnings.length); 
+            }
             return {currentStep:viewModel, res:res};
           }, error => {
             step.errorMessage = "Failed"; 
