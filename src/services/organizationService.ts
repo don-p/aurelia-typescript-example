@@ -79,7 +79,7 @@ export class OrganizationService {
 
         let response = this.getHttpClient().fetch('v1/organizations/' + orgId + '/member-metadata-crs/' + importId,
         {
-            method: 'PUT',
+            method: 'PUT'
         });
 
         return response;
