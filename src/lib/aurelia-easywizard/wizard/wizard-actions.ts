@@ -80,7 +80,7 @@ var doAction = function(action) {
     .then(response => {
         console.debug('callback ---');
         // Set state as valid.
-        if(response.res.errors) {
+        if(response.res.errors && response.res.errors.length > 0) {
           me.currentStep.stepErrors = response.res.errors.concat(response.res.warnings);
         } else {
           me.currentStep.stepErrors = response.res.warnings;
