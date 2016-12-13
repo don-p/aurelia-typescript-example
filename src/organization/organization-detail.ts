@@ -347,7 +347,7 @@ export class OrganizationDetail {
           let validateResponse = step.model.validateResponse;
           let viewModel = step.model;
           // Callback function for submitting the upload file.
-          return me.organizationService.importProcess(step.orgId, validateResponse.crId)
+          return me.organizationService.importProcess(step.model.orgId, validateResponse.crId)
           .then(response => {return {'res': response, 'model': viewModel}})
           .then(res => { return res.res.json() 
           .then(data => {
