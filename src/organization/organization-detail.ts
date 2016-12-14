@@ -329,8 +329,8 @@ export class OrganizationDetail {
           }, error => {
             step.errorMessage = "Failed"; 
             me.logger.error("Community member call() rejected."); 
-            error.stepStatus = 'ERROR';
-           return Promise.reject(error);
+            step.stepStatus = 'ERROR';
+           return Promise.reject({currentStep:step, res:error.content});
           });
         }
       };
