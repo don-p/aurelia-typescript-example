@@ -1431,9 +1431,11 @@ ai-dialog-container {
 
 .step-row {
     margin-left: 5px;
-    color: $blg-red-light;  
 }
 
+.step-row.error {
+    color: $blg-red-light;  
+}
 li.complete .map-check {
   visibility: visible;
 }
