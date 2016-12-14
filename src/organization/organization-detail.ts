@@ -377,7 +377,7 @@ export class OrganizationDetail {
             me.logger.error(error); 
             let viewModel = error['model'];
             viewModel['processResponse'] = error;
-            viewModel.stepStatus = 'OK';
+            viewModel.stepStatus = 'ERROR';
             return Promise.reject(error);
           });
           
