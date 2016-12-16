@@ -1,6 +1,6 @@
 import {inject, Lazy} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
-import {HttpClient as Http} from 'aurelia-http-client';
+import {HttpClient as Http, HttpResponseMessage} from 'aurelia-http-client';
 import {Session} from './session';
 import {FetchConfig} from 'aurelia-auth';
 import {EventAggregator} from 'aurelia-event-aggregator';
@@ -152,7 +152,7 @@ export class CommunityService {
         return response;
     }
 
-    async sendNotification(members:Array<any>, notificationConfig:Object) {
+    async sendNotification(members:Array<any>, notificationConfig:Object):Promise<HttpResponseMessage> {
         await fetch;
         let memberIds = members.map(function(member) {
             return member.memberId;

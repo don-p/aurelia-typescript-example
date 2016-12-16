@@ -928,25 +928,17 @@ export class CommunityDetail {
         attachedFn: function(){
           me.logger.debug( "------attached");
           this.step.errorMessage = "Click 'Next' to send this " + this.controller.dialogController.alertModel.alertType.categoryName + " alert with " + ((this.controller.dialogController.alertModel.files)?this.controller.dialogController.alertModel.files.length:0) + " attachments to " + this.controller.dialogController.alertModel.communityMembers.length + " recipient(s).";
-        }
-      };
-    step4.config = {
-        viewsPrefix: 'community/alertWizard',
-        id: 'alert_result',
-        title: this.i18n.tr('community.alert.finish'),
-        canValidate: false,
-        model: alertModel,
-        attachedFn: function(){
+        },
+        callback: function(step){
           me.logger.debug( "------attached");
           // Call the service to send the alert.
           let view = this;
           let modelPromise = me.communityService.sendNotification(this.controller.dialogController.alertModel.communityMembers, 
           {message: this.controller.dialogController.alertModel.alertMessage, notificationCategory: this.controller.dialogController.alertModel.alertType.categoryId, attachmentRefs: this.controller.dialogController.alertModel.files});
           
-          modelPromise.then(response => response.content)
+          return modelPromise.then(response => response.content)
           .then(data => {
               // Update the message for success.
-              view.controller.wizard.currentStep.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', {alertCategory: view.controller.dialogController.alertModel.alertType.categoryName, recipientCount: this.controller.dialogController.alertModel.communityMembers.length});
               view.controller.showCancel = false;
               // Close dialog on success.
               // delete this.controller.viewModel.submit;
@@ -956,6 +948,9 @@ export class CommunityDetail {
               if(view.controller.alertSelectedMembersGridOptions.api) {
                 view.controller.alertSelectedMembersGridOptions.api.destroy();
               }
+              let viewModel = data['model'];
+              viewModel.stepStatus = 'OK';
+              return {currentStep:viewModel, res:data};
               // controller.ok();
             }, error => {
               view.step.errorMessage = "Failed"; 
@@ -966,7 +961,47 @@ export class CommunityDetail {
               me.logger.error(error); 
               return Promise.reject(error);
             })
+            // return modelPromise;
         }
+
+      };
+    step4.config = {
+        viewsPrefix: 'community/alertWizard',
+        id: 'alert_result',
+        title: this.i18n.tr('community.alert.finish'),
+        canValidate: false,
+        model: alertModel,
+        // attachedFn: function(){
+        //   me.logger.debug( "------attached");
+        //   // Call the service to send the alert.
+        //   let view = this;
+        //   let modelPromise = me.communityService.sendNotification(this.controller.dialogController.alertModel.communityMembers, 
+        //   {message: this.controller.dialogController.alertModel.alertMessage, notificationCategory: this.controller.dialogController.alertModel.alertType.categoryId, attachmentRefs: this.controller.dialogController.alertModel.files});
+          
+        //   modelPromise.then(response => response.content)
+        //   .then(data => {
+        //       // Update the message for success.
+        //       view.controller.wizard.currentStep.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', {alertCategory: view.controller.dialogController.alertModel.alertType.categoryName, recipientCount: this.controller.dialogController.alertModel.communityMembers.length});
+        //       view.controller.showCancel = false;
+        //       // Close dialog on success.
+        //       // delete this.controller.viewModel.submit;
+        //       if(view.controller.alertMembersGridOptions.api) {
+        //         view.controller.alertMembersGridOptions.api.destroy();
+        //       }
+        //       if(view.controller.alertSelectedMembersGridOptions.api) {
+        //         view.controller.alertSelectedMembersGridOptions.api.destroy();
+        //       }
+        //       // controller.ok();
+        //     }, error => {
+        //       view.step.errorMessage = "Failed"; 
+        //       me.logger.error("Community member call() rejected."); 
+        //     }).catch(error => {
+        //       view.step.errorMessage = "Failed"; 
+        //       me.logger.error("Community member call() failed."); 
+        //       me.logger.error(error); 
+        //       return Promise.reject(error);
+        //     })
+        // }
       };
 
 

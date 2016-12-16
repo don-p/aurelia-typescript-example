@@ -3,6 +3,7 @@
 		<div class="step-message nodetail" if.bind="(!(cstep.errorMessage) || step.errorMessage.length===0)">
       <div class="step-message-header">Status:</div>
       ${step.errorMessage}
+      ${ 'community.members.alert.alertSuccessMessage' | t: {alertCategory: currentStep.model.alertType.categoryName, recipientCount: currentStep.model.communityMembers.length}}
     </div>
 	</div>  
 </template>
