@@ -1,6 +1,6 @@
 <template>
 	<div class="step-container" if.bind="step.stepStatus==='ERROR' && ((step.stepErrors) && step.stepErrors.length>0)">
-		<div class="step-message">Validation completed with ${step.stepErrors.length} errors:</div>
+		<div class="step-message">Validation completed with ${step.stepErrors.length} errors/warnings:</div>
 		<div class="step-error">
 			<div class="step-row" class.bind="error.errorType?'error':''" repeat.for="error of step.stepErrors" >Row ${error.index}: [${error.errorType?'ERROR':'WARNING'}] ${error.errorType?error.errorType:error.warningType}</div>
 		</div>
