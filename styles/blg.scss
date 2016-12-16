@@ -1410,8 +1410,10 @@ ai-dialog-container {
 
 .step-error {
   overflow: auto;
-  max-height: 218px;
-  border: 1px solid $blg-grey-light-more;  
+  height: 210px;
+  border: 1px solid $blg-grey-light-more;
+  background-color: $blg-grey-lightest;
+  border-radius: 5px;  
 }
 
 .step-message {
