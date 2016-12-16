@@ -107,6 +107,7 @@
         "organizations":"Organizations",
         "onboard": {
             "importMembers":"Import member data",
+            "importMemberData": "Import Organization Member Data",
             "selectFile": "Select File",
             "validate": "Validate",
             "process": "Process",
