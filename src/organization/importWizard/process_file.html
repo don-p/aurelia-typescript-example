@@ -10,9 +10,10 @@
 	</div>
 	<div class="step-container" if.bind="step.model.stepStatus==='OK'">
 		<div class="step-message">Processing completed successfully with no errors, for ${processResponse.rowCount} member records.</div>
-		<div class="step-message">Records added: ${processResponse.addCount}</div>
-		<div class="step-message">Records deleted: ${processResponse.deleteCount}</div>
-		<div class="step-message">Records skipped: ${processResponse.skipCount}</div>
-		<div class="step-message">Records ignored: ${processResponse.warnings.length}</div>
+		<div class="step-summary-message">Records added: ${processResponse.resultCount.add}</div>
+		<div class="step-summary-message">Records updated: ${processResponse.resultCount.update}</div>
+		<div class="step-summary-message">Records deleted: ${processResponse.resultCount.delete}</div>
+		<div class="step-summary-message">Records skipped: ${processResponse.resultCount.skip}</div>
+		<div class="step-summary-message">Records ignored: ${processResponse.ignoredCount}</div>
 	</div>
 </template>

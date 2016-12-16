@@ -1,5 +1,6 @@
 import {inject, Lazy} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
+import {HttpClient as Http} from 'aurelia-http-client';
 import {Session} from './session';
 import {FetchConfig} from 'aurelia-auth';
 import {EventAggregator} from 'aurelia-event-aggregator';
@@ -10,7 +11,7 @@ import {DataService} from './dataService';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(HttpClient, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService)
+@inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService)
 export class CommunityService {  
 
     // Service object for retreiving application data from REST services.
@@ -19,7 +20,7 @@ export class CommunityService {
     clientId: string;
     clientSecret: string;
 
-    constructor(private httpClient: HttpClient, 
+    constructor(private httpClient: HttpClient, private httpBase: Http, 
         private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
         private fetchConfig: FetchConfig, private dataService:DataService){
 
@@ -153,21 +154,47 @@ export class CommunityService {
 
     async sendNotification(members:Array<any>, notificationConfig:Object) {
         await fetch;
-        let memberIds = members[0].memberId;
+        let memberIds = members.map(function(member) {
+            return member.memberId;
+        });
+
+        let body = {
+            memberRecipients: memberIds,
+            message: notificationConfig['message'],
+            notificationCategory: notificationConfig['notificationCategory']
+        };
 
         var form = new FormData();
-        form.append('notificationCategory', notificationConfig['notificationCategory']);
-        form.append('message', notificationConfig['message']);
-        form.append('attachmentRefs', notificationConfig['attachmentRefs']);
-
-        let response = this.getHttpClient().fetch('v1/members/' + memberIds + '/notifications', 
-            {
-                method: 'POST',
-                body: JSON.stringify(notificationConfig)
+        form.append('notification', JSON.stringify(body));
+        let files = notificationConfig['attachmentRefs']
+        if(files) {
+            for (let i = 0; i < files.length; i++) {
+                let file = files.item(i);
+                form.append('file', file);
 
             }
-        );
+        }
+        // form.append('file', notificationConfig['attachmentRefs']);
+
+        const http =  this.httpBase;
+
+        // Use base http-client, instead of Fetch, for multipart-form file upload.
+        let response = http.createRequest('v1/notifications')
+        .asPost()
+        .withContent(form)
+        .withHeader('Authorization', 'Bearer '+ this.session.auth['access_token'])
+        .send();
+
         return response;
+    
+        // let response = this.getHttpClient().fetch('v1/notifications', 
+        //     {
+        //         method: 'POST',
+        //         body: form
+
+        //     }
+        // );
+        // return response;
     }
 
 }

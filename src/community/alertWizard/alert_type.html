@@ -2,10 +2,10 @@
 
 	<div class="row toggleSelectedLink">
 		<span class="wizard-content-label blg-form-required">Recipients:</span>		
-		<div if.bind="controller.gridOptions.api.rowModel.datasource.name ==='alertCommunityMembers'"  class="pull-right" >
+		<div if.bind="!(controller.showSelected)"  class="pull-right" >
 			<button disabled.bind="(!(communityMembers) || (communityMembers.length === 0))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedMembers(true)"><i class="ico-filter4"></i>Show selected</button>
 		</div>
-		<div if.bind="controller.gridOptions.api.rowModel.datasource.name === 'alertRecipients'" class="pull-right" >
+		<div if.bind="(controller.showSelected)" class="pull-right" >
 			<button class.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="controller.showSelectedMembers(false)"> <i class="ico-filter3"></i>Show all</button>
 		</div>
 		<div class="pull-right">

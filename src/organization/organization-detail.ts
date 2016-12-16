@@ -358,11 +358,17 @@ export class OrganizationDetail {
               me.logger.error("Process warnings: " + data.warnings.length); 
             }
             let viewModel = res['model'];
+            let ignoredCount = 0;
+            // var acc = 0;
+            ignoredCount =Object.keys(data.warningCount).reduce(function(acc, b) {
+              return acc + data.warningCount[b];
+            }, 0);
+            data['ignoredCount'] = ignoredCount;
             viewModel['processResponse'] = data;
             viewModel.stepStatus = 'OK';
             // update the organization member count.
-             me.selectedOrg.memberCount = data.totalCount;
-            return res;
+            me.selectedOrg.memberCount = data.totalCount;
+            return {currentStep:viewModel, res:data};
           });
           }, error => {
             step.errorMessage = "Failed"; 
@@ -370,7 +376,7 @@ export class OrganizationDetail {
             let viewModel = error['model'];
             viewModel['processResponse'] = error;
             viewModel.stepStatus = 'OK';
-            return Promise.reject(error);
+            return Promise.reject({currentStep:viewModel, res:error});
           }).catch(error => {
             step.errorMessage = "Failed"; 
             me.logger.error("Org member call() failed."); 
@@ -378,7 +384,7 @@ export class OrganizationDetail {
             let viewModel = error['model'];
             viewModel['processResponse'] = error;
             viewModel.stepStatus = 'ERROR';
-            return Promise.reject(error);
+            return Promise.reject({currentStep:viewModel, res:error});
           });
           
         }
@@ -395,7 +401,7 @@ export class OrganizationDetail {
     const steps = [step1, step2, step3];
 
     orgModel['orgId'] = me.selectedOrg.organizationId;
-    this.dataService.openWizardDialog('Import Organization Members', steps, orgModel, null)
+    this.dataService.openWizardDialog('Import Organization Member Data', steps, orgModel, null)
     .then((controller:any) => {
       let model = controller.settings;
       controller.viewModel.submit = (output) => {
