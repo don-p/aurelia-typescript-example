@@ -1,20 +1,22 @@
 <template>
 	<div class="step-container" if.bind="step.stepStatus==='ERROR' && ((step.stepErrors) && step.stepErrors.length>0)">
-		<div class="step-message">Validation completed with ${step.stepErrors.length} errors/warnings:</div>
+		<div class="step-message">${'organization.onboard.validationMessage.errors' | t: {errorCount: step.stepErrors.length}}:</div>
 		<div class="step-error">
-			<div class="step-row" class.bind="error.errorType?'error':''" repeat.for="error of step.stepErrors" >Row ${error.index}: [${error.errorType?'ERROR':'WARNING'}] ${error.errorType?error.errorType:error.warningType}</div>
+			<div class="step-row" class.bind="error.errorType?'error':''" repeat.for="error of step.stepErrors" >${'organization.onboard.validationMessage.row' | t} ${error.index}: <span if.bind="error.errorType">[${'organization.onboard.validationMessage.errorType' | t}]</span>
+			<span if.bind="!(error.errorType)">[${'organization.onboard.validationMessage.warningType' | t}]</span> ${'organization.onboard.validationMessage.'+(error.errorType?error.errorType:error.warningType) | t}</div>
 		</div>
 	</div>
 	<div class="step-container nodetail" if.bind="step.stepStatus==='ERROR' && (!(step.stepErrors) || step.stepErrors.length===0)">
-		<div class="step-message nodetail">Validation failed with a server error.</div>
+		<div class="step-message nodetail">${'organization.onboard.validationMessage.serverError' | t}}</div>
 	</div>
 	<div class="step-container" if.bind="step.stepStatus==='OK' && ((step.stepErrors) && step.stepErrors.length>0)">
-		<div class="step-message">Validation completed with ${step.stepErrors.length} warnings:</div>
+		<div class="step-message">${'organization.onboard.validationMessage.warnings' | t: {errorCount: step.stepErrors.length}}:</div>
 		<div class="step-error">
-			<div class="step-row" class.bind="error.errorType?'error':''" repeat.for="error of step.stepErrors" >Row ${error.index}: [${error.errorType?'ERROR':'WARNING'}] ${error.errorType?error.errorType:error.warningType}</div>
+			<div class="step-row" class.bind="error.errorType?'error':''" repeat.for="error of step.stepErrors" >${'organization.onboard.validationMessage.row' | t} ${error.index}: <span if.bind="error.errorType">[${'organization.onboard.validationMessage.errorType' | t}]</span>
+			<span if.bind="!(error.errorType)">[${'organization.onboard.validationMessage.warningType' | t}]</span> ${'organization.onboard.validationMessage.'+(error.errorType?error.errorType:error.warningType) | t}</div>
 		</div>
 	</div>
 	<div class="step-container nodetail" if.bind="step.stepStatus==='OK' && (!(step.stepErrors) || step.stepErrors.length===0)">
-		<div class="step-message nodetail">Validation completed successfully with no errors, for ${validateResponse.rowCount} members to be imported.</div>
+		<div class="step-message nodetail">${'organization.onboard.validationMessage.success' | t: {rowCount: validateResponse.rowCount}}</div>
 	</div>
 </template>
