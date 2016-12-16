@@ -401,7 +401,7 @@ export class OrganizationDetail {
     const steps = [step1, step2, step3];
 
     orgModel['orgId'] = me.selectedOrg.organizationId;
-    this.dataService.openWizardDialog('Import Organization Member Data', steps, orgModel, null)
+    this.dataService.openWizardDialog(this.i18n.tr('organization.onboard.importMemberData'), steps, orgModel, null)
     .then((controller:any) => {
       let model = controller.settings;
       controller.viewModel.submit = (output) => {

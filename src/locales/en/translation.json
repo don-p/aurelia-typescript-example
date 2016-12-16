@@ -107,9 +107,51 @@
         "organizations":"Organizations",
         "onboard": {
             "importMembers":"Import member data",
+            "importMemberData": "Import Organization Member Data",
             "selectFile": "Select File",
             "validate": "Validate",
-            "process": "Process"
+            "process": "Process",
+            "validationMessage": {
+                "errors": "Validation completed with {{errorCount}} errors/warnings",
+                "warnings": "Validation completed with {{errorCount}} warnings",
+                "serverError": "Validation failed with a server error.",
+                "success": "Validation completed successfully with no errors, for {{rowCount}} members to be imported.",
+                "errorType": "ERROR",
+                "warningType": "WARNING",
+                "row": "Row",
+                "DUPLICATE_EMAIL": "The member currently exists in an organization.",
+                "FIRST_NAME_MISSING": "First Name is missing.",
+                "LAST_NAME_MISSING": "Last Name is missing.",
+                "EMAIL_MISSING":"Email is missing.",
+                "JOB_TITLE_MISSING":"Job Title is missing.",
+                "ZIP_CODE_MISSING":"ZIP Code is missing.",
+                "MOBILE_NUMBER_MISSING":"Mobile Phone Number is missing.",
+                "INVALID_COLUMN_COUNT":"Invalid number of columns.",
+                "FIRST_NAME_HEADER_MISSING":"First Name column header label is missing.",
+                "LAST_NAME_HEADER_MISSING":"Last Name column header label is missing.",
+                "EMAIL_HEADER_MISSING":"Email column header label is missing.",
+                "JOB_TITLE_HEADER_MISSING":"Job Title column header label is missing.",
+                "ZIP_CODE_HEADER_MISSING":"ZIP Code column header label is missing.",
+                "MOBILE_NUMBER_HEADER_MISSING":"Mobile Phone Number column header label is missing.",
+                "OPERATION_TYPE_HEADER_MISSING":"Operation column header label is missing.",
+                "INVALID_OPERATION_TYPE":"The Operation column contains an invalid operation type.",
+                "ZIP_CODE_NOT_FOUND":"The ZIP Code is invalid.",
+                "ORGANIZATION_NOT_FOUND":"Organization not found.",
+                "MEMBER_NOT_FOUND":"Member not found.",
+                "NOT_IN_ORGANIZATION":"The member does not exist in this organization."
+
+            },
+            "processingMessage": {
+                "sucess": "Processing completed successfully with no errors, for {{rowCount}} member records.",
+                "added": "Records added",
+                "updated": "Records updated",
+                "deleted": "Records deleted",
+                "skipped": "Records skipped",
+                "ignored": "Records ignored",
+                "errors": "Processing completed with {{errorCount}} errors/warnings",
+                "serverError": "Processing failed with a server error."
+
+            }
         }
     },
 
