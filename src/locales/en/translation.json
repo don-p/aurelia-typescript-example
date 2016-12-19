@@ -29,6 +29,8 @@
         "password":"Password",
         "submit":"Log In",
         "confirm":"Confirm",
+        "forgotPassword":"Forgot password?",
+        "compyright":"All Rights reserved",
         "login2":{
             "text1":"A confirmation code will be sent by text message or email.",
             "text2":"Enter the code below.",
@@ -98,7 +100,11 @@
             "selectMessage": "Create Alert",
             "confirm": "Review & Send",
             "finish": "Finish",
-            "alertType": "Alert type"
+            "alertType": "Alert type",
+            "recipients":"Recipients",
+            "message":"Alert message",
+            "attachment":"Attachment",
+            "selectFile":"Select a file"
         }
     },
 
@@ -182,9 +188,13 @@
     },
 
     "global": {
+        "blueLineGridInc":"BlueLine Grid, Inc.",
         "name": "Name",
         "description": "Description",
         "type": "Type",
-        "filter":"Filter"
+        "filter":"Filter",
+        "confirm":"Confirm",
+        "charsRemaining":"Characters remaining",
+        "status":"Status"
     }
 }

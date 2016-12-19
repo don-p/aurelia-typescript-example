@@ -10,12 +10,12 @@
                     <select class="form-control select select-default-blg" style="display:inline-block;" value.bind="controller.dialogController.alertModel.alertType">
                         <option repeat.for="alertCategory of controller.alertCategories" value="${alertCategory.categoryId}" model.bind="alertCategory">${alertCategory.categoryName}</option>
                     </select>
-                    <span class="pull-right alert-counter">Characters: ${controller.dialogController.alertModel.alertMessage?controller.dialogController.alertModel.alertMessage.length:0} / ??</span>
+                    <span class="pull-right alert-counter">${'global.charsRemaining' | t}: ${controller.dialogController.alertModel.alertMessage?controller.dialogController.alertModel.alertMessage.length:0} / ??</span>
                 </div>
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell column-label">
-                    <span class="wizard-content-label blg-form-required">Alert message:</span>
+                    <span class="wizard-content-label blg-form-required">${'community.alert.message' | t}:</span>
                 </div>
                 <div class="div-table-cell">
                     <div class="send-alert-message-text">				  
@@ -25,15 +25,15 @@
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell column-label">
-                    <span class="wizard-content-label">Attachment:</span>
+                    <span class="wizard-content-label">${'community.alert.attachment' | t}:</span>
                 </div>
                 <div class="div-table-cell">
                     <form class="select-file2">
-                        <input type="file" id="inputfile2" multiple class="inputfile2" files.bind="controller.dialogController.alertModel.files" />
+                        <input type="file" id="inputfile2" multiple="true" class="inputfile2" files.bind="controller.dialogController.alertModel.files" />
                         <label for="inputfile2">
                             <strong>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/>
-                                </svg> Select a file&hellip;
+                                </svg>${'community.alert.selectFile' | t}&hellip;
                             </strong>
                             <span if.bind="step.model.files.length !== 0">${step.model.files[0].name}</span>
                         </label>
