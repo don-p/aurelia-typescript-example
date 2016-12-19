@@ -115,7 +115,7 @@
                 "errors": "Validation completed with {{errorCount}} errors/warnings",
                 "warnings": "Validation completed with {{errorCount}} warnings",
                 "serverError": "Validation failed with a server error.",
-                "success": "Validation completed successfully with no errors, for {{rowCount}} members to be imported.",
+                "success": "Validation completed successfully with no errors, for {{rowCount}} member import rows.",
                 "errorType": "ERROR",
                 "warningType": "WARNING",
                 "row": "Row",
@@ -142,12 +142,12 @@
 
             },
             "processingMessage": {
-                "sucess": "Processing completed successfully with no errors, for {{rowCount}} member records.",
-                "added": "Records added",
-                "updated": "Records updated",
-                "deleted": "Records deleted",
-                "skipped": "Records skipped",
-                "ignored": "Records ignored",
+                "success": "Processing completed successfully with no errors, for {{rowCount}} member import rows.",
+                "added": "Members added",
+                "updated": "Members updated",
+                "deleted": "Members deleted",
+                "skipped": "Members skipped",
+                "ignored": "Members ignored",
                 "errors": "Processing completed with {{errorCount}} errors/warnings",
                 "serverError": "Processing failed with a server error."
 
