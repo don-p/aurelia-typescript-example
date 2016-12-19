@@ -1,7 +1,7 @@
 <template>
   <div class="step-container nodetail">
 		<div class="step-message nodetail" if.bind="(!(cstep.errorMessage) || step.errorMessage.length===0)">
-      <div class="step-message-header">Confirm:</div>
+      <div class="step-message-header">${'global.confirm' | t}:</div>
       ${step.errorMessage}
     </div>
 	</div>

@@ -15,7 +15,6 @@ import {FetchConfig, AuthService} from 'aurelia-auth';
 
 @inject(Session, Router, DataService, Utils, DialogService, I18N, AuthService, LogManager)
 export class Login {
-  heading: string = 'BlueLine Grid Command 2.0';
 //  @required
 //  @email
   username: string = '';

@@ -1,37 +1,3 @@
-<!--
-<template>
-  <section class="au-animate">
-    <h2>${heading}</h2>
-    <h3>${router.currentInstruction.config.title}</h3>
-    <div i18n="${errorMessage}" if.bind="(errorMessage && !(errorMessage===undefined))" class="alert-message-inline">
-    </div>
-    <form if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''" role="form" submit.delegate="login()">
-      <div class="form-group">
-        <label i18n='login.username' for="username"></label>
-        <input i18n='[placeholder]login.username' type="text" value.bind="username" class="form-control" id="un" >
-      </div>
-      <div class="form-group">
-        <label i18n='login.password' for="password"></label>
-        <input i18n='[placeholder]login.password' type="password" value.bind="password" class="form-control" id="pw" >
-      </div>
-      <button i18n='login.submit' type="submit" class="btn btn-default"></button>
-    </form>
-
-     <form if.bind="router.currentInstruction.config.route==='login-2'" role="form" submit.delegate="loginConfirm()">
-       <div><h4><p i18n='login.login2.text1'></p>  
-          <p i18n='login.login2.text2'></p>
-          <p>&nbsp;</p></h4>
-       </div>
-      <div class="form-group">
-        <label i18n='login.login2.confCode' for="confCode"></label>
-        <input i18n='[placeholder]login.login2.confCode' type="text" value.bind="confCode" class="form-control" id="cc" >
-      </div>
-      <button i18n='login.confirm' type="submit" class="btn btn-default"></button>
-    </form>
-   
-  </section>
-</template>
--->
 <template>
     <div class="vertical-center">	
 			<section class="container">
@@ -79,10 +45,10 @@
 							disabled.bind="!(mfaCode)" i18n='login.confirm' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
 
 						<section>
-							<a href="#">Forgot password?</a>
+							<a href="#">${'login.forgotPassword' | t}</a>
 						</section>
 						<section style="margin:0px;">
-							<span class="copy">&copy; 2014-2016 <a href="http://bluelinegrid.com" target="_blank">BlueLine Grid</a>, Inc. All Rights reserved<span>
+							<span class="copy">&copy; 2014-2016 <a href="http://bluelinegrid.com" target="_blank">${global.blueLineGridInc | t}</a> ${'login.copyright' | t}<span>
 						</section>					
 					</form>
 					
