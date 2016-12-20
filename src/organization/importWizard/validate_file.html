@@ -7,7 +7,7 @@
 		</div>
 	</div>
 	<div class="step-container nodetail" if.bind="step.stepStatus==='ERROR' && (!(step.stepErrors) || step.stepErrors.length===0)">
-		<div class="step-message nodetail">${'organization.onboard.validationMessage.serverError' | t}}</div>
+		<div class="step-message nodetail">${'organization.onboard.validationMessage.serverError' | t}</div>
 	</div>
 	<div class="step-container" if.bind="step.stepStatus==='OK' && ((step.stepErrors) && step.stepErrors.length>0)">
 		<div class="step-message">${'organization.onboard.validationMessage.warnings' | t: {errorCount: step.stepErrors.length}}:</div>

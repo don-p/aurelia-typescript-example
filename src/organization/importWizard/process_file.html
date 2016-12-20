@@ -12,11 +12,11 @@
 	<div class="step-container" if.bind="step.model.stepStatus==='OK'">
 		<div class="step-message">${'organization.onboard.processingMessage.success' | t: {rowCount: processResponse.rowCount}}</div>
 		<div class="step-error">		
-			<div class="step-summary-message">${'organization.onboard.processingMessage.added' | t}: ${processResponse.resultCount.add}</div>
-			<div class="step-summary-message">${'organization.onboard.processingMessage.updated' | t}: ${processResponse.resultCount.update}</div>
-			<div class="step-summary-message">${'organization.onboard.processingMessage.deleted' | t}: ${processResponse.resultCount.delete}</div>
-			<div class="step-summary-message">${'organization.onboard.processingMessage.skipped' | t}: ${processResponse.resultCount.skip}</div>
-			<div class="step-summary-message">${'organization.onboard.processingMessage.ignored' | t}: ${processResponse.ignoredCount}</div>
+			<div class="step-summary-message">${'organization.onboard.processingMessage.added' | t}: ${step.model.processResponse.resultCount.add}</div>
+			<div class="step-summary-message">${'organization.onboard.processingMessage.updated' | t}: ${step.model.processResponse.resultCount.update}</div>
+			<div class="step-summary-message">${'organization.onboard.processingMessage.deleted' | t}: ${step.model.processResponse.resultCount.delete}</div>
+			<div class="step-summary-message">${'organization.onboard.processingMessage.skipped' | t}: ${step.model.processResponse.resultCount.skip}</div>
+			<div class="step-summary-message">${'organization.onboard.processingMessage.ignored' | t}: ${step.model.processResponse.ignoredCount}</div>
 		</div>
 	</div>
 </template>
