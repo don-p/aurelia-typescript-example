@@ -948,15 +948,15 @@ export class CommunityDetail {
               if(view.controller.alertSelectedMembersGridOptions.api) {
                 view.controller.alertSelectedMembersGridOptions.api.destroy();
               }
-              let viewModel = data['model'];
-              viewModel.stepStatus = 'OK';
+              let viewModel = view.controller;
+              viewModel.wizard.currentStep.stepStatus = 'OK';
               return {currentStep:viewModel, res:data};
               // controller.ok();
             }, error => {
-              view.step.errorMessage = "Failed"; 
+              view.controller.wizard.currentStep.errorMessage = "Failed"; 
               me.logger.error("Community member call() rejected."); 
             }).catch(error => {
-              view.step.errorMessage = "Failed"; 
+              view.controller.wizard.currentStep.errorMessage = "Failed"; 
               me.logger.error("Community member call() failed."); 
               me.logger.error(error); 
               return Promise.reject(error);
@@ -1133,6 +1133,19 @@ export class CommunityDetail {
 
       controller.ok();
       };
+/* TODO: Fix for showing CLearFilter button.
+Object.defineProperty(controller.viewModel, "isGridFiltered", { get: function () { //return this.a + 1; } });
+      // controller.viewModel.isGridFiltered = function() {
+        return (controller.viewModel.showSelected && 
+            (controller.viewModel.alertSelectedMembersGridOptions && 
+            controller.viewModel.alertSelectedMembersGridOptions.api && 
+            controller.viewModel.alertSelectedMembersGridOptions.api.isAnyFilterPresent())) ||
+            (!(controller.viewModel.showSelected) && 
+            (controller.viewModel.alertMembersGridOptions && 
+            controller.viewModel.alertMembersGridOptions.api && 
+            controller.viewModel.alertMembersGridOptions.api.isAnyFilterPresent()));
+      }});
+*/
       controller.viewModel.showSelectedMembers = function(showSelected:boolean) {
         showSelectedMembers(controller, showSelected);
       }
