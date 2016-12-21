@@ -5,6 +5,8 @@ import {noView} from 'aurelia-framework'
 export class Events {
     static inject() {return [EventAggregator]}
 
+    aggregator:any;
+    
     constructor(aggregator) {
       this.aggregator = aggregator;
     }
