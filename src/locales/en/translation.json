@@ -143,7 +143,7 @@
                 "INVALID_OPERATION_TYPE":"The Operation column contains an invalid operation type.",
                 "ZIP_CODE_NOT_FOUND":"The ZIP Code is invalid.",
                 "ORGANIZATION_NOT_FOUND":"Organization not found.",
-                "MEMBER_NOT_FOUND":"Member not found.",
+                "USER_PROFILE_NOT_FOUND":"Member not found.",
                 "NO_PRIVILEGES_TO_MANAGE_USER_PROFILE":"The member does not exist in this organization."
 
             },
