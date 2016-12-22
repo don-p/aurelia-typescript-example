@@ -290,7 +290,7 @@ export class OrganizationDetail {
       ;
 */
     ///// TEMP
-    let step1Rules = "((Array.isArray(this.model.files)) || (this.model.files.constructor.name === 'FileList')) && ( this.model.files.length > 0)";  
+    let step1Rules = "((Array.isArray(this.model.files)) || (this.model.files.constructor.prototype.toString().indexOf('FileList') !== -1)) && ( this.model.files.length > 0)";  
     let step2Rules = "this.stepStatus !== 'ERROR'";  
     let step3Rules = "this.stepStatus !== 'ERROR'";  
 
