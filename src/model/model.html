@@ -5,6 +5,7 @@
     <div class="modal-header">
         <h4 class="modal-title">${title}</h4>
     </div>
+                <form id="model-form" submit.delegate="!!(submit)?submit(item):controller.ok(item)">
     <ai-dialog-body id="model-dialog-body">
     <!--
     <div ref="loadingMask" id="loadingMask-model" class="spinner">
@@ -23,10 +24,8 @@
                 </div>
             </div>	
             <div class="row textMessage">
-                <form id="model-form" submit.delegate="!!(submit)?submit(item):controller.ok(item)">
                 <compose view="${modelView}" containerless></compose>
-                </form>
-             </div>
+              </div>
       </section>
     </ai-dialog-body>
 
@@ -35,6 +34,7 @@
       <button id="model-submit-button" type="submit" form="model-form" class="btn btn-info" 
         disabled.bind="!((isDirty) && (!hasValidationErrors))">${okText}</button>
     </div>
+               </form>
     <!--
     <div>errors: ${vController.errors} hasErrors: ${hasValidationErrors} count: ${vController.errors.length} model.errorMessage:${model.errorMessage} isDirty:${isDirty}</div>
     <div>error: ${vControlerJSON}</div>
