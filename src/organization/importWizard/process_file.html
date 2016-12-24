@@ -11,12 +11,51 @@
 	</div>
 	<div class="step-container" if.bind="step.model.stepStatus==='OK'">
 		<div class="step-message">${'organization.onboard.processingMessage.success' | t: {rowCount: processResponse.rowCount}}</div>
-		<div class="step-error">		
-			<div class="step-summary-message">${'organization.onboard.processingMessage.added' | t}: ${step.model.processResponse.resultCount.add}</div>
-			<div class="step-summary-message">${'organization.onboard.processingMessage.updated' | t}: ${step.model.processResponse.resultCount.update}</div>
-			<div class="step-summary-message">${'organization.onboard.processingMessage.deleted' | t}: ${step.model.processResponse.resultCount.delete}</div>
-			<div class="step-summary-message">${'organization.onboard.processingMessage.skipped' | t}: ${step.model.processResponse.resultCount.skip}</div>
-			<div class="step-summary-message">${'organization.onboard.processingMessage.ignored' | t}: ${step.model.processResponse.ignoredCount}</div>
-		</div>
+		<div class="step-process">
+			<div class="div-table">
+				<div class="div-table-body">
+					<div class="div-table-row">
+						<div class="div-table-cell process-label">            
+							<span>${'organization.onboard.processingMessage.added' | t}:</span>
+						</div>
+						<div class="div-table-cell">
+							<span>${step.model.processResponse.resultCount.add}</span>
+						</div>
+					</div>
+					<div class="div-table-row">
+						<div class="div-table-cell process-label">            
+							<span>${'organization.onboard.processingMessage.updated' | t}:</span>
+						</div>
+						<div class="div-table-cell">
+							<span>${step.model.processResponse.resultCount.update}</span>
+						</div>
+					</div>
+					<div class="div-table-row">
+						<div class="div-table-cell process-label">            
+							<span>${'organization.onboard.processingMessage.deleted' | t}:</span>
+						</div>
+						<div class="div-table-cell">
+							<span>${step.model.processResponse.resultCount.delete}</span>
+						</div>
+					</div>
+					<div class="div-table-row">
+						<div class="div-table-cell process-label">            
+							<span>${'organization.onboard.processingMessage.skipped' | t}:</span>
+						</div>
+						<div class="div-table-cell">
+							<span>${step.model.processResponse.resultCount.skip}</span>
+						</div>
+					</div>
+					<div class="div-table-row">
+						<div class="div-table-cell process-label">            
+							<span>${'organization.onboard.processingMessage.ignored' | t}:</span>
+						</div>
+						<div class="div-table-cell">
+							<span>${step.model.processResponse.ignoredCount}</span>
+						</div>
+					</div>
+				</div>																
+			</div>
+		</div> 
 	</div>
 </template>
