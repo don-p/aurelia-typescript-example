@@ -195,10 +195,6 @@ form[role=login] button:hover {
   margin-left: -38px;  
 }
 
-.textMessage > div {
-  padding: 0px 15px;
-}
-
 .alert .close {
     top: 0px;
     right: -3px;
@@ -1170,8 +1166,8 @@ padding: 15px 20px 20px 20px;
 }
 
 .modal-header-wizard-border {
-  margin-left: -20px;
-  margin-right: -20px;
+  margin-left: -5px;
+  margin-right: -5px;
   margin-top: 15px;
   margin-bottom: 10px;
   border-top: 1px solid $blg-grey-light-more;    
@@ -1186,9 +1182,17 @@ padding: 15px 20px 20px 20px;
   line-height: 30px;
 }
 
+wizard .modal-title {
+  margin: 0 15px;
+}
+
 .modal-footer {
   padding: 15px;
   border-top: 0px;
+}
+
+wizard .modal-footer {
+  margin: 0px 15px;  
 }
 
 .modal-footer button {
@@ -1633,4 +1637,9 @@ li.complete .map-check {
   resize: none;
   outline: none;  
   border: none;    
+}
+
+#model-dialog-body {
+  display: block;
+  padding: 15px;
 }
