@@ -1608,6 +1608,16 @@ li.complete .map-check {
 	width: 100%;
   padding: 0px 15px;
 }
+
+.step-process .div-table{
+  display: table;
+  width: auto;
+  padding: 0;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 700;  
+}
+
 .div-table-body {
 	display: table-row-group;
 }
@@ -1619,11 +1629,26 @@ li.complete .map-check {
 	padding: 0px 0px 15px 0px;
 }
 
+.step-process .div-table-cell {
+	display: table-cell;
+  padding: 0px 4px;    
+}
+
+.step-process {
+  width: 100%;  
+}
+
 .column-label {
   text-align: right;
   vertical-align: top;
   width: 15%;
   padding-right: 10px;  
+}
+
+.process-label {
+  text-align: right;
+  color: $blg-blue;
+  font-weight: 400;
 }
 
 .alert-counter {
