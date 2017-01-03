@@ -75,7 +75,7 @@ const coreBundles = {
  * Main Webpack Configuration
  */
 
-// Use source mapping only for DEV/QA.
+// Use CSS source mapping only for DEV/QA.
 let sourcemap = ENV === 'production'?'':'?sourceMap';
 // The base/common config.
 let config = generateConfig(
@@ -131,7 +131,7 @@ let config = generateConfig(
    * 
    * For Webpack docs, see: https://webpack.js.org/configuration/
    */
-
+  // Use JS source mapping only for DEV/QA.
   ENV === 'qa' || ENV === 'development' ? 
     envDev(ENV !== 'qa' ? {} : {devtool: 'inline-source-map'}) :
     envProd({}),
