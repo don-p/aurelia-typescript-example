@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "module": "es2015",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -13,7 +13,13 @@
     ]
   },
   "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true
+    "forkChecker": true,
+    "doTypeCheck": true,
+    "useBabel": true,
+    "useCache": true,
+    "babelOptions": {
+      "presets": ["es2015-loose-native-modules"]
+    }  
   },
   "exclude": [
     "node_modules",
