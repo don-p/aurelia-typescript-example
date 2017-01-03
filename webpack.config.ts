@@ -10,6 +10,8 @@ import * as envProd from '@easy-webpack/config-env-production';
 import * as envDev from '@easy-webpack/config-env-development';
 import * as aurelia from '@easy-webpack/config-aurelia';
 import * as typescript from '@easy-webpack/config-typescript';
+import * as regenerator from '@easy-webpack/config-global-regenerator';
+
 import * as html from '@easy-webpack/config-html';
 import * as css from '@easy-webpack/config-css';
 import * as fontAndImages from '@easy-webpack/config-fonts-and-images';
@@ -143,6 +145,8 @@ let config = generateConfig(
   fontAndImages(),
   globalBluebird(),
   globalJquery(),
+  // Transpile to ES5-compatible JS output.  (Remove if not supporting IE11.)
+  regenerator(),
   generateIndexHtml({minify: ENV === 'production'}),
 
   commonChunksOptimize({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'}),
