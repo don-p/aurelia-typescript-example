@@ -23,8 +23,11 @@ import * as copyFiles from '@easy-webpack/config-copy-files';
 import * as uglify from '@easy-webpack/config-uglify';
 import * as generateCoverage from '@easy-webpack/config-test-coverage-istanbul';
 
-
+const isLocal = process.env.NODE_ENV.toLowerCase() == 'local';
+if(isLocal) {process.env.NODE_ENV = 'development'};
 const ENV: 'development' | 'production' | 'qa' = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() || (process.env.NODE_ENV = 'development');
+console.log('========== BUILDING FOR ENV - ' +  process.env.NODE_ENV + ' ==========');
+
 const webpack = require('webpack');
 
 // basic configuration:
@@ -97,7 +100,7 @@ let config = generateConfig(
           loader: 'string-replace-loader',
           query: {
             search: '%RUNTIME_ENVIRONMENT%',
-            replace: 'development',
+            replace: isLocal?'local':ENV,
             flags: 'ig'
           }
         },
