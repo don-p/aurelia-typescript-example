@@ -75,7 +75,7 @@ export class Loading {
     this.promiseChanged(this.promiseFromContext);
   }
 
-  promiseChanged(promise:Promise<Response>) {
+  promiseChanged(promise:any) {
     this.logger.debug("LoadingMask | promiseChanged()");
     if(promise && promise !== null) {
       if(promise.isPending()) {
