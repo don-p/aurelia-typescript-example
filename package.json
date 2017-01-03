@@ -111,6 +111,7 @@
   },
   "devDependencies": {
     "@easy-webpack/config-aurelia": "^2.2.2",
+    "@easy-webpack/config-babel": "^2.0.2",
     "@easy-webpack/config-common-chunks-simple": "^2.0.3",
     "@easy-webpack/config-copy-files": "^1.1.2",
     "@easy-webpack/config-css": "^4.0.0",
