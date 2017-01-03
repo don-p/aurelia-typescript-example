@@ -18,7 +18,7 @@
     "useBabel": true,
     "useCache": true,
     "babelOptions": {
-      "presets": ["es2015-loose-native-modules"]
+      "presets": ["es2015", { "loose": true, "modules": false }]
     }  
   },
   "exclude": [
