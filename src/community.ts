@@ -90,7 +90,7 @@ export class Community {
 
     }
   }
-  getCommunitiesPage(communityType: string, startIndex: number, pageSize: number): Promise<void> {
+  getCommunitiesPage(communityType: string, startIndex: number, pageSize: number): Promise<Response> {
     var me = this;
     var cmtysPromise = this.communityService.getCommunities(communityType, startIndex,  pageSize);
     this.cmtysPromise = cmtysPromise;
@@ -300,6 +300,7 @@ export class Community {
       let model = controller.settings;
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (community) => {
+        me.logger.debug("Edit community submit()");
         let comm = {
           communityId: community.communityId, 
           communityName: community.communityName, 

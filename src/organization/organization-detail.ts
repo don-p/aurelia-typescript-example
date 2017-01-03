@@ -306,11 +306,12 @@ export class OrganizationDetail {
         canValidate: false,
         vRules: step1Rules,
         model: orgModel,
-        callback: function(step, resolve, reject): Promise<Response> {
+        callback: function(step, resolve, reject): Promise<Object> {
           // Callback function for submitting the upload file.
           return me.organizationService.importValidate(step.model.orgId, step.model.files)
-          .then(response => {return {'res': response.content, 'model': step}})
-          .then(data => {
+          .then(response => {//return {'res': response.content, 'model': step} })
+          // .then((data:Object) => {
+            let data = {'res': response.content, 'model': step} ;
             let res = data['res'];
             let viewModel = data['model'];
             viewModel.model['validateResponse'] = res;
@@ -325,7 +326,7 @@ export class OrganizationDetail {
               viewModel.stepStatus = 'OK'; // Warnings are ignored.
               me.logger.error("Upload warnings: " + res.warnings.length); 
             }
-            return {currentStep:viewModel, res:res};
+            return Promise.resolve({currentStep:viewModel, res:res});
           }, error => {
             step.errorMessage = "Failed"; 
             me.logger.error("Community member call() rejected."); 

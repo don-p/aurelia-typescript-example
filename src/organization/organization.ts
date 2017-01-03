@@ -112,7 +112,7 @@ export class Organization {
     }, 0);
   }
 
-  getOrganizationsPage(startIndex: number, pageSize: number): Promise<void> {
+  getOrganizationsPage(startIndex: number, pageSize: number): Promise<Response> {
     var me = this;
     var orgPromise = this.organizationService.getMemberOrgs(startIndex,  pageSize);
     this.orgPromise = orgPromise;

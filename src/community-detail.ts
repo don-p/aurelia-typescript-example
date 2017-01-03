@@ -577,7 +577,7 @@ export class CommunityDetail {
             me.gridOptions.api.refreshView();
             me.gridOptions.api.deselectAll();
             // update the community member count.
-            me.selectedCmty.memberCount = data.totalCount;
+            me.selectedCmty.memberCount = data['totalCount'];
             // Close dialog on success.
             controller.ok();
           }, error => {
@@ -599,7 +599,7 @@ export class CommunityDetail {
     });
   }
 
-  getAlertCategoriesPage(startIndex: number, pageSize: number): Promise<void> {
+  getAlertCategoriesPage(startIndex: number, pageSize: number): Promise<Response> {
     var me = this;
     var alertPromise = this.dataService.getAlertCategories(startIndex,  pageSize);
     return alertPromise
@@ -620,7 +620,7 @@ export class CommunityDetail {
     });
   }  
 
-  getOrganizationsPage(startIndex: number, pageSize: number): Promise<void> {
+  getOrganizationsPage(startIndex: number, pageSize: number): Promise<Response> {
     var me = this;
     var orgPromise = this.organizationService.getMemberOrgs(startIndex,  pageSize);
     return orgPromise
@@ -710,7 +710,7 @@ export class CommunityDetail {
             me.gridOptions.api.refreshView();
             me.gridOptions.api.deselectAll();
             // update the community member count.
-            me.selectedCmty.memberCount = data.totalCount;
+            me.selectedCmty.memberCount = data['totalCount'];
             // Close dialog on success.
             gridOptions.api.destroy();
             controller.ok();

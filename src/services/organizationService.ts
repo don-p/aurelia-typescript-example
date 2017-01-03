@@ -1,6 +1,6 @@
 import {inject, Lazy} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
-import {HttpClient as Http} from 'aurelia-http-client';
+import {HttpClient as Http, HttpResponseMessage} from 'aurelia-http-client';
 import {FetchConfig} from 'aurelia-auth';
 import {Session} from './session';
 import {DataService} from './dataService';
@@ -59,7 +59,7 @@ export class OrganizationService {
     }
 
 
-    importValidate(orgId, files) {
+    importValidate(orgId, files):Promise<HttpResponseMessage> {
         var form = new FormData();
         form.append('dataFile', files[0]);
         const http =  this.httpBase;
