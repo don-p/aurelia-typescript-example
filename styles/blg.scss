@@ -195,10 +195,6 @@ form[role=login] button:hover {
   margin-left: -38px;  
 }
 
-.textMessage > div {
-  padding: 0px 15px;
-}
-
 .alert .close {
     top: 0px;
     right: -3px;
@@ -1170,8 +1166,8 @@ padding: 15px 20px 20px 20px;
 }
 
 .modal-header-wizard-border {
-  margin-left: -20px;
-  margin-right: -20px;
+  margin-left: -5px;
+  margin-right: -5px;
   margin-top: 15px;
   margin-bottom: 10px;
   border-top: 1px solid $blg-grey-light-more;    
@@ -1186,9 +1182,17 @@ padding: 15px 20px 20px 20px;
   line-height: 30px;
 }
 
+wizard .modal-title {
+  margin: 0 15px;
+}
+
 .modal-footer {
   padding: 15px;
   border-top: 0px;
+}
+
+wizard .modal-footer {
+  margin: 0px 15px;  
 }
 
 .modal-footer button {
@@ -1604,6 +1608,16 @@ li.complete .map-check {
 	width: 100%;
   padding: 0px 15px;
 }
+
+.step-process .div-table{
+  display: table;
+  width: auto;
+  padding: 0;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 700;  
+}
+
 .div-table-body {
 	display: table-row-group;
 }
@@ -1615,11 +1629,26 @@ li.complete .map-check {
 	padding: 0px 0px 15px 0px;
 }
 
+.step-process .div-table-cell {
+	display: table-cell;
+  padding: 0px 4px;    
+}
+
+.step-process {
+  width: 100%;  
+}
+
 .column-label {
   text-align: right;
   vertical-align: top;
   width: 15%;
   padding-right: 10px;  
+}
+
+.process-label {
+  text-align: right;
+  color: $blg-blue;
+  font-weight: 400;
 }
 
 .alert-counter {
@@ -1633,4 +1662,9 @@ li.complete .map-check {
   resize: none;
   outline: none;  
   border: none;    
+}
+
+#model-dialog-body {
+  display: block;
+  padding: 15px;
 }
