@@ -3,7 +3,7 @@
         "api": {
             "clientId": "YmxfY29tbWFuZF9j",
             "clientSecret": "ZW50ZXI6MzI3MmU2ZTctYTY2ZC0xMDMyLTg2YzktNmFiMzQ0M2M2MDJk",
-            "serverUrl": "https://scig-dev.bluelinegrid.com/"
+            "serverUrl": "blgapi/"
         },
         "logLevel": "debug"
     },
@@ -11,7 +11,7 @@
         "api": {
             "clientId": "YmxfY29tbWFuZF9j",
             "clientSecret": "ZW50ZXI6MzI3MmU2ZTctYTY2ZC0xMDMyLTg2YzktNmFiMzQ0M2M2MDJk",
-            "serverUrl": "https://scig-dev.bluelinegrid.com/"
+            "serverUrl": "blgapi/"
         },
         "logLevel": "debug"
     },
@@ -19,7 +19,7 @@
         "api": {
             "clientId": "YmxfY29tbWFuZF9j",
             "clientSecret": "ZW50ZXI6MzI3MmU2ZTctYTY2ZC0xMDMyLTg2YzktNmFiMzQ0M2M2MDJk",
-            "serverUrl": "https://scig-dev.bluelinegrid.com/"
+            "serverUrl": "blgapi/"
         },
         "logLevel": "error"
     }

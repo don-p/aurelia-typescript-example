@@ -23,8 +23,9 @@ import * as copyFiles from '@easy-webpack/config-copy-files';
 import * as uglify from '@easy-webpack/config-uglify';
 import * as generateCoverage from '@easy-webpack/config-test-coverage-istanbul';
 
-
 const ENV: 'development' | 'production' | 'qa' = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() || (process.env.NODE_ENV = 'development');
+console.log('========== BUILDING FOR ENV - ' +  process.env.NODE_ENV + ' ==========');
+
 const webpack = require('webpack');
 
 // basic configuration:
@@ -87,6 +88,17 @@ let config = generateConfig(
       'aurelia-bootstrap': coreBundles.bootstrap,
       'aurelia': coreBundles.aurelia.filter(pkg => coreBundles.bootstrap.indexOf(pkg) === -1)
     },
+    devServer: {
+      proxy: {
+        '/blgapi/**': {
+          target: 'https://scig-dev.bluelinegrid.com',
+          pathRewrite: {'^/blgapi' : ''},
+          secure: true,
+          changeOrigin: true,
+          logLevel: 'info'
+        }
+      }
+    },    
     output: {
       path: outDir,
     },
@@ -97,7 +109,7 @@ let config = generateConfig(
           loader: 'string-replace-loader',
           query: {
             search: '%RUNTIME_ENVIRONMENT%',
-            replace: 'development',
+            replace: ENV,
             flags: 'ig'
           }
         },
