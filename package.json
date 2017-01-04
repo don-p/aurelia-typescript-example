@@ -1,9 +1,9 @@
 {
-  "name": "aurelia-skeleton-navigation-webpack",
+  "name": "blueline-grid-gridcommand",
   "version": "1.0.0",
-  "description": "A starter kit for building a standard navigation-style app with Aurelia and webpack.",
+  "description": "BluleLine Grid, Inc. - GridCommand.",
   "main": "dist/electron.js",
-  "productName": "Aurelia Electron",
+  "productName": "GridCommand",
   "scripts": {
     "test": "cross-env NODE_ENV=test ./node_modules/karma/bin/karma start test/karma.conf.js",
     "webdriver:update": "cross-env ./node_modules/.bin/webdriver-manager update",
