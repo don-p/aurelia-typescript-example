@@ -23,7 +23,7 @@ let configForDevelopment = {
 };
 
 let configForProduction = {
-    baseUrl: '%API_SERVER_URL%',
+    baseUrl: '',
     loginUrl: 'oauth/token',
     providers: {
         google: {

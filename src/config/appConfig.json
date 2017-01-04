@@ -1,12 +1,4 @@
 {
-    "local": {
-        "api": {
-            "clientId": "YmxfY29tbWFuZF9j",
-            "clientSecret": "ZW50ZXI6MzI3MmU2ZTctYTY2ZC0xMDMyLTg2YzktNmFiMzQ0M2M2MDJk",
-            "serverUrl": "https://gcv2.dev.bluelinegrid.net/blgapi/"
-        },
-        "logLevel": "debug"
-    },
     "development": {
         "api": {
             "clientId": "YmxfY29tbWFuZF9j",

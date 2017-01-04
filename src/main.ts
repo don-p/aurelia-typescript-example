@@ -74,7 +74,7 @@ export async function configure(aurelia: Aurelia) {
     .plugin('aurelia-auth', (baseConfig)=>{
       // Use config to set auth Url.
       let configInstance = aurelia.container.get(AureliaConfiguration);
-      let apiServerUrl = configInstance.get('api.serverUrl'); 
+      let apiServerUrl = window.location.href + configInstance.get('api.serverUrl'); 
       authConfig.config.baseUrl = apiServerUrl;
       baseConfig.configure(authConfig.config);
     })
