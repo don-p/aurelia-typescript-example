@@ -33,7 +33,7 @@
     "build:prod": "cross-env NODE_ENV=production npm run webpack -- --progress --profile",
     "start": "npm run server:dev",
     "server": "npm run server:dev",
-    "server:dev": "cross-env NODE_ENV=local npm run webpack-dev-server -- --inline --progress --profile --watch",
+    "server:dev": "cross-env NODE_ENV=development npm run webpack-dev-server -- --inline --progress --profile --watch",
     "server:dev:hmr": "npm run server:dev -- --hot",
     "server:prod": "http-server dist --cors",
     "webpack": "cross-env TS_NODE_PROJECT=tsconfig.tsnode.json TS_NODE_FAST=true ./node_modules/.bin/webpack",
