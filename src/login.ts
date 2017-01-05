@@ -1,4 +1,4 @@
-import {inject, Lazy, LogManager} from 'aurelia-framework';
+import {inject, NewInstance, Lazy, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
@@ -8,12 +8,13 @@ import {Session} from './services/session';
 import {DataService} from './services/dataService';
 import {Utils} from './services/util';
 import {FetchConfig, AuthService} from 'aurelia-auth';
+import {ValidationRules, ValidationController, Rules, validateTrigger, ValidationError, Validator, ValidateResults} from 'aurelia-validation';
 
 // import {Validator} from 'aurelia-validation';
 // import {required, email} from 'aurelia-validatejs';
 
 
-@inject(Session, Router, DataService, Utils, DialogService, I18N, AuthService, LogManager)
+@inject(Session, Router, DataService, Utils, DialogService, I18N, NewInstance.of(ValidationController), AuthService, Validator, LogManager)
 export class Login {
 //  @required
 //  @email
@@ -21,6 +22,10 @@ export class Login {
 //  @required
   password: string = '';
   errorMessage: string;
+  errorResult: ValidationError;
+  vResults: ValidationError[];
+
+  vRules: ValidationRules;
 
   mfaCode: string;
  
@@ -37,9 +42,25 @@ export class Login {
 
 
   constructor(private session: Session, private router: Router, private dataService: DataService, 
-    private utils: Utils, private dialogService: DialogService, private i18n: I18N, private authService: AuthService) {
+    private utils: Utils, private dialogService: DialogService, private i18n: I18N, private vController:ValidationController, private authService: AuthService, private validator:Validator) {
       
     this.logger = LogManager.getLogger(this.constructor.name);
+    const vRules = ValidationRules
+      .ensure('username')
+      .displayName(this.i18n.tr('login.emailAddr'))
+      .required()
+      .then()
+      .email()
+      .then()
+      .ensure('password')
+      .displayName(this.i18n.tr('login.password'))
+      .required()
+      .then()
+      .minLength(6)
+      .rules;
+    this.vController.validateTrigger = validateTrigger.changeOrBlur;
+    Rules.set(this, vRules);
+
   }
 
   activate(params, routeConfig, navigationInstruction) {
@@ -52,12 +73,32 @@ export class Login {
 
   bind(bindingContext: Object, overrideContext: Object) {
     this.logger.debug('Bind...');
+    let me = this;
+    this.validator.validateObject(this).then(function(result) {
+      me.vResults = result;
+    })
+  }
+
+  get hasValidationErrors() {
+    return Array.isArray(this.vController.errors) && this.vController.errors.length > 0;
+  }
+
+  get validationErrors() {
+    return this.vController.errors;
+  }
+
+  clearError() {
+    this.logger.debug('clearError(): ' + this.errorResult);
+    this.vResults = [];
+    if(this.errorResult) {
+      this.vController.removeError(this.errorResult);
+     }
   }
 
   async login(): Promise<void> {
 
     var me = this;
-
+    delete me.errorResult;
     return this.dataService.login(this.username, this.password)
 //    .then(response => response.json())
     .then((data:any) => {
@@ -72,7 +113,6 @@ export class Login {
         // FIXME: temp hard-coded role.
         me.session.auth['isLoggedIn'] = true;
         me.authService['auth'].storage.set('auth', JSON.stringify(auth));
-        me.errorMessage = '';
         if(data.mfa.isRequired) {
           me.router.navigateToRoute('login-2');          
         } else {
@@ -83,7 +123,7 @@ export class Login {
         throw "Login(): Authentication failed."
       }
     }).catch(error => {
-      me.errorMessage = this.utils.parseFetchError({errorMessage: 'error.badCredentials'});
+       me.errorResult = me.vController.addError(this.utils.parseFetchError({errorMessage: me.i18n.tr('error.badCredentials')}), this);
       me.logger.debug("Authentication failed."); 
       me.logger.debug(error); 
     });
