@@ -29,7 +29,7 @@ console.log('========== BUILDING FOR ENV - ' +  process.env.NODE_ENV + ' =======
 const webpack = require('webpack');
 
 // basic configuration:
-const title = 'Grid Command V2';
+const title = 'GridCommand';
 const baseUrl = '/';
 const rootDir = path.resolve();
 const srcDir = path.resolve('src');
@@ -88,6 +88,7 @@ let config = generateConfig(
       'aurelia-bootstrap': coreBundles.bootstrap,
       'aurelia': coreBundles.aurelia.filter(pkg => coreBundles.bootstrap.indexOf(pkg) === -1)
     },
+    // Proxy config for the webpack devServer to use our special API proxying scheme.
     devServer: {
       proxy: {
         '/blgapi/**': {
@@ -120,7 +121,12 @@ let config = generateConfig(
         // SASS loader.
         {
           test: /\.(scss|css)$/i, exclude: [srcDir+'/libs/'], loader: ExtractCustomCSS.extract(['css-loader'+sourcemap+'!sass-loader'+sourcemap])
-        }
+        },
+{
+   test: /favicon.ico$/,
+   exclude: /node_modules/,
+   loader:'file-loader?name=[name].[hash].[ext]&context=.'
+}      
       ]
     },
     plugins: [
@@ -159,14 +165,15 @@ let config = generateConfig(
   globalJquery(),
   // Transpile to ES5-compatible JS output.  (Remove if not supporting IE11.)
   regenerator(),
-  generateIndexHtml({minify: ENV === 'production'}),
+
+  generateIndexHtml({minify: ENV === 'production'/*, overrideOptions:{favicon: 'favicon.ico'}*/}),
 
   commonChunksOptimize({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'}),
   copyFiles({patterns: 
     [
       {context: './src/config', from: '**/**.json', to: 'config'},
-      {context: './src/locales', from: '**/**.json', to: 'locales'},
-      {from: 'favicon.ico', to: 'favicon.ico' }
+  {context: './src/locales', from: '**/**.json', to: 'locales'}/*,
+      {from: 'favicon.ico', to: 'favicon.ico' }*/
     ]
   }),
 /* ENV === 'test' */

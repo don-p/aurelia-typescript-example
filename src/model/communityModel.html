@@ -1,15 +1,21 @@
 <template>
+    <require from="../lib/trim-whitespace"></require>
     <div>
         <div class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]global.name'>: </label>
-            <input id="name" attach-focus="true" value.bind="item.communityName & validate" 
+            <!--<input id="name" attach-focus="true" value.two-way="item.communityName & validate" 
             change.delegate="vController.validate({ object: $this.item, rules: vRules })" 
-            class="form-control input-lg" />
+            class="form-control input-lg"/>-->
+            <input id="name" attach-focus="true" value.two-way="item.communityName & validate" 
+             
+            class="form-control input-lg"/>
         </div>
         <div class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]global.description'>: </label>
-            <input id="name" value.bind="item.communityDescription & validate" 
+            <!--<input id="name" value.bind="item.communityDescription & validate" 
             change.delegate="vController.validate({ object: $this.item, rules: vRules })" 
+            class="form-control input-lg" />-->
+            <input id="name" value.bind="item.communityDescription & validate" 
             class="form-control input-lg" />
         </div>
         <div class="dialog-section" if.bind="(!(item.communityId) || item.communityId == null)">

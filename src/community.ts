@@ -11,6 +11,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import * as Ps from 'perfect-scrollbar';
 import {ValidationRules, ValidationController} from 'aurelia-validation';
+import {CommunityResource} from './model/communityResource';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
@@ -244,22 +245,11 @@ export class Community {
     let title = '';
     if(community === null) {
       // Create an empty or cloned object model for the edit dialog.
-      community = {
-        communityName: null, 
-        communityDescription: null, 
-        communityType: 'TEAM', 
-        communityId: null
-      };
+      community = new CommunityResource();
       title = this.i18n.tr('community.createCommunity');
     } else {
       // Clone the object so we do not edit the live/bound model.
-      // community = Object.assign({}, community);
-      community = {
-        communityName: community.communityName, 
-        communityDescription: community.communityDescription, 
-        communityType: community.communityType, 
-        communityId: community.communityId
-      };
+      community = new CommunityResource(community);
       title = this.i18n.tr('community.editCommunity');
     }
     const vRules = ValidationRules
