@@ -105,7 +105,7 @@ form[role=login] {
 	-webkit-box-shadow: 5px 5px 5px 0px rgba(35,109,158,0.75);
 	-moz-box-shadow: 5px 5px 5px 0px rgba(35,109,158,0.75);
 	box-shadow: 5px 5px 5px 0px rgba(35,109,158,0.75);
-	height: 560px;	
+	min-height: 560px;	
 }
 
 form[role=login] > section {
