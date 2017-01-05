@@ -8,7 +8,7 @@ import {Session} from './services/session';
 import {DataService} from './services/dataService';
 import {Utils} from './services/util';
 import {FetchConfig, AuthService} from 'aurelia-auth';
-import {ValidationRules, ValidationController, Rules, validateTrigger, ValidationError, Validator, ValidateResults} from 'aurelia-validation';
+import {ValidationRules, ValidationController, Rules, validateTrigger, ValidationError, Validator} from 'aurelia-validation';
 
 // import {Validator} from 'aurelia-validation';
 // import {required, email} from 'aurelia-validatejs';
