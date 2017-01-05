@@ -14,7 +14,6 @@ import '../styles/style.scss';
 import 'ag-grid/dist/styles/ag-grid.css';
 import '../styles/theme-blg.styl';
 
-
 import 'bootstrap-sass/assets/javascripts/bootstrap.js';
 // Framework modules:
 import {bootstrap} from 'aurelia-bootstrapper-webpack';
@@ -74,7 +73,7 @@ export async function configure(aurelia: Aurelia) {
     .plugin('aurelia-auth', (baseConfig)=>{
       // Use config to set auth Url.
       let configInstance = aurelia.container.get(AureliaConfiguration);
-      let apiServerUrl = window.location.href + configInstance.get('api.serverUrl'); 
+      let apiServerUrl = window.location.origin + '/' + configInstance.get('api.serverUrl'); 
       authConfig.config.baseUrl = apiServerUrl;
       baseConfig.configure(authConfig.config);
     })
@@ -127,12 +126,14 @@ export async function configure(aurelia: Aurelia) {
         LogManager.setLevel(LogManager.logLevel[logLevel]);
         LogManager.addAppender(new ConsoleAppender());
         // Merge server config with local.
+        /*
         dataInstance.getCallServiceConfig()
         .then(response => response.json())
         .then((data) => {
           // Merge configs.
           configInstance.merge({server: data});
         })
+        */
       });
 
   // Uncomment the line below to enable animation.

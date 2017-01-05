@@ -18,11 +18,15 @@
 						<div if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''">
 							<div class="row">
 								<div class="col-xs-12">
-									<input  id="un" i18n='[placeholder]login.emailAddr' input.delegate="clearError()" autofocus value.bind="username & validate" type="email" name="email" class="form-control input-lg" />
+									<input  id="un" i18n='[placeholder]login.emailAddr' 
+										input.delegate="clearError()" change.delegate="clearError()" autofocus value.bind="username & validate" 
+										type="email" name="email" class="form-control input-lg" />
 									<span class="glyphicon glyphicon-user"></span>
 								</div>
 								<div class="col-xs-12">
-									<input id="pw" i18n='[placeholder]login.password' input.delegate="clearError()" type="password" value.bind="password & validate" name="password" class="form-control input-lg" />
+									<input id="pw" i18n='[placeholder]login.password' 
+										input.delegate="clearError()" change.delegate="clearError()" type="password" value.bind="password & validate" 
+										name="password" class="form-control input-lg" />
 									<span class="glyphicon glyphicon-lock"></span>
 								</div>
 							</div>
