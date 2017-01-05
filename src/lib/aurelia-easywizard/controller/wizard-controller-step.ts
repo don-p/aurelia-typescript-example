@@ -1,5 +1,5 @@
 import {noView, inject, bindable} from 'aurelia-framework'
-import {Validator, ValidationController, ValidationRules, ValidationError} from 'aurelia-validation';
+import {Validator, ValidationController, ValidationRules} from 'aurelia-validation';
 import {WizardController} from './wizard-controller';
 
 // @noView

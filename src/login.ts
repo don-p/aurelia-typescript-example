@@ -8,7 +8,7 @@ import {Session} from './services/session';
 import {DataService} from './services/dataService';
 import {Utils} from './services/util';
 import {FetchConfig, AuthService} from 'aurelia-auth';
-import {ValidationRules, ValidationController, Rules, validateTrigger, ValidationError, Validator} from 'aurelia-validation';
+import {ValidationRules, ValidationController, Rules, validateTrigger, Validator, ValidateResult} from 'aurelia-validation';
 
 // import {Validator} from 'aurelia-validation';
 // import {required, email} from 'aurelia-validatejs';
@@ -22,8 +22,8 @@ export class Login {
 //  @required
   password: string = '';
   errorMessage: string;
-  errorResult: ValidationError;
-  vResults: ValidationError[];
+  errorResult: ValidateResult;
+  vResults: ValidateResult[];
 
   vRules: ValidationRules;
 
@@ -58,7 +58,7 @@ export class Login {
       .then()
       .minLength(6)
       .rules;
-    this.vController.validateTrigger = validateTrigger.changeOrBlur;
+    this.vController.validateTrigger = validateTrigger.manual;
     Rules.set(this, vRules);
 
   }
@@ -73,10 +73,19 @@ export class Login {
 
   bind(bindingContext: Object, overrideContext: Object) {
     this.logger.debug('Bind...');
+  }
+
+  attached() {
+    $('#pw').on('change', function(event) {
+      console.log('Got a CHANGE');
+    });
+    $('#un').on('change', function(event) {
+      console.log('Got a CHANGE');
+    });
     let me = this;
     this.validator.validateObject(this).then(function(result) {
       me.vResults = result;
-    })
+    })    
   }
 
   get hasValidationErrors() {
@@ -93,6 +102,7 @@ export class Login {
     if(this.errorResult) {
       this.vController.removeError(this.errorResult);
      }
+     this.vController.validate();
   }
 
   async login(): Promise<void> {

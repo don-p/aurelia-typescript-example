@@ -1,5 +1,5 @@
 import{inject, bindable} from 'aurelia-framework';
-import {Validator, ValidationController, ValidationRules, ValidationError, validateTrigger} from 'aurelia-validation';
+import {Validator, ValidationController, ValidationRules, validateTrigger} from 'aurelia-validation';
 import {Events} from '../events';
 import {noView} from 'aurelia-templating';
 
