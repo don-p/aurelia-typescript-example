@@ -76,12 +76,6 @@ export class Login {
   }
 
   attached() {
-    $('#pw').on('change', function(event) {
-      console.log('Got a CHANGE');
-    });
-    $('#un').on('change', function(event) {
-      console.log('Got a CHANGE');
-    });
     let me = this;
     this.validator.validateObject(this).then(function(result) {
       me.vResults = result;
@@ -101,8 +95,8 @@ export class Login {
     this.vResults = [];
     if(this.errorResult) {
       this.vController.removeError(this.errorResult);
-     }
-     this.vController.validate();
+    }
+    this.vController.validate();
   }
 
   async login(): Promise<void> {
