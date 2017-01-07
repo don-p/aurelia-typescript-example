@@ -132,15 +132,20 @@ export class Community {
   }
 
   selectCommunity(community: Object) {
-    this.selectedItem = community;
-    this.scrollToCommunityInList(community);
+    // Find the community object in the collection.
+    let selectedCommunity =  this.communities.find(function(comm: Object){
+      return comm['communityId'] === community['communityId'];
+    });
+    // Select the community item.
+    this.selectedItem = selectedCommunity;
+    this.scrollToCommunityInList(selectedCommunity);
     // Ensure correct community type view.
-    let type = community['communityType'];
+    let type = selectedCommunity['communityType'];
     if(this.commType !== type) {
-      this.selectCommunityType(type, community);
+      this.selectCommunityType(type, selectedCommunity);
     }
     this.selectedCommunities = [];
-    this.evt.publish('cmtySelected', {community: community});
+    this.evt.publish('cmtySelected', {community: selectedCommunity});
   }
 
   scrollToCommunityInList(community:any) {

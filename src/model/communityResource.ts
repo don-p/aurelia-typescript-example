@@ -8,6 +8,7 @@ export class CommunityResource {
   _description: string;
   communityType: string;
   communityId: string;
+  _memberCount: number;
   
   constructor(community?:any) {
       if(community && community !== null) {
@@ -15,6 +16,7 @@ export class CommunityResource {
         this._description = community.communityDescription;
         this.communityType = community.communityType;
         this.communityId = community.communityId;
+        this._memberCount = community.memberCount;
       } else {
         this._name = '';
         this._description = '';
@@ -38,6 +40,13 @@ export class CommunityResource {
     this._description = typeof value === 'string'?value.trim():'';
   }
 
+  @computedFrom('_memberCount')
+  get memberCount() {
+    return this._memberCount;
+  }
+  set memberCount(value) {
+    this._memberCount = value;
+  }
 }
 
 
