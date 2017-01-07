@@ -55,7 +55,7 @@
 						<button if.bind="router.currentInstruction.config.route==='login-2'" 
 							disabled.bind="!(mfaCode)" i18n='login.confirm' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
 
-						<section>
+						<section class="invisible">
 							<a href="#">${'login.forgotPassword' | t}</a>
 						</section>
 						<section style="margin:0px;">
