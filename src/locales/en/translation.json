@@ -184,7 +184,8 @@
         "transferOwnership":"Transfer ownership",
         "deleteCommunity":"Delete community",
         "editCommunity":"Update community",
-        "createCommunity":"Create community"
+        "createCommunity":"Create community",
+        "removeAttachment":"Remove attachment"        
     },
 
     "global": {

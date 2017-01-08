@@ -1453,7 +1453,7 @@ li.complete .map-check {
 }
 
 .organization-panel-list {
-  width: 475px;  
+  width: 447px;  
 }
 
 .blg-organization-content ul {
@@ -1667,4 +1667,18 @@ li.complete .map-check {
 #model-dialog-body {
   display: block;
   padding: 15px;
+}
+
+.send-alert-remove-attachment {
+  background-color: transparent;
+  position: relative;
+  bottom: 2px;  
+}
+
+.send-alert-remove-attachment:hover {
+  color: mix($blg-blue, black, 80%);  
+}
+
+.send-alert-remove-attachment i {
+  font-size: 24px;
 }

@@ -36,6 +36,9 @@
                                 </svg>${'community.alert.selectFile' | t}&hellip;
                             </strong>
                             <span if.bind="step.model.files.length !== 0">${step.model.files[0].name}</span>
+                            <button if.bind="step.model.files.length > 0" id="btn-remove-attachment" class="btn btn-xs send-alert-remove-attachment" i18n="[title]button.removeAttachment">
+				                <i class="ico-cancel-square2"></i>
+			                </button>
                         </label>
                     </form>
                 </div>
