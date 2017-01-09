@@ -825,7 +825,8 @@ export class CommunityDetail {
     let alertModel = {
       communityMembers: communityMembers,
       alertType: '',
-      alertMessage: ''
+      alertMessage: '',
+      files: []
     };
     const vRules = null;
     // const vRules = ValidationRules
@@ -927,7 +928,7 @@ export class CommunityDetail {
         model: alertModel,
         attachedFn: function(){
           me.logger.debug( "------attached");
-          this.step.errorMessage = "Click 'Next' to send this " + this.controller.dialogController.alertModel.alertType.categoryName + " alert with " + ((this.controller.dialogController.alertModel.files)?this.controller.dialogController.alertModel.files.length:0) + " attachments to " + this.controller.dialogController.alertModel.communityMembers.length + " recipient(s).";
+          this.step.errorMessage = "Click 'Next' to send this " + this.controller.dialogController.alertModel.alertType.categoryName + " alert with " + ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0) + " attachments to " + this.controller.dialogController.alertModel.communityMembers.length + " recipient(s).";
         },
         callback: function(step){
           me.logger.debug( "------attached");
@@ -976,7 +977,7 @@ export class CommunityDetail {
         //   // Call the service to send the alert.
         //   let view = this;
         //   let modelPromise = me.communityService.sendNotification(this.controller.dialogController.alertModel.communityMembers, 
-        //   {message: this.controller.dialogController.alertModel.alertMessage, notificationCategory: this.controller.dialogController.alertModel.alertType.categoryId, attachmentRefs: this.controller.dialogController.alertModel.files});
+        //   {message: this.controller.dialogController.alertModel.alertMessage, notificationCategory: this.controller.dialogController.alertModel.alertType.categoryId, attachmentRefs: this.controller.dialogController.alertModel.fileList});
           
         //   modelPromise.then(response => response.content)
         //   .then(data => {
@@ -1103,11 +1104,23 @@ export class CommunityDetail {
           // this.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService, this.selectedOrganization);
         }
       };
+      controller.viewModel.onAlertAttachmentFile = function(event, fileList) {
+        let fileArray = Array.from(fileList);
+        controller.alertModel.files = fileArray;
+      };
+      controller.viewModel.removeAttachment = function(att: any) {
+        if(att) {
+          let index = controller.alertModel.files.indexOf(att);
+          controller.alertModel.files.splice(index, 1);
+        } else {
+          delete controller.alertModel.fileList;
+        }
+      };
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (communityMembers:any[]) => {
       //  // Call the service to send the alert.
       //   let modelPromise = this.communityService.sendNotification(controller.alertModel.communityMembers[0].memberId, 
-      //   {message: controller.alertModel.alertMessage, notificationCategory: controller.alertModel.alertType.categoryId, attachmentRefs: controller.alertModel.files});
+      //   {message: controller.alertModel.alertMessage, notificationCategory: controller.alertModel.alertType.categoryId, attachmentRefs: controller.alertModel.fileList});
         
       //   modelPromise.then(response => response.json())
       //   .then(data => {

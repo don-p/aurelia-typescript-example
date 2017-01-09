@@ -169,7 +169,7 @@ export class CommunityService {
         let files = notificationConfig['attachmentRefs']
         if(files) {
             for (let i = 0; i < files.length; i++) {
-                let file = files.item(i);
+                let file = files[i];
                 form.append('file', file);
 
             }
