@@ -2,6 +2,7 @@ import {inject, NewInstance, Lazy, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService} from 'aurelia-dialog';
 import {I18N} from 'aurelia-i18n';
 import {Session} from './services/session';
@@ -14,7 +15,7 @@ import {ValidationRules, ValidationController, Rules, validateTrigger, Validator
 // import {required, email} from 'aurelia-validatejs';
 
 
-@inject(Session, Router, DataService, Utils, DialogService, I18N, NewInstance.of(ValidationController), AuthService, Validator, LogManager)
+@inject(Session, Router, DataService, Utils, DialogService, I18N, NewInstance.of(ValidationController), AuthService, Validator, EventAggregator, LogManager)
 export class Login {
 //  @required
 //  @email
@@ -42,7 +43,8 @@ export class Login {
 
 
   constructor(private session: Session, private router: Router, private dataService: DataService, 
-    private utils: Utils, private dialogService: DialogService, private i18n: I18N, private vController:ValidationController, private authService: AuthService, private validator:Validator) {
+    private utils: Utils, private dialogService: DialogService, private i18n: I18N, private vController:ValidationController, 
+    private authService: AuthService, private validator:Validator, private evt:EventAggregator) {
       
     this.logger = LogManager.getLogger(this.constructor.name);
     const vRules = ValidationRules
@@ -116,10 +118,13 @@ export class Login {
         me.session.auth['member'].role = 'admin';
         // FIXME: temp hard-coded role.
         me.session.auth['isLoggedIn'] = true;
+
         me.authService['auth'].storage.set('auth', JSON.stringify(auth));
         if(data.mfa.isRequired) {
           me.router.navigateToRoute('login-2');          
         } else {
+          // Send event for successful authentication.
+          me.evt.publish('authenticated', auth);      
           // me.router.navigateToRoute('/#', { replace: true });
           me.router.navigateToRoute('organization');
         }
@@ -142,6 +147,8 @@ async loginConfirm(token): Promise<void> {
     mfaPromise
     // .then(response => response.json())
     .then(data => {
+      // Send event for successful authentication.
+      me.evt.publish('authenticated', data);      
       // Successfully validated confirmation code.
       // me.router.navigateToRoute('community');
       me.router.navigateToRoute('organization');
