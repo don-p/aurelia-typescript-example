@@ -498,7 +498,8 @@ header .navbar-nav {
   background-color: $blg-white;
 }
 
-.conversation-list, .community-list {
+.community-list,
+.organization-list {
   padding: 4px 5px 5px 0px;
   height: 100%;
   position: relative;
@@ -1682,3 +1683,18 @@ li.complete .map-check {
 .send-alert-remove-attachment i {
   font-size: 24px;
 }
+
+/* Remove block for Communities list with checkboxes */
+.community-name {
+    max-width: 290px !important;
+}
+.community-description {
+    max-width: 380px !important;
+}
+.community-list-info-bar {
+    height: 40px;
+}
+.community-list ul {
+    margin-left: -25px;
+}
+/* Remove block for Communities list with checkboxes */
