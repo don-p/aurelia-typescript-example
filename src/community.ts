@@ -157,9 +157,9 @@ export class Community {
       if(typeof element === 'object') {
         me.logger.debug("scrolTo element: " + element);
         let offset = element.offsetTop;
-        if(offset > (container.clientHeight - element.clientHeight)) {
+        // if(offset > (container.clientHeight - element.clientHeight)) {
           container.scrollTop = offset;
-        }
+        // }
       }
     }, 0);
   }
