@@ -395,6 +395,8 @@ export class OrganizationDetail {
         id: 'process_file',
         title: this.i18n.tr('organization.onboard.process'),
         canValidate: false,
+        canGoBack: false,
+        canCancel: false,
         vRules: step3Rules,
         model: orgModel
       };

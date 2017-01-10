@@ -971,6 +971,8 @@ export class CommunityDetail {
         id: 'alert_result',
         title: this.i18n.tr('community.alert.finish'),
         canValidate: false,
+        canGoBack: false,
+        canCancel: false,
         model: alertModel,
         // attachedFn: function(){
         //   me.logger.debug( "------attached");

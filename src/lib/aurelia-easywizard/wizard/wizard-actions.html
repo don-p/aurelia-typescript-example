@@ -2,8 +2,8 @@
 
 <div show.bind="hasSteps" class="wizard-actions" click.delegate="process($event)">
   <div class="modal-footer">
-    <button class="btn btn-default-blg cancel" if.bind="controller.showCancel && !!controller.showCancel" click.trigger="controller.dialogController.cancel()">${ 'button.cancel' | t}</button>
-    <button if.bind="isNotFirstStep" class="btn-prev btn btn-info" data-action="prev">
+    <button class="btn btn-default-blg cancel" if.bind="canCancel" click.trigger="controller.dialogController.cancel()">${ 'button.cancel' | t}</button>
+    <button if.bind="isNotFirstStep && canGoBack" class="btn-prev btn btn-info" data-action="prev">
       <i class="ico-arrow-left3"></i> ${'button.previous' | t}
     </button>
     <button disabled.bind="!(wizardSteps.currentStep.isValid)" if.bind="isLastStep" class="btn-prev btn btn-info" data-action="submit">

@@ -29,6 +29,15 @@ export class WizardSteps {
   get isFirstStep() {
     return this.currentStep == this.parent.firstStep()
   }
+
+  get canGoBack() {
+    return this.currentStep.canGoBack;
+  }
+
+  get canCancel() {
+    return this.currentStep.canCancel;
+  }
+
   setCurrent(currentStep) {
     if (this.currentStep.id) {
       this.currentStep.setIsCurrent(false)

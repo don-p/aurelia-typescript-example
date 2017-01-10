@@ -10,66 +10,72 @@ export class WizardActions {
   events:any;
 
   constructor() {
-  this.nextAction = ""
-  this.isValidCurrentStep = false
+  this.nextAction = "";
+  this.isValidCurrentStep = false;
   }
 
 process(event) {
-    event.stopPropagation()
-    event.preventDefault()
-    event.cancelBubble = true
-    let action = $(event.target).data('action')
+    event.stopPropagation();
+    event.preventDefault();
+    event.cancelBubble = true;
+    let action = $(event.target).data('action');
     if (typeof this[action] === 'function') {
-      this[action]()
+      this[action]();
     }
-    return false
+    return false;
   }
   bind(parent) {
-    this.parent = parent
-    this.events = parent.events
-    initEvents.call(this)
+    this.parent = parent;
+    this.events = parent.events;
+    initEvents.call(this);
   }
   prev() {
     if (this.isNotFirstStep) {
-      doAction.call(this, "prev")
+      doAction.call(this, "prev");
     }
   }
   next() {
     if (this.isNotLastStep) {
-      doAction.call(this, "next")
+      doAction.call(this, "next");
     }
   }
   submit() {
     if (this.isLastStep) {
-      doAction.call(this, "submit")
+      doAction.call(this, "submit");
     }
   }
   get isLastStep() {
-    return this.parent.wizardSteps.isLastStep
+    return this.parent.wizardSteps.isLastStep;
   }
   get isNotFirstStep() {
-    return !this.parent.wizardSteps.isFirstStep
+    return !this.parent.wizardSteps.isFirstStep;
+  }
+  get canGoBack() {
+    return this.parent.wizardSteps.canGoBack;
+  }
+  get canCancel() {
+    return this.parent.wizardSteps.canCancel;
   }
   get isNotLastStep() {
-    return !this.isLastStep
+    return !this.isLastStep;
   }
   get hasSteps() {
-    return this.parent.wizardSteps.numSteps != 0
+    return this.parent.wizardSteps.numSteps != 0;
   }
   get currentStep() {
-    return this.parent.currentStep
+    return this.parent.currentStep;
   }
 }
 var initEvents = function() {
   this.events.subscribe("wizard:current:step:valid", (currentStep) => {
     if (this.nextAction && currentStep.getId() == this.currentStep.getId()) {
-      doNextAction.call(this)
+      doNextAction.call(this);
     }  
   })
 }
 var doNextAction = function() {
-   publish.call(this, "action", this.nextAction)
-   this.nextAction = undefined
+   publish.call(this, "action", this.nextAction);
+   this.nextAction = undefined;
 }
 var doAction = function(action) {
   const me = this;

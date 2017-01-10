@@ -9,6 +9,8 @@ export class WizardControllerStep {
   title:string;
   id:string;
   isCurrent:boolean;
+  canGoBack: boolean;
+  canCancel: boolean;
   canValidate:boolean;
   stepErrors: Array<any>;
   stepStatus: any;
@@ -27,6 +29,8 @@ export class WizardControllerStep {
     this.title = "";
     this.id = "";
     this.isCurrent = false;
+    this.canGoBack = true;
+    this.canCancel = true;
     this.canValidate = true;
     this.viewsPrefix = "";
     this.model = {};
@@ -54,6 +58,8 @@ export class WizardControllerStep {
     this.title = config.title;
     this.id = config.id;
     this.isCurrent = config.isCurrent;
+    this.canGoBack = config.canGoBack===false?false:true;
+    this.canCancel = config.canCancel===false?false:true;
     this.canValidate = config.canValidate;
     this.vRules = config.vRules;
     this.viewsPrefix = config.viewsPrefix;
