@@ -1702,3 +1702,9 @@ li.complete .map-check {
     margin-left: -25px;
 }
 /* Remove block for Communities list with checkboxes */
+
+
+.select-organization {
+  max-width: 450px;
+  text-overflow: ellipsis;
+}
