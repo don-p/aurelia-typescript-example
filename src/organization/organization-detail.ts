@@ -407,6 +407,10 @@ export class OrganizationDetail {
     this.dataService.openWizardDialog(this.i18n.tr('organization.onboard.importMemberData'), steps, orgModel, null)
     .then((controller:any) => {
       let model = controller.settings;
+      controller.viewModel.onUploadFile = function(event, fileList) {
+        let fileArray = Array.from(fileList);
+        controller.viewModel.item.files = fileArray;
+      };
       controller.viewModel.submit = (output) => {
         me.gridOptions.api.refreshVirtualPageCache();
         me.gridOptions.api.refreshView();
