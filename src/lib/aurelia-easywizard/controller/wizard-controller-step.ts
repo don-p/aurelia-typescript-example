@@ -3,7 +3,7 @@ import {Validator, ValidationController, ValidationRules} from 'aurelia-validati
 import {WizardController} from './wizard-controller';
 
 // @noView
-@inject(Validator)
+@inject(ValidationController)
 export class WizardControllerStep {
 
   title:string;
@@ -12,6 +12,7 @@ export class WizardControllerStep {
   canGoBack: boolean;
   canCancel: boolean;
   canValidate:boolean;
+  isDirty: boolean;
   stepErrors: Array<any>;
   stepStatus: any;
   viewsPrefix:string;
@@ -32,6 +33,7 @@ export class WizardControllerStep {
     this.canGoBack = true;
     this.canCancel = true;
     this.canValidate = true;
+    this.isDirty = false;
     this.viewsPrefix = "";
     this.model = {};
     this.initialize = false;
@@ -91,7 +93,7 @@ export class WizardControllerStep {
 
     // return (Array.isArray(result) && result.length === 0);
 
-  return this.vRules?eval(this.vRules.toString()):true;
+  return typeof this.vRules == 'string'?eval(this.vRules.toString()):this.validation.errors.length === 0;
   }
 
   // async doValidate(object, property, rules): Promise<Array<ValidationError>> {
@@ -106,7 +108,7 @@ export class WizardControllerStep {
   // }
 }
 
-@inject(Validator)
+@inject(ValidationController)
 export class WizardControllerStepFactory {
   constructor(private validation:ValidationController) {
   }

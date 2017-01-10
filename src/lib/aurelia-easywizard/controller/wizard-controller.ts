@@ -1,6 +1,6 @@
 import {DialogController} from 'aurelia-dialog';
 import {inject, noView, NewInstance, LogManager} from 'aurelia-framework';
-import {ValidationRules, ValidationController, Rules, validateTrigger} from 'aurelia-validation';
+import {ValidationRules, ValidationController, Rules, Rule, validateTrigger} from 'aurelia-validation';
 import {Logger} from 'aurelia-logging';
 import {WizardControllerStep} from './wizard-controller-step';
 import {Wizard} from '../wizard';
@@ -22,7 +22,7 @@ export class WizardController {
 
   item: any;
   originalItem: any;
-  vRules: ValidationRules;
+  vRules: Rule<any, any>[][];
 
   gridOptions: any;
 
@@ -30,7 +30,7 @@ export class WizardController {
 
 
   constructor(private dialogController:DialogController, private vController:ValidationController) {
-    this.vController.validateTrigger = validateTrigger.manual;
+    // this.vController.validateTrigger = validateTrigger.manual;
     this.modelView = this.dialogController.settings.modelView;
     this.modelPromise = this.dialogController.settings.modelPromise;
     this.title = this.dialogController.settings.title;
@@ -42,13 +42,19 @@ export class WizardController {
     this.errorMessage = null;
     this.vRules = this.dialogController.settings.rules;
     if(this.dialogController.settings.rules) {
-      // Rules.set(this.item, this.controller.settings.rules);
-      this.vController.addObject(this.item, this.dialogController.settings.rules);
-      
+      this.vController.validateTrigger = validateTrigger.changeOrBlur;
+      // Rules.set(this.item, this.vRules);
+      // this.vController.addObject(this.item, this.dialogController.settings.rules);
     }
 
     this.logger = LogManager.getLogger(this.constructor.name);
     this.steps = this.dialogController.settings.steps;
+  }
+
+  validate() {
+    this.logger.debug('validate(): ');
+    this.wizard.currentStep.isDirty = true;
+    // this.vController.validate();
   }
   
   // stepList = new StepList();

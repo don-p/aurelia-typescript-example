@@ -127,19 +127,19 @@ var doAction = function(action) {
           }
         });
       }
-      if (me.currentStep.getCanValidate()) {
-        publish.call(this, "validate:current:step", me.currentStep)
-      } else {
+      // if (me.currentStep.getCanValidate()) {
+      //   publish.call(this, "validate:current:step", me.currentStep)
+      // } else {
         doNextAction.call(me)
-      }
+      // }
     });
   } else {
     this.nextAction = action
-    if (this.currentStep.getCanValidate()) {
-      publish.call(this, "validate:current:step", this.currentStep)
-    } else {
+    // if (this.currentStep.getCanValidate()) {
+    //   publish.call(this, "validate:current:step", this.currentStep)
+    // } else {
       doNextAction.call(this)
-    }
+    // }
   }
 }
 var publish = function(event, option) {

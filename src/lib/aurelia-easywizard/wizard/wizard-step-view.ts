@@ -2,6 +2,7 @@ import{inject, bindable} from 'aurelia-framework';
 import {Validator, ValidationController, ValidationRules, validateTrigger} from 'aurelia-validation';
 import {Events} from '../events';
 import {noView} from 'aurelia-templating';
+import {WizardControllerStep} from '../controller/wizard-controller-step';
 
 // @noView()
 @inject(ValidationController, Validator, Events)
@@ -10,7 +11,7 @@ export class WizardStepView {
   vRules: ValidationRules;
   events:Events;
   stepProperties:any;
-  step:any;
+  step:WizardControllerStep;
  
   @bindable controller;
 
@@ -44,6 +45,9 @@ export class WizardStepView {
     if(this.step.attachedFn) {
       this.step.attachedFn.call(this);
     }
+    // if(this.step.canValidate) {
+    //   this.controller.validate()
+    // }
   }
   submit() {
     let self = this
