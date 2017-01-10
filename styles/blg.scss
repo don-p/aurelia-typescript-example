@@ -1545,6 +1545,10 @@ li.complete .map-check {
   margin-right: 4px;  
 }
 
+.inputfile2 + label i {
+  font-size: 18px;
+}
+
 .inputfile2 + label strong {
   color: $blg-white;
   height: 100%;
@@ -1681,7 +1685,7 @@ li.complete .map-check {
 }
 
 .send-alert-remove-attachment i {
-  font-size: 24px;
+  font-size: 24px !important;
 }
 
 /* Remove block for Communities list with checkboxes */
