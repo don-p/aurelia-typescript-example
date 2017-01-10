@@ -1,5 +1,14 @@
 <template>
 
+    <div class="row errorMessage">
+        <div class="col-xs-12">
+            <div if.bind="(controller.vController.errors.length > 0)" class="alert alert-danger fade in">
+                <ul>
+                    <li repeat.for="error of controller.vController.errors">${error.message}</li>
+                </ul>
+            </div>	
+        </div>
+    </div>	
     <div class="div-table">
         <div class="div-table-body">
             <div class="div-table-row">
@@ -10,7 +19,7 @@
                     <select class="form-control select select-default-blg" style="display:inline-block;" value.bind="controller.dialogController.alertModel.alertType">
                         <option repeat.for="alertCategory of controller.alertCategories" value="${alertCategory.categoryId}" model.bind="alertCategory">${alertCategory.categoryName}</option>
                     </select>
-                    <span class="pull-right alert-counter">${'global.charsRemaining' | t}: ${controller.dialogController.alertModel.alertMessage?controller.dialogController.alertModel.alertMessage.length:0} / ??</span>
+                    <span class="pull-right alert-counter">${controller.maxMessageLength - (controller.dialogController.alertModel.alertMessage?controller.dialogController.alertModel.alertMessage.length:0)} ${'global.charsRemaining' | t}</span>
                 </div>
             </div>
             <div class="div-table-row">
@@ -19,7 +28,8 @@
                 </div>
                 <div class="div-table-cell">
                     <div class="send-alert-message-text">				  
-                        <textarea class="send-alert-textarea" value.bind="controller.dialogController.alertModel.alertMessage"></textarea>
+                        <textarea class="send-alert-textarea" input.delegate="currentStep.isDirty=true"
+                        value.bind="controller.dialogController.alertModel.alertMessage & validate"></textarea>
                     </div>                    
                 </div>
             </div>

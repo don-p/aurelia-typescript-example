@@ -828,11 +828,16 @@ export class CommunityDetail {
       alertMessage: '',
       files: []
     };
-    const vRules = null;
-    // const vRules = ValidationRules
-    //   .ensure('item').maxItems(maxParticipants)
-    //   .withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:maxParticipants}))
-    //   .rules;
+    const maxMessageLength = 2000;
+    const vRules = ValidationRules
+      .ensure('alertMessage')
+      .displayName(this.i18n.tr('community.alert.message'))
+      .required()
+      .then()
+      .maxLength(maxMessageLength)
+      .on(alertModel)
+      .rules;
+
     const step1 = this.wizardStepFactory.newInstance();
     const step2 = this.wizardStepFactory.newInstance();
     const step3 = this.wizardStepFactory.newInstance();
@@ -917,7 +922,7 @@ export class CommunityDetail {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_message',
         title: this.i18n.tr('community.alert.selectMessage'),
-        canValidate: false,
+        canValidate: true,
         model: alertModel
       };
     step3.config = {
@@ -1095,6 +1100,7 @@ export class CommunityDetail {
 
       // }
       let model = controller.settings;
+      controller.viewModel.maxMessageLength = maxMessageLength;
       controller.errorMessage = '';
       controller.alertModel = alertModel;
       controller.viewModel.alertCategories = me.alertCategories;

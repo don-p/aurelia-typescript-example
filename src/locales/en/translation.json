@@ -195,7 +195,7 @@
         "type": "Type",
         "filter":"Filter",
         "confirm":"Confirm",
-        "charsRemaining":"Characters remaining",
+        "charsRemaining":"characters remaining",
         "status":"Status"
     }
 }
