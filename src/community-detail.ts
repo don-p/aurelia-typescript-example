@@ -830,6 +830,9 @@ export class CommunityDetail {
     };
     const maxMessageLength = 2000;
     const vRules = ValidationRules
+      .ensure('communityMembers')
+      .minItems(1)
+      .then()
       .ensure('alertMessage')
       .displayName(this.i18n.tr('community.alert.message'))
       .required()
@@ -851,6 +854,7 @@ export class CommunityDetail {
         model: alertModel,
         attachedFn: function(){
           me.logger.debug( "------attached");
+          let wizardController = this.controller;
           this.controller.wizard.currentStep.cmtyAlertGrid = this.cmtyAlertGrid;
           this.controller.wizard.currentStep.cmtyGrid = this.cmtyGrid;
           // let gridOptions = me.getGridOptions('listMembers');
@@ -894,12 +898,14 @@ export class CommunityDetail {
           this.controller.alertSelectedMembersGridOptions.onSelectionChanged = function() {
             let rows = this.api.getSelectedRows();
             alertModel.communityMembers = rows;
+            wizardController.vController.validate({ object: alertModel, propertyName: 'communityMembers' });
             // controller.viewModel.item = controller.viewModel.gridOptions.api.getSelectedRows();
             // controller.viewModel.isSubmitDisabled = controller.viewModel.gridOptions.api.getSelectedRows().length === 0;
           };
           this.controller.alertMembersGridOptions.onSelectionChanged = function() {
             let rows = this.api.getSelectedRows();
             alertModel.communityMembers = rows;
+            wizardController.vController.validate({ object: alertModel, propertyName: 'communityMembers' });
             // controller.viewModel.item = controller.viewModel.gridOptions.api.getSelectedRows();
             // controller.viewModel.isSubmitDisabled = controller.viewModel.gridOptions.api.getSelectedRows().length === 0;
           };
