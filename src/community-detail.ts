@@ -14,9 +14,9 @@ import {Prompt} from './model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from './lib/grid/textSearchFilter';
-import {WizardControllerStep, WizardControllerStepFactory} from './lib/aurelia-easywizard/controller/wizard-controller-step';
+import {WizardControllerStep} from './lib/aurelia-easywizard/controller/wizard-controller-step';
 
-@inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, Ps, I18N, WizardControllerStepFactory, AureliaConfiguration, LogManager) // SCROLL
+@inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, Ps, I18N, AureliaConfiguration, LogManager) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -51,7 +51,7 @@ export class CommunityDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
-    private evt: EventAggregator, Ps, private i18n: I18N, private wizardStepFactory: WizardControllerStepFactory, private appConfig: AureliaConfiguration) {
+    private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration) {
 
     this.communityMembers = null;
 
@@ -830,6 +830,10 @@ export class CommunityDetail {
     };
     const maxMessageLength = 2000;
     const vRules = ValidationRules
+      .ensure('communityMembers')
+      .displayName(this.i18n.tr('community.alert.recipientsList'))
+      .minItems(1)
+      .then()
       .ensure('alertMessage')
       .displayName(this.i18n.tr('community.alert.message'))
       .required()
@@ -838,12 +842,7 @@ export class CommunityDetail {
       .on(alertModel)
       .rules;
 
-    const step1 = this.wizardStepFactory.newInstance();
-    const step2 = this.wizardStepFactory.newInstance();
-    const step3 = this.wizardStepFactory.newInstance();
-    const step4 = this.wizardStepFactory.newInstance();
-
-    step1.config = {
+    const step1config = {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_type',
         title: this.i18n.tr('community.alert.selectTypeRecipients'),
@@ -851,6 +850,7 @@ export class CommunityDetail {
         model: alertModel,
         attachedFn: function(){
           me.logger.debug( "------attached");
+          let wizardController = this.controller;
           this.controller.wizard.currentStep.cmtyAlertGrid = this.cmtyAlertGrid;
           this.controller.wizard.currentStep.cmtyGrid = this.cmtyGrid;
           // let gridOptions = me.getGridOptions('listMembers');
@@ -894,12 +894,14 @@ export class CommunityDetail {
           this.controller.alertSelectedMembersGridOptions.onSelectionChanged = function() {
             let rows = this.api.getSelectedRows();
             alertModel.communityMembers = rows;
+            wizardController.vController.validate({ object: alertModel, propertyName: 'communityMembers' });
             // controller.viewModel.item = controller.viewModel.gridOptions.api.getSelectedRows();
             // controller.viewModel.isSubmitDisabled = controller.viewModel.gridOptions.api.getSelectedRows().length === 0;
           };
           this.controller.alertMembersGridOptions.onSelectionChanged = function() {
             let rows = this.api.getSelectedRows();
             alertModel.communityMembers = rows;
+            wizardController.vController.validate({ object: alertModel, propertyName: 'communityMembers' });
             // controller.viewModel.item = controller.viewModel.gridOptions.api.getSelectedRows();
             // controller.viewModel.isSubmitDisabled = controller.viewModel.gridOptions.api.getSelectedRows().length === 0;
           };
@@ -918,14 +920,14 @@ export class CommunityDetail {
           // });
         }
       };
-    step2.config = {
+    const step2config = {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_message',
         title: this.i18n.tr('community.alert.selectMessage'),
         canValidate: true,
         model: alertModel
       };
-    step3.config = {
+    const step3config = {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_confirm',
         title: this.i18n.tr('community.alert.confirm'),
@@ -971,7 +973,7 @@ export class CommunityDetail {
         }
 
       };
-    step4.config = {
+     const step4config = {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_result',
         title: this.i18n.tr('community.alert.finish'),
@@ -1013,7 +1015,7 @@ export class CommunityDetail {
       };
 
 
-    const steps = [step1, step2, step3, step4];
+    const steps = [step1config, step2config, step3config, step4config];
 
     let showSelectedMembers = function(controller:any, showSelected:boolean) {
       let selection = me.gridOptions.api.getSelectedRows();

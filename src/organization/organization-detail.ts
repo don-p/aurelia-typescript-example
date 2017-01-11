@@ -12,9 +12,9 @@ import {Prompt} from '../model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
-import {WizardControllerStep, WizardControllerStepFactory} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
+import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
 
-@inject(Session, Router, DataService, OrganizationService, EventAggregator, Ps, I18N, WizardControllerStepFactory, LogManager) // SCROLL
+@inject(Session, Router, DataService, OrganizationService, EventAggregator, Ps, I18N, LogManager) // SCROLL
 export class OrganizationDetail {
   member: Object;
 
@@ -45,7 +45,7 @@ export class OrganizationDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private organizationService: OrganizationService,  
-    private evt: EventAggregator, Ps, private i18n: I18N, private wizardStepFactory: WizardControllerStepFactory) {
+    private evt: EventAggregator, Ps, private i18n: I18N) {
 
     this.organizationMembers = null;
 
@@ -294,12 +294,7 @@ export class OrganizationDetail {
     let step2Rules = "this.stepStatus !== 'ERROR'";  
     let step3Rules = "this.stepStatus !== 'ERROR'";  
 
-    const step1 = this.wizardStepFactory.newInstance();
-    const step2 = this.wizardStepFactory.newInstance();
-    const step3 = this.wizardStepFactory.newInstance();
-
-
-    step1.config = {
+    const step1config = {
         viewsPrefix: '../../../organization/importWizard',
         id: 'select_file',
         title: this.i18n.tr('organization.onboard.selectFile'),
@@ -335,7 +330,7 @@ export class OrganizationDetail {
           });
         }
       };
-    step2.config = {
+    const step2config = {
         viewsPrefix: '../../../organization/importWizard',
         id: 'validate_file',
         title: this.i18n.tr('organization.onboard.validate'),
@@ -390,7 +385,7 @@ export class OrganizationDetail {
           
         }
     };
-    step3.config = {
+    const step3config = {
         viewsPrefix: '../../../organization/importWizard',
         id: 'process_file',
         title: this.i18n.tr('organization.onboard.process'),
@@ -401,7 +396,7 @@ export class OrganizationDetail {
         model: orgModel
       };
 
-    const steps = [step1, step2, step3];
+    const steps = [step1config, step2config, step3config];
 
     orgModel['orgId'] = me.selectedOrg.organizationId;
     this.dataService.openWizardDialog(this.i18n.tr('organization.onboard.importMemberData'), steps, orgModel, null)

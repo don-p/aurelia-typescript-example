@@ -7,6 +7,7 @@ import {Wizard} from '../wizard';
 import {StepList} from '../step-list'
 
 @noView()
+@inject(DialogController, NewInstance.of(ValidationController))
 export class WizardController {
   wizard: Wizard;
   _steps: Array<WizardControllerStep>;
@@ -23,14 +24,17 @@ export class WizardController {
   item: any;
   originalItem: any;
   vRules: Rule<any, any>[][];
-
+  vController:ValidationController;
   gridOptions: any;
 
+  Math:Math;
   logger: Logger;
 
 
-  constructor(private dialogController:DialogController, private vController:ValidationController) {
+  constructor(private dialogController:DialogController, ValidationController) {
     // this.vController.validateTrigger = validateTrigger.manual;
+    this.vController = ValidationController;
+    this.Math = Math;
     this.modelView = this.dialogController.settings.modelView;
     this.modelPromise = this.dialogController.settings.modelPromise;
     this.title = this.dialogController.settings.title;
@@ -48,7 +52,14 @@ export class WizardController {
     }
 
     this.logger = LogManager.getLogger(this.constructor.name);
-    this.steps = this.dialogController.settings.steps;
+    this._steps= [];
+    for(let i = 0; i < this.dialogController.settings.steps.length; i++) {
+      let step = this.dialogController.settings.steps[i];
+      let wizardStep = new WizardControllerStep(this);
+      wizardStep.config = step;
+      this._steps.push(wizardStep);
+    }
+    initStepList.call(this);
   }
 
   validate() {
