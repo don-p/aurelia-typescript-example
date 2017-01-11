@@ -831,6 +831,7 @@ export class CommunityDetail {
     const maxMessageLength = 2000;
     const vRules = ValidationRules
       .ensure('communityMembers')
+      .displayName(this.i18n.tr('community.alert.recipientsList'))
       .minItems(1)
       .then()
       .ensure('alertMessage')

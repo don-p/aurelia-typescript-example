@@ -104,7 +104,8 @@
             "recipients":"Recipients",
             "message":"Alert message",
             "attachment":"Attachment",
-            "selectFile":"Select a file"
+            "selectFile":"Select a file",
+            "recipientsList": "Recipients list"
         }
     },
 
