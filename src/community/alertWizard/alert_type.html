@@ -1,5 +1,11 @@
 <template>
-
+    <div class="errorMessage wizard-error">
+        <div if.bind="(controller.vController.errors.length > 0)" class="alert alert-danger fade in">
+            <ul>
+                <li repeat.for="error of controller.vController.errors">${error.message}</li>
+            </ul>
+        </div>	
+    </div>
 	<div class="row toggleSelectedLink">
 		<span class="wizard-content-label blg-form-required">${'community.alert.recipients' | t}:</span>		
 		<div if.bind="!(controller.showSelected)"  class="pull-right" >

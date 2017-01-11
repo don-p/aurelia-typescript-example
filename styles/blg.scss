@@ -1166,6 +1166,10 @@ border-bottom: 1px solid $blg-grey-light-more;
 padding: 15px 20px 20px 20px;
 }
 
+#wizard .modal-header-wizard {
+padding: 15px 20px 0px 20px;
+}
+
 .modal-header-wizard-border {
   margin-left: -5px;
   margin-right: -5px;
@@ -1261,6 +1265,9 @@ wizard .modal-footer {
 }
 
 ai-dialog-container {
+  & > div {
+    padding: 0px !important;
+  }
   overflow-y: hidden !important; 
 }
 
@@ -1707,4 +1714,27 @@ li.complete .map-check {
 .select-organization {
   max-width: 450px;
   text-overflow: ellipsis;
+}
+
+.wizard-error {
+  padding: 0px 100px 10px;
+  min-height: 47px !important;  
+}
+
+.step-container.nodetail.send-alert {
+  min-height: 403px !important;  
+}
+
+.flex-parent {
+  display: flex;
+  flex-direction: row;
+  
+}
+.flex-child {
+  min-height: 100vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
 }
