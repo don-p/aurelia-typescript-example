@@ -1,13 +1,11 @@
 <template>
 
-    <div class="row errorMessage">
-        <div class="col-xs-12">
-            <div if.bind="(controller.vController.errors.length > 0)" class="alert alert-danger fade in">
-                <ul>
-                    <li repeat.for="error of controller.vController.errors">${error.message}</li>
-                </ul>
-            </div>	
-        </div>
+    <div class="errorMessage wizard-error">
+        <div if.bind="(controller.vController.errors.length > 0)" class="alert alert-danger fade in">
+            <ul>
+                <li repeat.for="error of controller.vController.errors">${error.message}</li>
+            </ul>
+        </div>	
     </div>	
     <div class="div-table">
         <div class="div-table-body">

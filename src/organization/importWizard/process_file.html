@@ -6,8 +6,10 @@
 			<span if.bind="!(error.errorType)">[${'organization.onboard.validationMessage.warningType' | t}]</span> ${'organization.onboard.validationMessage.'+(error.errorType?error.errorType:error.warningType) | t}</div>
 		</div>
 	</div>
-	<div class="step-container nodetail" if.bind="step.stepStatus==='ERROR' && (!(step.stepErrors) || step.stepErrors.length===0)">
-		<div class="step-message nodetail">${'organization.onboard.processingMessage.serverError' | t}}</div>
+	<div class="flex-parent" if.bind="step.stepStatus==='ERROR' && (!(step.stepErrors) || step.stepErrors.length===0)">	
+		<div class="step-container nodetail flex-child">
+			<div class="step-message nodetail">${'organization.onboard.processingMessage.serverError' | t}}</div>
+		</div>
 	</div>
 	<div class="step-container" if.bind="step.model.stepStatus==='OK'">
 		<div class="step-message">${'organization.onboard.processingMessage.success' | t: {rowCount: processResponse.rowCount}}</div>

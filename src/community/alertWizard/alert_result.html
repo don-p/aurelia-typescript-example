@@ -1,9 +1,11 @@
 <template>
-  <div class="step-container nodetail">
-		<div class="step-message nodetail" if.bind="(!(cstep.errorMessage) || step.errorMessage.length===0)">
-      <div class="step-message-header">${'global.status' | t}:</div>
-      ${step.errorMessage}
-      ${ 'community.members.alert.alertSuccessMessage' | t: {alertCategory: currentStep.model.alertType.categoryName, recipientCount: currentStep.model.communityMembers.length}}
+  <div class="flex-parent">
+    <div class="step-container nodetail send-alert flex-child">
+      <div class="step-message nodetail" if.bind="(!(cstep.errorMessage) || step.errorMessage.length===0)">
+        <div class="step-message-header">${'global.status' | t}:</div>
+        ${step.errorMessage}
+        ${ 'community.members.alert.alertSuccessMessage' | t: {alertCategory: currentStep.model.alertType.categoryName, recipientCount: currentStep.model.communityMembers.length}}
+      </div>
     </div>
-	</div>  
+  </div>  
 </template>
