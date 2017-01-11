@@ -1717,7 +1717,7 @@ li.complete .map-check {
 }
 
 .wizard-error {
-  padding: 0px 100px 10px;
+  padding: 0px 15px 10px;
   min-height: 47px !important;  
 }
 
@@ -1737,4 +1737,8 @@ li.complete .map-check {
   justify-content: center;
   flex-direction: column;
   width: 100%;
+}
+
+.wizard-error.errorMessage .alert li {
+    text-align: center;
 }
