@@ -111,8 +111,9 @@ export class App {
     config.addAuthorizeStep(AuthenticationStep);
     config.addAuthorizeStep(AuthorizeRolesStep);        
     config.map([
+      { route: '', redirect: 'organization' }, // default route.
       { 
-        route: ['','login'], 
+        route: 'login', 
         name: 'login',      
         moduleId: './login',      
         nav: false,
