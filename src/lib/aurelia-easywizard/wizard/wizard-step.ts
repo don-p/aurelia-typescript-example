@@ -9,6 +9,7 @@ export class WizardStep {
   @bindable steps: Array<WizardControllerStep>;
   @bindable current: WizardControllerStep;
 
+  // Not used, binding occurs in view.
   contstructor() {
     this.step = new WizardControllerStep(null);
     this.steps = [];

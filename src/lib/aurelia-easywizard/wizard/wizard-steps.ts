@@ -1,3 +1,4 @@
+import{inject, bindable} from 'aurelia-framework';
 import {containerless} from 'aurelia-templating'
 import {WizardControllerStep} from '../controller/wizard-controller-step'
 
@@ -8,6 +9,7 @@ export class WizardSteps {
   currentStep:WizardControllerStep;
   parent:any;
   events:any;
+ @bindable controller;
 
   constructor() {
     this.currentStep = new WizardControllerStep(null);
@@ -15,6 +17,7 @@ export class WizardSteps {
   }
   bind(parent) {
     this.parent = parent
+    this.controller = parent.controller;
     parent.wizardSteps = this
     this.steps = parent.steps
     this.currentStep = this.steps[0];
