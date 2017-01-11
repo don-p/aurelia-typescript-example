@@ -7,6 +7,7 @@ import {Wizard} from '../wizard';
 import {StepList} from '../step-list'
 
 @noView()
+@inject(DialogController, NewInstance.of(ValidationController))
 export class WizardController {
   wizard: Wizard;
   _steps: Array<WizardControllerStep>;
