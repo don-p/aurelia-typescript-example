@@ -935,7 +935,9 @@ export class CommunityDetail {
         model: alertModel,
         attachedFn: function(){
           me.logger.debug( "------attached");
-          this.step.errorMessage = "Click 'Next' to send this " + this.controller.dialogController.alertModel.alertType.categoryName + " alert with " + ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0) + " attachments to " + this.controller.dialogController.alertModel.communityMembers.length + " recipient(s).";
+          let wizardController = this.controller;
+          wizardController.errorMessage = me.i18n.tr('community.members.alert.alertConfirmMessage', {alertType: this.controller.dialogController.alertModel.alertType.categoryName, attCount: ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0), recipientCount: this.controller.dialogController.alertModel.communityMembers.length});
+          // this.step.errorMessage = me.i18n.tr('community.members.alert.alertConfirmMessage', {alertType: this.controller.dialogController.alertModel.alertType.categoryName, attCount: ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0), recipientCount: this.controller.dialogController.alertModel.communityMembers.length});
         },
         callback: function(step){
           me.logger.debug( "------attached");
@@ -958,13 +960,27 @@ export class CommunityDetail {
               }
               let viewModel = view.controller;
               viewModel.wizard.currentStep.stepStatus = 'OK';
+              view.controller.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', 
+                {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
+                  recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
+              // view.controller.wizard.currentStep.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', 
+              //   {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
+              //     recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
               return {currentStep:viewModel, res:data};
               // controller.ok();
             }, error => {
-              view.controller.wizard.currentStep.errorMessage = "Failed"; 
+              view.controller.wizard.currentStep.stepStatus = 'ERROR';
+              view.controller.errorMessage = me.i18n.tr('community.members.alert.alertErrorMessage', 
+                {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
+                  recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
+              // view.controller.wizard.currentStep.errorMessage = "Failed"; 
               me.logger.error("Community member call() rejected."); 
             }).catch(error => {
-              view.controller.wizard.currentStep.errorMessage = "Failed"; 
+              view.controller.wizard.currentStep.stepStatus = 'ERROR';
+              view.controller.errorMessage = me.i18n.tr('community.members.alert.alertErrorMessage', 
+                {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
+                  recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
+              // view.controller.wizard.currentStep.errorMessage = "Failed"; 
               me.logger.error("Community member call() failed."); 
               me.logger.error(error); 
               return Promise.reject(error);

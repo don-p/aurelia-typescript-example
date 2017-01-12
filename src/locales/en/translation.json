@@ -84,7 +84,9 @@
                 "callSuccessMessage": "The GridCall has been initiated."
             },
             "alert": {
-                "alertSuccessMessage": "{{alertCategory}} alert has been sent to {{recipientCount}} recipient(s)."
+                "alertConfirmMessage": "Click 'Next' to send {{alertType}} alert with {{attCount}} attachments to {{recipientCount}} recipient(s).",
+                "alertSuccessMessage": "{{alertCategory}} alert has been sent to {{recipientCount}} recipient(s).",
+                "alertErrorMessage": "An error occured; {{alertCategory}} alert has not been sent to {{recipientCount}} recipient(s)."
             },
             "addMembers": "Add Community Members"
         },          
@@ -197,6 +199,9 @@
         "filter":"Filter",
         "confirm":"Confirm",
         "charsRemaining":"characters remaining",
-        "status":"Status"
+        "status":"Status",
+        "clearFilters": "Clear filters",
+        "showAll": "Show all",
+        "showSelected": "Show selected"
     }
 }

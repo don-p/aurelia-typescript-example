@@ -1,9 +1,10 @@
 <template>
+  
   <div class="flex-parent">
     <div class="step-container nodetail send-alert flex-child">
-      <div class="step-message nodetail" if.bind="(!(cstep.errorMessage) || step.errorMessage.length===0)">
+      <div class="step-message nodetail" >
         <div class="step-message-header">${'global.confirm' | t}:</div>
-        ${step.errorMessage}
+        ${controller.errorMessage}
       </div>
     </div>
   </div>
