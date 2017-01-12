@@ -1,4 +1,7 @@
 {
+    "maxAlertMessageSize": 10000,
+
+
     "development": {
         "api": {
             "clientId": "YmxfY29tbWFuZF9j",

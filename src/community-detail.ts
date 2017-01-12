@@ -828,7 +828,7 @@ export class CommunityDetail {
       alertMessage: '',
       files: []
     };
-    const maxMessageLength = 2000;
+    const maxMessageLength = this.appConfig.get('maxAlertMessageSize');
     const vRules = ValidationRules
       .ensure('communityMembers')
       .displayName(this.i18n.tr('community.alert.recipientsList'))
