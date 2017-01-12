@@ -121,6 +121,8 @@ export class Community {
     this.getCommunitiesPage(communityType, 0, this.pageSize).then(function(){
       if(typeof selectedCommunity !== 'object') {
         me.selectDefaultCommunity();
+      } else {
+        me.scrollToCommunityInList(selectedCommunity);
       }
     })
   }
@@ -137,15 +139,16 @@ export class Community {
       return comm['communityId'] === community['communityId'];
     });
     // Select the community item.
-    this.selectedItem = selectedCommunity;
-    this.scrollToCommunityInList(selectedCommunity);
+    this.selectedItem = !!selectedCommunity?selectedCommunity:community;
     // Ensure correct community type view.
-    let type = selectedCommunity['communityType'];
+    let type = this.selectedItem['communityType'];
     if(this.commType !== type) {
-      this.selectCommunityType(type, selectedCommunity);
+      this.selectCommunityType(type, this.selectedItem);
+    } else {
+      this.scrollToCommunityInList(this.selectedItem);
     }
     this.selectedCommunities = [];
-    this.evt.publish('cmtySelected', {community: selectedCommunity});
+    this.evt.publish('cmtySelected', {community: this.selectedItem});
   }
 
   scrollToCommunityInList(community:any) {
@@ -156,10 +159,16 @@ export class Community {
       let element = $('#cmty-'+community['communityId'])[0];
       if(typeof element === 'object') {
         me.logger.debug("scrolTo element: " + element);
-        let offset = element.offsetTop;
-        // if(offset > (container.clientHeight - element.clientHeight)) {
-          container.scrollTop = offset;
-        // }
+        let childEl = element.querySelector('div.panel.panel-default');
+        let el = $(childEl)[0];
+        let elTop = el.offsetTop;
+        let elBottom = el.offsetTop + el.offsetHeight;
+        let clientTop = container.scrollTop;
+        let clientBottom = container.scrollTop + container.clientHeight;
+        let scrollVisible = (elTop >= clientTop && elBottom <= clientBottom);
+        if(!scrollVisible) {
+          container.scrollTop = element.offsetTop;
+        }
       }
     }, 0);
   }
