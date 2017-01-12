@@ -1,13 +1,13 @@
 <template>
 	<div class="row toggleSelectedLink">
 		<div class="pull-left">
-			<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i>Clear filters</button>
+			<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
 		</div>
 		<div if.bind="gridOptions.api.rowModel.datasource.name ==='organizationMembers'"  class="pull-right" >
-			<button disabled.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i>Show selected</button>
+			<button disabled.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i><span>${'global.showSelected' | t}</span></button>
 		</div>
 		<div if.bind="gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" class="pull-right" >
-			<button class.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i>Show all</button>
+			<button class.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i><span>${'global.showAll' | t}</span></button>
 		</div>
 	</div>
 	<div class="members-table-content organization-members-table" id="membersTableContent">				  
