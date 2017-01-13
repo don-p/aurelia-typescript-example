@@ -27,14 +27,12 @@ export class WizardController {
   vController:ValidationController;
   gridOptions: any;
 
-  Math:Math;
   logger: Logger;
 
 
   constructor(private dialogController:DialogController, ValidationController) {
     // this.vController.validateTrigger = validateTrigger.manual;
     this.vController = ValidationController;
-    this.Math = Math;
     this.modelView = this.dialogController.settings.modelView;
     this.modelPromise = this.dialogController.settings.modelPromise;
     this.title = this.dialogController.settings.title;
