@@ -1,6 +1,5 @@
 <template bindable="session, router">
     <header >
-        <div class="logo">
             <a href="#"><img alt="${router.title}" src="../images/gc_logo.png"></a>
         </div>
         <nav role="navigation">
@@ -16,7 +15,8 @@
             <div class="drop-cont">
                 <div class="jd-title">
                     <div class="avatar-top">
-                        <img class="avatar" src="${session.auth.member.secureAvatarUrl}" onerror="this.src='../images/default_user.png'"></img>
+                        <img class="avatar" src="${session.auth.member.secureAvatarUrl}"></img>
+  <!--                      <img if.bind="!(userHasAvatar)" class="avatar" src="../images/default_user.png"></img>-->
                     </div>
                     <div class="caps-top-wrapper">
                         <span class="caps-top pull-left">${session.auth['member'].firstName} ${session.auth['member'].lastName}</span>
