@@ -172,8 +172,8 @@ let config = generateConfig(
   copyFiles({patterns: 
     [
       {context: './src/config', from: '**/**.json', to: 'config'},
-  {context: './src/locales', from: '**/**.json', to: 'locales'}/*,
-      {from: 'favicon.ico', to: 'favicon.ico' }*/
+  {context: './src/locales', from: '**/**.json', to: 'locales'},
+      {from: './favicon.ico', to: 'favicon.ico' }
     ]
   }),
 /* ENV === 'test' */
