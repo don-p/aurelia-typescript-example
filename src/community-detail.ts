@@ -876,8 +876,13 @@ export class CommunityDetail {
           gridOptions.rowModelType = '';
           gridOptions['communityId'] = communityId;
           this.controller.alertSelectedMembersGridOptions = gridOptions;
-          this.controller.alertSelectedMembersGrid = new Grid(this.controller.wizard.currentStep.cmtyAlertGrid, this.controller.alertSelectedMembersGridOptions); //create a new grid
-          // me.setSelectedCommunityMembersGridDataSource('alertRecipients', gridOptions, me.pageSize, me.communityService, selection, true);
+          this.controller.alertSelectedMembersGrid = new Grid(this.controller.wizard.currentStep.cmtyAlertGrid, gridOptions); //create a new grid
+          let ctrl = this.controller;
+          gridOptions.onAfterFilterChanged = function(event) {
+            ctrl.alertSelectedMembersGridOptions = this;
+            me.logger.debug('***** FILTER CHANGED');
+          };
+         // me.setSelectedCommunityMembersGridDataSource('alertRecipients', gridOptions, me.pageSize, me.communityService, selection, true);
           // all members.
           gridOptions = me.getGridOptions('listMembers');
           // Set local row model.
@@ -1035,15 +1040,15 @@ export class CommunityDetail {
 
     let showSelectedMembers = function(controller:any, showSelected:boolean) {
       let selection = me.gridOptions.api.getSelectedRows();
-
+      let obj = controller.viewModel;
       selection = alertModel.communityMembers;
       // controller.viewModel.gridOptions.api.refreshVirtualPageCache();
       // controller.viewModel.gridOptions.api.destroy();
-      controller.viewModel.showSelected = showSelected;
+      obj.showSelected = showSelected;
       if(showSelected) {
-        controller.viewModel.alertSelectedMembersGridOptions.api.setRowData(selection);
-        controller.viewModel.alertSelectedMembersGridOptions.api.refreshInMemoryRowModel();
-        controller.viewModel.alertSelectedMembersGridOptions.api.selectAll();
+        obj.alertSelectedMembersGridOptions.api.setRowData(selection);
+        obj.alertSelectedMembersGridOptions.api.refreshInMemoryRowModel();
+        obj.alertSelectedMembersGridOptions.api.selectAll();
         
         // let gridOptions = me.getGridOptions('listMembers');
         // let communityId = me.selectedCmty.communityId;
@@ -1059,12 +1064,12 @@ export class CommunityDetail {
         // gridOptions['communityId'] = communityId;
         // controller.gridOptions = gridOptions;
         // let alertMembersGrid = new Grid(controller.viewModel.wizard.currentStep.cmtyGrid, controller.viewModel.gridOptions); //create a new grid
-        controller.viewModel.alertMembersGridOptions['selection'] = selection;
+        obj.alertMembersGridOptions['selection'] = selection;
         
         // controller.viewModel.alertMembersGridOptions.api.refreshVirtualPageCache();
         // controller.viewModel.alertMembersGridOptions.api.refreshView();
 
-        me.setCommunityMembersGridDataSource('alertCommunityMembers', controller.viewModel.alertMembersGridOptions, 
+        me.setCommunityMembersGridDataSource('alertCommunityMembers', obj.alertMembersGridOptions, 
           me.pageSize, me.communityService, selection, false);
         // controller.viewModel.alertMembersGrid.context.beans.gridApi.beanInstance.refreshVirtualPageCache();
         me.toString();
@@ -1134,6 +1139,14 @@ export class CommunityDetail {
         let fileArray = Array.from(fileList);
         controller.alertModel.files = fileArray;
       };
+
+      Object.defineProperty(controller.viewModel, 'isGridFiltered', {
+        get: function() {
+          let result = this.alertSelectedMembersGridOptions && this.alertSelectedMembersGridOptions.api && this.alertSelectedMembersGridOptions.api.isAnyFilterPresent();
+          window.console.debug('--- isGridFiltered --- : ' + result);
+          return result;
+        }
+      });
       controller.viewModel.removeAttachment = function(att: any) {
         if(att) {
           let index = controller.alertModel.files.indexOf(att);
@@ -1187,7 +1200,13 @@ Object.defineProperty(controller.viewModel, "isGridFiltered", { get: function ()
 */
       controller.viewModel.showSelectedMembers = function(showSelected:boolean) {
         showSelectedMembers(controller, showSelected);
-      }
+      };
+
+      controller.viewModel.clearGridFilters = function(gridOptions) {
+        gridOptions.api.setFilterModel({});
+        gridOptions.api.refreshView();
+      };
+
       /*
       controller.viewModel.showSelectedMembers = function(showSelected:boolean) {
         let selection = controller.viewModel.gridOptions.api.getSelectedRows();
