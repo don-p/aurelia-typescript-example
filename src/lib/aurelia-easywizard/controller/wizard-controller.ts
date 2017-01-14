@@ -26,6 +26,7 @@ export class WizardController {
   vRules: Rule<any, any>[][];
   vController:ValidationController;
   gridOptions: any;
+  _isGridFiltered: Function;
 
   logger: Logger;
 
@@ -101,6 +102,15 @@ export class WizardController {
 
   get gWindow () {
     return window;
+  }
+
+  // interface ethod stub; implementation provided by wizard instance.
+  get isGridFiltered(): boolean {
+    // let result = this._isGridFiltered?this._isGridFiltered():false;
+    // window.console.debug('--- isGridFiltered --- : ' + result);
+    // return result;
+    // return this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent();
+    return false;
   }
 }
 var initStepList = function() {

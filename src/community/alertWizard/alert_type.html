@@ -17,7 +17,7 @@
 		</div>
 		-->
 		<div class="pull-right">
-			<button type="button" disabled.bind="!(controller.isGridFiltered)" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(controller.gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
+			<button type="button" disabled.bind="!(controller.isGridFiltered)" class="btn btn-filter btn-xs" click.delegate="controller.clearGridFilters(controller.alertSelectedMembersGridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
 		</div>		
 	</div>
 	<div class="send-alert-members-table">				  
