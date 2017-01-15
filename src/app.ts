@@ -28,6 +28,8 @@ export class App {
       .then((data) => {
         // Merge configs.
         me.appConfig.merge({server: data});
+      }).catch(error => {
+        me.logger.debug('getCallServiceConfig() returned error: ' + error);
       })
     });    
     
