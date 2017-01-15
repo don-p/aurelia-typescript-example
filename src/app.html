@@ -1,6 +1,6 @@
 <template>
   <div class="blg-wrapper">
-    <compose view="./nav-bar.html" if.bind="!(router.currentInstruction.config.route==='')&&!(router.currentInstruction.config.route.indexOf('login')===0)"></compose>
+    <compose view-model="./nav-bar" if.bind="!(router.currentInstruction.config.route==='')&&!(router.currentInstruction.config.route.indexOf('login')===0)"></compose>
     <div class="page-host">
       <router-view></router-view>
     </div>
