@@ -1,4 +1,5 @@
-import {bindable, inject} from 'aurelia-framework'
+import {bindable, inject, LogManager} from 'aurelia-framework'
+import {Logger} from 'aurelia-logging';
 import $ from 'jquery'
 
 export class WizardActions {
@@ -8,13 +9,17 @@ export class WizardActions {
   isValidCurrentStep:boolean;
   parent:any;
   events:any;
+  @bindable nextDisabled: boolean = false;
+
+  logger: Logger;
 
   constructor() {
-  this.nextAction = "";
-  this.isValidCurrentStep = false;
+    this.nextAction = "";
+    this.isValidCurrentStep = false;
+    this.logger = LogManager.getLogger(this.constructor.name);
   }
 
-process(event) {
+  process(event) {
     event.stopPropagation();
     event.preventDefault();
     event.cancelBubble = true;
@@ -24,6 +29,7 @@ process(event) {
     }
     return false;
   }
+
   bind(parent) {
     this.parent = parent;
     this.events = parent.events;
@@ -36,6 +42,8 @@ process(event) {
   }
   next() {
     if (this.isNotLastStep) {
+      this.nextDisabled = true;
+      this.logger.debug('XX Next disabled - true');
       doAction.call(this, "next");
     }
   }
@@ -76,6 +84,8 @@ var initEvents = function() {
 var doNextAction = function() {
    publish.call(this, "action", this.nextAction);
    this.nextAction = undefined;
+  this.nextDisabled = false;
+  this.logger.debug('XX Next disabled - false');
 }
 var doAction = function(action) {
   const me = this;

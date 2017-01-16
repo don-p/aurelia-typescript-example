@@ -9,9 +9,9 @@
     <button disabled.bind="!(wizardSteps.currentStep.isValid)" if.bind="isLastStep" class="btn-prev btn btn-info" data-action="submit">
        ${'button.done' | t}
     </button>
-    <button disabled.bind="!(wizardSteps.currentStep.isValid) || (wizardSteps.currentStep.canValidate && !(wizardSteps.currentStep.isDirty))" if.bind="isNotLastStep" class="btn-next btn btn-info" data-action="next" data-last="Finish ">
-
-      ${'button.next' | t} <i class="ico-arrow-right3"></i>
+    <button disabled.bind="(nextDisabled) || (!(wizardSteps.currentStep.isValid) || (wizardSteps.currentStep.canValidate && !(wizardSteps.currentStep.isDirty)))" if.bind="isNotLastStep" class="btn-next btn btn-info" data-action="next" data-last="Finish ">
+      <span if.bind="!(nextDisabled)">${'button.next' | t} <i class="ico-arrow-right3"></i></span>
+      <span if.bind="(nextDisabled)">${'button.loading' | t}</span>
     </button>
   </div>
 </div> 
