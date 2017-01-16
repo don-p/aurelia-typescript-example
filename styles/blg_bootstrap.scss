@@ -546,6 +546,7 @@ input[type="radio"] {
 
 .btn {
   i,
+  span,
   &.disabled,
   &[disabled],
   fieldset[disabled] & {
