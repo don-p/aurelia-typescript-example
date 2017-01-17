@@ -95,6 +95,7 @@
             "callConfirmMessageSingle": "Start GridCall with the community '{{communityName}}'?",
             "callConfirmMessage": "Start GridCall with {{communityCount}} selected communities?",
             "callSuccessMessage": "The GridCall has been initiated.",
+            "callFailedMessage": "The GridCall could not be initiated.",
             "callParticipantMaxCountError":"GridCall cannot be started with more than {{count}} participants."
         },
         "alert": {
@@ -151,7 +152,7 @@
 
             },
             "processingMessage": {
-                "success": "Processing completed successfully, {{rowCount}} member rows imported.",
+                "success": "Processing completed with {{rowCount}} member rows imported.",
                 "added": "Members added",
                 "updated": "Members updated",
                 "deleted": "Members deleted",
@@ -203,6 +204,8 @@
         "status":"Status",
         "clearFilters": "Clear filters",
         "showAll": "Show all",
-        "showSelected": "Show selected"
+        "showSelected": "Show selected",
+        "success": "Success",
+        "failed": "Failed"
     }
 }

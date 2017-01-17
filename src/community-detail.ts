@@ -787,16 +787,22 @@ export class CommunityDetail {
         controller.viewModel.modelPromise.then(response => response.json())
         .then(data => {
             // Update the message for success.
+            controller.viewModel.messagePrefix = 'global.success';
+            controller.viewModel.status = 'OK';
             controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
             controller.viewModel.okText = this.i18n.tr('button.ok');
             controller.viewModel.showCancel = false;
             // Close dialog on success.
             delete controller.viewModel.submit;
           }, error => {
-            model.errorMessage = "Failed"; 
+            controller.viewModel.messagePrefix = 'global.failed';
+            controller.viewModel.status = 'ERROR';
+            model.errorMessage = this.i18n.tr('community.members.call.callFailedMessage'); 
             me.logger.error("Community member call() rejected."); 
           }).catch(error => {
-            model.errorMessage = "Failed"; 
+            controller.viewModel.messagePrefix = 'global.failed';
+            controller.viewModel.status = 'ERROR';
+            model.errorMessage = this.i18n.tr('community.members.call.callFailedMessage'); 
             me.logger.error("Community member call() failed."); 
             me.logger.error(error); 
             return Promise.reject(error);
@@ -964,7 +970,8 @@ export class CommunityDetail {
                 view.controller.alertSelectedMembersGridOptions.api.destroy();
               }
               let viewModel = view.controller;
-              viewModel.wizard.currentStep.stepStatus = 'OK';
+              // viewModel.wizard.currentStep.stepStatus = 'OK';
+              view.controller.stepStatus = 'OK';
               view.controller.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', 
                 {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
                   recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
@@ -974,14 +981,14 @@ export class CommunityDetail {
               return {currentStep:viewModel, res:data};
               // controller.ok();
             }, error => {
-              view.controller.wizard.currentStep.stepStatus = 'ERROR';
+              view.controller.stepStatus = 'ERROR';
               view.controller.errorMessage = me.i18n.tr('community.members.alert.alertErrorMessage', 
                 {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
                   recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
               // view.controller.wizard.currentStep.errorMessage = "Failed"; 
               me.logger.error("Community member call() rejected."); 
             }).catch(error => {
-              view.controller.wizard.currentStep.stepStatus = 'ERROR';
+              view.controller.stepStatus = 'ERROR';
               view.controller.errorMessage = me.i18n.tr('community.members.alert.alertErrorMessage', 
                 {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
                   recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});

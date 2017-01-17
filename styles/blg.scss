@@ -1617,6 +1617,14 @@ li.complete .map-check {
   border-radius: 5px;
 }
 
+.wizard-result-message-prefix {
+  font-weight: bold;
+}
+
+.wizard-result-message-prefix-error {
+  color: $blg-red-light;
+}
+
 .div-table{
 	display: table;
 	width: 100%;
