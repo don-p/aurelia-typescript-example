@@ -1,6 +1,6 @@
 <template>
 	<div class="step-container" if.bind="step.stepStatus==='ERROR' && ((step.stepErrors) && step.stepErrors.length>0)">
-		<div class="step-message">${'organization.onboard.processingMessage.errors' | t: {errorCount: step.stepErrors.length}}:</div>
+		<div class="step-message"><span class="wizard-result-message-prefix wizard-result-message-prefix-error">${'global.failed' | t}: </span>${'organization.onboard.processingMessage.errors' | t: {errorCount: step.stepErrors.length}}:</div>
 		<div class="step-error">
 			<div class="step-row" class.bind="error.errorType?'error':''" repeat.for="error of step.stepErrors" >${'organization.onboard.validationMessage.row' | t} ${error.index}: <span if.bind="error.errorType">[${'organization.onboard.validationMessage.errorType' | t}]</span>
 			<span if.bind="!(error.errorType)">[${'organization.onboard.validationMessage.warningType' | t}]</span> ${'organization.onboard.validationMessage.'+(error.errorType?error.errorType:error.warningType) | t}</div>
@@ -8,11 +8,11 @@
 	</div>
 	<div class="flex-parent" if.bind="step.stepStatus==='ERROR' && (!(step.stepErrors) || step.stepErrors.length===0)">	
 		<div class="step-container nodetail flex-child">
-			<div class="step-message nodetail">${'organization.onboard.processingMessage.serverError' | t}}</div>
+			<div class="step-message nodetail"><span class="wizard-result-message-prefix wizard-result-message-prefix-error">${'global.failed' | t}: </span>${'organization.onboard.processingMessage.serverError' | t}}</div>
 		</div>
 	</div>
 	<div class="step-container" if.bind="step.model.stepStatus==='OK'">
-		<div class="step-message">${'organization.onboard.processingMessage.success' | t: {rowCount: processResponse.rowCount}}</div>
+		<div class="step-message"><span class="wizard-result-message-prefix">${'global.success' | t}: </span>${'organization.onboard.processingMessage.success' | t: {rowCount: processResponse.rowCount}}</div>
 		<div class="step-process">
 			<div class="div-table">
 				<div class="div-table-body">

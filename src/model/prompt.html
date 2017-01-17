@@ -2,7 +2,7 @@
 <template>
     <section>
         <div class="col-xs-12" id="prompt-div">
-            ${message}
+            <span if.bind="!!(messagePrefix)" class="wizard-result-message-prefix" class.bind="status==='ERROR'?'wizard-result-message-prefix-error':''">${messagePrefix | t}: </span>${message}
         </div>
     </section>
 </template>

@@ -4,7 +4,7 @@
     <div class="step-container nodetail send-alert flex-child">
       <div class="step-message nodetail">
         <div class="step-message-header">${'global.status' | t}:</div>
-        ${controller.errorMessage}
+        <span class="wizard-result-message-prefix" class.bind="controller.stepStatus==='OK'?'':'wizard-result-message-prefix-error'">${controller.stepStatus==='OK'?'global.success':'global.failed' | t}: </span>${controller.errorMessage}
         <!--
         ${ 'community.members.alert.alertSuccessMessage' | t: {alertCategory: currentStep.model.alertType.categoryName, recipientCount: currentStep.model.communityMembers.length}}
         -->
