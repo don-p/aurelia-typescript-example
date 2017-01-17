@@ -39,7 +39,7 @@
                         <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (organization.organizationId == selectedItem.organizationId) ? 'active':''"
                           role='tab'>
                           <a class='collapsed' click.trigger="selectOrganization(organization)" role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
-                            <h4 class='panel-title'>
+                            <h4 class='panel-title' click.trigger="selectOrganization(organization)">
                               <span class="community-name">${organization.organizationName}</span>
                               <span class="members-count">(<i class='ico-users'></i> ${organization.memberCount})</span>
                               <span class='community-buttons'>
