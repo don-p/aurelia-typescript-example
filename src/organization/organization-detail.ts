@@ -121,7 +121,7 @@ export class OrganizationDetail {
     return columns;
   }
 
-  getGridOptions(type): any {
+  getGridOptions(type): GridOptions {
     let me = this;
       return {
       columnDefs: this.getGridColumns(type),
