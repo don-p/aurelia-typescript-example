@@ -39,6 +39,7 @@ export class Login {
         'Content-Type': 'application/json'
   };
 
+  loginPromise: Promise<any>;
   logger: Logger;
 
 
@@ -69,6 +70,7 @@ export class Login {
     this.navigationInstruction = navigationInstruction;
     if(Object.keys(params).length !== 0) {
       this.errorMessage = this.utils.parseFetchError(params);
+      this.errorResult = this.vController.addError(this.utils.parseFetchError({errorMessage: this.i18n.tr(this.errorMessage)}), this);
     }
     this.logger.debug(navigationInstruction);
   }
@@ -105,7 +107,8 @@ export class Login {
 
     var me = this;
     delete me.errorResult;
-    return this.dataService.login(this.username, this.password)
+    me.loginPromise = this.dataService.login(this.username, this.password);
+    return me.loginPromise
 //    .then(response => response.json())
     .then((data:any) => {
       me.logger.debug(data);
