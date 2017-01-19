@@ -205,10 +205,9 @@ export class Community {
           communityType: community.communityType
         };
         // Call the delete service.
-        let promise = this.communityService.deleteCommunity(comm);
-        // model.modelPromise = promise;
-        // me.modelPromise = promise;
-        return promise.then(data => {
+        let modelPromise = this.communityService.deleteCommunity(comm);
+        controller.viewModel.modelPromise = modelPromise;        
+        return modelPromise.then(data => {
             /*
             let item = me.communities.responseCollection.find(function(obj) {
               return obj.communityId === comm.communityId;
@@ -313,25 +312,27 @@ export class Community {
           communityType: community.communityType,
           membershipType: 'DEFINED'
         };
-        me.communityService.createCommunity(comm)
-          .then(response => response.json())
-          .then(data => {
-            me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
-              if(community === null || typeof community.communityId !== 'string') {
-               me.selectCommunity(data);
-              }
-            });
-            // Close dialog on success.
-            controller.ok();
-          }, error => {
-            me.logger.error("Community create() rejected.");
-            model.errorMessage = "Failed"; 
-          }).catch(error => {
-            me.logger.error("Community create() failed."); 
-            me.logger.error(error); 
-            model.errorMessage = "Failed"; 
-            return Promise.reject(error);
-          })
+        let modelPromise = me.communityService.createCommunity(comm);
+        controller.viewModel.modelPromise = modelPromise;        
+        modelPromise
+        .then(response => response.json())
+        .then(data => {
+          me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
+            if(community === null || typeof community.communityId !== 'string') {
+              me.selectCommunity(data);
+            }
+          });
+          // Close dialog on success.
+          controller.ok();
+        }, error => {
+          me.logger.error("Community create() rejected.");
+          model.errorMessage = "Failed"; 
+        }).catch(error => {
+          me.logger.error("Community create() failed."); 
+          me.logger.error(error); 
+          model.errorMessage = "Failed"; 
+          return Promise.reject(error);
+        })
       }
       controller.result.then((response) => {
         if (response.wasCancelled) {
