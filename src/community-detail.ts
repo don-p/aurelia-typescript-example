@@ -788,8 +788,10 @@ export class CommunityDetail {
           }
         });
         // Call the service to start the call.
-        controller.viewModel.modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
-        controller.viewModel.modelPromise.then(response => response.json())
+        let modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
+        controller.viewModel.modelPromise = modelPromise;        
+        modelPromise
+        .then(response => response.json())
         .then(data => {
             // Update the message for success.
             controller.viewModel.messagePrefix = 'global.success';
