@@ -303,7 +303,9 @@ export class OrganizationDetail {
         model: orgModel,
         callback: function(step, resolve, reject): Promise<Object> {
           // Callback function for submitting the upload file.
-          return me.organizationService.importValidate(step.model.orgId, step.model.files)
+          let modelPromise = me.organizationService.importValidate(step.model.orgId, step.model.files);
+          step.controller.wizard.wizLoadingPromise = modelPromise;        
+          return modelPromise
           .then(response => {//return {'res': response.content, 'model': step} })
           // .then((data:Object) => {
             let data = {'res': response.content, 'model': step} ;
@@ -341,7 +343,9 @@ export class OrganizationDetail {
           let validateResponse = step.model.validateResponse;
           let viewModel = step.model;
           // Callback function for submitting the upload file.
-          return me.organizationService.importProcess(step.model.orgId, validateResponse.crId)
+          let modelPromise = me.organizationService.importProcess(step.model.orgId, validateResponse.crId);
+          step.controller.wizard.wizLoadingPromise = modelPromise;        
+          return modelPromise
           .then(response => {return {'res': response, 'model': viewModel}})
           .then(res => { return res.res.json() 
           .then(data => {
