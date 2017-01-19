@@ -1,7 +1,9 @@
 <template>
+<require from="./lib/loading-mask/loading-mask"></require>
     <div class="vertical-center">	
 			<section class="container">
-				<section class="login-form">
+				<section class="login-form" style="position: relative;">
+          		<loading id="login-loading" promise.bind="'loginPromise'" message-key.bind="'app.loading'">
 					<form method="post" id="login-form" role="login" submit.delegate="router.currentInstruction.config.route==='login-2'?loginConfirm(mfaCode):login()">
 						<img class="login-logo" src="../images/logo.png">				
 						<h3><img src="../images/gridcommand.png"></h3>
@@ -30,7 +32,7 @@
 									<span class="glyphicon glyphicon-user"></span>
 								</div>
 								<div class="col-xs-12">
-									<input id="pw" i18n='[placeholder]login.password' autocomplete='new-password' 
+									<input id="pw" i18n='[placeholder]login.password' autocomplete='new-password'
 										input.delegate="clearError()" change.delegate="clearError()" type="password" value.bind="password & validate" 
 										name="password" class="form-control input-lg" />
 									<span class="glyphicon glyphicon-lock"></span>
