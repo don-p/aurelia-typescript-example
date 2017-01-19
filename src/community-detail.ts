@@ -556,7 +556,7 @@ export class CommunityDetail {
     }
     this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
       message,
-      communityMembers, this.i18n.tr('button.remove'), true, null, 'modelPromise')
+      communityMembers, this.i18n.tr('button.remove'), true, null, 'modelPromise', '')
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.
@@ -565,7 +565,9 @@ export class CommunityDetail {
           return obj.memberId;
         });
         // Call the delete service.
-        this.communityService.removeCommunityMembers(me.selectedCmty.communityId, commMemberIds)
+        let modelPromise = this.communityService.removeCommunityMembers(me.selectedCmty.communityId, commMemberIds);
+        controller.viewModel.modelPromise = modelPromise;        
+        modelPromise
         .then(response => response.json())
         .then(data => {
             // Update local cache of community members.
@@ -648,7 +650,8 @@ export class CommunityDetail {
 
     let gridOptions = this.getGridOptions('addMembers');
 
-    this.dataService.openResourceEditDialog({modelView:'model/communityMembersModel.html', title:this.i18n.tr('community.members.addMembers'),
+    this.dataService.openResourceEditDialog({modelView:'model/communityMembersModel.html', 
+      title:this.i18n.tr('community.members.addMembers'), loadingTitle: 'app.loading',
       item:membersList, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
     .then((controller:any) => {
       // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
@@ -700,7 +703,9 @@ export class CommunityDetail {
         });
 
         // Call the addMembers service.
-        this.communityService.addCommunityMembers(this.selectedCmty.communityId, orgMemberIds)
+        let modelPromise = this.communityService.addCommunityMembers(this.selectedCmty.communityId, orgMemberIds);
+        controller.viewModel.modelPromise = modelPromise;        
+        modelPromise
         .then(response => response.json())
         .then(data => {
             // Update local cache of community members.
@@ -769,7 +774,7 @@ export class CommunityDetail {
 
     this.dataService.openPromptDialog(this.i18n.tr('community.members.call.title'),
       message,
-      communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise')
+      communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise', '')
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.

@@ -96,8 +96,14 @@ export class Loading {
     // We need a unique ID for each mask instance.
     let maskId = new Date().getTime();
 
-    this.title = this.i18n.tr(this.messageKey);
-    this.dimScreen = '<div ref="loadingMask" id="loadingMask-' + maskId + '" class="spinner"><div id="loadingTitle" class="loadingTitle">' + this.title +'</div><div class="mask"></div></div>';
+    if(!!(this.messageKey) && this.messageKey.length > 0) {
+      this.title = this.i18n.tr(this.messageKey);
+    }
+    this.dimScreen = '<div ref="loadingMask" id="loadingMask-' + maskId + '" class="spinner">'
+    if(!!(this.messageKey) && this.messageKey.length > 0) {
+      this.dimScreen += '<div id="loadingTitle" class="loadingTitle">' + this.title +'</div>';
+    }    
+    this.dimScreen += '<div class="mask"></div></div>';
     // this.loadingMask = $.parseHTML(this.dimScreen);
     // $(elementSelector).append(this.loadingMask);
     // $('#' + this.element.parentElement.id).append(this.dimScreen);

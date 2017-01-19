@@ -2,17 +2,12 @@
 <require from="../lib/loading-mask/loading-mask"></require>
 
   <ai-dialog id="model-dialog" class="blg-dialog">
+    <loading id="cmty-loading" promise.bind="'modelPromise'" message-key.bind="loadingTitle">                
     <div class="modal-header">
         <h4 class="modal-title">${title}</h4>
     </div>
                 <form id="model-form" submit.delegate="!!(submit)?submit(item):controller.ok(item)">
     <ai-dialog-body id="model-dialog-body">
-    <!--
-    <div ref="loadingMask" id="loadingMask-model" class="spinner">
-        <div id="loadingTitle" class="loadingTitle">'Loading'</div>
-        <div class="mask"></div>
-    </div>
-    -->
         <section>
             <div if.bind="showErrors && !!showErrors" class="row errorMessage">
                 <div class="col-xs-12">
