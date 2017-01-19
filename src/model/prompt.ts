@@ -14,6 +14,7 @@ export class Prompt {
   errorMessage: string;
   modelPromise: string;
   modelView: string;
+  loadingTitle: string;
   item: any;
   isDirty: boolean = true;
 
@@ -22,6 +23,7 @@ export class Prompt {
     this.vController.validateTrigger = validateTrigger.manual;
     this.modelView = this.controller.settings.modelView;
     this.modelPromise = this.controller.settings.modelPromise;
+    this.loadingTitle = this.controller.settings.loadingTitle;
     this.title = this.controller.settings.title;
     this.message = this.controller.settings.message;
     this.okText = this.controller.settings.okText;

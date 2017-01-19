@@ -17,6 +17,7 @@ export class Model {
   errorMessage: string;
   modelPromise: string;
   modelView: string;
+  loadingTitle: string;
 
   item: any;
   originalItem: any;
@@ -32,6 +33,7 @@ export class Model {
     this.modelView = this.controller.settings.modelView;
     this.modelPromise = this.controller.settings.modelPromise;
     this.title = this.controller.settings.title;
+    this.loadingTitle = this.controller.settings.loadingTitle;
     this.okText = this.controller.settings.okText;
     this.showCancel = this.controller.settings.showCancel;
     this.showErrors = typeof this.controller.settings.showErrors === 'boolean'?this.controller.settings.showErrors:true;

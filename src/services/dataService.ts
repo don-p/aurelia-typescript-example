@@ -166,7 +166,7 @@ export class DataService {
                 if((response.status === 401 || response.status === 400)) {
                     if(request.url.indexOf('/oauth/token')===-1 &&
                     me.session.auth['access_token'] && !me.auth.isAuthenticated()) {
-                        me.logger.debug('Received expiredToken response error ${response.status} ${response.url}');
+                        me.logger.debug('Received expired access token - response error ' + response.status + ' ' + response.url);
                         // Special case, refresh expired token.
                         // Request and save a new access token, using the refresh token.
                         me.logger.debug('responseErrorInterceptor - wait for refreshToken()');
@@ -176,7 +176,6 @@ export class DataService {
                     } else {
                         me.evt.publish('responseError', response);
                         return response;
-
                     }
                 } 
             }
@@ -374,6 +373,7 @@ export class DataService {
             view: 'model/model.html', 
             modelView: settings.modelView,
             title: settings.title, 
+            loadingTitle: settings.loadingTitle,
             item: settings.item, 
             rules: settings.validationRules,
             okText: settings.okText,
@@ -405,7 +405,7 @@ export class DataService {
         })
     }
 
-    async openPromptDialog(question:string, message:string, item: any, okText:string, showCancel: boolean, validationRules: any, modelPromise: string): Promise<DialogController> {
+    async openPromptDialog(question:string, message:string, item: any, okText:string, showCancel: boolean, validationRules: any, modelPromise: string, loadingTitle: string): Promise<DialogController> {
         return this.dialogService.openAndYieldController({ 
             viewModel: Prompt, 
             view: 'model/model.html', 
@@ -413,6 +413,7 @@ export class DataService {
             title: question, 
             message: message,
             modelPromise: modelPromise,
+            loadingTitle: loadingTitle,
             item: item, 
             rules: validationRules,
             okText: okText,
