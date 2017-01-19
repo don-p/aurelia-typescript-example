@@ -195,7 +195,7 @@ export class Community {
     this.modelPromise = null;
     this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
       this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
-      community, this.i18n.tr('button.delete'), true, null, 'modelPromise')
+      community, this.i18n.tr('button.delete'), true, null, 'modelPromise', '')
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.
@@ -298,7 +298,8 @@ export class Community {
     //   // .on(community)
     //   .rules
     //   ;
-    this.dataService.openResourceEditDialog({modelView:'model/communityModel.html', title:title, item:community, okText:this.i18n.tr('button.save'), validationRules:vRules})
+    this.dataService.openResourceEditDialog({modelView:'model/communityModel.html', title:title, 
+      loadingTitle: 'app.loading', item:community, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
       // let model = controller.settings.model;
       let model = controller.settings;
@@ -362,7 +363,7 @@ export class Community {
 
     this.dataService.openPromptDialog(this.i18n.tr('community.call.title'),
       message,
-      communities, this.i18n.tr('button.call'), true, null, 'modelPromise')
+      communities, this.i18n.tr('button.call'), true, null, 'modelPromise', '')
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.
