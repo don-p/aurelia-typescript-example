@@ -956,6 +956,7 @@ export class CommunityDetail {
           let view = this;
           let modelPromise = me.communityService.sendNotification(this.controller.dialogController.alertModel.communityMembers, 
           {message: this.controller.dialogController.alertModel.alertMessage, notificationCategory: this.controller.dialogController.alertModel.alertType.categoryId, attachmentRefs: this.controller.dialogController.alertModel.files});
+          step.controller.wizard.wizLoadingPromise = modelPromise;        
           
           return modelPromise.then(response => response.content)
           .then(data => {

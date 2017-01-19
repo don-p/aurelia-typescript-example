@@ -11,6 +11,7 @@ export class Wizard {
 
   @bindable controller;
   wizardSteps:WizardSteps;
+  wizLoadingPromise: Promise<any> = new Promise(function(){});
 
   constructor(events) {
     this.events = events
