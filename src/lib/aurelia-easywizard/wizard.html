@@ -1,8 +1,11 @@
 <template>
+<require from="../loading-mask/loading-mask"></require>
+
   <require from="./wizard/wizard-steps"></require>
   <require from="./wizard/wizard-step-container"></require>
   <require from="./wizard/wizard-actions"></require>
-  <div id="wizard" data-target="#step-container">
+  <div id="wizard" data-target="#step-container" style="position: relative;">
+  <loading id="wizard-loading" promise.bind="'wizLoadingPromise'" message-key.bind="'app.loading'">                
     <div class="modal-header-wizard">
       <h4 class="modal-title">${controller.title}</h4>
       <hr class="modal-header-wizard-border">

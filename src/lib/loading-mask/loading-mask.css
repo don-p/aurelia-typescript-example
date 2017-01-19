@@ -8,6 +8,7 @@
   margin: 60px auto;
   width: 1em;
   height: 1em;
+  top: calc(50% - (175px/2));
   border-radius: 50%;
   position: relative;
   text-indent: -9999em;
@@ -20,8 +21,9 @@
 
 .spinner {
   position: absolute;
-  padding-top: 30%;
+  /* padding-top: 30%; */
   top: 0;  
+  bottom: 0;
   width: 100%;
   height: 100%;
   opacity: 0.6;
@@ -36,6 +38,8 @@
     color: #ffffff;
     opacity: 1;
     font-size: 2.5em;
+    position: relative;
+    top: calc(50% - (175px/2));
 }
 
 @-webkit-keyframes spinner {
