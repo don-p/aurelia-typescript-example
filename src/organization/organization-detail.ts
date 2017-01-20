@@ -368,6 +368,10 @@ export class OrganizationDetail {
             viewModel.stepStatus = 'OK';
             // update the organization member count.
             me.selectedOrg.memberCount = data.totalCount;
+            // refresh the member list.
+            me.gridOptions.api.refreshVirtualPageCache();
+            me.gridOptions.api.refreshView();
+            
             return {currentStep:viewModel, res:data};
           });
           }, error => {
@@ -411,8 +415,9 @@ export class OrganizationDetail {
         controller.viewModel.item.files = fileArray;
       };
       controller.viewModel.submit = (output) => {
-        me.gridOptions.api.refreshVirtualPageCache();
-        me.gridOptions.api.refreshView();
+        // me.gridOptions.api.refreshVirtualPageCache();
+        // me.gridOptions.api.refreshView();
+
         // update the organization member count.
         // me.selectedOrg.memberCount = data.totalCount;
         // Close dialog on success.

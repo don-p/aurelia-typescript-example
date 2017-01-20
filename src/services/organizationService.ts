@@ -39,7 +39,7 @@ export class OrganizationService {
         let response = this.getHttpClient().fetch('v1/organizations/' + organizationId + '/members?start_index=' + 
             startIndex + '&page_size=' + pageSize + '&' + criteriaParamsQueryString, 
             {
-                method: 'GET',
+                method: 'GET'
             }
         );
         return response;

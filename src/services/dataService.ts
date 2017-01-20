@@ -203,6 +203,21 @@ export class DataService {
         return {
             request: function(request) {
                 me.logger.debug(`Requesting ${request.method} ${request.url}`);
+                if(request.method === 'GET') {
+                    // Inject a cache-busting parameter.
+                    let u = document.createElement('a');
+                    u.href = request.url;
+                    let params = u.search;
+                    let cacheBustingString = btoa(new Date().getTime().toString());
+                    if(!!params && params.length > 0) {
+                        params += '&' + cacheBustingString;
+                    } else {
+                        params += '?' + cacheBustingString;
+                    }
+                    u.search = params;
+
+                    let result:Request = Object.defineProperty(request, 'url', {value: u.href});
+                }
                 return request;
             },
             response: async function(response, request) {

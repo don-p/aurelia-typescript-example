@@ -9,6 +9,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {AuthService} from 'aurelia-auth';
 import {DataService} from './services/dataService';
 import {Utils} from './services/util';
+import{RedirectWithParams} from './lib/RedirectWithParams';
 
 @inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, AureliaConfiguration, Router, Utils, LogManager)
 export class App {
@@ -248,7 +249,7 @@ export class AuthenticationStep {
     if(needsAuth) {
       let isLoggedIn = this.utils.isLoggedIn();
       if(!isLoggedIn) {
-        return next.cancel(new Redirect('login',{errorMessage:'error.sessionExpired'}));
+        return next.cancel(new RedirectWithParams('login',{errorMessage:'error.sessionExpired'}));
       }
       return next();
     }
