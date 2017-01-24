@@ -750,8 +750,7 @@ export class CommunityDetail {
   }
 
   makeCallCommunityMembers() {
-    // let maxParticipants = this.appConfig.get('server.MAX_CONFERENCE_PARTICIPANTS');
-    let maxParticipants = 5;
+    let maxParticipants = this.appConfig.get('server.MAX_CONFERENCE_PARTICIPANTS');
     this.logger.debug('makeCallCommunityMembers() => MAX_CONFERENCE_PARTICIPANTS = ' + maxParticipants);
 
     let message = null;
