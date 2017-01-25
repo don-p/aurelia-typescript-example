@@ -55,7 +55,8 @@
         "team":"Team",
         "search":"Search",
         "createCommunity":"Create Community",
-        "editCommunity":"Update Community",                
+        "editCommunity":"Update Community",
+        "transferOwnership":"Transfer Community Ownership",             
         "confirmDelete": {
             "title": "Delete Community?",
             "message": "Delete the community '{{communityName}}'?"

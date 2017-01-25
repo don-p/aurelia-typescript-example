@@ -197,4 +197,14 @@ export class CommunityService {
         // return response;
     }
 
+    async transferOwnership(communityId, memberId):Promise<any> {
+
+        return Promise.resolve({
+            status:'OK',
+            communityId: communityId,
+            memberId: memberId
+        });
+        
+    }
+
 }

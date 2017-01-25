@@ -208,6 +208,7 @@ export class App {
   //  .then(response => response.json())
     .then(data => {
       me.logger.debug("Logged out");
+      // Delete the local authentication data.
       me.authService['auth'].storage.remove(me.authService['tokenName']);
       me.authService['auth'].storage.remove('auth');
       if(data && data!==null) {

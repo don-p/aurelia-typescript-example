@@ -1,0 +1,25 @@
+<template>
+	<div class="row toggleSelectedLink">
+		<div if.bind="!(communityId)" class="left-select">
+			<span  class="organization-select-label" i18n='[prepend]organization.organization'>: </span>
+			<select class="form-control select select-default-blg select-organization" change.delegate="selectOrganization($event)">
+			<option repeat.for="organization of organizations" value="${organization.organizationId}" model.bind="organization">${organization.organizationName}</option>
+			</select>
+		</div>
+		<div if.bind="gridOptions.api.rowModel.datasource.name ==='organizationMembers'"  class="pull-right" >
+			<button disabled.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i><span>${'global.showSelected' | t}</span></button>
+		</div>
+		<div if.bind="gridOptions.api.rowModel.datasource.name ==='selectedOrganizationMembers'" class="pull-right" >
+			<button class.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i><span>${'global.showAll' | t}</span></button>
+		</div>
+		<div class="pull-right">
+			<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
+		</div>		
+	</div>
+	<div class="members-table-content organization-members-table" id="membersTableContent">				  
+		<!--<require from="../lib/loading-mask/loading-mask"></require>-->
+		<!--<loading promise.bind="'membersPromise'">-->
+		<div id="addCmtyMembersGrid" ref="addCmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
+	</div>
+	<input type="hidden" value.bind="item.communityId" />
+</template>
