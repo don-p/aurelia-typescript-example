@@ -101,6 +101,7 @@ export class Utils {
         return {
         columnDefs: this.getGridColumns(type),
         rowSelection: 'multiple',
+        suppressRowClickSelection: true,
         rowHeight: 30,
         headerHeight: 40,
         suppressMenuHide: true,

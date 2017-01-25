@@ -204,6 +204,7 @@ export class Community {
 
     let gridOptions = this.utils.getGridOptions('transferOwnership', this.pageSize);
     gridOptions.rowSelection = 'single';
+    gridOptions.suppressRowClickSelection = false;
     gridOptions['communityId'] = community.communityId;
 
     this.dataService.openResourceEditDialog({modelView:'model/communityMembersListModel.html', 
