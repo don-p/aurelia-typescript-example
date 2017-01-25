@@ -15,9 +15,9 @@
 }
 
 .spinner {
-  /* padding-top: 75% !important; */
   opacity: 0.75 !important;
   background-color: $blg-wet-asphalt-light !important;
+  left: 0;
 }
 
 body {
@@ -1174,7 +1174,7 @@ padding: 15px 20px 20px 20px;
 }
 
 #wizard .modal-header-wizard {
-padding: 15px 20px 0px 20px;
+padding: 15px 5px 0px 5px;
 }
 
 .modal-header-wizard-border {
@@ -1204,7 +1204,7 @@ wizard .modal-title {
 }
 
 wizard .modal-footer {
-  margin: 0px 15px;  
+  margin: 0px 5px;  
 }
 
 .modal-footer button {
@@ -1418,7 +1418,7 @@ ai-dialog-container {
 
 .step-container {
   padding: 0px 15px;
-  min-height: 220px;
+  height: 255px;
 }
 
 .step-container.nodetail {
@@ -1694,6 +1694,10 @@ li.complete .map-check {
 #model-dialog-body {
   display: block;
   padding: 15px;
+}
+
+#wizard #model-dialog-body {
+  padding: 5px;
 }
 
 .send-alert-remove-attachment {
