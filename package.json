@@ -28,7 +28,7 @@
     "prebuild:qa": "npm run clean:dist",
     "build:qa": "cross-env NODE_ENV=qa npm run webpack -- --progress --profile",
     "prebuild:dev": "npm run clean:dist",
-    "build:dev": "cross-env NODE_ENV=development npm run webpack -- --progress --profile",
+    "build:dev": "cross-env NODE_ENV=development npm run webpack -- --progress --profile --display-error-details",
     "prebuild:prod": "npm run clean:dist",
     "build:prod": "cross-env NODE_ENV=production npm run webpack -- --progress --profile",
     "start": "npm run server:dev",
