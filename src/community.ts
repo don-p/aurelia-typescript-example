@@ -12,15 +12,19 @@ import {I18N} from 'aurelia-i18n';
 import * as Ps from 'perfect-scrollbar';
 import {ValidationRules, ValidationController} from 'aurelia-validation';
 import {CommunityResource} from './model/communityResource';
+import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
+import {Utils} from './services/util';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, NewInstance.of(ValidationController), AureliaConfiguration, LogManager)
+@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, 
+  AureliaConfiguration, Utils, NewInstance.of(ValidationController), LogManager)
 export class Community {
   communities: Array<Object>;
   items:Array<Object>;
   commType: string;
+  pageSizeList: number;
   pageSize: number;
   cmtysPromise: Promise<Response>;
   modelPromise: Promise<void>;
@@ -35,14 +39,16 @@ export class Community {
   logger: Logger;
 
   constructor(private session: Session, private router: Router, private dataService: DataService, 
-    private communityService: CommunityService, private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration) {
+    private communityService: CommunityService, private evt: EventAggregator, Ps, 
+    private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils) {
 
     // var Ps = require('perfect-scrollbar');
 
     this.ps = Ps;
     this.communities = [];
     this.communities['responseCollection'] = [];
-    this.pageSize = 500;
+    this.pageSizeList = 500;
+    this.pageSize = 200;
     this.selectedItem = null;
     this.selectedCommunities = [];
     this.logger = LogManager.getLogger(this.constructor.name);
@@ -64,7 +70,7 @@ export class Community {
     this.ps.update(container);
     let me = this;
     this.commType = 'TEAM';
-    this.getCommunitiesPage(this.commType, 0, this.pageSize).then(function(){
+    this.getCommunitiesPage(this.commType, 0, this.pageSizeList).then(function(){
       me.selectDefaultCommunity();
     });
   }
@@ -118,7 +124,7 @@ export class Community {
     if(this.commType !== communityType) {
       this.commType = communityType;
     }
-    this.getCommunitiesPage(communityType, 0, this.pageSize).then(function(){
+    this.getCommunitiesPage(communityType, 0, this.pageSizeList).then(function(){
       if(typeof selectedCommunity !== 'object') {
         me.selectDefaultCommunity();
       } else {
@@ -189,8 +195,127 @@ export class Community {
     }
   }
 
+  transferOwnershipToCommunityMember(community: any, event: MouseEvent) {
+    event.stopPropagation();
 
-  deleteCommunity(community: any) {
+    let message = null;
+    let membersList = [];
+    let me = this;
+
+    let gridOptions = this.utils.getGridOptions('transferOwnership', this.pageSize);
+    gridOptions.rowSelection = 'single';
+    gridOptions.suppressRowClickSelection = false;
+    gridOptions['communityId'] = community.communityId;
+
+    this.dataService.openResourceEditDialog({modelView:'model/communityMembersListModel.html', 
+      title:this.i18n.tr('community.members.transferOwnership.title'), loadingTitle: 'app.loading',
+      item:membersList, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
+    .then((controller:any) => {
+      controller.viewModel.communityId = community['communityId'];
+      controller.viewModel.$isDirty = false;
+      Object.defineProperty(controller.viewModel, 'isDirty', {
+        get: function() {
+          return this.$isDirty;
+        }
+      });
+      
+      // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
+      let activeElement = <HTMLElement> document.activeElement;
+      activeElement.blur();
+
+      let model = controller.settings;
+      model.isSubmitDisabled = true;
+      gridOptions.onSelectionChanged = function() {
+        let rows = gridOptions.api.getSelectedRows();
+        controller.viewModel.selectedCommunityMembers = rows;
+        controller.viewModel.$isDirty = true;
+        controller.viewModel.isSubmitDisabled = rows.length === 0;
+      };
+      gridOptions.getRowNodeId = function(item) {
+        return item.memberId.toString();
+      };
+      let transferOwnershipGrid = new Grid(controller.viewModel.addCmtyMembersGrid, gridOptions); //create a new grid
+      gridOptions['api'].sizeColumnsToFit();
+      me.utils.setCommunityMembersGridDataSource('transferOwnershipGrid', gridOptions, me.pageSize, me.communityService, null, false);
+
+      
+      // controller.isGridFiltered = Object.defineProperty(controller, 'isGridFiltered', {get: function() {
+      //   window.console.debug('--- isGridFiltered ---');
+      //     return controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent();
+      //   }
+      // });
+      controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
+      // controller.viewModel.organizations = me.organizations;
+      // controller.viewModel.communityMembers = me.communityMembers;
+      // controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
+      controller.viewModel.gridOptions = gridOptions;
+      // let organizationId = me.organizations[0]['organizationId'];
+      // gridOptions['organizationId'] = organizationId;
+
+      // Get list of members in a selected organization.
+      // controller.viewModel.selectOrganization = function(event: any) {
+      //   if(this.selectedOrganization !== event.target.value) {
+      //     this.selectedOrganization = event.target.value;
+      //     gridOptions['organizationId'] = this.selectedOrganization;
+      //     this.setOrganizationMembersGridDataSource(gridOptions, me.pageSizeList, me.organizationService, this.selectedOrganization);
+      //   }
+      // }
+
+
+      // Callback function for submitting the dialog.
+      controller.viewModel.submit = () => {
+        let selection = gridOptions.api.getSelectedRows();
+        let memberId = selection[0].memberId;
+
+        // Call the addMembers service.
+        let modelPromise = this.communityService.transferOwnership(controller.viewModel.communityId, memberId);
+        controller.viewModel.modelPromise = modelPromise;        
+        modelPromise
+        // .then(response => response.json())
+        .then(data => {
+
+            // me.gridOptions.api.refreshVirtualPageCache();
+            // me.gridOptions.api.refreshView();
+            // me.gridOptions.api.deselectAll();
+
+            // // update the community member count.
+            // me.selectedCmty.memberCount = data['totalCount'];
+
+            // Close dialog on success.
+            gridOptions.api.destroy();
+
+            controller.viewModel.showCancel = false;
+            controller.viewModel.okText = 'Done';
+            controller.viewModel.status = 'OK';
+            delete controller.viewModel.submit;
+
+            //controller.ok();
+          }, error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member delete() rejected."); 
+          }).catch(error => {
+            model.errorMessage = "Failed"; 
+            me.logger.error("Community member delete() failed."); 
+            me.logger.error(error); 
+            return Promise.reject(error);
+          }) 
+      };
+
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          gridOptions.api.destroy();
+          this.logger.debug('Cancel');
+        }
+      })
+    });
+    
+  }
+
+
+  deleteCommunity(community: any, event: MouseEvent) {
+    event.stopPropagation();
+
     let me = this;
     this.modelPromise = null;
     this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
@@ -220,7 +345,7 @@ export class Community {
             }
             */
             let idx = me.communities.indexOf(community);
-            me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(data){
+            me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then(function(data){
               // After deleting community, select the next available community.
               if(me.selectedItem['communityId'] === community.communityId) {
                 idx = idx===0?0:idx-1;
@@ -250,10 +375,12 @@ export class Community {
   }
 
   createCommunity() {
-    this.editCommunity(null);
+    this.editCommunity(null, null);
   }
 
-  editCommunity(community: any) {
+  editCommunity(community: any, event: MouseEvent) {
+    if(!!(event)) event.stopPropagation();
+
     let me = this;
     let title = '';
     if(community === null) {
@@ -317,7 +444,7 @@ export class Community {
         modelPromise
         .then(response => response.json())
         .then(data => {
-          me.getCommunitiesPage(me.commType, 0, this.pageSize).then(function(){
+          me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then(function(){
             if(community === null || typeof community.communityId !== 'string') {
               me.selectCommunity(data);
             }

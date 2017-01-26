@@ -1,4 +1,5 @@
-import {inject, Lazy} from 'aurelia-framework';
+import {inject, Lazy, LogManager} from 'aurelia-framework';
+import {Logger} from 'aurelia-logging';
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {HttpClient as Http, HttpResponseMessage} from 'aurelia-http-client';
 import {Session} from './session';
@@ -11,7 +12,7 @@ import {DataService} from './dataService';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService)
+@inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService, LogManager)
 export class CommunityService {  
 
     // Service object for retreiving application data from REST services.
@@ -19,11 +20,13 @@ export class CommunityService {
     apiServerUrl: string;
     clientId: string;
     clientSecret: string;
+    logger: Logger;
 
     constructor(private httpClient: HttpClient, private httpBase: Http, 
         private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
         private fetchConfig: FetchConfig, private dataService:DataService){
 
+        this.logger = LogManager.getLogger(this.constructor.name);
     }
 
     getHttpClient() {
@@ -195,6 +198,23 @@ export class CommunityService {
         //     }
         // );
         // return response;
+    }
+
+    async transferOwnership(communityId, memberId):Promise<any> {
+        let me = this;
+        let p = new Promise(function(resolve,reject) {
+            me.logger.debug('new Promise for transferOwner()');
+        })
+        // setTimeout(function() {
+        
+        p = Promise.delay(2500, {
+            status:'OK',
+            communityId: communityId,
+            memberId: memberId
+            }
+        );
+            
+        return p;
     }
 
 }
