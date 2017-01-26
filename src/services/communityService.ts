@@ -207,13 +207,19 @@ export class CommunityService {
         })
         // setTimeout(function() {
         
-        p = Promise.delay(2500, {
+        // p = Promise.delay(2500, {
+        //     status:'OK',
+        //     communityId: communityId,
+        //     memberId: memberId
+        //     }
+        // );
+            
+        p = Promise.resolve( {
             status:'OK',
             communityId: communityId,
             memberId: memberId
             }
         );
-            
         return p;
     }
 
