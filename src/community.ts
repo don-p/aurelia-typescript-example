@@ -208,7 +208,7 @@ export class Community {
     gridOptions['communityId'] = community.communityId;
 
     this.dataService.openResourceEditDialog({modelView:'model/communityMembersListModel.html', 
-      title:this.i18n.tr('community.transferOwnership'), loadingTitle: 'app.loading',
+      title:this.i18n.tr('community.members.transferOwnership.title'), loadingTitle: 'app.loading',
       item:membersList, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
     .then((controller:any) => {
       controller.viewModel.communityId = community['communityId'];
@@ -271,7 +271,7 @@ export class Community {
         let modelPromise = this.communityService.transferOwnership(controller.viewModel.communityId, memberId);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
-        .then(response => response.json())
+        // .then(response => response.json())
         .then(data => {
 
             // me.gridOptions.api.refreshVirtualPageCache();
@@ -283,7 +283,13 @@ export class Community {
 
             // Close dialog on success.
             gridOptions.api.destroy();
-            controller.ok();
+
+            controller.viewModel.showCancel = false;
+            controller.viewModel.okText = 'Done';
+            controller.viewModel.status = 'OK';
+            delete controller.viewModel.submit;
+
+            //controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
             me.logger.error("Community member delete() rejected."); 

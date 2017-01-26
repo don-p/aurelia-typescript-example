@@ -56,7 +56,6 @@
         "search":"Search",
         "createCommunity":"Create Community",
         "editCommunity":"Update Community",
-        "transferOwnership":"Transfer Community Ownership",             
         "confirmDelete": {
             "title": "Delete Community?",
             "message": "Delete the community '{{communityName}}'?"
@@ -88,6 +87,11 @@
                 "alertConfirmMessage": "Click 'Next' to send {{alertType}} alert with {{attCount}} attachments to {{recipientCount}} recipient(s).",
                 "alertSuccessMessage": "{{alertCategory}} alert has been sent to {{recipientCount}} recipient(s).",
                 "alertErrorMessage": "An error occured; {{alertCategory}} alert has not been sent to {{recipientCount}} recipient(s)."
+            },
+            "transferOwnership": {
+                "title": "Transfer Community Ownership",
+                "successMessage": "Community ownership was transferred.",
+                "failedMessage": "Community ownership could not be transferred."
             },
             "addMembers": "Add Community Members"
         },          
