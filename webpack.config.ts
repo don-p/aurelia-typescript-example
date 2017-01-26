@@ -28,6 +28,13 @@ console.log('========== BUILDING FOR ENV - ' +  process.env.NODE_ENV + ' =======
 
 const webpack = require('webpack');
 
+//Determine if running locally in webpack-dev-server.
+let args = JSON.parse(process.env.npm_config_argv);
+let argv = Object.keys(args.cooked).map(function(key) {
+ return args.cooked[key]}
+);
+const LOCAL = argv.indexOf('webpack-dev-server') >= 0;
+
 // basic configuration:
 const title = 'GridCommand';
 const baseUrl = '/';
@@ -120,7 +127,7 @@ let config = generateConfig(
         },
         // SASS loader.
         {
-          test: /\.(scss|css)$/i, exclude: [srcDir+'/libs/'], loader: ExtractCustomCSS.extract(['css-loader'+sourcemap+'!sass-loader'+sourcemap])
+          test: /\.(scss|css)$/i, exclude: [srcDir+'/libs/'], loader: ExtractCustomCSS.extract(['css-loader'+sourcemap+'!resolve-url-loader!sass-loader'+sourcemap])
         },
 {
    test: /favicon.ico$/,
