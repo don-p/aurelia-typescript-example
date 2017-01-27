@@ -39,7 +39,7 @@
     },
 
     "error": {
-        "sessionExpired": "Your session has expired or is invalid.  Please log in.",
+        "sessionExpired": "Your session has expired.  Please log in.",
         "serverNotAvailable": "The server is not responding. Wait and try again, or contact your Administrator.",
         "badCredentials": "The username/password combination provided is not valid. Please try again.",
         "unknown": "An error occurred. Wait and try again, or contact your Administrator.",
