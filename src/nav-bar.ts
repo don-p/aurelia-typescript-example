@@ -1,6 +1,6 @@
-import {inject, NewInstance, Lazy, LogManager} from 'aurelia-framework';
+import {inject} from 'aurelia-framework';
 import {Session} from './services/session';
-import {Router, NavigationInstruction} from 'aurelia-router';
+import {Router} from 'aurelia-router';
 
 @inject(Session, Router)
 export class NavBar {
@@ -11,13 +11,11 @@ export class NavBar {
       
   }
 
-  activate(params, routeConfig, navigationInstruction) {
+  attached() {
     if(this.router.currentInstruction && this.router.currentInstruction.config.route !== '' && this.router.currentInstruction.config.route !== 'login') {
       this.avatarUrl = this.session.auth['member'].secureAvatarUrl;
     }
   }
-
-
 
 }
 
