@@ -163,13 +163,32 @@ export class Utils {
 
     selection = gridOptions.selection;
 
+    let gridDataSource = this.getCommunityMembersGridDataSource(dataSourceName, gridOptions, pageSize, communityService);
+    gridOptions.api.setDatasource(gridDataSource);
+  }
+
+  getCommunityMembersGridDataSource(dataSourceName, gridOptions, pageSize, communityService) {
+    const me = this;
+
+    let name = dataSourceName; //showSelected?'selectedCommunityMembers':'communityMembers';
+    // let selectionFilterComponent:SelectedRowFilter = gridOptions.api.getFilterInstance('select');
+    // if(showSelected) {
+    //   selectionFilterComponent.setActive(true);
+    //   // gridOptions.columnDefs[0].filter = new SelectedRowFilter();
+    // } else {
+    //   selectionFilterComponent.setActive(false);
+    //   // gridOptions.columnDefs[0].filter = null;
+    // }
+
+    let selection = gridOptions.selection;
+
     let gridDataSource = {
         /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
         name: name,
         rowCount: null,
         paginationPageSize: pageSize,
         //  paginationOverflowSize: 1,
-          maxConcurrentDatasourceRequests: 2,
+        maxConcurrentDatasourceRequests: 2,
         //  maxPagesInPaginationCache: 2,
         loading: false,
 
@@ -216,6 +235,9 @@ export class Utils {
                       })) {
                           node.setSelected(true);
                           gridOptions.api.refreshRows([node]);
+                      } else {
+                          node.setSelected(false);
+                          gridOptions.api.refreshRows([node]);
                       }
                   });
                 }
@@ -226,7 +248,53 @@ export class Utils {
           // }
         }
     }
+    return gridDataSource
+  }
+
+  getSelectedCommunityMembersGridDataSource(dataSourceName, gridOptions: GridOptions):Object {
+    const me = this;
+
+    // Set local row model.
+    gridOptions.enableServerSideSorting = false;
+    gridOptions.enableServerSideFilter = false;
+    gridOptions.enableSorting = true;
+    gridOptions.enableFilter = true;
+    gridOptions.rowModelType = 'normal';
+
+    let gridDataSource = {
+        name: dataSourceName,
+        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
+        rowCount: null,
+        // paginationPageSize: pageSize,
+        //  paginationOverflowSize: 1,
+        maxConcurrentDatasourceRequests: 2,
+        //  maxPagesInPaginationCache: 2,
+        loading: false,
+
+        // /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
+        // getRows: function(params: IGetRowsParams) {
+        //   me.logger.debug("..... setSelectedOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
+        //   gridOptions.api.showLoadingOverlay();
+        //   params.successCallback(selection, selection.length);
+        //   gridOptions.api.hideOverlay();
+        // }
+    }
+    return gridDataSource;
+  }
+  setSelectedCommunityMembersGridDataSource(gridOptions: GridOptions, pageSize, selection) {
+    const me = this;
+
+    // Set local row model.
+    gridOptions.enableServerSideSorting = false;
+    gridOptions.enableServerSideFilter = false;
+    gridOptions.enableSorting = true;
+    gridOptions.enableFilter = true;
+    gridOptions.rowModelType = '';
+    gridOptions.api.setRowData(selection);
+
+    let gridDataSource = this.getSelectedCommunityMembersGridDataSource('selectedCommunityMembers', gridOptions);
     gridOptions.api.setDatasource(gridDataSource);
   }
+  
 
 }

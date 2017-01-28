@@ -35,9 +35,15 @@
 		</div>
 		
 		<div class="members-table-info-bar">
-			
-			
+
+		
 			<div role="status" id="example_info" class="members-table-info">
+				<div if.bind="!showSelectedCommunitiesGrid" class="pull-right" >
+					<button disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(true)"><i class="ico-filter4"></i><span>${'global.showSelected' | t}</span></button>
+				</div>
+				<div if.bind="showSelectedCommunitiesGrid" class="pull-right" >
+					<button type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(false)"> <i class="ico-filter3"></i><span>${'global.showAll' | t}</span></button>
+				</div>
 				<div class="pull-right">
 					<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
 				</div>
@@ -57,8 +63,8 @@
 		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
 <div class="members-table-content" id="membersTableContent">	
-	<div id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" >
-	</div>
+	<div show.bind="!showSelectedCommunitiesGrid" id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
+	<div show.bind="showSelectedCommunitiesGrid" id="cmtyMembersSelectedGrid" ref="cmtyMembersSelectedGrid" style="height: 100%;" class="ag-blg" ></div>
 </div>
 		<!--<div class="blg-btns-content panel-footer"></div>										-->
 
