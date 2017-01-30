@@ -5,7 +5,7 @@ import {FetchConfig} from 'aurelia-auth';
 import {ConsoleAppender} from "aurelia-logging-console";
 // we want font-awesome to load as soon as possible to show the fa-spinner
  // Vendor CSS libs:
-import 'font-awesome/scss/font-awesome.scss';
+//import 'font-awesome/scss/font-awesome.scss';
 import 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
 // Application CSS + Bootstrap:
 import '../styles/style.scss';

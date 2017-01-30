@@ -127,7 +127,7 @@ let config = generateConfig(
         },
         // SASS loader.
         {
-          test: /\.(scss|css)$/i, exclude: [srcDir+'/libs/'], loader: ExtractCustomCSS.extract(['css-loader'+sourcemap+'!sass-loader'+sourcemap+'!resolve-url-loader'])
+          test: /\.(scss|css)$/i, exclude: [srcDir+'/libs/'], loader: ExtractCustomCSS.extract(['css-loader'+sourcemap+'!sass-loader'+sourcemap])
         },
 {
    test: /favicon.ico$/,

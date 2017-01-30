@@ -31,6 +31,7 @@ export class CommunityDetail {
   communityMembers: Array<Object>;
   membersGrid: Object;
   cmtyMembersGrid: any;
+  cmtyMembersSelectedGrid: any;
   addCmtyMembersGrid: any;
   currentMember: Object;
   // remoteData: RemoteData;
@@ -41,6 +42,8 @@ export class CommunityDetail {
   // @bindable rows;
   @bindable pageSize;
   gridOptions: GridOptions;
+  gridOptionsSelected: GridOptions;
+  showSelectedCommunitiesGrid: boolean;
   gridCreated: boolean;
   gridColumns: Array<any>;
   grid: any;
@@ -65,6 +68,7 @@ export class CommunityDetail {
     const filterEquals = TextFilter.EQUALS;
     const filterContains = TextFilter.CONTAINS;
 
+    this.showSelectedCommunitiesGrid = false;
 
     var me = this;
     this.evt.subscribe('cmtySelected', payload => {
@@ -196,14 +200,21 @@ export class CommunityDetail {
 
     let gridOptions = this.utils.getGridOptions('listMembers', this.pageSize);
     gridOptions.onSelectionChanged = function() {
-      me.membersSelectionChanged(this)
+      me.membersSelectionChanged(this);
     };
     gridOptions.getRowNodeId = function(item) {
       return item.memberId.toString();
     };
     this.gridOptions = gridOptions;
     this.initGrid(this);
-
+    this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
+    this.gridOptionsSelected.onSelectionChanged = function() {
+      me.membersSelectionChanged(this);
+      me.gridOptions['selection'] = me.selectedCommunityMembers;
+    };
+    this.utils.getSelectedCommunityMembersGridDataSource('selectedCommunityMembers', this.gridOptionsSelected);
+    new Grid(this.cmtyMembersSelectedGrid, this.gridOptionsSelected); //create a new grid
+    this.gridOptionsSelected['api'].sizeColumnsToFit();
     // Get list of organizations the logged-in user has rights to.
     this.getOrganizationsPage(0, 500);
     // Get list of alert/notification categories.
@@ -499,6 +510,21 @@ export class CommunityDetail {
   //     gridOptions.api.refreshView();
   // }
   
+  showSelectedCommunityMembers(showSelected:boolean) {
+    if(showSelected) {
+      this.showSelectedCommunitiesGrid = showSelected;
+      let selection = this.gridOptions.api.getSelectedRows();
+      // this.gridOptions.api.setDatasource(this.utils.getSelectedCommunityMembersGridDataSource('selectedCommunityMembers', this.gridOptions));
+      this.gridOptionsSelected.api.setRowData(selection);
+      this.gridOptionsSelected.api.selectAll();
+      this.gridOptionsSelected.api.refreshView();
+      this.gridOptionsSelected['api'].sizeColumnsToFit();
+    } else {
+      this.showSelectedCommunitiesGrid = showSelected;
+      this.gridOptions.api.setDatasource(this.utils.getCommunityMembersGridDataSource('communityMembers', this.gridOptions, this.pageSize, this.communityService));
+    }
+
+  };
 
 /*  
   async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
