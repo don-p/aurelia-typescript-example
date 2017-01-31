@@ -3,17 +3,17 @@ import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {AureliaConfiguration} from 'aurelia-configuration';
-import {Session} from './services/session';
-import {DataService} from './services/dataService';
-import {CommunityService} from './services/communityService';
+import {Session} from '../services/session';
+import {DataService} from '../services/dataService';
+import {CommunityService} from '../services/communityService';
 import {VirtualRepeat} from 'aurelia-ui-virtualization';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import * as Ps from 'perfect-scrollbar';
 import {ValidationRules, ValidationController} from 'aurelia-validation';
-import {CommunityResource} from './model/communityResource';
+import {CommunityResource} from '../model/communityResource';
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
-import {Utils} from './services/util';
+import {Utils} from '../services/util';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);

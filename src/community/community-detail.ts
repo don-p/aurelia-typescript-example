@@ -4,17 +4,17 @@ import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {AureliaConfiguration} from 'aurelia-configuration';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
-import {Session} from './services/session';
-import {DataService} from './services/dataService';
-import {CommunityService} from './services/communityService';
-import {OrganizationService} from './services/organizationService';
+import {Session} from '../services/session';
+import {DataService} from '../services/dataService';
+import {CommunityService} from '../services/communityService';
+import {OrganizationService} from '../services/organizationService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
-import {Prompt} from './model/prompt';
+import {Prompt} from '../model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
-import {WizardControllerStep} from './lib/aurelia-easywizard/controller/wizard-controller-step';
-import {Utils} from './services/util';
+import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
+import {Utils} from '../services/util';
 
 @inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, 
   Ps, I18N, AureliaConfiguration, Utils, LogManager) // SCROLL

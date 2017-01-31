@@ -1,5 +1,5 @@
 <template>
-	<require from="./lib/loading-mask/loading-mask"></require>
+	<require from="../lib/loading-mask/loading-mask"></require>
 
 	<section id="membersTable" class="members-table">
 		
@@ -38,6 +38,9 @@
 
 		
 			<div role="status" id="example_info" class="members-table-info">
+				<div class="pull-right">
+					<button type="button"  class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i><span>Clear Selection</span></button>
+				</div>
 				<div if.bind="!showSelectedCommunitiesGrid" class="pull-right" >
 					<button disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(true)"><i class="ico-filter4"></i><span>${'global.showSelected' | t}</span></button>
 				</div>

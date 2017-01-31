@@ -1,5 +1,5 @@
 <template>
-<require from="./lib/loading-mask/loading-mask"></require>
+<require from="../lib/loading-mask/loading-mask"></require>
 
   <div class="blg-fixed-wrapper">
 
@@ -10,17 +10,17 @@
           <a href="#communities" i18n="community.communities" id="tabCommunitiesTitle"></a>
         </li>
         <!-- FIXME: temp removal of non-admin functions. -->
-        <!--
+        
         <li>
           <a href="#discover" i18n="community.discover" id="tabDiscoverTitle"></a>
         </li>
         <li>
           <a href="#connects" i18n="community.connect" id="tabConnectsTitle"></a>
         </li>
-        -->
+        
         <!-- FIXME: temp removal of non-admin functions. -->
       </ul>
-      <div class="blg-tab-section tab-content">
+      <div id="community-list" class="blg-tab-section tab-content">
         <div class="blg-inner-content tab-pane active" id="communities">
 
           
@@ -129,6 +129,12 @@
         </loading>
        
         </div>
+      </div>
+
+      <div id="discovery-list" class="blg-tab-section tab-content">
+      </div>
+
+      <div id="connections-list" class="blg-tab-section tab-content">
       </div>
 
     </aside>

@@ -168,7 +168,7 @@ export class App {
       { 
         route: 'community',   
         name: 'community',  
-        moduleId: './community',  
+        moduleId: './community/community',  
         nav: true,      
         settings: {auth: true, roles: ['admin']},
         className: 'ico-users',   
@@ -185,7 +185,7 @@ export class App {
       { 
         route: 'community/:id/detail', 
         name: 'communityDetail', 
-        moduleId: './community-detail', 
+        moduleId: './community/community-detail', 
         nav: false, 
         title: this.i18n.tr('router.nav.community') 
       // },
