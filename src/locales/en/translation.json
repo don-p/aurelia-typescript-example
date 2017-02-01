@@ -9,6 +9,8 @@
             "login":"Login",
             "login2":"Confirm Login",
             "community":"Community",
+            "communities": "Communities",
+            "discover": "Discover",
             "organization":"Organization",
             "alerts":"Alerts",
             "tracker":"Tracker",

@@ -20,7 +20,7 @@ const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(
 
 @inject(Session, DataService, CommunityService, EventAggregator, Ps, I18N, 
   AureliaConfiguration, Utils, NewInstance.of(ValidationController), LogManager)
-export class Community {
+export class Communities {
   communities: Array<Object>;
   items:Array<Object>;
   commType: string;
@@ -61,8 +61,9 @@ export class Community {
   }
 
   bind(bindingContext: Object, overrideContext: Object) {
-    this.logger.debug("Community | bind()");
+    this.logger.debug("Communities | bind()");
   }
+  /*
   attached() {
     this.logger.debug("Community | attached()");
     
@@ -80,10 +81,10 @@ export class Community {
   // Child router for subtabs - Community, Discover, Connections.
   configureRouter(config, router) {
     config.map([
-      { route: '', redirect: 'communities', nav: false},
-      { route: 'communities', name: 'community/communities', moduleId: './communities', nav: true, title: this.i18n.tr('router.nav.communities') },
-      { route: 'discover', name: 'community/discover', moduleId: './discover', nav: true, title: this.i18n.tr('router.nav.discover') }//,
-      // { route: 'connections', name: 'connections', moduleId: './community/connections', nav: true, title: 'Connections' }
+      { route: '', redirect: 'communities' },
+      { route: 'communities', name: 'communities', moduleId: './communities', nav: true, title: 'Communities' },
+      { route: 'discover', name: 'discover', moduleId: './community/discover', nav: true, title: 'Discover' },
+      { route: 'connections', name: 'connections', moduleId: './community/connections', nav: true, title: 'Connections' }
     ]);
     this.router = router;
   }
@@ -346,17 +347,17 @@ export class Community {
         let modelPromise = this.communityService.deleteCommunity(comm);
         controller.viewModel.modelPromise = modelPromise;        
         return modelPromise.then(data => {
-            /*
-            let item = me.communities.responseCollection.find(function(obj) {
-              return obj.communityId === comm.communityId;
-            })
-            if(typeof item === 'object') {
-              let idx = me.communities.responseCollection.indexOf(item);
-              if(idx >= 0) {
-                me.communities.responseCollection.splice(idx, 1);
-              }
-            }
-            */
+            
+            // let item = me.communities.responseCollection.find(function(obj) {
+            //   return obj.communityId === comm.communityId;
+            // })
+            // if(typeof item === 'object') {
+            //   let idx = me.communities.responseCollection.indexOf(item);
+            //   if(idx >= 0) {
+            //     me.communities.responseCollection.splice(idx, 1);
+            //   }
+            // }
+            
             let idx = me.communities.indexOf(community);
             me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then(function(data){
               // After deleting community, select the next available community.
@@ -544,7 +545,7 @@ export class Community {
     });
   }
 
-  
+*/  
 
 }
 

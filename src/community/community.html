@@ -6,18 +6,23 @@
     <aside class="blg-left-panel">
 
       <ul class="nav nav-tabs nav-append-content">
-        <li class="active">
-          <a href="#communities" i18n="community.communities" id="tabCommunitiesTitle"></a>
+        <li  repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">
+          <a href.bind="route.href" id="tabCommunitiesTitle">${route.title}</a>
         </li>
+<!--        
+        <li class="active">
+          <a route-href="route: community" i18n="community.communities" id="tabCommunitiesTitle"></a>
+        </li>
+-->
         <!-- FIXME: temp removal of non-admin functions. -->
-        
+<!--
         <li>
-          <a href="#discover" i18n="community.discover" id="tabDiscoverTitle"></a>
+          <a route-href="route: community/discover" i18n="community.discover" id="tabDiscoverTitle"></a>
         </li>
         <li>
           <a href="#connects" i18n="community.connect" id="tabConnectsTitle"></a>
         </li>
-        
+-->
         <!-- FIXME: temp removal of non-admin functions. -->
       </ul>
       <div id="communities-tab" class="blg-tab-section tab-content">
@@ -132,12 +137,16 @@
       </div>
 
       <div id="discover-tab" class="blg-tab-section tab-content">
+        Discover
       </div>
 
       <div id="connects-tab" class="blg-tab-section tab-content">
+        Connections
       </div>
 
     </aside>
+
+    <router-view></router-view>
     <!-- community members list element -->
     <!--
     <div id="community-members"  style="display: inline-block;width:720px;/* vertical-align:top; */height: 100%;/* float: right; */top: 0;position: absolute;">
