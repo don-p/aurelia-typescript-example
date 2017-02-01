@@ -104,8 +104,8 @@ export class App {
     config.mapUnknownRoutes((instruction: NavigationInstruction) => {
       let user = me.session.auth['member'];
       let route = './community';
-      if (user && user['role']) {
-        if (user['role'] === 'admin') {
+      if (user && !!(me.session.getRole())) {
+        if (me.session.getRole() === 'admin') {
           route = './organization/organization';
         }
       }
@@ -228,8 +228,8 @@ export class App {
     // return default route for role
     let route = './community';
     let user = this.session.auth;
-    if (user && user['roles']) {
-      if (user['roles'].indexOf('admin') !== -1) {
+    if (user && !!(this.session.getRole())) {
+      if (this.session.getRole().indexOf('admin') !== -1) {
         route = './organization/organization';
       }
     }
@@ -258,11 +258,15 @@ export class AuthenticationStep {
   }
 }
 
+@inject(Session)
 export class AuthorizeRolesStep {
+  constructor(private session: Session) {
+
+  }
   run(navigationInstruction: NavigationInstruction, next: Next): Promise<any> {  
     let user = {role: 'admin'};
     let requiredRoles = navigationInstruction.getAllInstructions().map(i => i.config.settings.roles)[0];
-    let isUserPermited = requiredRoles? requiredRoles.some(r => r === user.role) : true;
+    let isUserPermited = requiredRoles? requiredRoles.some(r => r === this.session.getRole()) : true;
     if(isUserPermited) {
       return next();
     }

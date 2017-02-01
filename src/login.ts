@@ -117,9 +117,6 @@ export class Login {
         auth['refresh_token'] = data.refresh_token;
         auth['member'] = data.member;
         me.session.auth = data;
-        // FIXME: temp hard-coded role.
-        me.session.auth['member'].role = 'admin';
-        // FIXME: temp hard-coded role.
         me.session.auth['isLoggedIn'] = true;
 
         me.authService['auth'].storage.set('auth', JSON.stringify(auth));
