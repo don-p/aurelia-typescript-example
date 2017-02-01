@@ -18,7 +18,7 @@ import {Utils} from '../services/util';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, Router, DataService, CommunityService, EventAggregator, Ps, I18N, 
+@inject(Session, DataService, CommunityService, EventAggregator, Ps, I18N, 
   AureliaConfiguration, Utils, NewInstance.of(ValidationController), LogManager)
 export class Community {
   communities: Array<Object>;
@@ -36,9 +36,11 @@ export class Community {
   selectAll: boolean;
   _virtualRepeat: VirtualRepeat;
 
+  router: Router;
+
   logger: Logger;
 
-  constructor(private session: Session, private router: Router, private dataService: DataService, 
+  constructor(private session: Session, private dataService: DataService, 
     private communityService: CommunityService, private evt: EventAggregator, Ps, 
     private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils) {
 
@@ -73,6 +75,17 @@ export class Community {
     this.getCommunitiesPage(this.commType, 0, this.pageSizeList).then(function(){
       me.selectDefaultCommunity();
     });
+  }
+
+  // Child router for subtabs - Community, Discover, Connections.
+  configureRouter(config, router) {
+    config.map([
+      { route: '', redirect: 'communities', nav: false},
+      { route: 'communities', name: 'community/communities', moduleId: './communities', nav: true, title: this.i18n.tr('router.nav.communities') },
+      { route: 'discover', name: 'community/discover', moduleId: './discover', nav: true, title: this.i18n.tr('router.nav.discover') }//,
+      // { route: 'connections', name: 'connections', moduleId: './community/connections', nav: true, title: 'Connections' }
+    ]);
+    this.router = router;
   }
 
   async getMore(topIndex: number, isAtBottom: boolean, isAtTop: boolean): Promise<void> {
