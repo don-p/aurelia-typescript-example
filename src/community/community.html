@@ -25,7 +25,7 @@
 -->
         <!-- FIXME: temp removal of non-admin functions. -->
       </ul>
-      <div id="community-list" class="blg-tab-section tab-content">
+      <div id="communities-tab" class="blg-tab-section tab-content">
         <div class="blg-inner-content tab-pane active" id="communities">
 
           
@@ -108,12 +108,12 @@
                                   <i class="ico-bin float-right"></i>
                                 </a>
                                 <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                  click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.transferOwnership'>
+                                  <i class="ico-circle-right6 float-right"></i>
+                                </a>                                
+                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
                                   click.delegate="editCommunity(community, $event)" i18n='[title]button.editCommunity'>
                                   <i class="ico-pencil7 float-right"></i>
-                                </a>
-                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                  click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.editCommunity'>
-                                  <i class="ico-bubble-right float-right"></i>
                                 </a>
                               </span>
                               <div class="community-description" >${(community.communityDescription !==null) ? community.communityDescription:'&nbsp;'}</div>                               
@@ -136,11 +136,11 @@
         </div>
       </div>
 
-      <div id="discovery-list" class="blg-tab-section tab-content">
+      <div id="discover-tab" class="blg-tab-section tab-content">
         Discover
       </div>
 
-      <div id="connections-list" class="blg-tab-section tab-content">
+      <div id="connects-tab" class="blg-tab-section tab-content">
         Connections
       </div>
 
