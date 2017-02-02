@@ -75,14 +75,13 @@
                               <span class="members-count">(<i class='ico-users'></i> ${community.memberCount})</span>
                               <span class='community-buttons'>
                                 <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                  click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.transferOwnership'>
-                                  <i class="ico-circle-right6 float-right"></i>
-                                </a>
-                                <span style="width: 8px;height: 8px;" class="float-right"></span>
-                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
                                   click.delegate="deleteCommunity(community, $event)" i18n='[title]button.deleteCommunity'>
                                   <i class="ico-bin float-right"></i>
                                 </a>
+                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                  click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.transferOwnership'>
+                                  <i class="ico-circle-right6 float-right"></i>
+                                </a>                                
                                 <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
                                   click.delegate="editCommunity(community, $event)" i18n='[title]button.editCommunity'>
                                   <i class="ico-pencil7 float-right"></i>
