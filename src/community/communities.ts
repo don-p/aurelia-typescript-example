@@ -63,7 +63,7 @@ export class Communities {
   bind(bindingContext: Object, overrideContext: Object) {
     this.logger.debug("Communities | bind()");
   }
-  /*
+
   attached() {
     this.logger.debug("Community | attached()");
     
@@ -77,18 +77,7 @@ export class Communities {
       me.selectDefaultCommunity();
     });
   }
-
-  // Child router for subtabs - Community, Discover, Connections.
-  configureRouter(config, router) {
-    config.map([
-      { route: '', redirect: 'communities' },
-      { route: 'communities', name: 'communities', moduleId: './communities', nav: true, title: 'Communities' },
-      { route: 'discover', name: 'discover', moduleId: './community/discover', nav: true, title: 'Discover' },
-      { route: 'connections', name: 'connections', moduleId: './community/connections', nav: true, title: 'Connections' }
-    ]);
-    this.router = router;
-  }
-
+/*
   async getMore(topIndex: number, isAtBottom: boolean, isAtTop: boolean): Promise<void> {
     this.logger.debug('Getting more communities: '+topIndex+' | '+isAtBottom+' | '+isAtTop);
     var me = this;
@@ -111,6 +100,7 @@ export class Communities {
 
     }
   }
+*/
   getCommunitiesPage(communityType: string, startIndex: number, pageSize: number): Promise<Response> {
     var me = this;
     var cmtysPromise = this.communityService.getCommunities(communityType, startIndex,  pageSize);
@@ -544,8 +534,6 @@ export class Communities {
       })
     });
   }
-
-*/  
 
 }
 
