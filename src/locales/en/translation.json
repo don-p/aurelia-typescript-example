@@ -58,6 +58,7 @@
         "search":"Search",
         "createCommunity":"Create Community",
         "editCommunity":"Update Community",
+        "sendConnectionRequest": "Send Connection Request",
         "confirmDelete": {
             "title": "Delete Community?",
             "message": "Delete the community '{{communityName}}'?"
