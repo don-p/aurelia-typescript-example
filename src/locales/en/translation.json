@@ -113,10 +113,12 @@
             "finish": "Finish",
             "alertType": "Alert type",
             "recipients":"Recipients",
-            "message":"Alert message",
+            "message":"Message",
             "attachment":"Attachment",
             "selectFile":"Select a file",
-            "recipientsList": "Recipients list"
+            "recipientsList": "Recipients list",
+            "alertRecipientsMessageSingle": "{{member.physicalPersonProfile.firstName}} {{member.physicalPersonProfile.lastName}}",
+            "alertRecipientsMessage": "{{memberCount}} members"
         }
     },
 

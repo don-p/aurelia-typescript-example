@@ -71,12 +71,6 @@ export class Community {
 
     // let gridOptions = this.getGridOptions('listMembers');
     let message = null;
-    // let communityMembers:any[];
-    // communityMembers = this.gridOptions.api.getSelectedRows();
-    // gridOptions.onModelUpdated = function(event) {
-    //   event.toString();
-    // }
-
     let alertModel = {
       communityMembers: communityMembers,
       alertType: '',
@@ -99,97 +93,22 @@ export class Community {
 
     const step1config = {
         viewsPrefix: 'community/alertWizard',
-        id: 'alert_type',
-        title: this.i18n.tr('community.alert.selectTypeRecipients'),
-        canValidate: false,
-        model: alertModel,
-        attachedFn: function(){
-          me.logger.debug( "------attached");
-          let wizardController = this.controller;
-          // let gridOptions = me.getGridOptions('listMembers');
-
-          // let alertMembersGrid = new Grid(/*controller.viewModel.cmtyAlertGrid*/ this.cmtyAlertGrid, gridOptions); //create a new grid
-          // gridOptions['api'].sizeColumnsToFit();
-          // let communityId = me.selectedCmty.communityId;
-          // gridOptions['communityId'] = communityId;
-          // this.controller.gridOptions = gridOptions;
-          // let communityMembers = me.gridOptions.api.getSelectedRows();
-          // me.setSelectedOrganizationMembersGridDataSource(gridOptions, me.pageSize, communityMembers);
-          // me.setSelectedCommunityMembersGridDataSource('alertRecipients', gridOptions, me.pageSize, me.communityService, communityMembers, true);
-
-          // selected members.
-          let selection = parentGridOptions.api.getSelectedRows();
-          this.controller.selectedMembers = selection;
-          /*
-          let gridOptions = me.utils.getGridOptions('listMembers', me.pageSize);
-          gridOptions['selection'] = selection;
-          // Set local row model.
-          gridOptions.enableServerSideSorting = false;
-          gridOptions.enableServerSideFilter = false;
-          gridOptions.enableSorting = true;
-          gridOptions.enableFilter = true;
-          gridOptions.rowModelType = '';
-          gridOptions['communityId'] = selectedCommunityId;
-          this.controller.alertSelectedMembersGridOptions = gridOptions;
-          this.controller.alertSelectedMembersGrid = new Grid(this.controller.wizard.currentStep.cmtyAlertGrid, gridOptions); //create a new grid
-          let ctrl = this.controller;
-          // ***** FIXME: fix for isAnyFilterPresent
-          gridOptions.onAfterFilterChanged = function(event) {
-            ctrl.alertSelectedMembersGridOptions = this;
-            me.logger.debug('***** FILTER CHANGED');
-          };
-          // ***** FIXME: fix for isAnyFilterPresent
-         // me.setSelectedCommunityMembersGridDataSource('alertRecipients', gridOptions, me.pageSize, me.communityService, selection, true);
-          // all members.
-          gridOptions = me.utils.getGridOptions('listMembers', me.pageSize);
-          // Set local row model.
-          gridOptions['communityId'] = selectedCommunityId;
-          this.controller.alertMembersGridOptions = gridOptions;
-          this.controller.alertMembersGrid = new Grid(this.controller.wizard.currentStep.cmtyGrid, this.controller.alertMembersGridOptions); //create a new grid
-          me.utils.setCommunityMembersGridDataSource('alertCommunityMembers', gridOptions, me.pageSize, me.communityService, null, false);
-          */
-
-/*
-
-          showSelectedMembers(this.controller.dialogController, true);
-          // gridOptions.api['rowModel'].datasource.name = 'alertCommunityRecipients';
-          this.controller.alertSelectedMembersGridOptions.onSelectionChanged = function() {
-            let rows = this.api.getSelectedRows();
-            alertModel.communityMembers = rows;
-            wizardController.vController.validate({ object: alertModel, propertyName: 'communityMembers' });
-            // controller.viewModel.item = controller.viewModel.gridOptions.api.getSelectedRows();
-            // controller.viewModel.isSubmitDisabled = controller.viewModel.gridOptions.api.getSelectedRows().length === 0;
-          };
-          this.controller.alertMembersGridOptions.onSelectionChanged = function() {
-            let rows = this.api.getSelectedRows();
-            alertModel.communityMembers = rows;
-            wizardController.vController.validate({ object: alertModel, propertyName: 'communityMembers' });
-            // controller.viewModel.item = controller.viewModel.gridOptions.api.getSelectedRows();
-            // controller.viewModel.isSubmitDisabled = controller.viewModel.gridOptions.api.getSelectedRows().length === 0;
-          };
-          gridOptions.getRowNodeId = function(item) {
-            return item.memberId.toString();
-          };
-*/
-          // Pre-set selected nodes from previously-selected.
-          // let communityMembers = me.gridOptions.api.getSelectedRows();
-          // gridOptions.api.forEachNode( function (node) {
-          //     if (communityMembers.find(function(item:any, index:number, array:any[]) {
-          //       return item.memberId === node.data.memberId
-          //     })) {
-          //         node.setSelected(true);
-          //     }
-          // });
-        }
-      };
-    const step2config = {
-        viewsPrefix: 'community/alertWizard',
         id: 'alert_message',
         title: this.i18n.tr('community.alert.selectMessage'),
         canValidate: true,
-        model: alertModel
+        model: alertModel,
+        attachedFn: function(){
+          me.logger.debug( "------attached");
+          let message = '';
+          if(communityMembers.length === 1) {
+            message = me.i18n.tr('community.alert.alertRecipientsMessageSingle', {member: communityMembers[0]});
+          } else if(communityMembers.length >= 1) {
+            message = me.i18n.tr('community.alert.alertRecipientsMessage', {memberCount: communityMembers.length});
+          }
+          this.controller.recipientsMessage = message;
+        }
       };
-    const step3config = {
+    const step2config = {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_confirm',
         title: this.i18n.tr('community.alert.confirm'),
@@ -253,7 +172,7 @@ export class Community {
         }
 
       };
-     const step4config = {
+     const step3config = {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_result',
         title: this.i18n.tr('community.alert.finish'),
@@ -295,7 +214,7 @@ export class Community {
       };
 
 
-    const steps = [step1config, step2config, step3config, step4config];
+    const steps = [step1config, step2config, step3config];
 
     let showSelectedMembers = function(controller:any, showSelected:boolean) {
       let selection = parentGridOptions.api.getSelectedRows();
