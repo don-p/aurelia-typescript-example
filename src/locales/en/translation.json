@@ -118,7 +118,9 @@
             "selectFile":"Select a file",
             "recipientsList": "Recipients list",
             "alertRecipientsMessageSingle": "{{member.physicalPersonProfile.firstName}} {{member.physicalPersonProfile.lastName}}",
-            "alertRecipientsMessage": "{{memberCount}} members"
+            "alertRecipientsMessage": "{{memberCount}} members",
+            "alertCommunityRecipientsMessageSingle": "{{community.communityName}}",
+            "alertCommunityRecipientsMessage": "{{communityCount}} communities"
         }
     },
 

@@ -100,10 +100,19 @@ export class Community {
         attachedFn: function(){
           me.logger.debug( "------attached");
           let message = '';
-          if(communityMembers.length === 1) {
-            message = me.i18n.tr('community.alert.alertRecipientsMessageSingle', {member: communityMembers[0]});
-          } else if(communityMembers.length >= 1) {
-            message = me.i18n.tr('community.alert.alertRecipientsMessage', {memberCount: communityMembers.length});
+          if(Array.isArray(communityMembers) && communityMembers.length > 0) {
+            if(communityMembers.length === 1) {
+              message = me.i18n.tr('community.alert.alertRecipientsMessageSingle', {member: communityMembers[0]});
+            } else if(communityMembers.length >= 1) {
+              message = me.i18n.tr('community.alert.alertRecipientsMessage', {memberCount: communityMembers.length});
+            }
+          }
+          else if(Array.isArray(communities) && communities.length > 0) {
+            if(communities.length === 1) {
+              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessageSingle', {community: communities[0]});
+            } else if(communities.length >= 1) {
+              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessage', {communityCount: communities.length});
+            }
           }
           this.controller.recipientsMessage = message;
         }
