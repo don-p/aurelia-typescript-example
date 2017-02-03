@@ -15,7 +15,7 @@
             <!--<button id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]button.makeCall" disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-phone2"></i>
             </button>            -->
-            <button id="btn-communities-send-alert" click.delegate="parent.sendAlertCommunityMembers([], selectedCommunities, selectedCmty.communityId, gridOptions)" class="btn btn-primary btn-xs-square" i18n='[title]button.sendAlert' disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
+            <button id="btn-communities-send-alert" click.delegate="parent.sendAlertCommunityMembers([], selectedCommunities)" class="btn btn-primary btn-xs-square" i18n='[title]button.sendAlert' disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-bullhorn center"></i>
             </button>
             <!--<button id="btn-communities-send-voice" class="btn btn-primary btn-xs-square" i18n='[title]button.sendVoiceAlert' disabled>
