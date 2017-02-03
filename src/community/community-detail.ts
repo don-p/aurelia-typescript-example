@@ -1,9 +1,10 @@
-import {inject, Lazy, bindable, LogManager} from 'aurelia-framework';
+import {inject, Lazy, bindable, LogManager, Parent} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {AureliaConfiguration} from 'aurelia-configuration';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
+import {Community} from './community';
 import {Session} from '../services/session';
 import {DataService} from '../services/dataService';
 import {CommunityService} from '../services/communityService';
@@ -17,7 +18,7 @@ import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-
 import {Utils} from '../services/util';
 
 @inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, 
-  Ps, I18N, AureliaConfiguration, Utils, LogManager) // SCROLL
+  Ps, I18N, AureliaConfiguration, Utils, Parent.of(Community), LogManager) // SCROLL
 export class CommunityDetail {
   member: Object;
 
@@ -26,7 +27,7 @@ export class CommunityDetail {
   selectedOrganizationMembers: Array<Object>;
   selectedCmty: any;
   organizations: Array<Object>;
-  alertCategories: Array<Object>;
+  // alertCategories: Array<Object>;
   // communityMembers: { get: () => any[] };
   communityMembers: Array<Object>;
   membersGrid: Object;
@@ -48,14 +49,13 @@ export class CommunityDetail {
   gridColumns: Array<any>;
   grid: any;
 
-
   ps: any; // SCROLL
 
   logger: Logger;
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
-    private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils) {
+    private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community) {
 
     this.communityMembers = null;
 
@@ -185,6 +185,13 @@ export class CommunityDetail {
   //   };
   // }
 
+  activate(params, navigationInstruction) {
+  }
+
+  bind(bindingContext: Object, overrideContext: Object) {
+    this.logger.debug("CommunityDetail | bind()");
+  }
+
   attached(params, navigationInstruction) {
     // // Custom scrollbar:
     // var container = document.getElementById('community-member-list'); // SCROLL
@@ -217,8 +224,8 @@ export class CommunityDetail {
     this.gridOptionsSelected['api'].sizeColumnsToFit();
     // Get list of organizations the logged-in user has rights to.
     this.getOrganizationsPage(0, 500);
-    // Get list of alert/notification categories.
-    this.getAlertCategoriesPage(0, 500);
+    // // Get list of alert/notification categories.
+    // this.getAlertCategoriesPage(0, 500);
   }
 
   // findGridColumnDef(gridOptions: GridOptions, fieldName: string):Object {
@@ -502,9 +509,6 @@ export class CommunityDetail {
     gridOptions.api.setDatasource(gridDataSource);
   }
 
-  bind() {
-  }
-
   clearGridFilters(gridOptions) {
       this.utils.clearGridFilters(gridOptions);
   }
@@ -627,26 +631,26 @@ export class CommunityDetail {
     });
   }
 
-  getAlertCategoriesPage(startIndex: number, pageSize: number): Promise<Response> {
-    var me = this;
-    var alertPromise = this.dataService.getAlertCategories(startIndex,  pageSize);
-    return alertPromise
-    .then(response => {return response.json()
-      .then(data => {
-        me.alertCategories = data.responseCollection;
-        // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
-      }).catch(error => {
-        me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
-        return Promise.reject(error);
-      })
-    })
-    .catch(error => {
-      me.logger.error('Communities list() failed in then(response). Error: ' + error); 
-      me.logger.error(error); 
-      //throw error;
-      return Promise.reject(error);
-    });
-  }  
+  // getAlertCategoriesPage(startIndex: number, pageSize: number): Promise<Response> {
+  //   var me = this;
+  //   var alertPromise = this.dataService.getAlertCategories(startIndex,  pageSize);
+  //   return alertPromise
+  //   .then(response => {return response.json()
+  //     .then(data => {
+  //       me.alertCategories = data.responseCollection;
+  //       // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
+  //     }).catch(error => {
+  //       me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
+  //       return Promise.reject(error);
+  //     })
+  //   })
+  //   .catch(error => {
+  //     me.logger.error('Communities list() failed in then(response). Error: ' + error); 
+  //     me.logger.error(error); 
+  //     //throw error;
+  //     return Promise.reject(error);
+  //   });
+  // }  
 
   getOrganizationsPage(startIndex: number, pageSize: number): Promise<Response> {
     var me = this;

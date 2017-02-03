@@ -92,9 +92,9 @@
                 "alertErrorMessage": "An error occured; {{alertCategory}} alert has not been sent to {{recipientCount}} recipient(s)."
             },
             "transferOwnership": {
-                "title": "Transfer Community Ownership",
-                "successMessage": "Community ownership was transferred.",
-                "failedMessage": "Community ownership could not be transferred."
+                "title": "Change Community Owner",
+                "successMessage": "Community owner was changed.",
+                "failedMessage": "Community owner could not be changed."
             },
             "addMembers": "Add Community Members"
         },          
@@ -113,10 +113,12 @@
             "finish": "Finish",
             "alertType": "Alert type",
             "recipients":"Recipients",
-            "message":"Alert message",
+            "message":"Message",
             "attachment":"Attachment",
             "selectFile":"Select a file",
-            "recipientsList": "Recipients list"
+            "recipientsList": "Recipients list",
+            "alertRecipientsMessageSingle": "{{member.physicalPersonProfile.firstName}} {{member.physicalPersonProfile.lastName}}",
+            "alertRecipientsMessage": "{{memberCount}} members"
         }
     },
 
@@ -194,7 +196,7 @@
         "startConversation":"Start conversation",
         "addMembers":"Add members",
         "deleteMembers":"Remove members",
-        "transferOwnership":"Transfer ownership",
+        "transferOwnership":"Change community owner",
         "deleteCommunity":"Delete community",
         "editCommunity":"Update community",
         "createCommunity":"Create community",

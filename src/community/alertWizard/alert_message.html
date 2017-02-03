@@ -12,6 +12,16 @@
         <div class="div-table-body">
             <div class="div-table-row">
                 <div class="div-table-cell column-label">            
+                    <span class="wizard-content-label blg-form-required" i18n='[prepend]community.alert.recipients' change.delegate="step.model.selectAlertCategory($event)">:</span>
+                </div>
+                <div class="div-table-cell">
+                    <span class="">
+                        ${controller.recipientsMessage}
+                    </span>
+                </div>
+            </div>
+            <div class="div-table-row">
+                <div class="div-table-cell column-label">            
                     <span class="wizard-content-label blg-form-required" i18n='[prepend]community.alert.alertType' change.delegate="step.model.selectAlertCategory($event)">:</span>
                 </div>
                 <div class="div-table-cell">
