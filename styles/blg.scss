@@ -1119,7 +1119,7 @@ table.blg-dataTable.display tbody td {
 
 .panel-title > a > i {
   margin-left: 3px;
-  margin-top: 7px;
+  margin-top: 9px;
   &.ico-bubble-right{
     margin-top: 9px;
     margin-right: 1px;
@@ -1239,7 +1239,7 @@ wizard .modal-footer {
 
 .community-name {
   display: inline-block;
-  max-width: 288px;
+  max-width: 250px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1717,22 +1717,6 @@ li.complete .map-check {
 .send-alert-remove-attachment i {
   font-size: 24px !important;
 }
-
-/* Remove block for Communities list with checkboxes */
-.community-name {
-    max-width: 290px !important;
-}
-.community-description {
-    max-width: 380px !important;
-}
-.community-list-info-bar {
-    height: 40px;
-}
-.community-list ul {
-    margin-left: -25px;
-}
-/* Remove block for Communities list with checkboxes */
-
 
 .select-organization {
   max-width: 450px;
