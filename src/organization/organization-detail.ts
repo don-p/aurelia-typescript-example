@@ -13,8 +13,9 @@ import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
+import {Utils} from '../services/util';
 
-@inject(Session, Router, DataService, OrganizationService, EventAggregator, Ps, I18N, LogManager) // SCROLL
+@inject(Session, Router, DataService, OrganizationService, EventAggregator, Ps, I18N, Utils, LogManager) // SCROLL
 export class OrganizationDetail {
   member: Object;
 
@@ -45,7 +46,7 @@ export class OrganizationDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private organizationService: OrganizationService,  
-    private evt: EventAggregator, Ps, private i18n: I18N) {
+    private evt: EventAggregator, Ps, private i18n: I18N, private utils: Utils) {
 
     this.organizationMembers = null;
 
@@ -264,8 +265,7 @@ export class OrganizationDetail {
   }
 
   clearGridFilters(gridOptions) {
-      gridOptions.api.setFilterModel({});
-      gridOptions.api.refreshView();
+      this.utils.clearGridFilters(gridOptions);
   }
 
   addOrganizationMembers() {

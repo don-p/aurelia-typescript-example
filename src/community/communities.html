@@ -15,9 +15,9 @@
             <!--<button id="btn-community-make-call" click.delegate="makeCallCommunity()" class="btn btn-success btn-xs-square " i18n="[title]button.makeCall" disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-phone2"></i>
             </button>            -->
-            <!--button id="btn-communities-send-alert" class="btn btn-primary btn-xs-square" i18n='[title]button.sendAlert' disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
+            <button id="btn-communities-send-alert" click.delegate="parent.sendAlertCommunityMembers([], selectedCommunities, selectedCmty.communityId, gridOptions)" class="btn btn-primary btn-xs-square" i18n='[title]button.sendAlert' disabled.bind="(!selectedCommunities) || (selectedCommunities.length === 0)">
               <i class="ico-bullhorn center"></i>
-            </button-->
+            </button>
             <!--<button id="btn-communities-send-voice" class="btn btn-primary btn-xs-square" i18n='[title]button.sendVoiceAlert' disabled>
               <i class="ico-mic5 center"></i>
             </button>            -->
@@ -40,12 +40,12 @@
           </div-->
 
           <div class="community-list-info-bar">
-            <!--
+            
             <div class="checkbox checkbox-info">
               <input id="checkbox-community-all" type="checkbox" checked.bind="selectAll" change.delegate="selectAllCommunities($event.target.checked)" class="styled styled-info" value="">
               <label></label>
             </div>
-            -->
+            
             <div class="community-list-info pull-right">${communities.length} items total</div>
           </div>
 
@@ -59,13 +59,13 @@
                 <ul>
                   <div class="panel-group communities-panel-list list1" id="accordion_communities">
                     <div id="cmty-${community.communityId}" repeat.for="community of communities" class='list-item'>
-                      <!--
+                      
                       <div class="checkbox checkbox-info">
                           <input id="checkbox-community-${$index}" type="checkbox" class="styled styled-info" 
                             change.delegate="onCommunitySelectionChanged(community)" model.bind="community" checked.bind="selectedCommunities">
                           <label></label>
                       </div>
-                      -->
+                      
                       <div class='panel panel-default'>
                         <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
                           role='tab'>
