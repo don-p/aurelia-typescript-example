@@ -11,7 +11,7 @@
 			<button id="btn-members-make-call" click.delegate="makeCallCommunityMembers()" class="btn btn-success btn-xs-square" i18n="[title]button.makeCall" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
 				<i class="ico-phone2"></i>
 			</button>
-			<button id="btn-members-send-alert" click.delegate="sendAlertCommunityMembers()" class="btn btn-primary btn-xs-square" i18n="[title]button.sendAlert" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+			<button id="btn-members-send-alert" click.delegate="parent.sendAlertCommunityMembers(selectedCommunityMembers, [], selectedCmty.communityId, gridOptions)" class="btn btn-primary btn-xs-square" i18n="[title]button.sendAlert" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
 				<i class="ico-bullhorn"></i>
 			</button>
 			<!--<button id="btn-members-start-conversation" class="btn btn-info btn-xs-square" i18n="[title]button.startConversation" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
@@ -41,9 +41,6 @@
 
 		
 			<div role="status" id="example_info" class="members-table-info">
-				<div class="pull-right">
-					<button type="button"  class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i><span>Clear Selection</span></button>
-				</div>
 				<div if.bind="!showSelectedCommunitiesGrid" class="pull-right" >
 					<button disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(true)"><i class="ico-filter4"></i><span>${'global.showSelected' | t}</span></button>
 				</div>

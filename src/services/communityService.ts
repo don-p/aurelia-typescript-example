@@ -155,14 +155,19 @@ export class CommunityService {
         return response;
     }
 
-    async sendNotification(members:Array<any>, notificationConfig:Object):Promise<HttpResponseMessage> {
+    async sendNotification(members:Array<any>, communities:Array<any>, notificationConfig:Object):Promise<HttpResponseMessage> {
         await fetch;
         let memberIds = members.map(function(member) {
             return member.memberId;
         });
 
+        let communityIds = communities.map(function(community) {
+            return community.communityId;
+        });
+
         let body = {
             memberRecipients: memberIds,
+            communityRecipients: communityIds,
             message: notificationConfig['message'],
             notificationCategory: notificationConfig['notificationCategory']
         };
