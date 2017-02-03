@@ -66,7 +66,7 @@ export class Community {
   }  
 
 
-  sendAlertCommunityMembers(communityMembers, communities, selectedCommunityId, parentGridOptions) {
+  sendAlertCommunityMembers(communityMembers, communities) {
     let me = this;
 
     // let gridOptions = this.getGridOptions('listMembers');
@@ -134,12 +134,6 @@ export class Community {
               view.controller.showCancel = false;
               // Close dialog on success.
               // delete this.controller.viewModel.submit;
-              if(view.controller.alertMembersGridOptions.api) {
-                view.controller.alertMembersGridOptions.api.destroy();
-              }
-              if(view.controller.alertSelectedMembersGridOptions.api) {
-                view.controller.alertSelectedMembersGridOptions.api.destroy();
-              }
               let viewModel = view.controller;
               // viewModel.wizard.currentStep.stepStatus = 'OK';
               view.controller.stepStatus = 'OK';
@@ -216,90 +210,10 @@ export class Community {
 
     const steps = [step1config, step2config, step3config];
 
-    let showSelectedMembers = function(controller:any, showSelected:boolean) {
-      let selection = parentGridOptions.api.getSelectedRows();
-      let obj = controller.viewModel;
-      selection = alertModel.communityMembers;
-      // controller.viewModel.gridOptions.api.refreshVirtualPageCache();
-      // controller.viewModel.gridOptions.api.destroy();
-      obj.showSelected = showSelected;
-      if(showSelected) {
-        obj.alertSelectedMembersGridOptions.api.setRowData(selection);
-        obj.alertSelectedMembersGridOptions.api.refreshInMemoryRowModel();
-        obj.alertSelectedMembersGridOptions.api.selectAll();
-        
-        // let gridOptions = me.getGridOptions('listMembers');
-        // let communityId = me.selectedCmty.communityId;
-        // gridOptions['communityId'] = communityId;
-        // controller.gridOptions = gridOptions;
-        
-        // let alertMembersGrid = new Grid(controller.viewModel.wizard.currentStep.cmtyAlertGrid, controller.viewModel.gridOptions); //create a new grid
-        // me.setSelectedCommunityMembersGridDataSource('alertRecipients', controller.viewModel.gridOptions, me.pageSize, me.communityService, selection, true);
-        me.toString();
-      } else {
-        // let gridOptions = me.getGridOptions('listMembers');
-        // let communityId = me.selectedCmty.communityId;
-        // gridOptions['communityId'] = communityId;
-        // controller.gridOptions = gridOptions;
-        // let alertMembersGrid = new Grid(controller.viewModel.wizard.currentStep.cmtyGrid, controller.viewModel.gridOptions); //create a new grid
-        obj.alertMembersGridOptions['selection'] = selection;
-        
-        // controller.viewModel.alertMembersGridOptions.api.refreshVirtualPageCache();
-        // controller.viewModel.alertMembersGridOptions.api.refreshView();
-
-        me.utils.setCommunityMembersGridDataSource('alertCommunityMembers', obj.alertMembersGridOptions, 
-          me.pageSize, me.communityService, selection, false);
-        // controller.viewModel.alertMembersGrid.context.beans.gridApi.beanInstance.refreshVirtualPageCache();
-        me.toString();
-        // controller.viewModel.gridOptions.api['rowModel'].datasource.name = 'alertCommunityRecipients';
-      }
-    };
-
     this.dataService.openWizardDialog('Send Alert', steps,
       communityMembers, vRules)
     .then((controller:any) => {
 
-          // let alertMembersGrid = new Grid(/*controller.viewModel.cmtyAlertGrid*/ controller.viewModel.cmtyAlertGrid, gridOptions); //create a new grid
-          // gridOptions['api'].sizeColumnsToFit();
-          // let communityId = me.selectedCmty.communityId;
-          // gridOptions['communityId'] = communityId;
-          // me.setCommunityMembersGridDataSource(gridOptions, me.pageSize, me.communityService);
-          // // Pre-set selected nodes from previously-selected.
-          // let communityMembers = me.gridOptions.api.getSelectedRows();
-          // gridOptions.api.forEachNode( function (node) {
-          //     if (communityMembers.find(function(item:any, index:number, array:any[]) {
-          //       return item.memberId === node.data.memberId
-          //     })) {
-          //         node.setSelected(true);
-          //     }
-          // });
-          // this.gridOptions = gridOptions;
-
-
-      // controller.viewModel.gridOptions.onSelectionChanged = function() {
-      //   let rows = controller.viewModel.gridOptions.api.getSelectedRows();
-      //   communityMembers = rows;
-      //   controller.viewModel.item = controller.viewModel.gridOptions.api.getSelectedRows();
-      //   controller.viewModel.isSubmitDisabled = controller.viewModel.gridOptions.api.getSelectedRows().length === 0;
-      // };
-      // controller.viewModel.gridOptions.getRowNodeId = function(item) {
-      //   return item.memberId.toString();
-      // };
-
-      // let alertMembersGrid = new Grid(controller.viewModel.cmtyAlertGrid /*controller.viewModel.stepList.first.cmtyAlertGrid*/, gridOptions); //create a new grid
-      // gridOptions['api'].sizeColumnsToFit();
-      // let communityId = me.selectedCmty.communityId;
-      // gridOptions['communityId'] = communityId;
-      // me.setCommunityMembersGridDataSource(gridOptions, me.pageSize, me.communityService);
-
-      // controller.attached = function() {
-      //   let alertMembersGrid = new Grid(controller.viewModel.cmtyAlertGrid, gridOptions); //create a new grid
-      //   gridOptions['api'].sizeColumnsToFit();
-      //   let communityId = me.selectedCmty.communityId;
-      //   gridOptions['communityId'] = communityId;
-      //   me.setCommunityMembersGridDataSource(gridOptions, me.pageSize, me.communityService);
-
-      // }
       let model = controller.settings;
       controller.viewModel.maxMessageLength = maxMessageLength;
       controller.errorMessage = '';
@@ -309,8 +223,6 @@ export class Community {
       controller.viewModel.selectAlertCategory = function(event: any) {
         if(this.selectedAlertCategory !== event.target.value) {
           this.selectedAlertCategory = event.target.value;
-          // gridOptions['organizationId'] = this.selectedOrganization;
-          // this.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService, this.selectedOrganization);
         }
       };
       controller.viewModel.onAlertAttachmentFile = function(event, fileList) {
@@ -318,13 +230,6 @@ export class Community {
         controller.alertModel.files = fileArray;
       };
 
-      Object.defineProperty(controller.viewModel, 'isGridFiltered', {
-        get: function() {
-          let result = this.alertSelectedMembersGridOptions && this.alertSelectedMembersGridOptions.api && this.alertSelectedMembersGridOptions.api.isAnyFilterPresent();
-          window.console.debug('--- isGridFiltered --- : ' + result);
-          return result;
-        }
-      });
       controller.viewModel.removeAttachment = function(att: any) {
         if(att) {
           let index = controller.alertModel.files.indexOf(att);
@@ -363,48 +268,7 @@ export class Community {
 
       controller.ok();
       };
-/* TODO: Fix for showing CLearFilter button.
-Object.defineProperty(controller.viewModel, "isGridFiltered", { get: function () { //return this.a + 1; } });
-      // controller.viewModel.isGridFiltered = function() {
-        return (controller.viewModel.showSelected && 
-            (controller.viewModel.alertSelectedMembersGridOptions && 
-            controller.viewModel.alertSelectedMembersGridOptions.api && 
-            controller.viewModel.alertSelectedMembersGridOptions.api.isAnyFilterPresent())) ||
-            (!(controller.viewModel.showSelected) && 
-            (controller.viewModel.alertMembersGridOptions && 
-            controller.viewModel.alertMembersGridOptions.api && 
-            controller.viewModel.alertMembersGridOptions.api.isAnyFilterPresent()));
-      }});
-*/
-      controller.viewModel.showSelectedMembers = function(showSelected:boolean) {
-        showSelectedMembers(controller, showSelected);
-      };
 
-      controller.viewModel.clearGridFilters = function(gridOptions) {
-        gridOptions.api.setFilterModel({});
-        gridOptions.api.refreshView();
-      };
-
-      /*
-      controller.viewModel.showSelectedMembers = function(showSelected:boolean) {
-        let selection = controller.viewModel.gridOptions.api.getSelectedRows();
-
-        selection = alertModel.communityMembers;
-        // controller.viewModel.gridOptions.api.refreshVirtualPageCache();
-        // controller.viewModel.gridOptions.api.destroy();
-        controller.viewModel.showSelected = showSelected;
-        if(showSelected) {
-          me.setSelectedCommunityMembersGridDataSource('alertRecipients', controller.viewModel.gridOptions, me.pageSize, me.communityService, selection, true);
-          let alertMembersGrid = new Grid(this.wizard.currentStep.cmtyAlertGrid, controller.viewModel.gridOptions); //create a new grid
-          me.toString();
-        } else {
-          me.setCommunityMembersGridDataSource('alertCommunityMembers', controller.viewModel.gridOptions, me.pageSize, me.communityService, selection, false);
-          let alertMembersGrid = new Grid(this.wizard.currentStep.cmtyGrid, controller.viewModel.gridOptions); //create a new grid
-          me.toString();
-          // controller.viewModel.gridOptions.api['rowModel'].datasource.name = 'alertCommunityRecipients';
-        }
-      };
-      */
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.
