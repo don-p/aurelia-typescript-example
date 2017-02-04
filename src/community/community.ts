@@ -73,6 +73,7 @@ export class Community {
     let message = null;
     let alertModel = {
       communityMembers: communityMembers,
+      communities: communities,
       alertType: '',
       alertMessage: '',
       files: []
@@ -109,7 +110,7 @@ export class Community {
           }
           else if(Array.isArray(communities) && communities.length > 0) {
             if(communities.length === 1) {
-              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessageSingle', {community: communities[0]});
+              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessageSingle', {community: communities[0].communityName});
             } else if(communities.length >= 1) {
               message = me.i18n.tr('community.alert.alertCommunityRecipientsMessage', {communityCount: communities.length});
             }
@@ -126,7 +127,23 @@ export class Community {
         attachedFn: function(){
           me.logger.debug( "------attached");
           let wizardController = this.controller;
-          wizardController.errorMessage = me.i18n.tr('community.members.alert.alertConfirmMessage', {alertType: this.controller.dialogController.alertModel.alertType.categoryName, attCount: ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0), recipientCount: this.controller.dialogController.alertModel.communityMembers.length});
+          let message = '';
+          if(Array.isArray(communityMembers) && communityMembers.length > 0) {
+            if(communityMembers.length === 1) {
+              message = me.i18n.tr('community.alert.alertRecipientsMessageSingle', {member: communityMembers[0]});
+            } else if(communityMembers.length >= 1) {
+              message = me.i18n.tr('community.alert.alertRecipientsMessage', {memberCount: communityMembers.length});
+            }
+          }
+          else if(Array.isArray(communities) && communities.length > 0) {
+            if(communities.length === 1) {
+              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessageSingle', {community: communities[0].communityName});
+            } else if(communities.length >= 1) {
+              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessage', {communityCount: communities.length});
+            }
+          }
+          
+          wizardController.errorMessage = me.i18n.tr('community.members.alert.alertConfirmMessage', {alertType: this.controller.dialogController.alertModel.alertType.categoryName, attCount: ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0), recipients: message});
           // this.step.errorMessage = me.i18n.tr('community.members.alert.alertConfirmMessage', {alertType: this.controller.dialogController.alertModel.alertType.categoryName, attCount: ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0), recipientCount: this.controller.dialogController.alertModel.communityMembers.length});
         },
         callback: function(step){
@@ -146,9 +163,24 @@ export class Community {
               let viewModel = view.controller;
               // viewModel.wizard.currentStep.stepStatus = 'OK';
               view.controller.stepStatus = 'OK';
+              let message = '';
+              if(Array.isArray(communityMembers) && communityMembers.length > 0) {
+                if(communityMembers.length === 1) {
+                  message = me.i18n.tr('community.alert.alertRecipientsMessageSingle', {member: view.controller.wizard.currentStep.model.communityMembers[0]});
+                } else if(communityMembers.length >= 1) {
+                  message = me.i18n.tr('community.alert.alertRecipientsMessage', {memberCount: view.controller.wizard.currentStep.model.communityMembers.length});
+                }
+              }
+              else if(Array.isArray(communities) && communities.length > 0) {
+                if(communities.length === 1) {
+                  message = me.i18n.tr('community.alert.alertCommunityRecipientsMessageSingle', {community: view.controller.wizard.currentStep.model.communities[0].communityName});
+                } else if(communities.length >= 1) {
+                  message = me.i18n.tr('community.alert.alertCommunityRecipientsMessage', {communityCount: view.controller.wizard.currentStep.model.communities.length});
+                }
+              }
               view.controller.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', 
                 {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
-                  recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
+                  recipients: message});
               // view.controller.wizard.currentStep.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', 
               //   {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
               //     recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
