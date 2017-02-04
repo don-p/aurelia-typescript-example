@@ -87,8 +87,8 @@
                 "callSuccessMessage": "The GridCall has been initiated."
             },
             "alert": {
-                "alertConfirmMessage": "Click 'Next' to send {{alertType}} alert with {{attCount}} attachments to {{recipientCount}} recipient(s).",
-                "alertSuccessMessage": "{{alertCategory}} alert has been sent to {{recipientCount}} recipient(s).",
+                "alertConfirmMessage": "Click 'Next' to send {{alertType}} alert with {{attCount}} attachments to {{recipients}}.",
+                "alertSuccessMessage": "{{alertCategory}} alert has been sent to {{recipients}}.",
                 "alertErrorMessage": "An error occured; {{alertCategory}} alert has not been sent to {{recipientCount}} recipient(s)."
             },
             "transferOwnership": {
@@ -119,7 +119,7 @@
             "recipientsList": "Recipients list",
             "alertRecipientsMessageSingle": "{{member.physicalPersonProfile.firstName}} {{member.physicalPersonProfile.lastName}}",
             "alertRecipientsMessage": "{{memberCount}} members",
-            "alertCommunityRecipientsMessageSingle": "{{community.communityName}}",
+            "alertCommunityRecipientsMessageSingle": "{{community}}",
             "alertCommunityRecipientsMessage": "{{communityCount}} communities"
         }
     },
