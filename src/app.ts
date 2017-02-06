@@ -64,12 +64,6 @@ export class App {
     
   }
 
-//  @computedFrom('this.session.auth')
-  get fullName(): string {
-    let fn = this.session.auth['member'].firstName + ' ' + this.session.auth['member'].lastName;
-    return fn;
-  }
-
 
   handleResponseError(response) {
     switch (response.status) {

@@ -20,7 +20,7 @@
   <!--                      <img if.bind="!(userHasAvatar)" class="avatar" src="../images/default_user.png"></img>-->
                     </div>
                     <div class="caps-top-wrapper">
-                        <span class="caps-top pull-left">${session.auth['member'].firstName} ${session.auth['member'].lastName}</span>
+                        <span class="caps-top pull-left">${'community.members.fullName' | t: {member: session.auth.member}}</span>
                     </div>
                     <div class="caps-bottom pull-left">&nbsp;</div>
                     <div class="dropdown">
