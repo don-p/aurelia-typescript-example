@@ -15,8 +15,12 @@
                     <span class="wizard-content-label blg-form-required" i18n='[prepend]community.alert.recipients' change.delegate="step.model.selectAlertCategory($event)">:</span>
                 </div>
                 <div class="div-table-cell">
-                    <span class="">
-                        ${controller.recipientsMessage}
+                    <span class="recipientListMessage">${controller.recipientsMessage}</span>
+                    <span class="recipientsListContainer" style="display: inline-block;">
+                        <span class="textoverflow recipientsList" show.bind="controller.dialogController.alertModel.communityMembers.length > 1 || controller.dialogController.alertModel.communities.length > 1">
+                            <span class="recipientsListItem" repeat.for="mem of controller.dialogController.alertModel.communityMembers">${'community.members.fullName' | t: {member: mem['physicalPersonProfile']}}</span>
+                            <span class="recipientsListItem" repeat.for="community of controller.dialogController.alertModel.communities">${community.communityName}</span>
+                        </span>
                     </span>
                 </div>
             </div>

@@ -1723,6 +1723,31 @@ li.complete .map-check {
   text-overflow: ellipsis;
 }
 
+span.recipientsListItem:not(:last-child)::after {
+  content: ', ';
+}
+.recipientListMessage {
+  display: inline-block;
+  overflow-x: auto;
+}
+.recipientsList {
+  max-width: 600px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recipientsListContainer::before {
+  content: '(';
+  overflow-x: auto;
+  display: inline-block;
+}
+.recipientsListContainer::after {
+  content: ')';
+  overflow-x: auto;
+  display: inline-block;
+}
+
 .wizard-error {
   padding: 0px 15px 10px 165px;
   min-height: 47px !important;  
