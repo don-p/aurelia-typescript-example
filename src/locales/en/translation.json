@@ -96,7 +96,8 @@
                 "successMessage": "Community owner was changed.",
                 "failedMessage": "Community owner could not be changed."
             },
-            "addMembers": "Add Community Members"
+            "addMembers": "Add Community Members",
+            "fullName": "{{member.firstName}} {{member.lastName}}"
         },          
         "call": {
             "title": "Start GridCall",
