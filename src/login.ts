@@ -39,6 +39,9 @@ export class Login {
         'Content-Type': 'application/json'
   };
 
+  originalItem: any;
+  credentials: any;
+
   loginPromise: Promise<any>;
   logger: Logger;
 
@@ -48,6 +51,8 @@ export class Login {
     private authService: AuthService, private validator:Validator, private evt:EventAggregator) {
       
     this.logger = LogManager.getLogger(this.constructor.name);
+    this.credentials = {username: '', password: ''};
+    this.originalItem = {username: '', password: ''};
     const vRules = ValidationRules
       .ensure('username')
       .displayName(this.i18n.tr('login.emailAddr'))
@@ -62,8 +67,7 @@ export class Login {
       .minLength(6)
       .rules;
     this.vController.validateTrigger = validateTrigger.manual;
-    Rules.set(this, vRules);
-
+    Rules.set(this.credentials, vRules);
   }
 
   activate(params, routeConfig, navigationInstruction) {
@@ -84,6 +88,12 @@ export class Login {
     this.validator.validateObject(this).then(function(result) {
       me.vResults = result;
     })    
+    this.originalItem = {username: this.username, password: this.password};
+
+  }
+
+  get isDirty() {
+    return this.utils.$isDirty(this.originalItem, this.credentials);
   }
 
   get hasValidationErrors() {
@@ -105,7 +115,7 @@ export class Login {
 
     var me = this;
     delete me.errorResult;
-    me.loginPromise = this.dataService.login(this.username, this.password);
+    me.loginPromise = this.dataService.login(this.credentials.username, this.credentials.password);
     return me.loginPromise
 //    .then(response => response.json())
     .then((data:any) => {
@@ -130,7 +140,8 @@ export class Login {
         throw "Login(): Authentication failed."
       }
     }).catch(error => {
-       me.errorResult = me.vController.addError(this.utils.parseFetchError({errorMessage: me.i18n.tr('error.badCredentials')}), this);
+      me.errorResult = me.vController.addError(this.utils.parseFetchError({errorMessage: me.i18n.tr('error.badCredentials')}), this);
+      me.originalItem = {username: me.credentials.username, password: me.credentials.password};
       me.logger.debug("Authentication failed."); 
       me.logger.debug(error); 
     });

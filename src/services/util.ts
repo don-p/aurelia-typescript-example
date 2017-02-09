@@ -296,5 +296,52 @@ export class Utils {
     gridOptions.api.setDatasource(gridDataSource);
   }
   
+    $isDirty(originalItem, item) {
+    if(!(originalItem) || !(item)) {
+      return false;
+    }
+    let me = this;
+    let isEqual = function(obj1, obj2) {
+      let equal = true;
+      if(Array.isArray(obj1)) {
+        equal = me.isArrayEqual(obj2, obj1);
+      } else if(typeof obj1 === 'object') {
+        equal = me.isObjectEqual(obj1, obj2);
+      }
+      me.logger.debug('... dirty-checking in Model: ' + !equal);
+      return equal;
+    };
+    return !(isEqual(item, originalItem));
+  }
+
+  isObjectEqual(obj1, obj2) {
+    let me = this;
+     let isEqual = Object.keys(obj2).every((key) => 
+      obj1.hasOwnProperty(key) && 
+      ((obj2[key] === obj1[key]) || (me.isEmpty(obj2[key]) && me.isEmpty(obj1[key])))
+    );
+    return isEqual;
+  }
+
+  isArrayEqual(obj1:Array<any>, obj2:Array<any>) {
+    let me = this;
+    return obj2.every(
+      function(key) { 
+        return obj1.indexOf(key) !== -1
+      }
+    );
+  }
+  
+  isEmpty(obj) {
+    if(obj === undefined || obj === null) {
+      return true;
+    }
+    if(typeof obj === 'string' && (obj === '')) {
+      return true;
+    }
+
+    return false;
+  }
+
 
 }

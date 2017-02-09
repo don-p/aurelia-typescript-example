@@ -28,13 +28,13 @@
 								<!-- fake username/password fields to bypass Safari autocomplete -->
 								<div class="col-xs-12">
 									<input  id="un" i18n='[placeholder]login.emailAddr' autofocus
-										input.delegate="clearError()" change.delegate="clearError()" value.bind="username & validate" 
+										input.delegate="clearError()" change.delegate="clearError()" value.bind="credentials.username & validate" 
 										type="email" name="email" class="form-control input-lg" />
 									<span class="glyphicon glyphicon-user"></span>
 								</div>
 								<div class="col-xs-12">
 									<input id="pw" i18n='[placeholder]login.password' autocomplete='new-password'
-										input.delegate="clearError()" change.delegate="clearError()" type="password" value.bind="password & validate" 
+										input.delegate="clearError()" change.delegate="clearError()" type="password" value.bind="credentials.password & validate" 
 										name="password" class="form-control input-lg" />
 									<span class="glyphicon glyphicon-lock"></span>
 								</div>
@@ -54,7 +54,7 @@
 						</div>
 
 						<button if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''" 
-							disabled.bind="(errors.length || (vResults && vResults.length !== 0))" i18n='login.submit' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
+							disabled.bind="!(isDirty) || (errors.length || (vResults && vResults.length !== 0))" i18n='login.submit' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
 						<button if.bind="router.currentInstruction.config.route==='login-2'" 
 							disabled.bind="!(mfaCode)" i18n='login.confirm' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
 
