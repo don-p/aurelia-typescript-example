@@ -7,7 +7,6 @@ import {FetchConfig} from 'aurelia-auth';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
-import {Prompt} from '../model/prompt';
 import {DataService} from './dataService';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
