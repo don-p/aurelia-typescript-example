@@ -11,7 +11,7 @@ import {VirtualRepeat} from 'aurelia-ui-virtualization';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import * as Ps from 'perfect-scrollbar';
-import {ValidationRules, ValidationController} from 'aurelia-validation';
+import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {CommunityResource} from '../model/communityResource';
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {Utils} from '../services/util';
@@ -20,7 +20,7 @@ import {Utils} from '../services/util';
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
 @inject(Session, DataService, CommunityService, EventAggregator, Ps, I18N, 
-  AureliaConfiguration, Utils, Parent.of(Community), NewInstance.of(ValidationController), LogManager)
+  AureliaConfiguration, Utils, Parent.of(Community), Validator, NewInstance.of(ValidationController), LogManager)
 export class Communities {
   communities: Array<Object>;
   items:Array<Object>;
@@ -44,7 +44,7 @@ export class Communities {
 
   constructor(private session: Session, private dataService: DataService, 
     private communityService: CommunityService, private evt: EventAggregator, Ps, 
-    private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community) {
+    private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community, private validator:Validator) {
 
     // var Ps = require('perfect-scrollbar');
 
@@ -136,6 +136,7 @@ export class Communities {
       } else {
         me.scrollToCommunityInList(selectedCommunity);
       }
+      me.onCommunitySelectionChanged(null);
     })
   }
 
@@ -406,33 +407,30 @@ export class Communities {
       .minLength(3)
       .then()
       .maxLength(120)
-      .then()
+//      .then()
       .ensure((community: any) => community.communityDescription)
       .displayName(this.i18n.tr('community.communityDesc'))
       .required()
       .then()
       .maxLength(120)
       // .on(community)
-      .rules
-      ;
-    // const vRules = ValidationRules
-    //   .ensure('communityName')
-    //   .displayName(this.i18n.tr('community.communityName'))
-    //   .required()
-    //   .then()
-    //   .minLength(3)
-    //   .maxLength(120)
-    //   .ensure('communityDescription')
-    //   .displayName(this.i18n.tr('community.communityDesc'))
-    //   .required()
-    //   .then()
-    //   .maxLength(120)
-    //   // .on(community)
-    //   .rules
-    //   ;
+      .rules;
+
     this.dataService.openResourceEditDialog({modelView:'model/communityModel.html', title:title, 
       loadingTitle: 'app.loading', item:community, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
+/* TODO      
+      me.validator.validateObject(community).then(function(result) {
+        controller.viewModel.vResults = result;
+      })    
+
+      controller.clearError = () => {
+        let me = this;
+        controller.viewModel.vResults = [];
+        controller.viewModel.vController.validate();
+      };
+
+*/
       // let model = controller.settings.model;
       let model = controller.settings;
       // Callback function for submitting the dialog.
