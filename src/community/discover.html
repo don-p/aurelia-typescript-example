@@ -1,7 +1,55 @@
 <template>
     <div id="discover-tab" class="blg-tab-section tab-content">
-        <div class="blg-inner-content tab-pane active" id="communities">
-        Discover
-        </div>
+        <div class="blg-inner-content tab-pane active" id="discover">
+        
+            <div class="conv-buttons-bar">
+                <a id="participant-start-conv-btn" class="btn btn-primary btn-xs-square" title="Start conversation" style="visibility: hidden;">
+                    <i class="ico-bubble-plus"></i>
+                </a>
+                <div class="float-right">
+                    <span>Domain: </span>
+                    <select class="form-control select select-default-blg" title="">
+                        <option value="coi.json">Blueline Grid</option>
+                        <option value="team.json">Another domain</option>
+                    </select>
+                </div>								
+            </div>
+
+            <div class="blg-search-content">
+                <div class="discover-list">
+                    <ul>
+                        <li class="">
+                            <select class="form-control select select-default-blg" title="">
+                                <option value="">First name</option>
+                                <option value="">Last name</option>
+                                <option value="">Job title</option>
+                                <option value="">Industry name</option>
+                                <option value="">Zip code</option>												
+                            </select>
+                            <select class="form-control select select-default-blg" title="">
+                                <option value="">Contains</option>
+                                <option value="">Matches</option>
+                                <option value="">Exludes</option>
+                            </select>
+                            <div class="form-group form-group-sm discover-input">
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="discover-icon">
+                                <i class="ico-minus-circle" title="Delete line" onclick="hideLine('.line6');"></i>
+                            </div>											
+                        </li>
+                        <li class="add-line-btn">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="showLine();"><i class="ico-plus-circle"></i>&nbsp; Add new line</button>
+                        </li>
+                        <li class="reset-search-btn">
+                            <div class="discover-footer">
+                                <button type="button" class="btn btn-default" onclick="resetSearch();">Reset</button>
+                                <button type="button" class="btn btn-success" onclick="getSearchResults();">Search</button>
+                            </div>
+                        </li>										
+                    </ul>
+                </div>
+            </div>	
+        </div>						
     </div>
 </template>
