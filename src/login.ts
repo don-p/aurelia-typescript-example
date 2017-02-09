@@ -90,15 +90,13 @@ export class Login {
     return Array.isArray(this.vController.errors) && this.vController.errors.length > 0;
   }
 
-  get validationErrors() {
-    return this.vController.errors;
-  }
-
   clearError() {
+    let me = this;
     this.logger.debug('clearError(): ' + this.errorResult);
     this.vResults = [];
     if(this.errorResult) {
       this.vController.removeError(this.errorResult);
+      //delete this.errorResult;
     }
     this.vController.validate();
   }

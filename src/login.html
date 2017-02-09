@@ -4,14 +4,15 @@
 			<section class="container">
 				<section class="login-form" style="position: relative;">
           		<loading id="login-loading" promise.bind="'loginPromise'" message-key.bind="'app.loading'">
-					<form method="post" id="login-form" role="login" submit.delegate="router.currentInstruction.config.route==='login-2'?loginConfirm(mfaCode):login()">
+					<form method="post" id="login-form" role="login" validation-errors.bind="errors"  
+					  submit.delegate="router.currentInstruction.config.route==='login-2'?loginConfirm(mfaCode):login()">
 						<img class="login-logo" src="../images/logo.png">				
 						<h3><img src="../images/gridcommand.png"></h3>
 						<div class="row errorMessage">
 							<div class="col-xs-12">
 								<div if.bind="(hasValidationErrors)" class="alert alert-danger fade in">
 									<ul>
-										<li repeat.for="error of validationErrors">${error.message}</li>
+										<li repeat.for="error of vController.errors">${error.message}</li>
 									</ul>
 								</div>	
 							</div>
@@ -53,7 +54,7 @@
 						</div>
 
 						<button if.bind="router.currentInstruction.config.route==='login'||router.currentInstruction.config.route===''" 
-							disabled.bind="((vResults && vResults.length !== 0) || hasValidationErrors)" i18n='login.submit' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
+							disabled.bind="(errors.length || (vResults && vResults.length !== 0))" i18n='login.submit' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
 						<button if.bind="router.currentInstruction.config.route==='login-2'" 
 							disabled.bind="!(mfaCode)" i18n='login.confirm' type="submit" form="login-form" autofocus class="btn btn-lg btn-block btn-info"></button>
 
@@ -62,7 +63,7 @@
 						</section>
 						<section style="margin:0px;">
 							<span class="copy">&copy; 2014-2017 <a href="http://bluelinegrid.com" target="_blank">${'global.blueLineGridInc' | t}</a> ${'login.copyright' | t}<span>
-						</section>					
+						</section>	
 					</form>
 					
 				</section>
