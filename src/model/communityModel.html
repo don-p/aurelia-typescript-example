@@ -5,7 +5,7 @@
             <!--<input id="name" attach-focus="true" value.two-way="item.communityName & validate" 
             change.delegate="vController.validate({ object: $this.item, rules: vRules })" 
             class="form-control input-lg"/>-->
-            <input id="name" attach-focus="true" value.two-way="item.communityName & validate" 
+            <input id="name"  input.delegate="controller.clearError()" change.delegate="controller.clearError()" attach-focus="true" value.two-way="item.communityName & validate" 
              
             class="form-control input-lg"/>
         </div>
@@ -14,14 +14,14 @@
             <!--<input id="name" value.bind="item.communityDescription & validate" 
             change.delegate="vController.validate({ object: $this.item, rules: vRules })" 
             class="form-control input-lg" />-->
-            <input id="name" value.bind="item.communityDescription & validate" 
+            <input id="desc" input.delegate="controller.clearError()" change.delegate="controller.clearError()" value.bind="item.communityDescription & validate" 
             class="form-control input-lg" />
         </div>
         <div class="dialog-section" if.bind="(!(item.communityId) || item.communityId == null)">
             <label class="blg-form-required community-select-label" i18n='[prepend]global.type'>: </label>
             <select class="form-control select select-default-blg" value.bind="item.communityType">
-            <option value="TEAM" i18n="community.team"></option>
-            <option value="COI" i18n="community.coi"></option>
+            <option value="TEAM" i18n="community.communities.team"></option>
+            <option value="COI" i18n="community.communities.coi"></option>
             </select>
         </div>
         <input type="hidden" value.bind="item.communityId" />

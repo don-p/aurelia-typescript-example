@@ -577,14 +577,14 @@ export class CommunityDetail {
     var me = this;
 
     if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.members.confirmDelete.messageSingle', 
+      message = this.i18n.tr('community.communities.members.confirmDelete.messageSingle', 
           {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
           communityMembers[0].physicalPersonProfile.lastName});
     } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.members.confirmDelete.message',
+      message = this.i18n.tr('community.communities.members.confirmDelete.message',
           {memberCount: communityMembers.length});
     }
-    this.dataService.openPromptDialog(this.i18n.tr('community.members.confirmDelete.title'),
+    this.dataService.openPromptDialog(this.i18n.tr('community.communities.members.confirmDelete.title'),
       message,
       communityMembers, this.i18n.tr('button.remove'), true, null, 'modelPromise', '')
     .then((controller:any) => {
@@ -681,7 +681,7 @@ export class CommunityDetail {
     let gridOptions = this.utils.getGridOptions('addMembers', this.pageSize);
 
     this.dataService.openResourceEditDialog({modelView:'model/organizationMembersListModel.html', 
-      title:this.i18n.tr('community.members.addMembers'), loadingTitle: 'app.loading',
+      title:this.i18n.tr('community.communities.members.addMembers'), loadingTitle: 'app.loading',
       item:membersList, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
     .then((controller:any) => {
       // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
@@ -789,19 +789,19 @@ export class CommunityDetail {
     communityMembers = this.gridOptions.api.getSelectedRows();
 
     if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.members.call.callConfirmMessageSingle', 
+      message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
           {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
           communityMembers[0].physicalPersonProfile.lastName});
     } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.members.call.callConfirmMessage',
+      message = this.i18n.tr('community.communities.members.call.callConfirmMessage',
           {memberCount: communityMembers.length});
     }
     const vRules = ValidationRules
       .ensure('item').maxItems(maxParticipants)
-      .withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:maxParticipants}))
+      .withMessage(this.i18n.tr('community.communities.call.callParticipantMaxCountError', {count:maxParticipants}))
       .rules;
 
-    this.dataService.openPromptDialog(this.i18n.tr('community.members.call.title'),
+    this.dataService.openPromptDialog(this.i18n.tr('community.communities.members.call.title'),
       message,
       communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise', '')
     .then((controller:any) => {
@@ -825,7 +825,7 @@ export class CommunityDetail {
             // Update the message for success.
             controller.viewModel.messagePrefix = 'global.success';
             controller.viewModel.status = 'OK';
-            controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
+            controller.viewModel.message = this.i18n.tr('community.communities.members.call.callSuccessMessage');
             controller.viewModel.okText = this.i18n.tr('button.ok');
             controller.viewModel.showCancel = false;
             // Close dialog on success.
@@ -833,12 +833,12 @@ export class CommunityDetail {
           }, error => {
             controller.viewModel.messagePrefix = 'global.failed';
             controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.members.call.callFailedMessage'); 
+            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
             me.logger.error("Community member call() rejected."); 
           }).catch(error => {
             controller.viewModel.messagePrefix = 'global.failed';
             controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.members.call.callFailedMessage'); 
+            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
             me.logger.error("Community member call() failed."); 
             me.logger.error(error); 
             return Promise.reject(error);
@@ -861,19 +861,19 @@ export class CommunityDetail {
     communityMembers = this.gridOptions.api.getSelectedRows();
 
     if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.members.call.callConfirmMessageSingle', 
+      message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
           {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
           communityMembers[0].physicalPersonProfile.lastName});
     } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.members.call.callConfirmMessage',
+      message = this.i18n.tr('community.communities.members.call.callConfirmMessage',
           {memberCount: communityMembers.length});
     }
     const vRules = ValidationRules
       .ensure('item').maxItems(1)
-      .withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:1}))
+      .withMessage(this.i18n.tr('community.communities.call.callParticipantMaxCountError', {count:1}))
       .rules;
 
-    this.dataService.openPromptDialog(this.i18n.tr('community.sendConnectionRequest'),
+    this.dataService.openPromptDialog(this.i18n.tr('community.communities.sendConnectionRequest'),
       message,
       communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise', '')
     .then((controller:any) => {
@@ -897,7 +897,7 @@ export class CommunityDetail {
             // Update the message for success.
             controller.viewModel.messagePrefix = 'global.success';
             controller.viewModel.status = 'OK';
-            controller.viewModel.message = this.i18n.tr('community.members.call.callSuccessMessage');
+            controller.viewModel.message = this.i18n.tr('community.communities.members.call.callSuccessMessage');
             controller.viewModel.okText = this.i18n.tr('button.ok');
             controller.viewModel.showCancel = false;
             // Close dialog on success.
@@ -905,12 +905,12 @@ export class CommunityDetail {
           }, error => {
             controller.viewModel.messagePrefix = 'global.failed';
             controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.members.call.callFailedMessage'); 
+            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
             me.logger.error("Community member call() rejected."); 
           }).catch(error => {
             controller.viewModel.messagePrefix = 'global.failed';
             controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.members.call.callFailedMessage'); 
+            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
             me.logger.error("Community member call() failed."); 
             me.logger.error(error); 
             return Promise.reject(error);

@@ -3,14 +3,11 @@
         <div class="blg-inner-content tab-pane active" id="discover">
         
             <div class="conv-buttons-bar">
-                <a id="participant-start-conv-btn" class="btn btn-primary btn-xs-square" title="Start conversation" style="visibility: hidden;">
-                    <i class="ico-bubble-plus"></i>
-                </a>
-                <div class="float-right">
-                    <span>Domain: </span>
-                    <select class="form-control select select-default-blg" title="">
+                <div class="right-select">
+                    <span class="community-select-label">Organization: </span>
+                    <select class="form-control select select-default-blg">
                         <option value="coi.json">Blueline Grid</option>
-                        <option value="team.json">Another domain</option>
+                        <option value="team.json">Another organization</option>
                     </select>
                 </div>								
             </div>
@@ -18,8 +15,8 @@
             <div class="blg-search-content">
                 <div class="discover-list">
                     <ul>
-                        <li repeat.for="filter of filterValues" class="">
-                            <select class="form-control change.delegate="onFilterChange(i, $event)" select select-default-blg" title="" value.bind="filterValues[i].attr">
+                        <li repeat.for="filter of filterValues" class="discover-line">
+                            <select class="form-control select select-default-blg" change.delegate="onFilterChange($index, $event, $this)" value.bind="filterValues[$index].attr">
                                 <option model.bind="1">First name</option>
                                 <option model.bind="2">Last name</option>
                                 <option model.bind="3">Job title</option>
@@ -36,21 +33,21 @@
                                 <input type="text" class="form-control" model.bind="filterValues[i].value">
                             </div>
                             <div class="discover-icon">
-                                <i class="ico-minus-circle" title="Remove filter" click.delegate="removeFilter(filter)"></i>
-                            </div>			${$index}								
+                                <i show.bind="filterValues.length > 1" class="ico-minus-circle" i18n="[title]community.discover.removeFilter" click.delegate="removeFilter($index)"></i>
+                            </div>			
                         </li>
-                        <li class="add-line-btn">
-                            <button type="button" class="btn btn-primary btn-sm" click.delegate="addFilter()"><i class="ico-plus-circle"></i>&nbsp; Add new line</button>
-                        </li>
-                        <li class="reset-search-btn">
-                            <div class="discover-footer">
-                                <button type="button" class="btn btn-default" onclick="resetSearch();">Reset</button>
-                                <button type="button" class="btn btn-success" onclick="getSearchResults();">Search</button>
+                        <li class="discover-line">
+                            <div class="discover-icon">
+                            <i class="ico-plus-circle" i18n="[title]community.discover.addFilter" click.delegate="addFilter()"></i>
                             </div>
-                        </li>										
+                        </li>
                     </ul>
                 </div>
-            </div>	
+            </div>
+            <div class="discover-footer">
+                <button type="button" class="btn btn-default-blg">Reset</button>
+                <button type="button" class="btn btn-info">Search</button>
+            </div>
         </div>						
     </div>
 </template>

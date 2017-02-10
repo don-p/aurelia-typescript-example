@@ -12,21 +12,21 @@
         <div class="div-table-body">
             <div class="div-table-row">
                 <div class="div-table-cell column-label">            
-                    <span class="wizard-content-label blg-form-required" i18n='[prepend]community.alert.recipients' change.delegate="step.model.selectAlertCategory($event)">:</span>
+                    <span class="wizard-content-label blg-form-required" i18n='[prepend]community.communities.alert.recipients' change.delegate="step.model.selectAlertCategory($event)">:</span>
                 </div>
                 <div class="div-table-cell">
                     <span class="recipientListMessage">${controller.recipientsMessage}</span>
                     <span class="recipientsListContainer" show.bind="controller.dialogController.alertModel.communityMembers.length > 1 || controller.dialogController.alertModel.communities.length > 1" style="display: inline-block;">
                         <span class="textoverflow recipientsList">
-                            <span class="recipientsListItem" repeat.for="mem of controller.dialogController.alertModel.communityMembers">${'community.members.fullName' | t: {member: mem['physicalPersonProfile']}}</span>
-                            <span class="recipientsListItem" repeat.for="community of controller.dialogController.alertModel.communities">${community.communityName}</span>
+                            <span class="recipientsListItem" repeat.for="mem of controller.dialogController.alertModel.communityMembers">${'community.communities.members.fullName' | t: {member: mem['physicalPersonProfile']}}</span>
+                            <span class="recipientsListItem" repeat.for="community of controller.dialogController.alertModel.communities">${community.communities.communityName}</span>
                         </span>
                     </span>
                 </div>
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell column-label">            
-                    <span class="wizard-content-label blg-form-required" i18n='[prepend]community.alert.alertType' change.delegate="step.model.selectAlertCategory($event)">:</span>
+                    <span class="wizard-content-label blg-form-required" i18n='[prepend]community.communities.alert.alertType' change.delegate="step.model.selectAlertCategory($event)">:</span>
                 </div>
                 <div class="div-table-cell">
                     <select class="form-control select select-default-blg" style="display:inline-block;" value.bind="controller.dialogController.alertModel.alertType">
@@ -39,7 +39,7 @@
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell column-label">
-                    <span class="wizard-content-label blg-form-required">${'community.alert.message' | t}:</span>
+                    <span class="wizard-content-label blg-form-required">${'community.communities.alert.message' | t}:</span>
                 </div>
                 <div class="div-table-cell">
                     <div class="send-alert-message-text">				  
@@ -50,7 +50,7 @@
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell column-label">
-                    <span class="wizard-content-label">${'community.alert.attachment' | t}:</span>
+                    <span class="wizard-content-label">${'community.communities.alert.attachment' | t}:</span>
                 </div>
                 <div class="div-table-cell">
                     <form class="select-file2">
@@ -60,7 +60,7 @@
                             <strong>
                                 <i class="ico-attachment"></i>
                             </strong>
-                            <span if.bind="(!(step.model.files) || step.model.files.length === 0)">${'community.alert.selectFile' | t}&hellip;</span>
+                            <span if.bind="(!(step.model.files) || step.model.files.length === 0)">${'community.communities.alert.selectFile' | t}&hellip;</span>
                             <span if.bind="((step.model.files) && step.model.files.length !== 0)">${step.model.files[0].name}</span>
                             <button if.bind="((step.model.files) && step.model.files.length !== 0)" id="btn-remove-attachment" click.delegate="controller.removeAttachment(step.model.files[0])" class="btn btn-xs send-alert-remove-attachment" i18n="[title]button.removeAttachment">
 				                <i class="ico-cancel-square2"></i>

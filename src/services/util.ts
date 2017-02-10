@@ -52,42 +52,42 @@ export class Utils {
             });
         }
         columns.push({
-            headerName: this.i18n.tr('community.members.firstname'), 
+            headerName: this.i18n.tr('community.communities.members.firstname'), 
             field: "physicalPersonProfile.firstName",
             filter: TextSearchFilter
         });
         columns.push({
-            headerName: this.i18n.tr('community.members.lastname'), 
+            headerName: this.i18n.tr('community.communities.members.lastname'), 
             field: "physicalPersonProfile.lastName", 
             filter: TextSearchFilter
         });
         if(type == 'listMembers') {
             columns.push({
-                headerName: this.i18n.tr('community.members.organization'), 
+                headerName: this.i18n.tr('community.communities.members.organization'), 
                 field: "physicalPersonProfile.organization.organizationName",
                 filter: TextSearchFilter,
                 hide: false
             });
         } // else if (type === 'addMembers') {
         columns.push({
-            headerName: this.i18n.tr('community.members.title'), 
+            headerName: this.i18n.tr('community.communities.members.title'), 
             field: "physicalPersonProfile.jobTitle",
             filter: TextSearchFilter
         });
         // }
         columns.push({
-            headerName: this.i18n.tr('community.members.city'), 
+            headerName: this.i18n.tr('community.communities.members.city'), 
             field: "physicalPersonProfile.locationProfile.city",
             filter: TextSearchFilter
         });
         columns.push({
-            headerName: this.i18n.tr('community.members.state'), 
+            headerName: this.i18n.tr('community.communities.members.state'), 
             field: "physicalPersonProfile.locationProfile.stateCode", 
             filter: TextSearchFilter,
             width: 100
         });
         columns.push({
-            headerName: this.i18n.tr('community.members.zip'), 
+            headerName: this.i18n.tr('community.communities.members.zip'), 
             field: "physicalPersonProfile.locationProfile.zipCode", 
             filter: TextSearchFilter,
             width: 80
