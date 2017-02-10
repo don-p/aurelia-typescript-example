@@ -703,6 +703,7 @@ header .navbar-nav {
 .conv-buttons-bar {
     padding: 10px 13px;
     box-shadow: 0px 1px 5px lightgrey;
+    height: 51px;
 }
 
 .blg-tab-section {
@@ -1230,7 +1231,6 @@ wizard .modal-footer {
   letter-spacing: -0.5px;
   position: relative;
   bottom: 3px;
-  left: 3px;
 }
 
 .checkbox-info {
@@ -1769,4 +1769,88 @@ span.recipientsListItem:not(:last-child)::after {
   justify-content: center;
   flex-direction: column;
   width: 100%;
+}
+
+.discover-list li {
+    list-style: none;
+}
+
+.discover-list ul {
+    margin-left: -23px;
+    margin-top: 20px;
+}
+
+.discover-list .select-default-blg {
+  width: 115px;
+  display: inline-block;
+}
+
+.discover-input {
+  display: inline-block;
+  margin-left: 1px;
+  margin-top: 1px;    
+}
+.discover-input input {
+  height: 31px !important;
+}
+
+.discover-icon {
+  display: inline-block;
+}
+.discover-icon i {
+  font-size: 24px;
+  position: relative;
+  top: 5px;
+  left: 3px;
+  color: #2980b9;
+  cursor: pointer;
+}
+
+.blg-search-content .form-group {
+    margin-bottom: 0px;
+    vertical-align: top;
+}
+
+.add-line {
+  margin-top: 7px;
+}
+
+.discover-line {
+  margin-bottom: 7px;
+}
+
+.add-line-btn {
+  width: 115px;
+}
+
+.add-line i {
+  margin-right: 10px;
+}
+
+.blg-left-panel .blg-search-content {
+    height: 270px;
+}
+
+.discover-footer {
+  text-align: right;
+}
+
+.discover-footer button {
+  min-width: 100px;
+  margin-left: 5px;
+  font-size: 14px;  
+}
+
+.blg-left-panel .discover-footer {
+  position: absolute;
+  height: 60px;
+  left: 0px;
+  right: 0px;
+  border-bottom: 2px solid $blg-grey-light;
+  border-right: 2px solid $blg-grey-light;
+  border-left: 2px solid $blg-grey-light;
+  border-radius: 0 0 6px 6px;
+  background-color: $blg-white;
+  padding-top: 10px;
+  padding-right: 15px;    
 }
