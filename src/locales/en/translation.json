@@ -11,6 +11,7 @@
             "community":"Community",
             "communities": "Communities",
             "discover": "Discover",
+            "connections": "Connections",
             "organization":"Organization",
             "alerts":"Alerts",
             "tracker":"Tracker",
@@ -49,82 +50,89 @@
     },
 
     "community":{
-        "discover":"Discover",
-        "connect":"Connects",
-        "communities":"Communities",
-        "commType":"Type",
-        "coi":"Community of Interest",
-        "team":"Team",
-        "search":"Search",
-        "createCommunity":"Create Community",
-        "editCommunity":"Update Community",
-        "sendConnectionRequest": "Send Connection Request",
-        "confirmDelete": {
-            "title": "Delete Community?",
-            "message": "Delete the community '{{communityName}}'?"
-        },
-        "communityName": "Community Name",
-        "communityDesc": "Community Description",
-        "communityType": "Community Type",
-        "owner":"OWNER",
-        "members": {
-            "firstname": "First Name",
-            "lastname": "Last Name",
-            "title": "Title",
-            "organization": "Organization",
-            "city": "City",
-            "state": "State",
-            "zip": "ZIP",
+        "communities":{
+            "title":"Communities",
+            "commType":"Type",
+            "coi":"Community of Interest",
+            "team":"Team",
+            "search":"Search",
+            "createCommunity":"Create Community",
+            "editCommunity":"Update Community",
+            "sendConnectionRequest": "Send Connection Request",
             "confirmDelete": {
-                "title": "Remove Community Members?",
-                "messageSingle": "Remove the community member '{{memberName}}'?",
-                "message": "Remove {{memberCount}} selected community members?"
+                "title": "Delete Community?",
+                "message": "Delete the community '{{communityName}}'?"
             },
+            "communityName": "Community Name",
+            "communityDesc": "Community Description",
+            "communityType": "Community Type",
+            "owner":"OWNER",
+            "members": {
+                "firstname": "First Name",
+                "lastname": "Last Name",
+                "title": "Title",
+                "organization": "Organization",
+                "city": "City",
+                "state": "State",
+                "zip": "ZIP",
+                "confirmDelete": {
+                    "title": "Remove Community Members?",
+                    "messageSingle": "Remove the community member '{{memberName}}'?",
+                    "message": "Remove {{memberCount}} selected community members?"
+                },
+                "call": {
+                    "title": "Start GridCall",
+                    "callConfirmMessageSingle": "Start GridCall with '{{memberName}}'?",
+                    "callConfirmMessage": "Start GridCall with {{memberCount}} selected community members?",
+                    "callSuccessMessage": "The GridCall has been initiated."
+                },
+                "alert": {
+                    "alertConfirmMessage": "Click 'Next' to send {{alertType}} alert with {{attCount}} attachments to {{recipients}}.",
+                    "alertSuccessMessage": "{{alertCategory}} alert has been sent to {{recipients}}.",
+                    "alertErrorMessage": "An error occured; {{alertCategory}} alert has not been sent to {{recipientCount}} recipient(s)."
+                },
+                "transferOwnership": {
+                    "title": "Change Community Owner",
+                    "successMessage": "Community owner was changed.",
+                    "failedMessage": "Community owner could not be changed."
+                },
+                "addMembers": "Add Community Members",
+                "fullName": "{{member.firstName}} {{member.lastName}}"
+            },          
             "call": {
                 "title": "Start GridCall",
-                "callConfirmMessageSingle": "Start GridCall with '{{memberName}}'?",
-                "callConfirmMessage": "Start GridCall with {{memberCount}} selected community members?",
-                "callSuccessMessage": "The GridCall has been initiated."
+                "callConfirmMessageSingle": "Start GridCall with the community '{{communityName}}'?",
+                "callConfirmMessage": "Start GridCall with {{communityCount}} selected communities?",
+                "callSuccessMessage": "The GridCall has been initiated.",
+                "callFailedMessage": "The GridCall could not be initiated.",
+                "callParticipantMaxCountError":"GridCall cannot be started with more than {{count}} participants."
             },
             "alert": {
-                "alertConfirmMessage": "Click 'Next' to send {{alertType}} alert with {{attCount}} attachments to {{recipients}}.",
-                "alertSuccessMessage": "{{alertCategory}} alert has been sent to {{recipients}}.",
-                "alertErrorMessage": "An error occured; {{alertCategory}} alert has not been sent to {{recipientCount}} recipient(s)."
-            },
-            "transferOwnership": {
-                "title": "Change Community Owner",
-                "successMessage": "Community owner was changed.",
-                "failedMessage": "Community owner could not be changed."
-            },
-            "addMembers": "Add Community Members",
-            "fullName": "{{member.firstName}} {{member.lastName}}"
-        },          
-        "call": {
-            "title": "Start GridCall",
-            "callConfirmMessageSingle": "Start GridCall with the community '{{communityName}}'?",
-            "callConfirmMessage": "Start GridCall with {{communityCount}} selected communities?",
-            "callSuccessMessage": "The GridCall has been initiated.",
-            "callFailedMessage": "The GridCall could not be initiated.",
-            "callParticipantMaxCountError":"GridCall cannot be started with more than {{count}} participants."
+                "selectTypeRecipients": "Select Recipients",
+                "selectMessage": "Create Alert",
+                "confirm": "Review & Send",
+                "finish": "Finish",
+                "alertType": "Alert type",
+                "recipients":"Recipients",
+                "message":"Message",
+                "attachment":"Attachment",
+                "selectFile":"Select a file",
+                "recipientsList": "Recipients list",
+                "alertRecipientsMessageSingle": "{{member.physicalPersonProfile.firstName}} {{member.physicalPersonProfile.lastName}}",
+                "alertRecipientsMessage": "{{memberCount}} members",
+                "alertCommunityRecipientsMessageSingle": "{{community}}",
+                "alertCommunityRecipientsMessage": "{{communityCount}} communities"
+            }
         },
-        "alert": {
-            "selectTypeRecipients": "Select Recipients",
-            "selectMessage": "Create Alert",
-            "confirm": "Review & Send",
-            "finish": "Finish",
-            "alertType": "Alert type",
-            "recipients":"Recipients",
-            "message":"Message",
-            "attachment":"Attachment",
-            "selectFile":"Select a file",
-            "recipientsList": "Recipients list",
-            "alertRecipientsMessageSingle": "{{member.physicalPersonProfile.firstName}} {{member.physicalPersonProfile.lastName}}",
-            "alertRecipientsMessage": "{{memberCount}} members",
-            "alertCommunityRecipientsMessageSingle": "{{community}}",
-            "alertCommunityRecipientsMessage": "{{communityCount}} communities"
+        "discover": {
+            "title": "Discover",
+            "addFilter": "Add filter",
+            "removeFilter": "Remove filter"
+        },
+        "connections": {
+            "title": "Connections"
         }
     },
-
     "organization":{
         "organization":"Organization",
         "organizations":"Organizations",

@@ -34,8 +34,8 @@ export class Community {
     config.map([
       { route: '', redirect: 'communities', nav: false},
       { route: 'communities', name: 'community/communities', moduleId: './communities', nav: true, title: this.i18n.tr('router.nav.communities') },
-      { route: 'discover', name: 'community/discover', moduleId: './discover', nav: true, title: this.i18n.tr('router.nav.discover') }//,
-      // { route: 'connections', name: 'connections', moduleId: './community/connections', nav: true, title: 'Connections' }
+      { route: 'connections', name: 'community/connections', moduleId: './connections', nav: true, title: this.i18n.tr('router.nav.connections') },
+      { route: 'discover', name: 'community/discover', moduleId: './discover', nav: true, title: this.i18n.tr('router.nav.discover') }
     ]);
     this.router = router;
   }
@@ -81,11 +81,11 @@ export class Community {
     const maxMessageLength = this.appConfig.get('maxAlertMessageSize');
     const vRules = ValidationRules
       .ensure('communityMembers')
-      .displayName(this.i18n.tr('community.alert.recipientsList'))
+      .displayName(this.i18n.tr('community.communities.alert.recipientsList'))
       .minItems(1)
       .then()
       .ensure('alertMessage')
-      .displayName(this.i18n.tr('community.alert.message'))
+      .displayName(this.i18n.tr('community.communities.alert.message'))
       .required()
       .then()
       .maxLength(maxMessageLength)
@@ -95,7 +95,7 @@ export class Community {
     const step1config = {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_message',
-        title: this.i18n.tr('community.alert.selectMessage'),
+        title: this.i18n.tr('community.communities.alert.selectMessage'),
         canValidate: true,
         model: alertModel,
         attachedFn: function(){
@@ -103,16 +103,16 @@ export class Community {
           let message = '';
           if(Array.isArray(communityMembers) && communityMembers.length > 0) {
             if(communityMembers.length === 1) {
-              message = me.i18n.tr('community.alert.alertRecipientsMessageSingle', {member: communityMembers[0]});
+              message = me.i18n.tr('community.communities.alert.alertRecipientsMessageSingle', {member: communityMembers[0]});
             } else if(communityMembers.length >= 1) {
-              message = me.i18n.tr('community.alert.alertRecipientsMessage', {memberCount: communityMembers.length});
+              message = me.i18n.tr('community.communities.alert.alertRecipientsMessage', {memberCount: communityMembers.length});
             }
           }
           else if(Array.isArray(communities) && communities.length > 0) {
             if(communities.length === 1) {
-              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessageSingle', {community: communities[0].communityName});
+              message = me.i18n.tr('community.communities.alert.alertCommunityRecipientsMessageSingle', {community: communities[0].communityName});
             } else if(communities.length >= 1) {
-              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessage', {communityCount: communities.length});
+              message = me.i18n.tr('community.communities.alert.alertCommunityRecipientsMessage', {communityCount: communities.length});
             }
           }
           this.controller.recipientsMessage = message;
@@ -121,7 +121,7 @@ export class Community {
     const step2config = {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_confirm',
-        title: this.i18n.tr('community.alert.confirm'),
+        title: this.i18n.tr('community.communities.alert.confirm'),
         canValidate: false,
         model: alertModel,
         attachedFn: function(){
@@ -130,20 +130,20 @@ export class Community {
           let message = '';
           if(Array.isArray(communityMembers) && communityMembers.length > 0) {
             if(communityMembers.length === 1) {
-              message = me.i18n.tr('community.alert.alertRecipientsMessageSingle', {member: communityMembers[0]});
+              message = me.i18n.tr('community.communities.alert.alertRecipientsMessageSingle', {member: communityMembers[0]});
             } else if(communityMembers.length >= 1) {
-              message = me.i18n.tr('community.alert.alertRecipientsMessage', {memberCount: communityMembers.length});
+              message = me.i18n.tr('community.communities.alert.alertRecipientsMessage', {memberCount: communityMembers.length});
             }
           }
           else if(Array.isArray(communities) && communities.length > 0) {
             if(communities.length === 1) {
-              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessageSingle', {community: communities[0].communityName});
+              message = me.i18n.tr('community.communities.alert.alertCommunityRecipientsMessageSingle', {community: communities[0].communityName});
             } else if(communities.length >= 1) {
-              message = me.i18n.tr('community.alert.alertCommunityRecipientsMessage', {communityCount: communities.length});
+              message = me.i18n.tr('communit.communitiesy.alert.alertCommunityRecipientsMessage', {communityCount: communities.length});
             }
           }
           
-          wizardController.errorMessage = me.i18n.tr('community.members.alert.alertConfirmMessage', {alertType: this.controller.dialogController.alertModel.alertType.categoryName, attCount: ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0), recipients: message});
+          wizardController.errorMessage = me.i18n.tr('community.communities.members.alert.alertConfirmMessage', {alertType: this.controller.dialogController.alertModel.alertType.categoryName, attCount: ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0), recipients: message});
           // this.step.errorMessage = me.i18n.tr('community.members.alert.alertConfirmMessage', {alertType: this.controller.dialogController.alertModel.alertType.categoryName, attCount: ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0), recipientCount: this.controller.dialogController.alertModel.communityMembers.length});
         },
         callback: function(step){
@@ -167,19 +167,19 @@ export class Community {
               let message = '';
               if(Array.isArray(communityMembers) && communityMembers.length > 0) {
                 if(communityMembers.length === 1) {
-                  message = me.i18n.tr('community.alert.alertRecipientsMessageSingle', {member: view.controller.wizard.currentStep.model.communityMembers[0]});
+                  message = me.i18n.tr('community.communities.alert.alertRecipientsMessageSingle', {member: view.controller.wizard.currentStep.model.communityMembers[0]});
                 } else if(communityMembers.length >= 1) {
-                  message = me.i18n.tr('community.alert.alertRecipientsMessage', {memberCount: view.controller.wizard.currentStep.model.communityMembers.length});
+                  message = me.i18n.tr('communit.communitiesy.alert.alertRecipientsMessage', {memberCount: view.controller.wizard.currentStep.model.communityMembers.length});
                 }
               }
               else if(Array.isArray(communities) && communities.length > 0) {
                 if(communities.length === 1) {
-                  message = me.i18n.tr('community.alert.alertCommunityRecipientsMessageSingle', {community: view.controller.wizard.currentStep.model.communities[0].communityName});
+                  message = me.i18n.tr('community.communities.alert.alertCommunityRecipientsMessageSingle', {community: view.controller.wizard.currentStep.model.communities[0].communityName});
                 } else if(communities.length >= 1) {
-                  message = me.i18n.tr('community.alert.alertCommunityRecipientsMessage', {communityCount: view.controller.wizard.currentStep.model.communities.length});
+                  message = me.i18n.tr('community.communities.alert.alertCommunityRecipientsMessage', {communityCount: view.controller.wizard.currentStep.model.communities.length});
                 }
               }
-              view.controller.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', 
+              view.controller.errorMessage = me.i18n.tr('community.communities.members.alert.alertSuccessMessage', 
                 {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
                   recipients: message});
               // view.controller.wizard.currentStep.errorMessage = me.i18n.tr('community.members.alert.alertSuccessMessage', 
@@ -189,14 +189,14 @@ export class Community {
               // controller.ok();
             }, error => {
               view.controller.stepStatus = 'ERROR';
-              view.controller.errorMessage = me.i18n.tr('community.members.alert.alertErrorMessage', 
+              view.controller.errorMessage = me.i18n.tr('community.communities.members.alert.alertErrorMessage', 
                 {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
                   recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
               // view.controller.wizard.currentStep.errorMessage = "Failed"; 
               me.logger.error("Community member call() rejected."); 
             }).catch(error => {
               view.controller.stepStatus = 'ERROR';
-              view.controller.errorMessage = me.i18n.tr('community.members.alert.alertErrorMessage', 
+              view.controller.errorMessage = me.i18n.tr('community.communities.members.alert.alertErrorMessage', 
                 {alertCategory: view.controller.wizard.currentStep.model.alertType.categoryName, 
                   recipientCount: view.controller.wizard.currentStep.model.communityMembers.length});
               // view.controller.wizard.currentStep.errorMessage = "Failed"; 
@@ -211,7 +211,7 @@ export class Community {
      const step3config = {
         viewsPrefix: 'community/alertWizard',
         id: 'alert_result',
-        title: this.i18n.tr('community.alert.finish'),
+        title: this.i18n.tr('community.communities.alert.finish'),
         canValidate: false,
         canGoBack: false,
         canCancel: false,

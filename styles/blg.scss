@@ -1778,6 +1778,8 @@ span.recipientsListItem:not(:last-child)::after {
 .discover-list ul {
     margin-left: -23px;
     margin-top: 20px;
+    padding-left: 40px;
+    padding-right: 17px;
 }
 
 .discover-list .select-default-blg {
@@ -1796,6 +1798,7 @@ span.recipientsListItem:not(:last-child)::after {
 
 .discover-icon {
   display: inline-block;
+  float: right;
 }
 .discover-icon i {
   font-size: 24px;

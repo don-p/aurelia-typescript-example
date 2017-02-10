@@ -15,31 +15,31 @@
             <div class="blg-search-content">
                 <div class="discover-list">
                     <ul>
-
-                        <!-- Search line start -->
-                        <li class="discover-line">
-                            <select class="form-control select select-default-blg">
-                                <option value="">First name</option>
-                                <option value="">Last name</option>
-                                <option value="">Job title</option>
-                                <option value="">Zip code</option>												
+                        <li repeat.for="filter of filterValues" class="discover-line">
+                            <select class="form-control select select-default-blg" change.delegate="onFilterChange($index, $event, $this)" value.bind="filterValues[$index].attr">
+                                <option model.bind="1">First name</option>
+                                <option model.bind="2">Last name</option>
+                                <option model.bind="3">Job title</option>
+                                <option model.bind="4">Industry name</option>
+                                <option model.bind="5">Zip code</option>												
                             </select>
-                            <select class="form-control select select-default-blg">
-                                <option value="">Contains</option>
-                                <option value="">Matches</option>
-                                <option value="">Exludes</option>
+                            <select class="form-control select select-default-blg" title=""  value.bind="filterValues[i].op">
+                                <option value="contains">Contains</option>
+                                <option value="matches">Matches</option>
+                                <option value="excludes">Exludes</option>
                             </select>
+                            <input type="text" style="display:none;" model.bind="$index" value.bind="filterValues[i].id"/>
                             <div class="form-group form-group-sm discover-input">
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" model.bind="filterValues[i].value">
                             </div>
                             <div class="discover-icon">
-                                <i class="ico-minus-circle" title="Delete line"></i>
-                            </div>											
+                                <i show.bind="filterValues.length > 1" class="ico-minus-circle" i18n="[title]community.discover.removeFilter" click.delegate="removeFilter($index)"></i>
+                            </div>			
                         </li>
-                        <!-- Search line end -->
-
-                        <li class="add-line">
-                            <button type="button" class="btn btn-primary btn-sm add-line-btn"><i class="ico-plus-circle"></i>Add line</button>
+                        <li class="discover-line">
+                            <div class="discover-icon">
+                            <i class="ico-plus-circle" i18n="[title]community.discover.addFilter" click.delegate="addFilter()"></i>
+                            </div>
                         </li>
                     </ul>
                 </div>

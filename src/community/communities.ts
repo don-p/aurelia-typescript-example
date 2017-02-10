@@ -215,7 +215,7 @@ export class Communities {
     gridOptions['communityId'] = community.communityId;
 
     this.dataService.openResourceEditDialog({modelView:'model/communityMembersListModel.html', 
-      title:this.i18n.tr('community.members.transferOwnership.title'), loadingTitle: 'app.loading',
+      title:this.i18n.tr('community.communities.members.transferOwnership.title'), loadingTitle: 'app.loading',
       item:membersList, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
     .then((controller:any) => {
       controller.viewModel.communityId = community['communityId'];
@@ -326,7 +326,7 @@ export class Communities {
     let me = this;
     this.modelPromise = null;
     this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
-      this.i18n.tr('community.confirmDelete.message', {communityName: community.communityName}),
+      this.i18n.tr('community.communities.confirmDelete.message', {communityName: community.communityName}),
       community, this.i18n.tr('button.delete'), true, null, 'modelPromise', '')
     .then((controller:any) => {
       let model = controller.settings;
@@ -393,15 +393,15 @@ export class Communities {
     if(community === null) {
       // Create an empty or cloned object model for the edit dialog.
       community = new CommunityResource();
-      title = this.i18n.tr('community.createCommunity');
+      title = this.i18n.tr('community.communities.createCommunity');
     } else {
       // Clone the object so we do not edit the live/bound model.
       community = new CommunityResource(community);
-      title = this.i18n.tr('community.editCommunity');
+      title = this.i18n.tr('community.communities.editCommunity');
     }
     const vRules = ValidationRules
       .ensure((community: any) => community.communityName)
-      .displayName(this.i18n.tr('community.communityName'))
+      .displayName(this.i18n.tr('community.communities.communityName'))
       .required()
       .then()
       .minLength(3)
@@ -409,7 +409,7 @@ export class Communities {
       .maxLength(120)
 //      .then()
       .ensure((community: any) => community.communityDescription)
-      .displayName(this.i18n.tr('community.communityDesc'))
+      .displayName(this.i18n.tr('community.communities.communityDesc'))
       .required()
       .then()
       .maxLength(120)
@@ -483,17 +483,17 @@ export class Communities {
     // let maxParticipants = ;
 
     if(communities.length === 1) {
-      message = this.i18n.tr('community.call.callConfirmMessageSingle', 
+      message = this.i18n.tr('community.communities.call.callConfirmMessageSingle', 
           {communityName: communities[0]['communityName']});
     } else if(communities.length >= 1) {
-      message = this.i18n.tr('community.call.callConfirmMessage',
+      message = this.i18n.tr('community.communities.call.callConfirmMessage',
           {communityCount: communities.length});
     }
     const vRules = ValidationRules
-      .ensure('item').maxItems(maxParticipants).withMessage(this.i18n.tr('community.call.callParticipantMaxCountError', {count:maxParticipants}))
+      .ensure('item').maxItems(maxParticipants).withMessage(this.i18n.tr('community.communities.call.callParticipantMaxCountError', {count:maxParticipants}))
       .rules;
 
-    this.dataService.openPromptDialog(this.i18n.tr('community.call.title'),
+    this.dataService.openPromptDialog(this.i18n.tr('community.communities.call.title'),
       message,
       communities, this.i18n.tr('button.call'), true, null, 'modelPromise', '')
     .then((controller:any) => {
@@ -511,7 +511,7 @@ export class Communities {
         .then(response => response.json())
         .then(data => {
             // Update the message for success.
-            controller.viewModel.model.message = this.i18n.tr('community.members.call.callSuccessMessage');
+            controller.viewModel.model.message = this.i18n.tr('community.communities.members.call.callSuccessMessage');
             controller.viewModel.model.okText = this.i18n.tr('button.ok');
             controller.viewModel.model.showCancel = false;
             // Close dialog on success.
