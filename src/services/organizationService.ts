@@ -85,5 +85,42 @@ export class OrganizationService {
 
         return response;
     }
+
+    async searchOrganizationMembers(organization: any, filters: Array<any>, startIndex: number, pageSize:number) {
+        await fetch;
+        let criteriaParams = OrganizationService.getDiscoveryRuleFromParams(filters);
+        // FOR ENCODED DISCOVERY RULE:
+        let criteriaParamsQueryString = 'discovery_rule=' + criteriaParams;
+        
+        let response = this.getHttpClient().fetch('v1/organizations/' + organization + '/members?start_index=' + 
+            startIndex + '&page_size=' + pageSize + '&' + criteriaParamsQueryString, 
+            {
+                method: 'GET',
+            }
+        );
+        return response;
+    }
+
+    static getDiscoveryRuleFromParams(filters: Array<any>) {
+        let result = {};
+        // Create the server-compatible filter criteria.
+        result['parameters'] = [];
+        for(let filter of filters) {
+            let param = {};
+            let attribute = filter['attr'];
+            let operator = filter['op'];
+            let value = filter['value'];
+            param['operationType'] = operator;
+            param['parameterType'] = attribute;
+            param['values'] = [value];
+            result['parameters'].push(param);
+        }
+        // Base64-encode.
+        let str = btoa(JSON.stringify(result));
+        // URL encode.
+        str = encodeURIComponent(str);
+        return str;
+    }
+    
     
 }
