@@ -26,9 +26,6 @@ export class CommunityDetail {
   selectedCommunityMembers: Array<Object>;
   selectedOrganizationMembers: Array<Object>;
   selectedCmty: any;
-  organizations: Array<Object>;
-  // alertCategories: Array<Object>;
-  // communityMembers: { get: () => any[] };
   communityMembers: Array<Object>;
   membersGrid: Object;
   cmtyMembersGrid: any;
@@ -222,10 +219,6 @@ export class CommunityDetail {
     this.utils.getSelectedCommunityMembersGridDataSource('selectedCommunityMembers', this.gridOptionsSelected);
     new Grid(this.cmtyMembersSelectedGrid, this.gridOptionsSelected); //create a new grid
     this.gridOptionsSelected['api'].sizeColumnsToFit();
-    // Get list of organizations the logged-in user has rights to.
-    this.getOrganizationsPage(0, 500);
-    // // Get list of alert/notification categories.
-    // this.getAlertCategoriesPage(0, 500);
   }
 
   // findGridColumnDef(gridOptions: GridOptions, fieldName: string):Object {
@@ -631,47 +624,6 @@ export class CommunityDetail {
     });
   }
 
-  // getAlertCategoriesPage(startIndex: number, pageSize: number): Promise<Response> {
-  //   var me = this;
-  //   var alertPromise = this.dataService.getAlertCategories(startIndex,  pageSize);
-  //   return alertPromise
-  //   .then(response => {return response.json()
-  //     .then(data => {
-  //       me.alertCategories = data.responseCollection;
-  //       // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
-  //     }).catch(error => {
-  //       me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
-  //       return Promise.reject(error);
-  //     })
-  //   })
-  //   .catch(error => {
-  //     me.logger.error('Communities list() failed in then(response). Error: ' + error); 
-  //     me.logger.error(error); 
-  //     //throw error;
-  //     return Promise.reject(error);
-  //   });
-  // }  
-
-  getOrganizationsPage(startIndex: number, pageSize: number): Promise<Response> {
-    var me = this;
-    var orgPromise = this.organizationService.getMemberOrgs(startIndex,  pageSize);
-    return orgPromise
-    .then(response => {return response.json()
-      .then(data => {
-        me.organizations = data.responseCollection;
-        // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
-      }).catch(error => {
-        me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
-        return Promise.reject(error);
-      })
-    })
-    .catch(error => {
-      me.logger.error('Communities list() failed in then(response). Error: ' + error); 
-      me.logger.error(error); 
-      //throw error;
-      return Promise.reject(error);
-    });
-  }  
 
   addCommunityMembers() {
     let message = null;
@@ -708,11 +660,11 @@ export class CommunityDetail {
       //   }
       // });
       controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
-      controller.viewModel.organizations = me.organizations;
+      controller.viewModel.organizations = me.parent.organizations;
       controller.viewModel.communityMembers = me.communityMembers;
       controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
       controller.viewModel.gridOptions = gridOptions;
-      let organizationId = me.organizations[0]['organizationId'];
+      let organizationId = me.parent.organizations[0]['organizationId'];
       gridOptions['organizationId'] = organizationId;
 
       // Get list of members in a selected organization.

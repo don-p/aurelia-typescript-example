@@ -9,22 +9,27 @@ import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-
 import {AureliaConfiguration} from 'aurelia-configuration';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {CommunityService} from '../services/communityService';
+import {OrganizationService} from '../services/organizationService';
 import {Utils} from '../services/util';
 
-@inject(Session, DataService, CommunityService, I18N, AureliaConfiguration, Utils, LogManager)
+@inject(Session, DataService, CommunityService, OrganizationService, I18N, AureliaConfiguration, Utils, LogManager)
 export class Community {
 
   router: Router;
   alertCategories: Array<Object>;
+  organizations: Array<Object>;
+  organizationsPromise: Promise<Response>;
 
   logger: Logger;
   pageSize;
 
-  constructor(private session: Session, private dataService: DataService, private communityService: CommunityService, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils) {
+  constructor(private session: Session, private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils) {
     this.pageSize = 200;
 
     // Get list of alert/notification categories.
     this.getAlertCategoriesPage(0, 500);
+    // Get list of organizations the logged-in user has rights to.
+    this.organizationsPromise = this.getOrganizationsPage(0, 500);
 
     this.logger = LogManager.getLogger(this.constructor.name);
   }
@@ -320,6 +325,27 @@ export class Community {
     });
   }
 
+  getOrganizationsPage(startIndex: number, pageSize: number): Promise<Response> {
+    var me = this;
+    var orgPromise = this.organizationService.getMemberOrgs(startIndex,  pageSize);
+    return orgPromise
+    .then(response => {return response.json()
+      .then(data => {
+        me.organizations = data.responseCollection;
+        return data;
+        // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
+      }).catch(error => {
+        me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
+        return Promise.reject(error);
+      })
+    })
+    .catch(error => {
+      me.logger.error('Communities list() failed in then(response). Error: ' + error); 
+      me.logger.error(error); 
+      //throw error;
+      return Promise.reject(error);
+    });
+  }  
 
 }
 

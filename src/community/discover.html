@@ -5,32 +5,34 @@
             <div class="conv-buttons-bar">
                 <div class="right-select">
                     <span class="community-select-label">Organization: </span>
-                    <select class="form-control select select-default-blg">
-                        <option value="coi.json">Blueline Grid</option>
-                        <option value="team.json">Another organization</option>
+                    <select class="form-control select select-default-blg select-organization" change.delegate="selectOrganization($event)">
+                        <option repeat.for="organization of parent.organizations" value="${organization.organizationId}" model.bind="organization">${organization.organizationName}</option>
                     </select>
                 </div>								
             </div>
 
+            <div class="discover-header">
+                <button type="button" class="btn btn-default-blg">Reset</button>
+                <button type="button" click.delegate="searchOrganizationMembers(selectedOrganization, filterValues)" class="btn btn-info">Search</button>
+            </div>
             <div class="blg-search-content">
                 <div class="discover-list">
                     <ul>
                         <li repeat.for="filter of filterValues" class="discover-line">
                             <select class="form-control select select-default-blg" change.delegate="onFilterChange($index, $event, $this)" value.bind="filterValues[$index].attr">
-                                <option model.bind="1">First name</option>
-                                <option model.bind="2">Last name</option>
-                                <option model.bind="3">Job title</option>
-                                <option model.bind="4">Industry name</option>
-                                <option model.bind="5">Zip code</option>												
+                                <option model.bind="'physicalPersonProfile.firstName'">First name</option>
+                                <option model.bind="'physicalPersonProfile.lastName'">Last name</option>
+                                <option model.bind="'physicalPersonProfile.jobTitle'">Job title</option>
+                                <option model.bind="'physicalPersonProfile.locationProfile.zipCode'">Zip code</option>												
                             </select>
-                            <select class="form-control select select-default-blg" title=""  value.bind="filterValues[i].op">
+                            <select class="form-control select select-default-blg" title=""  value.bind="filterValues[$index].op">
                                 <option value="contains">Contains</option>
                                 <option value="matches">Matches</option>
                                 <option value="excludes">Exludes</option>
                             </select>
-                            <input type="text" style="display:none;" model.bind="$index" value.bind="filterValues[i].id"/>
+                            <input type="text" style="display:none;" model.bind="$index" value.bind="filterValues[$index].id"/>
                             <div class="form-group form-group-sm discover-input">
-                                <input type="text" class="form-control" model.bind="filterValues[i].value">
+                                <input type="text" class="form-control" value.bind="filterValues[$index].value">
                             </div>
                             <div class="discover-icon">
                                 <i show.bind="filterValues.length > 1" class="ico-minus-circle" i18n="[title]community.discover.removeFilter" click.delegate="removeFilter($index)"></i>
@@ -45,8 +47,6 @@
                 </div>
             </div>
             <div class="discover-footer">
-                <button type="button" class="btn btn-default-blg">Reset</button>
-                <button type="button" class="btn btn-info">Search</button>
             </div>
         </div>						
     </div>
