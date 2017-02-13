@@ -25,7 +25,7 @@ export class Discover {
   constructor(private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
     private organizationService:OrganizationService, private parent: Community, private vController:ValidationController) {
 
-    this.$filterValues = [{attr:'physicalPersonProfile.firstName', op:'contains', value:''}];
+    this.resetSearchFilters();
 
     // ValidationRules
     // .ensureObject()
@@ -93,6 +93,9 @@ export class Discover {
     }
   }
 
+  resetSearchFilters() {
+    this.$filterValues = [{attr:'physicalPersonProfile.firstName', op:'contains', value:''}];
+  }
 
   searchOrganizationMembers(organization: any, filters: Array<any>) {
     return this.organizationService.searchOrganizationMembers(organization, filters, 0, 500);
