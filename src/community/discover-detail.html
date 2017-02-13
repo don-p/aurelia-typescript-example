@@ -1,14 +1,14 @@
 <template>
-	<!-- <require from="../components/member-actions-bar.html"></require> -->
 	<require from="../lib/loading-mask/loading-mask"></require>
 
 	<section id="membersTable" class="members-table">
 		
 		<div class="members-table-header" id="membersTableHeader">
-			${selectedCmty.communityName} 
+			${'community.discover.searchResults' | t}
 		</div>
+		
 		<compose view-model="../components/memberActionsBar" model.bind="{parent: $this}"></compose>
-
+		
 		<div class="members-table-info-bar">
 
 		

@@ -11,8 +11,8 @@
     <aside class="blg-left-panel">
       <router-view containerless></router-view>
     </aside>
-
-    <compose view-model="./community-detail"></compose>
+    <!-- switch detail view based on settings associated with master view. -->
+    <compose view-model="./${router.currentInstruction.config.settings.detailView}"></compose>
 
 </div>
 </template>
