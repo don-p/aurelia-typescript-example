@@ -127,7 +127,8 @@
         "discover": {
             "title": "Discover",
             "addFilter": "Add filter",
-            "removeFilter": "Remove filter"
+            "removeFilter": "Remove filter",
+            "searchResults": "Search Results"
         },
         "connections": {
             "title": "Connections"
