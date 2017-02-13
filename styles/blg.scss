@@ -1834,11 +1834,11 @@ span.recipientsListItem:not(:last-child)::after {
     height: 270px;
 }
 
-.discover-footer, .discover-header {
+.discover-footer {
   text-align: right;
 }
 
-.discover-footer button, .discover-header button {
+.discover-footer button {
   min-width: 100px;
   margin-left: 5px;
   font-size: 14px;  
@@ -1846,7 +1846,7 @@ span.recipientsListItem:not(:last-child)::after {
 
 .blg-left-panel .discover-footer {
   position: absolute;
-  height: 60px;
+  height: 70px;
   left: 0px;
   right: 0px;
   border-bottom: 2px solid $blg-grey-light;
@@ -1854,14 +1854,6 @@ span.recipientsListItem:not(:last-child)::after {
   border-left: 2px solid $blg-grey-light;
   border-radius: 0 0 6px 6px;
   background-color: $blg-white;
-  padding-top: 10px;
-  padding-right: 15px;    
-}
-
-.blg-left-panel .discover-header {
-  height: 60px;
-  left: 0px;
-  right: 0px;
-  padding-top: 10px;
+  padding-top: 20px;
   padding-right: 15px;    
 }
