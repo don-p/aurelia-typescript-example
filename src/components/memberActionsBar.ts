@@ -74,6 +74,15 @@ export class MemberActionsBar {
 
     return promise1;
   }
+  
+  hasAction (action: string) {
+    let instruction = this.router.currentInstruction;
+    const actions:Array<string> = instruction.config.settings.memberActions;
+    if(!!actions) {
+        return actions.includes(action);
+    }
+    return true;
+  }
 
   makeCallCommunityMembers() {
     let maxParticipants = this.appConfig.get('server.MAX_CONFERENCE_PARTICIPANTS');
