@@ -62,10 +62,10 @@ export class Community {
       }
     ]);
 
-    router.hasAction = (instruction: NavigationInstruction, action: string) {
-      const actions:Array<string> = instruction.config.settings.actions;
-      return actions.includes(action);
-    }
+    // router.hasAction = (instruction: NavigationInstruction, action: string) {
+    //   const actions:Array<string> = instruction.config.settings.actions;
+    //   return actions.includes(action);
+    // }
 
     this.router = router;
   }
