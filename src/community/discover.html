@@ -32,7 +32,7 @@
                             </select>
                             <input type="text" style="display:none;" model.bind="$index" value.bind="filterValues[$index].id"/>
                             <div class="form-group form-group-sm discover-input">
-                                <input type="text" class="form-control" value.bind="filterValues[$index].value">
+                                <input type="text" class="form-control" value.bind="filterValues[$index].value & validate">
                             </div>
                             <div class="discover-icon">
                                 <i show.bind="filterValues.length > 1" class="ico-minus-circle" i18n="[title]community.discover.removeFilter" click.delegate="removeFilter($index)"></i>
