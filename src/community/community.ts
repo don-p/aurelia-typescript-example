@@ -17,7 +17,7 @@ export class Community {
 
   router: Router;
   alertCategories: Array<Object>;
-  organizations: Array<Object>;
+  organizations: Array<any>;
   organizationsPromise: Promise<Response>;
 
   logger: Logger;
@@ -25,12 +25,6 @@ export class Community {
 
   constructor(private session: Session, private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils) {
     this.pageSize = 200;
-
-    // Get list of alert/notification categories.
-    this.getAlertCategoriesPage(0, 500);
-    // Get list of organizations the logged-in user has rights to.
-    this.organizationsPromise = this.getOrganizationsPage(0, 500);
-
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
@@ -47,6 +41,18 @@ export class Community {
 
   bind(bindingContext: Object, overrideContext: Object) {
     this.logger.debug("Community | bind()");
+  }
+
+  activate() {
+    // Wait for required view data before routing, by returning a Promise from activate().
+
+    // Get list of alert/notification categories.
+    let promise1 = this.getAlertCategoriesPage(0, 500);
+
+    // Get list of organizations the logged-in user has rights to.
+    let promise2 =  this.getOrganizationsPage(0, 500);
+
+    return Promise.all([promise1, promise2]);
   }
 
   getAlertCategoriesPage(startIndex: number, pageSize: number): Promise<Response> {
