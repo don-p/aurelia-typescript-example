@@ -51,12 +51,7 @@ export class Discover {
   }
 
   activate() {
-    let me = this;
-    this.parent.organizationsPromise
-    .then(data => {
-      me.selectedOrganization = data['responseCollection'][0].organizationId;
-    });
-
+    this.selectedOrganization = this.parent.organizations[0].organizationId;
   }
 
   selectOrganization = function(event: any) {
