@@ -417,7 +417,7 @@ header .navbar-nav {
   position: absolute;
   width: 475px;
   left: 15px;
-  top: 75px;
+  top: 115px;
   background: transparent;
   border-radius: 3px;
   min-height: 600px;
@@ -432,7 +432,7 @@ header .navbar-nav {
 .blg-left-panel .blg-community-content {
   padding: 12px 10px 0px 0px;
   position: absolute;
-  top: 131px;
+  top: 94px;
   bottom: 15px;
   left: 0px;
   right: 0px;
@@ -448,7 +448,7 @@ header .navbar-nav {
 .blg-left-panel .blg-organization-content {
   padding: 12px 10px 0px 0px;
   position: absolute;
-  top: 75px;
+  top: 38px;
   bottom: 15px;
   left: 0px;
   right: 0px;
@@ -837,7 +837,7 @@ header .navbar-nav {
   box-sizing: border-box;
   min-height: 611px;
   bottom: 5px;
-  top: 2px;
+  top: 40px;
   right: 0;
   left: 0;
   min-width: 900px;
@@ -1783,7 +1783,7 @@ span.recipientsListItem:not(:last-child)::after {
 }
 
 .discover-list .select-default-blg {
-  width: 115px;
+  width: 110px;
   display: inline-block;
 }
 
@@ -1797,7 +1797,6 @@ span.recipientsListItem:not(:last-child)::after {
 }
 
 .discover-icon {
-  display: inline-block;
   float: right;
 }
 .discover-icon i {
@@ -1856,4 +1855,46 @@ span.recipientsListItem:not(:last-child)::after {
   background-color: $blg-white;
   padding-top: 20px;
   padding-right: 15px;    
+}
+
+.tabs-bar {
+  position: relative;
+  top: 65px;  
+}
+
+.nav-tabs.tabs-bar > li.active > a, 
+.nav-tabs.tabs-bar > li.active > a:hover, 
+.nav-tabs.tabs-bar > li.active > a:focus {
+  background-color: transparent;
+  border-color: transparent;
+  border-bottom-color: transparent;
+  color: $blg-blue;
+  font-weight: 700;
+  font-size: 17px;
+  top: 0px;
+  text-decoration: none;
+}
+
+.nav-tabs.tabs-bar > li > a {
+  font-weight: 400;
+  top: 3px;
+  color: $blg-wet-asphalt-light;      
+}
+
+.nav-tabs.nav-append-content.tabs-bar > li.active:first-child:before {
+    display: none;
+}
+
+.nav-tabs.tabs-bar > li > a:hover {
+  text-decoration: underline;
+  color: $blg-wet-asphalt-light;
+}
+
+.tab-icon {
+  visibility: hidden;
+  margin-right: 5px;
+}
+
+.nav-tabs.tabs-bar > li.active > a > i {
+  visibility: visible !important;  
 }

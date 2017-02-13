@@ -2,15 +2,14 @@
 
   <div class="blg-fixed-wrapper">
 
+    <ul class="nav nav-tabs nav-append-content tabs-bar">
+      <li  repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">
+        <a href.bind="route.href" id="tabCommunitiesTitle"><i class="ico-grid4 tab-icon"></i>${route.title}</a>
+      </li>
+    </ul>
+
     <aside class="blg-left-panel">
-
-      <ul class="nav nav-tabs nav-append-content">
-        <li  repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">
-          <a href.bind="route.href" id="tabCommunitiesTitle">${route.title}</a>
-        </li>
-      </ul>
-    <router-view containerless></router-view>
-
+      <router-view containerless></router-view>
     </aside>
 
     <compose view-model="./community-detail"></compose>
