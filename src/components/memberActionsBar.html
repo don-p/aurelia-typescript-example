@@ -1,0 +1,35 @@
+<template>
+    <div class="members-table-buttons-bar">
+        <button id="btn-members-make-call" if.bind="router.currentInstruction.config.settings.memberActions.includes(GRIDCALL)" click.delegate="makeCallCommunityMembers()" class="btn btn-success btn-xs-square" i18n="[title]button.makeCall" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-phone2"></i>
+        </button>
+        <button id="btn-members-send-alert" if.bind="router.currentInstruction.config.settings.memberActions.includes(ALERT)" click.delegate="sendAlertCommunityMembers(selectedCommunityMembers, [])" class="btn btn-primary btn-xs-square" i18n="[title]button.sendAlert" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-bullhorn"></i>
+        </button>
+        <!--<button id="btn-members-start-conversation" class="btn btn-info btn-xs-square" i18n="[title]button.startConversation" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-bubble-plus"></i>
+        </button>								-->
+
+        <span class="dummy-btn"></span>
+        
+        <button id="results-send-request-btn" if.bind="router.currentInstruction.config.settings.memberActions.includes(CONNECT)" click.delegate="sendConnectionRequest()" class="btn btn-info btn-xs-square " title="Send connection request">
+            <i class="ico-link"></i>
+        </button>			
+        <button id="btn-members-add-member" if.bind="router.currentInstruction.config.settings.memberActions.includes(ADDMEMBER)" click.delegate="addCommunityMembers()" class="btn btn-info btn-xs-square " i18n="[title]button.addMembers">
+            <i class="ico-user-plus"></i>
+        </button>
+        <button id="btn-members-delete-member" if.bind="router.currentInstruction.config.settings.memberActions.includes(REMOVEMEMBER)" click.delegate="deleteCommunityMembers(selectedCommunityMembers)" class="btn btn-danger btn-xs-square" i18n="[title]button.deleteMembers" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-user-minus"></i>
+        </button>
+
+        <span class="dummy-btn"></span>
+        
+        <!--<button id="btn-members-transfer-ownership" if.bind="router.currentInstruction.config.settings.memberActions.includes(TRANSFEROWNER)" class="btn btn-info btn-xs-square" i18n="[title]button.transferOwnership" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-bubble-right"></i>
+        </button>-->
+            route:${router.currentInstruction.config.settings.detailView}
+
+    </div>
+    
+    route:${router.currentInstruction.config.settings.detailView}
+</template>
