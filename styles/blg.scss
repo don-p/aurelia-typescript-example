@@ -1870,15 +1870,17 @@ span.recipientsListItem:not(:last-child)::after {
   border-bottom-color: transparent;
   color: $blg-blue;
   font-weight: 700;
-  font-size: 17px;
-  top: 0px;
+  font-size: 16px;
+  top: 1px;
   text-decoration: none;
+  left: -2px;
 }
 
 .nav-tabs.tabs-bar > li > a {
   font-weight: 400;
   top: 3px;
-  color: $blg-wet-asphalt-light;      
+  color: $blg-wet-asphalt-light;
+  width: 175px;      
 }
 
 .nav-tabs.nav-append-content.tabs-bar > li.active:first-child:before {
