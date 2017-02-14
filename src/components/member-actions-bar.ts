@@ -47,6 +47,7 @@ export class MemberActionsBarCustomElement {
     static ALERT: string = 'alert';
     static ADDCONNECTION: string = 'connect';
     static REMOVECONNECTION: string = 'disconnect';
+    static STARTCONVERSATION: string = 'startconversation';
     static ADDMEMBER: string = 'addmember';
     static REMOVEMEMBER: string = 'removemember';
     static TRANSFEROWNER: string = 'transferowner';
@@ -74,6 +75,7 @@ export class MemberActionsBarCustomElement {
   get ALERT() { return MemberActionsBarCustomElement.ALERT; }
   get ADDCONNECTION() { return MemberActionsBarCustomElement.ADDCONNECTION; }
   get REMOVECONNECTION() { return MemberActionsBarCustomElement.REMOVECONNECTION; }
+  get STARTCONVERSATION() { return MemberActionsBarCustomElement.STARTCONVERSATION; }
   get ADDMEMBER() { return MemberActionsBarCustomElement.ADDMEMBER; }
   get REMOVEMEMBER() { return MemberActionsBarCustomElement.REMOVEMEMBER; }
   get TRANSFEROWNER() { return MemberActionsBarCustomElement.TRANSFEROWNER; }

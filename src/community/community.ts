@@ -45,6 +45,7 @@ export class Community {
             MemberActionsBarCustomElement.ALERT, 
             MemberActionsBarCustomElement.ADDCONNECTION, 
             MemberActionsBarCustomElement.ADDMEMBER, 
+            MemberActionsBarCustomElement.STARTCONVERSATION,
             MemberActionsBarCustomElement.REMOVEMEMBER,
             MemberActionsBarCustomElement.TRANSFEROWNER
           ]
@@ -66,7 +67,8 @@ export class Community {
             MemberActionsBarCustomElement.GRIDCALL, 
             MemberActionsBarCustomElement.ALERT, 
             MemberActionsBarCustomElement.ADDCONNECTION, 
-            MemberActionsBarCustomElement.ADDMEMBER 
+            MemberActionsBarCustomElement.ADDMEMBER ,
+            MemberActionsBarCustomElement.STARTCONVERSATION
           ]
         }
       }
