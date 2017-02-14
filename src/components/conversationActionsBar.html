@@ -1,0 +1,40 @@
+<template>
+    <div class="members-table-buttons-bar">
+        <button id="btn-conversation-make-call" if.bind="hasAction(GRIDCALL)" click.delegate="makeCallCommunityMembers()" class="btn btn-success btn-xs-square" i18n="[title]button.makeCall" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-phone2"></i>
+        </button>
+        <button id="btn-conversation-send-alert" if.bind="hasAction(ALERT)" click.delegate="sendAlertCommunityMembers(selectedCommunityMembers, [])" class="btn btn-primary btn-xs-square" i18n="[title]button.sendAlert" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-bullhorn"></i>
+        </button>
+        <button id="btn-conversation-start-conversation" class="btn btn-info btn-xs-square" i18n="[title]button.startConversation" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-bubble-plus"></i>
+        </button>
+
+        <span class="dummy-btn"></span>   
+
+        <button id="btn-conversation-add-member" if.bind="hasAction(ADDMEMBER)" click.delegate="addCommunityMembers()" class="btn btn-info btn-xs-square " i18n="[title]button.addMembers">
+            <i class="ico-user-plus"></i>
+        </button>
+        <button id="btn-conversation-delete-member" if.bind="hasAction(REMOVEMEMBER)" click.delegate="deleteCommunityMembers(selectedCommunityMembers)" class="btn btn-danger btn-xs-square" i18n="[title]button.deleteMembers" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-user-minus"></i>
+        </button>
+
+        <span class="dummy-btn"></span>
+
+        <button id="btn-conversation-close" class="btn btn-danger btn-xs-square" i18n="[title]button.closeConversation" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-bubble-cancel"></i>
+        </button>
+        <button id="btn-conversation-new-only" class="btn btn-info btn-xs-square" i18n="[title]button.newConversation" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-new center"></i>
+        </button>        
+        <button id="btn-conversation-transfer-ownership" if.bind="hasAction(TRANSFEROWNER)" class="btn btn-info btn-xs-square" i18n="[title]button.transferOwnership" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-bubble-right"></i>
+        </button>
+        <button id="btn-conversation-leave" class="btn btn-info btn-xs-square" i18n="[title]button.leaveConversation" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-exit3"></i>
+        </button>
+        <button id="btn-conversation-rename" class="btn btn-info btn-xs-square" i18n="[title]button.renameConversation" disabled.bind="(!selectedCommunityMembers) || (selectedCommunityMembers.length === 0)">
+            <i class="ico-pencil7"></i>
+        </button>
+    </div>
+</template>
