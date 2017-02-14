@@ -4,7 +4,7 @@
 	<section id="membersTable" class="members-table">
 		
 		<div class="members-table-header" id="membersTableHeader">
-			${'community.discover.searchResults' | t}
+			${'community.discover.searchResults' | t : {memberCount: gridOptions.api.rowModel.datasource?gridOptions.api.rowModel.datasource.rowCount:0}}
 		</div>
 		
 		<compose view-model="../components/member-actions-bar" model.bind="{parent: $this}"></compose>
