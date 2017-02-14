@@ -11,9 +11,9 @@ import {ValidationRules, ValidationController, Validator} from 'aurelia-validati
 import {CommunityService} from '../services/communityService';
 import {OrganizationService} from '../services/organizationService';
 import {Utils} from '../services/util';
-import {MemberActionsBar} from '../components/memberActionsBar';
+import {MemberActionsBarCustomElement} from '../components/member-actions-bar';
 
-@inject(Session, DataService, CommunityService, OrganizationService, I18N, AureliaConfiguration, Utils, MemberActionsBar, LogManager)
+@inject(Session, DataService, CommunityService, OrganizationService, I18N, AureliaConfiguration, Utils, MemberActionsBarCustomElement, LogManager)
 export class Community {
 
   router: Router;
@@ -41,24 +41,36 @@ export class Community {
         settings:{
           detailView: 'community-detail', 
           memberActions: [
-            MemberActionsBar.GRIDCALL, 
-            MemberActionsBar.ALERT, 
-            MemberActionsBar.CONNECT, 
-            MemberActionsBar.ADDMEMBER, 
-            MemberActionsBar.REMOVEMEMBER,
-            MemberActionsBar.TRANSFEROWNER
+            MemberActionsBarCustomElement.GRIDCALL, 
+            MemberActionsBarCustomElement.ALERT, 
+            MemberActionsBarCustomElement.ADDCONNECTION, 
+            MemberActionsBarCustomElement.ADDMEMBER, 
+            MemberActionsBarCustomElement.STARTCONVERSATION,
+            MemberActionsBarCustomElement.REMOVEMEMBER,
+            MemberActionsBarCustomElement.TRANSFEROWNER
           ]
         }
       },
       { 
         route: 'connections', name: 'community/connections', moduleId: './connections', 
         nav: true, title: this.i18n.tr('router.nav.connections'), 
-        settings:{detailView: 'connections-detail'}
+        settings:{
+          detailView: 'connections-detail'
+        }
       },
       { 
         route: 'discover', name: 'community/discover', moduleId: './discover', 
         nav: true, title: this.i18n.tr('router.nav.discover'), 
-        settings:{detailView: 'discover-detail'}
+        settings:{
+          detailView: 'discover-detail',
+          memberActions: [
+            MemberActionsBarCustomElement.GRIDCALL, 
+            MemberActionsBarCustomElement.ALERT, 
+            MemberActionsBarCustomElement.ADDCONNECTION, 
+            MemberActionsBarCustomElement.ADDMEMBER ,
+            MemberActionsBarCustomElement.STARTCONVERSATION
+          ]
+        }
       }
     ]);
 

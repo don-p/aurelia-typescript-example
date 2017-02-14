@@ -22,8 +22,8 @@
                                 <option model.bind="'physicalPersonProfile.locationProfile.zipCode'">Zip code</option>												
                             </select>
                             <select class="form-control select select-default-blg" title=""  value.bind="filterValues[$index].op">
-                                <option value="contains">Contains</option>
-                                <option value="matches">Matches</option>
+                                <option value="LIKE">Contains</option>
+                                <option value="EQUAL">Matches</option>
                                 <option value="excludes">Exludes</option>
                             </select>
                             <input type="text" style="display:none;" model.bind="$index" value.bind="filterValues[$index].id"/>
@@ -44,7 +44,7 @@
             </div>
             <div class="discover-footer">
                 <button type="button" click.delegate="resetSearchFilters()" class="btn btn-default-blg">Reset</button>
-                <button type="button" click.delegate="searchOrganizationMembers(selectedOrganization, filterValues)" class="btn btn-info">Search</button>                
+                <button type="button" click.delegate="searchOrganizationMembers(selectedOrganizationId, filterValues)" class="btn btn-info">Search</button>                
             </div>
         </div>						
     </div>

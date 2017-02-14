@@ -128,7 +128,7 @@
             "title": "Discover",
             "addFilter": "Add filter",
             "removeFilter": "Remove filter",
-            "searchResults": "Search Results"
+            "searchResults": "Search Results ({{memberCount}} members)"
         },
         "connections": {
             "title": "Connections"

@@ -86,7 +86,7 @@ export class OrganizationService {
         return response;
     }
 
-    async searchOrganizationMembers(organization: any, filters: Array<any>, startIndex: number, pageSize:number) {
+    async searchOrganizationMembers(organization: any, filters: Array<any>, startIndex: number, pageSize:number, params:Object) {
         await fetch;
         let criteriaParams = OrganizationService.getDiscoveryRuleFromParams(filters);
         // FOR ENCODED DISCOVERY RULE:

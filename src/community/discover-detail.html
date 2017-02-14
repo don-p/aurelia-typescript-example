@@ -1,13 +1,14 @@
 <template>
 	<require from="../lib/loading-mask/loading-mask"></require>
+	<require from="../components/member-actions-bar"></require>
 
 	<section id="membersTable" class="members-table">
 		
 		<div class="members-table-header" id="membersTableHeader">
-			${'community.discover.searchResults' | t}
+			${'community.discover.searchResults' | t : {memberCount: gridOptions.api.rowModel.datasource?gridOptions.api.rowModel.datasource.rowCount:0}}
 		</div>
 		
-		<compose view-model="../components/memberActionsBar" model.bind="{parent: $this}"></compose>
+		<member-actions-bar></member-actions-bar>
 		
 		<div class="members-table-info-bar">
 
@@ -38,8 +39,8 @@
 		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
 <div class="members-table-content" id="membersTableContent">	
-	<div show.bind="!showSelectedCommunitiesGrid" id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
-	<div show.bind="showSelectedCommunitiesGrid" id="cmtyMembersSelectedGrid" ref="cmtyMembersSelectedGrid" style="height: 100%;" class="ag-blg" ></div>
+	<div show.bind="!showSelectedCommunitiesGrid" id="cmtyMembersGrid" ref="orgMembersGrid" style="height: 100%;" class="ag-blg" ></div>
+	<div show.bind="showSelectedCommunitiesGrid" id="cmtyMembersSelectedGrid" ref="orgMembersSelectedGrid" style="height: 100%;" class="ag-blg" ></div>
 </div>
 		<!--<div class="blg-btns-content panel-footer"></div>										-->
 
