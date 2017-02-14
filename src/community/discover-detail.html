@@ -7,7 +7,7 @@
 			${'community.discover.searchResults' | t}
 		</div>
 		
-		<compose view-model="../components/memberActionsBar" model.bind="{parent: $this}"></compose>
+		<compose view-model="../components/member-actions-bar" model.bind="{parent: $this}"></compose>
 		
 		<div class="members-table-info-bar">
 
@@ -38,8 +38,8 @@
 		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
 <div class="members-table-content" id="membersTableContent">	
-	<div show.bind="!showSelectedCommunitiesGrid" id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
-	<div show.bind="showSelectedCommunitiesGrid" id="cmtyMembersSelectedGrid" ref="cmtyMembersSelectedGrid" style="height: 100%;" class="ag-blg" ></div>
+	<div show.bind="!showSelectedCommunitiesGrid" id="cmtyMembersGrid" ref="orgMembersGrid" style="height: 100%;" class="ag-blg" ></div>
+	<div show.bind="showSelectedCommunitiesGrid" id="cmtyMembersSelectedGrid" ref="orgMembersSelectedGrid" style="height: 100%;" class="ag-blg" ></div>
 </div>
 		<!--<div class="blg-btns-content panel-footer"></div>										-->
 

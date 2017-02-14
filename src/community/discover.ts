@@ -1,4 +1,5 @@
 import {inject, NewInstance, Lazy, Parent, LogManager} from 'aurelia-framework';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
@@ -12,18 +13,18 @@ import {OrganizationService} from '../services/organizationService';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(I18N, AureliaConfiguration, Utils, OrganizationService, Parent.of(Community), NewInstance.of(ValidationController), LogManager)
+@inject(I18N, AureliaConfiguration, Utils, OrganizationService, Parent.of(Community), EventAggregator, NewInstance.of(ValidationController), LogManager)
 export class Discover {
 
   $filterValues: Array<any>;
-  selectedOrganization: any;
+  selectedOrganizationId: any;
 
   router: Router;
 
   logger: Logger;
 
   constructor(private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
-    private organizationService:OrganizationService, private parent: Community, private vController:ValidationController) {
+    private organizationService:OrganizationService, private parent: Community, private evt: EventAggregator, private vController:ValidationController) {
 
     this.resetSearchFilters();
 
@@ -64,7 +65,7 @@ export class Discover {
   }
 
   addFilter(filter) {
-    this.$filterValues.push({attr:'fn', op:'contains', value:''});
+    this.$filterValues.push({attr:'fn', op:'LIKE', value:''});
   }
 
   removeFilter(filter: any) {
@@ -84,21 +85,22 @@ export class Discover {
   }
 
   activate() {
-    this.selectedOrganization = this.parent.organizations[0].organizationId;
+    this.selectedOrganizationId = this.parent.organizations[0].organizationId;
   }
 
   selectOrganization = function(event: any) {
-    if(this.selectedOrganization !== event.target.value) {
-      this.selectedOrganization = event.target.value;
+    if(this.selectedOrganizationId !== event.target.value) {
+      this.selectedOrganizationId = event.target.value;
     }
   }
 
   resetSearchFilters() {
-    this.$filterValues = [{attr:'physicalPersonProfile.firstName', op:'contains', value:''}];
+    this.$filterValues = [{attr:'physicalPersonProfile.firstName', op:'LIKE', value:''}];
   }
 
   searchOrganizationMembers(organization: any, filters: Array<any>) {
-    return this.organizationService.searchOrganizationMembers(organization, filters, 0, 500);
+    return this.evt.publish('orgSearch', {organization: organization, filters: filters});
+    // return this.organizationService.searchOrganizationMembers(organization, filters, 0, 500);
   }
 
 }

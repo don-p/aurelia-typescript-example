@@ -25,11 +25,12 @@ export class DiscoverDetail {
   navigationInstruction: NavigationInstruction;
   selectedCommunityMembers: Array<Object>;
   selectedOrganizationMembers: Array<Object>;
-  selectedCmty: any;
+  selectedOrganizationId: any;
+  orgFilters: Array<any>;
   communityMembers: Array<Object>;
   membersGrid: Object;
-  cmtyMembersGrid: any;
-  cmtyMembersSelectedGrid: any;
+  orgMembersGrid: any;
+  orgMembersSelectedGrid: any;
   addCmtyMembersGrid: any;
   currentMember: Object;
   // remoteData: RemoteData;
@@ -68,32 +69,22 @@ export class DiscoverDetail {
     this.showSelectedCommunitiesGrid = false;
 
     var me = this;
-    this.evt.subscribe('cmtySelected', payload => {
-      if((!me.selectedCmty || me.selectedCmty === null) || (me.selectedCmty.communityId !== payload.community.communityId)) {
-        me.selectedCmty = payload.community;
-        // this.remoteData.setDataApi('v1/communities/' + selectedCmty + '/members')
-        // DEBUG TEMP - this.getCommunityMembers(this.selectedCmty, 0);
-        // this.gridDataSource.getRows({startRow: 0, endRow: this.pageSize});
-        // this.loadData();
+    this.evt.subscribe('orgSearch', payload => {
+      me.selectedOrganizationId = payload.organization;
+      me.orgFilters = payload.filters;
 
-        // this.initGrid(this);
+      me.gridOptions.api.deselectAll();
+      me.gridOptions.api.setFilterModel(null)
+      me.gridOptions.api.setSortModel(null);
 
-        me.gridOptions.api.deselectAll();
-        me.gridOptions.api.setFilterModel(null)
-        me.gridOptions.api.setSortModel(null);
-
-        // Save selected communityId.
-        me.gridOptions['communityId'] = me.selectedCmty.communityId;
-        // Set up the virtual scrolling grid displaying community members.
-        me.utils.setCommunityMembersGridDataSource('communityMembers', me.gridOptions, me.pageSize, me.communityService, null, false);
-        // Set up collection to track available community members.
-        me.gridOptions.api.showLoadingOverlay();
-        // FIXME: Query for IDs, in order to exclude community members from organization search.
-        me.getCommunityMemberIDs(me.selectedCmty.communityId, 20000).then(() => {
-          me.gridOptions.api.hideOverlay();
-        });
-        // FIXME: Query for IDs, in order to exclude community members from organization search.
-     }
+      // Save selected organizationId.
+      me.gridOptions['organizationId'] = me.selectedOrganizationId;
+      me.gridOptions['orgFilters'] = me.orgFilters;
+      // Set up the virtual scrolling grid displaying community members.
+      me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
+      // Set up collection to track available community members.
+      me.gridOptions.api.showLoadingOverlay();
+     
     });
     this.logger = LogManager.getLogger(this.constructor.name);
   }
@@ -120,7 +111,7 @@ export class DiscoverDetail {
 
     let gridOptions = this.utils.getGridOptions('listMembers', this.pageSize);
     gridOptions.onSelectionChanged = function() {
-      me.membersSelectionChanged(this);
+      me.orgMembersSelectionChanged(this);
     };
     gridOptions.getRowNodeId = function(item) {
       return item.memberId.toString();
@@ -129,11 +120,11 @@ export class DiscoverDetail {
     this.initGrid(this);
     this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
     this.gridOptionsSelected.onSelectionChanged = function() {
-      me.membersSelectionChanged(this);
+      me.orgMembersSelectionChanged(this);
       me.gridOptions['selection'] = me.selectedCommunityMembers;
     };
     this.utils.getSelectedCommunityMembersGridDataSource('selectedCommunityMembers', this.gridOptionsSelected);
-    new Grid(this.cmtyMembersSelectedGrid, this.gridOptionsSelected); //create a new grid
+    new Grid(this.orgMembersSelectedGrid, this.gridOptionsSelected); //create a new grid
     this.gridOptionsSelected['api'].sizeColumnsToFit();
   }
 
@@ -149,112 +140,15 @@ export class DiscoverDetail {
 
   initGrid(me) {
     // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
-    new Grid(this.cmtyMembersGrid, this.gridOptions); //create a new grid
+    new Grid(this.orgMembersGrid, this.gridOptions); //create a new grid
     // this.agGridWrap.gridCreated = true;
     this.gridOptions['api'].sizeColumnsToFit();
   }
 
-  setSelectedCommunityMembersGridDataSource(dataSourceName, gridOptions, pageSize, communityService, selection, showSelected) {
-    const me = this;
-
-    // Adjust column visibility based on community type - TEAM or COI.
-    let type = this.selectedCmty.communityType;
-
-    // // Set local row model.
-    //   gridOptions.enableServerSideSorting = false;
-    //   gridOptions.enableServerSideFilter = false;
-    //   gridOptions.rowModelType = 'normal';
-
-      gridOptions.api.setRowData(selection);
-      gridOptions.api.selectAll();
-
-    let name = dataSourceName; //showSelected?'selectedCommunityMembers':'communityMembers';
-    // let selectionFilterComponent:SelectedRowFilter = gridOptions.api.getFilterInstance('select');
-    // if(showSelected) {
-    //   selectionFilterComponent.setActive(true);
-    //   // gridOptions.columnDefs[0].filter = new SelectedRowFilter();
-    // } else {
-    //   selectionFilterComponent.setActive(false);
-    //   // gridOptions.columnDefs[0].filter = null;
-    // }
-/*    
-    let gridDataSource = {
-        name: name,
-        rowCount: null,
-        paginationPageSize: pageSize,
-        //  paginationOverflowSize: 1,
-          maxConcurrentDatasourceRequests: 2,
-        //  maxPagesInPaginationCache: 2,
-        loading: false,
-
-        getRows: function(params: IGetRowsParams) {
-          gridOptions.api.showLoadingOverlay();
-          if(!this.loading) {
-            me.logger.debug("..... setCommunityMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
-            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
-            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
-            this.loading = true;
-            let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
-            me.logger.debug('Filter >> :' + JSON.stringify(params.filterModel));
-            let  communityId = gridOptions.communityId;
-
-            // let membersPromise = communityService.getCommunity(communityId, params.startRow, pageSize, params);
-            // membersPromise.then(response => response.json())
-            //   .then(data => {
-            //     // if(gridDataSource.rowCount === null) {
-            //       gridDataSource.rowCount = data.totalCount;
-            //     // }
-                
-            //     // Filter out only selectedItems.
-            //     if(showSelected) {
-            //       let filteredData = [];
-            //       let rows:Array<any> = data.responseCollection;
-            //       rows.forEach(function(node, index, array) {
-            //         if (selection.find(function(item:any, index:number, array:any[]) {
-            //           return item.memberId === node.memberId;
-            //         })) {
-            //             filteredData.push(node);
-            //         }
-            //       });
-            //       data.responseCollection = filteredData;
-            //       data.totalCount = filteredData.length;
-            //     }
-                
-            //     params.successCallback(data.responseCollection, data.totalCount);
-            //     // pre-select nodes as needed.
-            //     if(Array.isArray(selection)) {
-            //       gridOptions.api.forEachNode( function (node) {
-            //           if (selection.find(function(item:any, index:number, array:any[]) {
-            //             return item.memberId === node.data.memberId
-            //           })) {
-            //               node.setSelected(true);
-            //           }
-            //       });
-            //     }
-            //     gridOptions.api.hideOverlay();
-                
-            //     this.loading = false;
-            // });
-            
-            gridOptions.api.showLoadingOverlay();
-            params.successCallback(selection, selection.length);
-            // pre-select nodes as needed.
-            if(Array.isArray(selection)) {
-              gridOptions.api.forEachNode( function (node) {
-                node.setSelected(true);
-              });
-            }
-            gridOptions.api.hideOverlay();
-            this.loading = false;
-          }
-        }
-    }
-    gridOptions.api.setDatasource(gridDataSource);
-    */
-  }
-
   setOrganizationMembersGridDataSource(gridOptions, pageSize, organizationService) {
     const me = this;
+    let organizationId = gridOptions.organizationId;
+    let filters = gridOptions.orgFilters;
 
     let gridDataSource = {
         name: 'organizationMembers',
@@ -275,23 +169,15 @@ export class DiscoverDetail {
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
             let  organizationId = gridOptions.organizationId;
-            let orgPromise = organizationService.getOrgMembers(organizationId, params.startRow, pageSize, params);
+            let orgPromise = organizationService.searchOrganizationMembers(organizationId, filters, params.startRow, pageSize, params);
             orgPromise.then(response => response.json())
               .then(data => {
                 // Filter out existing community members.
                 let totalCount = data.totalCount;
-                let filteredData = data.responseCollection.filter(function(item) {
-                  if(me.communityMembers.indexOf(item.memberId) < 0) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                });
-                totalCount = filteredData.length;
                 if(gridDataSource.rowCount === null) {
                   gridDataSource.rowCount = totalCount;
                 }
-                params.successCallback(filteredData, totalCount);
+                params.successCallback(data.responseCollection, totalCount);
                 gridOptions.api.hideOverlay();
                this.loading = false;
             });
@@ -345,38 +231,6 @@ export class DiscoverDetail {
 
   };
 
-/*  
-  async getCommunityMembers(communityId: string, startIndex: number) : Promise<void> {
-    let me = this;
-    return this.communityService.getCommunity(communityId, startIndex, this.pageSize, null)
-    .then(response => response.json())
-    .then((data: any) => {
-      me.logger.debug(data);
-//      this.session=me.session;
-      me.communityMembers = data.responseCollection;
-      // me.agGridWrap.rowsChanged(me.communityMembers, null);
-    }).catch(error => {
-      me.logger.error("Communities members() failed."); 
-      me.logger.error(error); 
-    });
-  }
-*/
-  async getCommunityMemberIDs(communityId: string, pageSize: number) : Promise<void> {
-    let me = this;
-    return this.communityService.getCommunity(communityId, 0, pageSize, null)
-    .then(response => response.json())
-    .then((data: any) => {
-      me.logger.debug(data);
-//      this.session=me.session;
-      me.communityMembers = data.responseCollection.map(function(item) {
-        return item.memberId;
-      });
-      // me.agGridWrap.rowsChanged(me.communityMembers, null);
-    }).catch(error => {
-      me.logger.error("Communities members() failed."); 
-      me.logger.error(error); 
-    });
-  }
 
   membersSelectionChanged(scope) {
     let rows = scope.api.getSelectedRows();
@@ -388,317 +242,6 @@ export class DiscoverDetail {
     this.selectedOrganizationMembers = rows;
   }
 
-  deleteCommunityMembers(communityMembers: Array<any>) {
-    let message = null;
-    var me = this;
-
-    if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.communities.members.confirmDelete.messageSingle', 
-          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
-          communityMembers[0].physicalPersonProfile.lastName});
-    } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.communities.members.confirmDelete.message',
-          {memberCount: communityMembers.length});
-    }
-    this.dataService.openPromptDialog(this.i18n.tr('community.communities.members.confirmDelete.title'),
-      message,
-      communityMembers, this.i18n.tr('button.remove'), true, null, 'modelPromise', '')
-    .then((controller:any) => {
-      let model = controller.settings;
-      // Callback function for submitting the dialog.
-      controller.viewModel.submit = (communityMembers) => {
-        let commMemberIds = communityMembers.map(function(obj){ 
-          return obj.memberId;
-        });
-        // Call the delete service.
-        let modelPromise = this.communityService.removeCommunityMembers(me.selectedCmty.communityId, commMemberIds);
-        controller.viewModel.modelPromise = modelPromise;        
-        modelPromise
-        .then(response => response.json())
-        .then(data => {
-            // Update local cache of community members.
-            me.communityMembers = me.communityMembers.filter(function(item:any) {
-              return !(commMemberIds.indexOf(item.memberId >= 0));
-            })
-
-            me.gridOptions.api.refreshVirtualPageCache();
-            me.gridOptions.api.refreshView();
-            me.gridOptions.api.deselectAll();
-            // update the community member count.
-            me.selectedCmty.memberCount = data['totalCount'];
-            // Close dialog on success.
-            controller.ok();
-          }, error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member delete() rejected."); 
-          }).catch(error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member delete() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
-          })
-      };
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
-    });
-  }
-
-
-  addCommunityMembers() {
-    let message = null;
-    let membersList = [];
-    let me = this;
-
-    let gridOptions = this.utils.getGridOptions('addMembers', this.pageSize);
-
-    this.dataService.openResourceEditDialog({modelView:'model/organizationMembersListModel.html', 
-      title:this.i18n.tr('community.communities.members.addMembers'), loadingTitle: 'app.loading',
-      item:membersList, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
-    .then((controller:any) => {
-      // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
-      let activeElement = <HTMLElement> document.activeElement;
-      activeElement.blur();
-
-      let model = controller.settings;
-      model.isSubmitDisabled = true;
-      gridOptions.onSelectionChanged = function() {
-        me.orgMembersSelectionChanged(this);
-        controller.viewModel.item = gridOptions.api.getSelectedRows();
-        controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
-      };
-      gridOptions.getRowNodeId = function(item) {
-        return item.memberId.toString();
-      };
-      let addMembersGrid = new Grid(controller.viewModel.addCmtyMembersGrid, gridOptions); //create a new grid
-      gridOptions['api'].sizeColumnsToFit();
-      me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
-
-      // controller.isGridFiltered = Object.defineProperty(controller, 'isGridFiltered', {get: function() {
-      //   window.console.debug('--- isGridFiltered ---');
-      //     return controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent();
-      //   }
-      // });
-      controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
-      controller.viewModel.organizations = me.parent.organizations;
-      controller.viewModel.communityMembers = me.communityMembers;
-      controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
-      controller.viewModel.gridOptions = gridOptions;
-      let organizationId = me.parent.organizations[0]['organizationId'];
-      gridOptions['organizationId'] = organizationId;
-
-      // Get list of members in a selected organization.
-      controller.viewModel.selectOrganization = function(event: any) {
-        if(this.selectedOrganization !== event.target.value) {
-          this.selectedOrganization = event.target.value;
-          gridOptions['organizationId'] = this.selectedOrganization;
-          this.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService, this.selectedOrganization);
-        }
-      }
-
-
-      // Callback function for submitting the dialog.
-      controller.viewModel.submit = () => {
-        let selection = gridOptions.api.getSelectedRows();
-        let orgMemberIds = selection.map(function(obj){ 
-          return obj.memberId;
-        });
-
-        // Call the addMembers service.
-        let modelPromise = this.communityService.addCommunityMembers(this.selectedCmty.communityId, orgMemberIds);
-        controller.viewModel.modelPromise = modelPromise;        
-        modelPromise
-        .then(response => response.json())
-        .then(data => {
-            // Update local cache of community members.
-            Array.prototype.splice.apply(me.communityMembers,[].concat(me.communityMembers.length,0,orgMemberIds));
-
-            me.gridOptions.api.refreshVirtualPageCache();
-            me.gridOptions.api.refreshView();
-            me.gridOptions.api.deselectAll();
-            // update the community member count.
-            me.selectedCmty.memberCount = data['totalCount'];
-            // Close dialog on success.
-            gridOptions.api.destroy();
-            controller.ok();
-          }, error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member delete() rejected."); 
-          }).catch(error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member delete() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
-          }) 
-      };
-      controller.viewModel.showSelectedOrganizationMembers = function(showSelected:boolean) {
-        if(showSelected) {
-          let selection = gridOptions.api.getSelectedRows();
-          me.setSelectedOrganizationMembersGridDataSource(gridOptions, me.pageSize, selection);
-        } else {
-          me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
-        }
-      };
-
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          gridOptions.api.destroy();
-          this.logger.debug('Cancel');
-        }
-      })
-    });
-    
-  }
-
-  makeCallCommunityMembers() {
-    let maxParticipants = this.appConfig.get('server.MAX_CONFERENCE_PARTICIPANTS');
-    this.logger.debug('makeCallCommunityMembers() => MAX_CONFERENCE_PARTICIPANTS = ' + maxParticipants);
-
-    let message = null;
-    var me = this;
-    let communityMembers:any[];
-    communityMembers = this.gridOptions.api.getSelectedRows();
-
-    if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
-          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
-          communityMembers[0].physicalPersonProfile.lastName});
-    } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.communities.members.call.callConfirmMessage',
-          {memberCount: communityMembers.length});
-    }
-    const vRules = ValidationRules
-      .ensure('item').maxItems(maxParticipants)
-      .withMessage(this.i18n.tr('community.communities.call.callParticipantMaxCountError', {count:maxParticipants}))
-      .rules;
-
-    this.dataService.openPromptDialog(this.i18n.tr('community.communities.members.call.title'),
-      message,
-      communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise', '')
-    .then((controller:any) => {
-      let model = controller.settings;
-      // Callback function for submitting the dialog.
-      controller.viewModel.submit = (communityMembers:any[]) => {
-        // Add logged-in user to the call list.
-        communityMembers.unshift(me.session.auth['member']);
-        let memberIDs = communityMembers.map(function(value) {
-          return {
-            "participantId": value.memberId,
-            "participantType": "MEMBER"
-          }
-        });
-        // Call the service to start the call.
-        let modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
-        controller.viewModel.modelPromise = modelPromise;        
-        modelPromise
-        .then(response => response.json())
-        .then(data => {
-            // Update the message for success.
-            controller.viewModel.messagePrefix = 'global.success';
-            controller.viewModel.status = 'OK';
-            controller.viewModel.message = this.i18n.tr('community.communities.members.call.callSuccessMessage');
-            controller.viewModel.okText = this.i18n.tr('button.ok');
-            controller.viewModel.showCancel = false;
-            // Close dialog on success.
-            delete controller.viewModel.submit;
-          }, error => {
-            controller.viewModel.messagePrefix = 'global.failed';
-            controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
-            me.logger.error("Community member call() rejected."); 
-          }).catch(error => {
-            controller.viewModel.messagePrefix = 'global.failed';
-            controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
-            me.logger.error("Community member call() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
-          })
-      };
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
-    });
-  }
-
-  sendConnectionRequest() {
-
-    let message = null;
-    var me = this;
-    let communityMembers:any[];
-    communityMembers = this.gridOptions.api.getSelectedRows();
-
-    if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
-          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
-          communityMembers[0].physicalPersonProfile.lastName});
-    } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.communities.members.call.callConfirmMessage',
-          {memberCount: communityMembers.length});
-    }
-    const vRules = ValidationRules
-      .ensure('item').maxItems(1)
-      .withMessage(this.i18n.tr('community.communities.call.callParticipantMaxCountError', {count:1}))
-      .rules;
-
-    this.dataService.openPromptDialog(this.i18n.tr('community.communities.sendConnectionRequest'),
-      message,
-      communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise', '')
-    .then((controller:any) => {
-      let model = controller.settings;
-      // Callback function for submitting the dialog.
-      controller.viewModel.submit = (communityMembers:any[]) => {
-        // Add logged-in user to the call list.
-        communityMembers.unshift(me.session.auth['member']);
-        let memberIDs = communityMembers.map(function(value) {
-          return {
-            "participantId": value.memberId,
-            "participantType": "MEMBER"
-          }
-        });
-        // Call the service to start the call.
-        let modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
-        controller.viewModel.modelPromise = modelPromise;        
-        modelPromise
-        .then(response => response.json())
-        .then(data => {
-            // Update the message for success.
-            controller.viewModel.messagePrefix = 'global.success';
-            controller.viewModel.status = 'OK';
-            controller.viewModel.message = this.i18n.tr('community.communities.members.call.callSuccessMessage');
-            controller.viewModel.okText = this.i18n.tr('button.ok');
-            controller.viewModel.showCancel = false;
-            // Close dialog on success.
-            delete controller.viewModel.submit;
-          }, error => {
-            controller.viewModel.messagePrefix = 'global.failed';
-            controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
-            me.logger.error("Community member call() rejected."); 
-          }).catch(error => {
-            controller.viewModel.messagePrefix = 'global.failed';
-            controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
-            me.logger.error("Community member call() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
-          })
-      };
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
-    });
-  }
 
 }
 
