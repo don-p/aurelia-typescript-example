@@ -1830,7 +1830,18 @@ span.recipientsListItem:not(:last-child)::after {
 }
 
 .blg-left-panel .blg-search-content {
-    height: 270px;
+  position: absolute;
+  top: 54px;
+  bottom: 85px;
+  left: 0px;
+  right: 0px;
+  border-right: 2px solid $blg-grey-light;
+  border-top: 1px solid $blg-grey-lighter;
+  border-left: 2px solid $blg-grey-light;
+  border-bottom: none;
+  border-radius: 0px;
+  background-color: $blg-white;
+  z-index: 0;
 }
 
 .discover-footer {
@@ -1848,13 +1859,16 @@ span.recipientsListItem:not(:last-child)::after {
   height: 70px;
   left: 0px;
   right: 0px;
+  border-top: 1px solid $blg-grey-light;  
   border-bottom: 2px solid $blg-grey-light;
   border-right: 2px solid $blg-grey-light;
   border-left: 2px solid $blg-grey-light;
   border-radius: 0 0 6px 6px;
   background-color: $blg-white;
-  padding-top: 20px;
-  padding-right: 15px;    
+  padding-top: 15px;
+  padding-right: 15px;
+  bottom: 15px;
+    
 }
 
 .tabs-bar {
