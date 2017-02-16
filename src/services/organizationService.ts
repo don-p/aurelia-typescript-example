@@ -88,9 +88,21 @@ export class OrganizationService {
 
     async searchOrganizationMembers(organization: any, filters: Array<any>, startIndex: number, pageSize:number, params:Object) {
         await fetch;
+
+        // Params from filter elements.
         let criteriaParams = OrganizationService.getDiscoveryRuleFromParams(filters);
         // FOR ENCODED DISCOVERY RULE:
         let criteriaParamsQueryString = 'discovery_rule=' + criteriaParams;
+        
+        // Params from grid filters.
+        criteriaParamsQueryString = ''
+        if((params && typeof params === 'object') &&
+            ((params['filterModel'] && typeof params['filterModel'] === 'object' && Object.keys(params['filterModel']).length !== 0) || 
+                (params['sortModel'] && Array.isArray(params['sortModel']) && params['sortModel'].length > 0))) {
+            criteriaParams = DataService.getAPIFilterSortFromParams(params);
+            // FOR ENCODED DISCOVERY RULE:
+            criteriaParamsQueryString = 'discovery_rule=' + criteriaParams;
+        }
         
         let response = this.getHttpClient().fetch('v1/organizations/' + organization + '/members?start_index=' + 
             startIndex + '&page_size=' + pageSize + '&' + criteriaParamsQueryString, 

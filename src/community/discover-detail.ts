@@ -23,9 +23,8 @@ export class DiscoverDetail {
   member: Object;
 
   navigationInstruction: NavigationInstruction;
-  selectedCommunityMembers: Array<Object>;
-  selectedOrganizationMembers: Array<Object>;
-  selectedOrganizationId: any;
+  selectedMembers: Array<Object>;
+  selectedOrganization: any;
   orgFilters: Array<any>;
   communityMembers: Array<Object>;
   membersGrid: Object;
@@ -68,9 +67,17 @@ export class DiscoverDetail {
 
     this.showSelectedCommunitiesGrid = false;
 
-    var me = this;
+    let me = this;
+    let gridOptions = this.utils.getGridOptions('listMembers', this.pageSize);
+    gridOptions.onSelectionChanged = function() {
+      me.orgMembersSelectionChanged(this);
+    };
+    gridOptions.getRowNodeId = function(item) {
+      return item.memberId.toString();
+    };
+    this.gridOptions = gridOptions;
     this.evt.subscribe('orgSearch', payload => {
-      me.selectedOrganizationId = payload.organization;
+      me.selectedOrganization = payload.organization;
       me.orgFilters = payload.filters;
 
       me.gridOptions.api.deselectAll();
@@ -78,7 +85,7 @@ export class DiscoverDetail {
       me.gridOptions.api.setSortModel(null);
 
       // Save selected organizationId.
-      me.gridOptions['organizationId'] = me.selectedOrganizationId;
+      me.gridOptions['organizationId'] = me.selectedOrganization.organizationId;
       me.gridOptions['orgFilters'] = me.orgFilters;
       // Set up the virtual scrolling grid displaying community members.
       me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
@@ -86,14 +93,32 @@ export class DiscoverDetail {
       me.gridOptions.api.showLoadingOverlay();
      
     });
+    this.evt.subscribe('orgSelected', payload => {
+      me.selectedOrganization = payload.organization;
+      me.orgFilters = [];
+      // Save selected organizationId.
+      me.gridOptions['organizationId'] = me.selectedOrganization.organizationId;
+      me.gridOptions['orgFilters'] = me.orgFilters;
+     if(!!(me.gridOptions.api)) {
+        me.gridOptions.api.deselectAll();
+        me.gridOptions.api.setFilterModel(null)
+        me.gridOptions.api.setSortModel(null);
+
+        // Set up the virtual scrolling grid displaying community members.
+        me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
+        // Set up collection to track available community members.
+        me.gridOptions.api.showLoadingOverlay();
+      }
+    this.evt.subscribe('communityMembersSelected', payload => {
+      me.selectedMembers = payload.selectedMembers;
+    });
+     
+    });
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
-  activate(params, navigationInstruction) {
-  }
-
   bind(bindingContext: Object, overrideContext: Object) {
-    this.logger.debug("CommunityDetail | bind()");
+    this.logger.debug("DiscoverDetail | bind()");
   }
 
   attached(params, navigationInstruction) {
@@ -109,19 +134,14 @@ export class DiscoverDetail {
         };
     });
 
-    let gridOptions = this.utils.getGridOptions('listMembers', this.pageSize);
-    gridOptions.onSelectionChanged = function() {
-      me.orgMembersSelectionChanged(this);
-    };
-    gridOptions.getRowNodeId = function(item) {
-      return item.memberId.toString();
-    };
-    this.gridOptions = gridOptions;
     this.initGrid(this);
+    // Load the grid data.
+    me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
+
     this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
     this.gridOptionsSelected.onSelectionChanged = function() {
       me.orgMembersSelectionChanged(this);
-      me.gridOptions['selection'] = me.selectedCommunityMembers;
+      me.gridOptions['selection'] = me.selectedMembers;
     };
     this.utils.getSelectedCommunityMembersGridDataSource('selectedCommunityMembers', this.gridOptionsSelected);
     new Grid(this.orgMembersSelectedGrid, this.gridOptionsSelected); //create a new grid
@@ -231,15 +251,9 @@ export class DiscoverDetail {
 
   };
 
-
-  membersSelectionChanged(scope) {
-    let rows = scope.api.getSelectedRows();
-    this.selectedCommunityMembers = rows;
-  }
-
   orgMembersSelectionChanged(scope) {
     let rows = scope.api.getSelectedRows();
-    this.selectedOrganizationMembers = rows;
+    this.evt.publish('communityMembersSelected', {selectedMembers: rows});
   }
 
 
