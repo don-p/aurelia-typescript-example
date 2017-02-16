@@ -109,11 +109,11 @@ export class DiscoverDetail {
         // Set up collection to track available community members.
         me.gridOptions.api.showLoadingOverlay();
       }
+    });
     this.evt.subscribe('communityMembersSelected', payload => {
       me.selectedMembers = payload.selectedMembers;
     });
      
-    });
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
