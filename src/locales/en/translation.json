@@ -50,6 +50,7 @@
     },
 
     "community":{
+        "community": "Community",
         "communities":{
             "title":"Communities",
             "commType":"Type",

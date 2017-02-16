@@ -55,7 +55,13 @@ export class Community {
         route: 'connections', name: 'community/connections', moduleId: './connections', 
         nav: true, title: this.i18n.tr('router.nav.connections'), 
         settings:{
-          detailView: 'connections-detail'
+          detailView: 'connections-detail',
+          memberActions: [
+            MemberActionsBarCustomElement.GRIDCALL, 
+            MemberActionsBarCustomElement.ALERT, 
+            MemberActionsBarCustomElement.REMOVECONNECTION, 
+            MemberActionsBarCustomElement.STARTCONVERSATION
+          ]
         }
       },
       { 
