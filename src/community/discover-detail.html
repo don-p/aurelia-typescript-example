@@ -1,5 +1,6 @@
 <template>
 	<require from="../lib/loading-mask/loading-mask"></require>
+	<require from="../components/member-actions-bar"></require>
 
 	<section id="membersTable" class="members-table">
 		
@@ -7,7 +8,7 @@
 			${'community.discover.searchResults' | t : {memberCount: gridOptions.api.rowModel.datasource?gridOptions.api.rowModel.datasource.rowCount:0}}
 		</div>
 		
-		<compose view-model="../components/member-actions-bar" model.bind="{parent: $this}"></compose>
+		<member-actions-bar></member-actions-bar>
 		
 		<div class="members-table-info-bar">
 
