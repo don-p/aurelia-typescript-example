@@ -490,9 +490,10 @@ export class MemberActionsBarCustomElement {
                 // Filter out existing community members.
                 let totalCount = data.totalCount;
                 let filteredData = data.responseCollection;
-                if(Array.isArray(me.parent.communityMembers) && me.parent.communityMembers.length > 0) {
+                let communityMembers = me.communityMembers?me.communityMembers:me.parent.communityMembers;
+                if(Array.isArray(communityMembers) && communityMembers.length > 0) {
                   filteredData = data.responseCollection.filter(function(item) {
-                    if(me.parent.communityMembers.indexOf(item.memberId) < 0) {
+                    if(communityMembers.indexOf(item.memberId) < 0) {
                       return true;
                     } else {
                       return false;
@@ -548,97 +549,137 @@ export class MemberActionsBarCustomElement {
     let message = null;
     let membersList = [];
     let me = this;
+    let item = {}
+    item['membersList'] = membersList;
+    // selected community from "Communities" view.
     let selectedCmty = this.selectedCmty;
+    item['selectedCmty'] = selectedCmty;
+    // In "Discover" view, get a list of communities to select from.
+    let communitiesPromise;
+    let communityTypes;
+    let selectedCommunityType;
 
-    let gridOptions = this.utils.getGridOptions('addMembers', this.pageSize);
-
+    // Grid for "Communities" view.
+    let gridOptions
+    if(!!(selectedCmty)) {
+      gridOptions = this.utils.getGridOptions('addMembers', this.pageSize);
+    }
     this.dataService.openResourceEditDialog({modelView:'model/organizationMembersListModel.html', 
       title:this.i18n.tr('community.communities.members.addMembers'), loadingTitle: 'app.loading',
-      item:membersList, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
+      item: item, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
     .then((controller:any) => {
       // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
       let activeElement = <HTMLElement> document.activeElement;
       activeElement.blur();
 
+      let communities = [];
+      item['communities'] = communities;
+      if(!(selectedCmty)) {
+        communitiesPromise = me.communityService.getCommunities(controller.viewModel.selectedCommunityType, 0, 10000);
+        controller.viewModel.communitiesPromise = communitiesPromise;
+        communitiesPromise
+        .then(response => response.json())
+        .then(data => {
+          controller.viewModel.communities = data.responseCollection;
+        });
+      }
+
       let model = controller.settings;
       model.isSubmitDisabled = true;
-      gridOptions.onSelectionChanged = function() {
-        controller.viewModel.item = gridOptions.api.getSelectedRows();
-        controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
-      };
-      gridOptions.getRowNodeId = function(item) {
-        return item.memberId.toString();
-      };
-      let addMembersGrid = new Grid(controller.viewModel.addCmtyMembersGrid, gridOptions); //create a new grid
-      gridOptions['api'].sizeColumnsToFit();
-      me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
-
-      // controller.isGridFiltered = Object.defineProperty(controller, 'isGridFiltered', {get: function() {
-      //   window.console.debug('--- isGridFiltered ---');
-      //     return controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent();
-      //   }
-      // });
-      controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
-      controller.viewModel.organizations = me.parent.parent.organizations;
-      controller.viewModel.communityMembers = me.parent.communityMembers;
-      controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
-      controller.viewModel.gridOptions = gridOptions;
-      let organizationId = me.parent.parent.organizations[0]['organizationId'];
-      gridOptions['organizationId'] = organizationId;
-
-      // Get list of members in a selected organization.
-      controller.viewModel.selectOrganization = function(event: any) {
-        if(this.selectedOrganization !== event.target.value) {
-          this.selectedOrganization = event.target.value;
-          gridOptions['organizationId'] = this.selectedOrganization;
-          this.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService, this.selectedOrganization);
+      // Grid for "Communities" view.
+      if(!!(selectedCmty)) {
+        gridOptions.onSelectionChanged = function() {
+          controller.viewModel.item.membersList = gridOptions.api.getSelectedRows();
+          controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
+        };
+        gridOptions.getRowNodeId = function(row) {
+          return row.memberId.toString();
+        };
+        let addMembersGrid = new Grid(controller.viewModel.addCmtyMembersGrid, gridOptions); //create a new grid
+        gridOptions['api'].sizeColumnsToFit();
+        me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
+        controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
+        controller.viewModel.organizations = me.parent.parent.organizations;
+        controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
+        controller.viewModel.gridOptions = gridOptions;
+        let organizationId = me.parent.parent.organizations[0]['organizationId'];
+        gridOptions['organizationId'] = organizationId;
+        // Get list of members in a selected organization.
+        controller.viewModel.selectOrganization = function(event: any) {
+          if(this.selectedOrganization !== event.target.value) {
+            this.selectedOrganization = event.target.value;
+            gridOptions['organizationId'] = this.selectedOrganization;
+            this.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService, this.selectedOrganization);
+          }
+        }
+        controller.viewModel.showSelectedOrganizationMembers = function(showSelected:boolean) {
+          if(showSelected) {
+            let selection = gridOptions.api.getSelectedRows();
+            me.setSelectedOrganizationMembersGridDataSource(gridOptions, me.pageSize, selection);
+          } else {
+            me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
+          }
+        };
+      } else {
+        controller.viewModel.selectCommunityType = function(communityType:string, selectedCommunity:Object) {
+          let communitiesPromise = me.communityService.getCommunities(communityType, 0, 10000);
+          controller.viewModel.communitiesPromise = communitiesPromise;
+          communitiesPromise
+          .then(response => response.json())
+          .then((data:any) => {
+            controller.viewModel.communities = data.responseCollection;
+          });
         }
       }
+      controller.viewModel.communityMembers = me.parent.communityMembers;
+
 
 
       // Callback function for submitting the dialog.
       controller.viewModel.submit = () => {
-        let selection = gridOptions.api.getSelectedRows();
+        let selection;
+        if(!!(selectedCmty)) {
+          // Get selected members from dialog grid.
+          selection = gridOptions.api.getSelectedRows();
+        } else {
+          // Get selected members from main view grid.
+          selection = me.parent.gridOptions.api.getSelectedRows();
+        }
         let orgMemberIds = selection.map(function(obj){ 
           return obj.memberId;
         });
-
+        if(!(item['communitySelection'])) {
+          item['communitySelection'] = selectedCmty;
+        }
         // Call the addMembers service.
-        let modelPromise = this.communityService.addCommunityMembers(selectedCmty.communityId, orgMemberIds);
+        let modelPromise = this.communityService.addCommunityMembers(item['communitySelection'].communityId, orgMemberIds);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
         .then(response => response.json())
         .then(data => {
-            if(!!(me.parent.communityMembers)) {
+            if(!!(selectedCmty) && !!(me.parent.communityMembers)) {
               // Update local cache of community members.
               Array.prototype.splice.apply(me.parent.communityMembers,[].concat(me.parent.communityMembers.length,0,orgMemberIds));
             }
-
-            me.parent.gridOptions.api.refreshVirtualPageCache();
-            me.parent.gridOptions.api.refreshView();
-            me.parent.gridOptions.api.deselectAll();
-            // update the community member count.
-            selectedCmty.memberCount = data['totalCount'];
-            // Close dialog on success.
-            gridOptions.api.destroy();
+            if(!!(selectedCmty)) {
+              me.parent.gridOptions.api.refreshVirtualPageCache();
+              me.parent.gridOptions.api.refreshView();
+              me.parent.gridOptions.api.deselectAll();
+              // update the community member count.
+              selectedCmty.memberCount = data['totalCount'];
+              // Close dialog on success.
+              gridOptions.api.destroy();
+            }
             controller.ok();
           }, error => {
             model.errorMessage = "Failed"; 
-            me.logger.error("Community member delete() rejected."); 
+            me.logger.error("Community member add() rejected."); 
           }).catch(error => {
             model.errorMessage = "Failed"; 
-            me.logger.error("Community member delete() failed."); 
+            me.logger.error("Community member add() failed."); 
             me.logger.error(error); 
             return Promise.reject(error);
           }) 
-      };
-      controller.viewModel.showSelectedOrganizationMembers = function(showSelected:boolean) {
-        if(showSelected) {
-          let selection = gridOptions.api.getSelectedRows();
-          me.setSelectedOrganizationMembersGridDataSource(gridOptions, me.pageSize, selection);
-        } else {
-          me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
-        }
       };
 
       controller.result.then((response) => {

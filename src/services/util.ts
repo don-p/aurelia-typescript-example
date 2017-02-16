@@ -45,6 +45,7 @@ export class Utils {
             columns.push({
                 colId: 'select',
                 headerName: '', 
+                pinned: 'left',
                 width: 30, 
                 minWidth: 30, 
                 checkboxSelection: true, 

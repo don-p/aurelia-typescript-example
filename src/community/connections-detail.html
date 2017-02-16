@@ -1,0 +1,49 @@
+<template>
+	<require from="../lib/loading-mask/loading-mask"></require>
+	<require from="../components/member-actions-bar"></require>
+
+	<section id="membersTable" class="members-table">
+		
+		<div class="members-table-header" id="membersTableHeader">
+			${'community.discover.searchResults' | t : {memberCount: gridOptions.api.rowModel.datasource?gridOptions.api.rowModel.datasource.rowCount:0}}
+		</div>
+		
+		<member-actions-bar></member-actions-bar>
+		
+		<div class="members-table-info-bar">
+
+		
+			<div role="status" id="example_info" class="members-table-info">
+				<div if.bind="!showSelectedCommunitiesGrid" class="pull-right" >
+					<button disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(true)"><i class="ico-filter4"></i><span>${'global.showSelected' | t}</span></button>
+				</div>
+				<div if.bind="showSelectedCommunitiesGrid" class="pull-right" >
+					<button type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(false)"> <i class="ico-filter3"></i><span>${'global.showAll' | t}</span></button>
+				</div>
+				<div class="pull-right">
+					<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
+				</div>
+				<!--
+				<div class="filter-label-text">Applied filters: </div>
+				<div class="filter-labels">
+					<span class="label label-primary table-label-blg">First Name contans: ALEX <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
+					<span class="label label-primary table-label-blg">State equals: MD <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
+					<span class="label label-primary table-label-blg">Zip starts with: 2 <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
+					<span class="label label-primary table-label-blg">Last Name ends with: EN <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
+					<span class="label label-primary table-label-blg">Title contans: ADMIN <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
+					<span class="label label-primary table-label-blg">City starts with: T <a href="javascript:void(0);"><i class="ico-cancel-circle2"></i></a></span>
+				</div>	
+				-->		
+			</div>
+		</div>		
+		
+				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
+<div class="members-table-content" id="membersTableContent">	
+	<div show.bind="!showSelectedCommunitiesGrid" id="cmtyMembersGrid" ref="orgMembersGrid" style="height: 100%;" class="ag-blg" ></div>
+	<div show.bind="showSelectedCommunitiesGrid" id="cmtyMembersSelectedGrid" ref="orgMembersSelectedGrid" style="height: 100%;" class="ag-blg" ></div>
+</div>
+		<!--<div class="blg-btns-content panel-footer"></div>										-->
+
+	</section>
+
+</template>
