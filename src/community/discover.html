@@ -5,8 +5,8 @@
             <div class="conv-buttons-bar">
                 <div class="right-select">
                     <span class="community-select-label">Organization: </span>
-                    <select class="form-control select select-default-blg select-organization" change.delegate="selectOrganization($event)">
-                        <option repeat.for="organization of parent.organizations" value="${organization.organizationId}" model.bind="organization">${organization.organizationName}</option>
+                    <select class="form-control select select-default-blg select-organization" value.bind="selectedOrganization" change.delegate="selectOrganization(selectedOrganization)">
+                        <option repeat.for="organization of parent.organizations" model.bind="organization">${organization.organizationName}</option>
                     </select>
                 </div>								
             </div>

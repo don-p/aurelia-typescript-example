@@ -17,7 +17,7 @@ const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(
 export class Discover {
 
   $filterValues: Array<any>;
-  selectedOrganizationId: any;
+  selectedOrganization: any;
 
   router: Router;
 
@@ -84,14 +84,16 @@ export class Discover {
     this.logger.debug("Community | bind()");
   }
 
-  activate() {
-    this.selectedOrganizationId = this.parent.organizations[0].organizationId;
+  attached() {
+    this.selectOrganization(this.parent.organizations[0]);
+  }
+  activate(params, navigationInstruction) {
+    // this.selectOrganization(this.parent.organizations[0]);
   }
 
-  selectOrganization = function(event: any) {
-    if(this.selectedOrganizationId !== event.target.value) {
-      this.selectedOrganizationId = event.target.value;
-    }
+  selectOrganization = function(organization: any) {
+    this.resetSearchFilters();
+    return this.evt.publish('orgSelected', {organization: organization});
   }
 
   resetSearchFilters() {

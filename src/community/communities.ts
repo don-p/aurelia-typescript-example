@@ -234,7 +234,7 @@ export class Communities {
       model.isSubmitDisabled = true;
       gridOptions.onSelectionChanged = function() {
         let rows = gridOptions.api.getSelectedRows();
-        controller.viewModel.selectedCommunityMembers = rows;
+        controller.viewModel.selectedMembers = rows;
         controller.viewModel.$isDirty = true;
         controller.viewModel.isSubmitDisabled = rows.length === 0;
       };

@@ -23,8 +23,7 @@ export class CommunityDetail {
   member: Object;
 
   navigationInstruction: NavigationInstruction;
-  selectedCommunityMembers: Array<Object>;
-  selectedOrganizationMembers: Array<Object>;
+  selectedMembers: Array<Object>;
   selectedCmty: any;
   communityMembers: Array<Object>;
   membersGrid: Object;
@@ -96,7 +95,7 @@ export class CommunityDetail {
      }
     });
     this.evt.subscribe('communityMembersSelected', payload => {
-      me.selectedCommunityMembers = payload.selectedCommunityMembers;
+      me.selectedMembers = payload.selectedMembers;
     });
     this.logger = LogManager.getLogger(this.constructor.name);
   }
@@ -133,7 +132,7 @@ export class CommunityDetail {
     this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
     this.gridOptionsSelected.onSelectionChanged = function() {
       me.membersSelectionChanged(this);
-      me.gridOptions['selection'] = me.selectedCommunityMembers;
+      me.gridOptions['selection'] = me.selectedMembers;
     };
     this.utils.getSelectedCommunityMembersGridDataSource('selectedCommunityMembers', this.gridOptionsSelected);
     new Grid(this.cmtyMembersSelectedGrid, this.gridOptionsSelected); //create a new grid
@@ -311,7 +310,7 @@ export class CommunityDetail {
 
   membersSelectionChanged(scope) {
     let rows = scope.api.getSelectedRows();
-    this.evt.publish('communityMembersSelected', {selectedCommunityMembers: rows});
+    this.evt.publish('communityMembersSelected', {selectedMembers: rows});
   }
 
   sendConnectionRequest() {

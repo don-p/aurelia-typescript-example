@@ -18,7 +18,7 @@ import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from
 export class MemberActionsBarCustomElement {  
 
     navigationInstruction: NavigationInstruction;
-    selectedCommunityMembers: Array<Object>;
+    selectedMembers: Array<Object>;
     selectedOrganizationMembers: Array<Object>;
     selectedCmty: any;
     communityMembers: Array<Object>;
@@ -60,7 +60,7 @@ export class MemberActionsBarCustomElement {
     this.pageSize = 200;
     let me = this;
     this.evt.subscribe('communityMembersSelected', payload => {
-      me.selectedCommunityMembers = payload.selectedCommunityMembers;
+      me.selectedMembers = payload.selectedMembers;
     });
     this.evt.subscribe('cmtySelected', payload => {
       if((!me.selectedCmty || me.selectedCmty === null) || (me.selectedCmty.communityId !== payload.community.communityId)) {
@@ -114,7 +114,7 @@ export class MemberActionsBarCustomElement {
 
     let message = null;
     var me = this;
-    let communityMembers:any[] = this.selectedCommunityMembers;
+    let communityMembers:any[] = this.selectedMembers;
 
     if(communityMembers.length === 1) {
       message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
@@ -490,7 +490,7 @@ export class MemberActionsBarCustomElement {
                 // Filter out existing community members.
                 let totalCount = data.totalCount;
                 let filteredData = data.responseCollection;
-                if(Array.isArray(me.parent.communityMembers)) {
+                if(Array.isArray(me.parent.communityMembers) && me.parent.communityMembers.length > 0) {
                   filteredData = data.responseCollection.filter(function(item) {
                     if(me.parent.communityMembers.indexOf(item.memberId) < 0) {
                       return true;
@@ -498,7 +498,7 @@ export class MemberActionsBarCustomElement {
                       return false;
                     }
                   });
-                  totalCount = filteredData.length;
+                  totalCount = totalCount - (me.pageSize - filteredData.length);
                 }
                 if(gridDataSource.rowCount === null) {
                   gridDataSource.rowCount = totalCount;
@@ -563,7 +563,6 @@ export class MemberActionsBarCustomElement {
       let model = controller.settings;
       model.isSubmitDisabled = true;
       gridOptions.onSelectionChanged = function() {
-        me.orgMembersSelectionChanged(this);
         controller.viewModel.item = gridOptions.api.getSelectedRows();
         controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
       };
@@ -581,7 +580,7 @@ export class MemberActionsBarCustomElement {
       // });
       controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
       controller.viewModel.organizations = me.parent.parent.organizations;
-      controller.viewModel.communityMembers = me.communityMembers;
+      controller.viewModel.communityMembers = me.parent.communityMembers;
       controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
       controller.viewModel.gridOptions = gridOptions;
       let organizationId = me.parent.parent.organizations[0]['organizationId'];
