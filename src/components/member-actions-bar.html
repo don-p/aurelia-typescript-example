@@ -1,6 +1,6 @@
 <template>
     <div class="members-table-buttons-bar">
-        <button id="btn-members-make-call" if.bind="hasAction(GRIDCALL)" click.delegate="makeCallCommunityMembers()" class="btn btn-success btn-xs-square" i18n="[title]button.makeCall" disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)">
+        <button id="btn-members-make-call" if.bind="hasAction(GRIDCALL)" click.delegate="makeCallCommunityMembers(selectedMembers)" class="btn btn-success btn-xs-square" i18n="[title]button.makeCall" disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)">
             <i class="ico-phone2"></i>
         </button>
         <button id="btn-members-send-alert" if.bind="hasAction(ALERT)" click.delegate="sendAlertCommunityMembers(selectedMembers, [])" class="btn btn-primary btn-xs-square" i18n="[title]button.sendAlert" disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)">

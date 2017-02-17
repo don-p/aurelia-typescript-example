@@ -68,6 +68,9 @@ export class MemberActionsBarCustomElement {
       }
     });
 
+    // Get list of alert/notification categories.
+    let promise1 = this.getAlertCategoriesPage(0, 500);
+
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
@@ -93,10 +96,6 @@ export class MemberActionsBarCustomElement {
   bind(context, originalContext) {
     this.parent = context;
 
-    // Get list of alert/notification categories.
-    let promise1 = this.getAlertCategoriesPage(0, 500);
-
-    return promise1;
   }
   
   hasAction (action: string) {
@@ -108,13 +107,12 @@ export class MemberActionsBarCustomElement {
     return true;
   }
 
-  makeCallCommunityMembers() {
+  makeCallCommunityMembers(communityMembers, communities) {
     let maxParticipants = this.appConfig.get('server.MAX_CONFERENCE_PARTICIPANTS');
     this.logger.debug('makeCallCommunityMembers() => MAX_CONFERENCE_PARTICIPANTS = ' + maxParticipants);
 
     let message = null;
     var me = this;
-    let communityMembers:any[] = this.selectedMembers;
 
     if(communityMembers.length === 1) {
       message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
@@ -281,7 +279,7 @@ export class MemberActionsBarCustomElement {
             if(communities.length === 1) {
               message = me.i18n.tr('community.communities.alert.alertCommunityRecipientsMessageSingle', {community: communities[0].communityName});
             } else if(communities.length >= 1) {
-              message = me.i18n.tr('communit.communitiesy.alert.alertCommunityRecipientsMessage', {communityCount: communities.length});
+              message = me.i18n.tr('community.communities.alert.alertCommunityRecipientsMessage', {communityCount: communities.length});
             }
           }
           
@@ -311,7 +309,7 @@ export class MemberActionsBarCustomElement {
                 if(communityMembers.length === 1) {
                   message = me.i18n.tr('community.communities.alert.alertRecipientsMessageSingle', {member: view.controller.wizard.currentStep.model.communityMembers[0]});
                 } else if(communityMembers.length >= 1) {
-                  message = me.i18n.tr('communit.communitiesy.alert.alertRecipientsMessage', {memberCount: view.controller.wizard.currentStep.model.communityMembers.length});
+                  message = me.i18n.tr('community.communities.alert.alertRecipientsMessage', {memberCount: view.controller.wizard.currentStep.model.communityMembers.length});
                 }
               }
               else if(Array.isArray(communities) && communities.length > 0) {
