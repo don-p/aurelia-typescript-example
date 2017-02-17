@@ -3,7 +3,13 @@
 
 	<div if.bind="!(item.selectedCmty)" >
     <loading id="cmty-loading" promise.bind="'communitiesPromise'" message-key.bind="loadingTitle">                
-		<div if.bind="!(communityId)" class="left-select">
+		<section>
+			<div class="col-xs-12" id="prompt-div">
+				<span if.bind="!!(messagePrefix)" class="wizard-result-message-prefix" class.bind="status==='ERROR'?'wizard-result-message-prefix-error':''">${messagePrefix | t}: </span>${message}
+				<p></p>
+			</div>
+		</section>
+		<div class="left-select">
 			<div class="dialog-section"">
 				<label class="blg-form community-select-label" i18n='[prepend]global.type'>: </label>
 				<select class="form-control select select-default-blg" value.bind="selectedCommunityType" change.delegate="selectCommunityType(selectedCommunityType)">

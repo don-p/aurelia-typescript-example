@@ -546,11 +546,9 @@ export class MemberActionsBarCustomElement {
 
 
   addCommunityMembers() {
-    let message = null;
-    let membersList = [];
     let me = this;
     let item = {}
-    item['membersList'] = membersList;
+    item['membersList'] = [];
     // selected community from "Communities" view.
     let selectedCmty = this.selectedCmty;
     item['selectedCmty'] = selectedCmty;
@@ -619,7 +617,7 @@ export class MemberActionsBarCustomElement {
           } else {
             me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
           }
-        };
+        };        
       } else {
         controller.viewModel.selectCommunityType = function(communityType:string, selectedCommunity:Object) {
           let communitiesPromise = me.communityService.getCommunities(communityType, 0, 10000);
@@ -630,6 +628,17 @@ export class MemberActionsBarCustomElement {
             controller.viewModel.communities = data.responseCollection;
           });
         }
+        let message = null;
+        let members = me.parent.gridOptions.api.getSelectedRows();
+        if(members.length === 1) {
+          message = this.i18n.tr('community.communities.members.addMembersMessageSingle', 
+              {memberName: members[0].physicalPersonProfile.firstName + ' ' +
+              members[0].physicalPersonProfile.lastName});
+        } else if(members.length >= 1) {
+          message = this.i18n.tr('community.communities.members.addMembersMessage',
+              {memberCount: members.length});
+        }
+        controller.viewModel.message = message;
       }
       controller.viewModel.communityMembers = me.parent.communityMembers;
 
