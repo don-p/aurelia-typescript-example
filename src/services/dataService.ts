@@ -463,7 +463,9 @@ export class DataService {
                     let filter = params['filterModel'][key];
                     let op = filter.type;
                     let operator = this.gridFilterCriteria[op];
-                    let values = [filter.filter];
+                    let filterValue:string = filter.filter;
+                    let values:Array<string> = filterValue.split(",");
+                    values = values.filter(function(item) {return item.length > 0});
                     param['operationType'] = operator;
                     param['parameterType'] = key;
                     param['values'] = values;

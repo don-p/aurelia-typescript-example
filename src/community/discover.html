@@ -3,16 +3,23 @@
         <div class="blg-inner-content tab-pane active" id="discover">
         
             <div class="conv-buttons-bar">
-                <div class="right-select">
-                    <span class="community-select-label">Organization: </span>
+                <div class="left-select">
+                    <span class="community-select-label">${'organization.organization' | t}: </span>
                     <select class="form-control select select-default-blg select-organization" value.bind="selectedOrganization" change.delegate="selectOrganization(selectedOrganization)">
                         <option repeat.for="organization of parent.organizations" model.bind="organization">${organization.organizationName}</option>
                     </select>
                 </div>								
             </div>
-
             <div class="blg-search-content">
                 <div class="discover-list">
+                    <ul>${'community.discover.advSearchHeader' | t}:</ul>
+                </div>
+
+                <div if.bind="!(selectedOrganizationHasAdvAttrs)" class="discover-list" style="font-size: 14px;font-weight: normal;">
+                    <p>&nbsp;</p>
+                    <ul>${'community.discover.advSearchNotAvailable' | t:{organizationName: selectedOrganization.organizationName}}</ul>
+                </div>
+                <div if.bind="selectedOrganizationHasAdvAttrs" class="discover-list">
                     <ul>
                         <li repeat.for="filter of filterValues" class="discover-line">
                             <select class="form-control select select-default-blg" change.delegate="onFilterChange($index, $event, $this)" value.bind="filterValues[$index].attr">
@@ -41,10 +48,13 @@
                         </li>
                     </ul>
                 </div>
+                <div class="discover-list" style="position: absolute;bottom: 0px;margin-top: 12px;margin-bottom: 12px;font-size: 12px;font-weight: normal;">
+                    <ul>* ${'community.discover.advSearchHelp' | t}</ul>
+                </div>
             </div>
             <div class="discover-footer">
-                <button type="button" click.delegate="resetSearchFilters()" class="btn btn-default-blg">Reset</button>
-                <button type="button" click.delegate="searchOrganizationMembers(selectedOrganizationId, filterValues)" class="btn btn-info">Search</button>                
+                <button type="button" disabled.bind="!(selectedOrganizationHasAdvAttrs)" click.delegate="resetSearchFilters()" class="btn btn-default-blg">Reset</button>
+                <button type="button" disabled.bind="!(selectedOrganizationHasAdvAttrs)" click.delegate="searchOrganizationMembers(selectedOrganizationId, filterValues)" class="btn btn-info">Search</button>                
             </div>
         </div>						
     </div>

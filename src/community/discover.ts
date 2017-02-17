@@ -18,7 +18,7 @@ export class Discover {
 
   $filterValues: Array<any>;
   selectedOrganization: any;
-
+  selectedOrganizationHasAdvAttrs: boolean;
   router: Router;
 
   logger: Logger;
@@ -26,7 +26,8 @@ export class Discover {
   constructor(private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
     private organizationService:OrganizationService, private parent: Community, private evt: EventAggregator, private vController:ValidationController) {
 
-    this.resetSearchFilters();
+    this.selectedOrganizationHasAdvAttrs = false;
+    this.resetSearchFilters(null);
 
     // ValidationRules
     // .ensureObject()
@@ -92,11 +93,14 @@ export class Discover {
   }
 
   selectOrganization = function(organization: any) {
-    this.resetSearchFilters();
+    this.resetSearchFilters(organization);
     return this.evt.publish('orgSelected', {organization: organization});
   }
 
-  resetSearchFilters() {
+  resetSearchFilters(organization:any) {
+    if(!!(organization)) {
+      this.selectedOrganizationHasAdvAttrs = false;
+    }
     this.$filterValues = [{attr:'physicalPersonProfile.firstName', op:'LIKE', value:''}];
   }
 

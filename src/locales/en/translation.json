@@ -131,7 +131,10 @@
             "title": "Discover",
             "addFilter": "Add filter",
             "removeFilter": "Remove filter",
-            "searchResults": "Search Results ({{memberCount}} members)"
+            "searchResults": "Search Results ({{memberCount}} members)",
+            "advSearchHeader": "Advanced filters",
+            "advSearchNotAvailable": "(Advanced filtering not available for organization '{{organizationName}}')",
+            "advSearchHelp": "Filter results using the column header filters; separate search entries with commas. Use advanced filters to refine your search."
         },
         "connections": {
             "title": "Connections"
