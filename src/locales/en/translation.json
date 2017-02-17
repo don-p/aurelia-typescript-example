@@ -81,6 +81,8 @@
                     "messageSingle": "Remove the community member '{{memberName}}'?",
                     "message": "Remove {{memberCount}} selected community members?"
                 },
+                "addMembersMessageSingle": "Add '{{memberName}}' to community:",
+                "addMembersMessage": "Add {{memberCount}} members to community:",
                 "call": {
                     "title": "Start GridCall",
                     "callConfirmMessageSingle": "Start GridCall with '{{memberName}}'?",
