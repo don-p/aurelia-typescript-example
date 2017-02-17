@@ -19,7 +19,7 @@
                     <span class="recipientsListContainer" show.bind="controller.dialogController.alertModel.communityMembers.length > 1 || controller.dialogController.alertModel.communities.length > 1" style="display: inline-block;">
                         <span class="textoverflow recipientsList">
                             <span class="recipientsListItem" repeat.for="mem of controller.dialogController.alertModel.communityMembers">${'community.communities.members.fullName' | t: {member: mem['physicalPersonProfile']}}</span>
-                            <span class="recipientsListItem" repeat.for="community of controller.dialogController.alertModel.communities">${community.communities.communityName}</span>
+                            <span class="recipientsListItem" repeat.for="community of controller.dialogController.alertModel.communities">${community.communityName}</span>
                         </span>
                     </span>
                 </div>
