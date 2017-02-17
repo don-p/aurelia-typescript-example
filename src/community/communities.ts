@@ -325,7 +325,7 @@ export class Communities {
 
     let me = this;
     this.modelPromise = null;
-    this.dataService.openPromptDialog(this.i18n.tr('community.confirmDelete.title'),
+    this.dataService.openPromptDialog(this.i18n.tr('community.communities.confirmDelete.title'),
       this.i18n.tr('community.communities.confirmDelete.message', {communityName: community.communityName}),
       community, this.i18n.tr('button.delete'), true, null, 'modelPromise', '')
     .then((controller:any) => {
