@@ -15,12 +15,13 @@ import {ValidationRules, ValidationController, Validator} from 'aurelia-validati
 import {CommunityResource} from '../model/communityResource';
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {Utils} from '../services/util';
+import {MemberActionsBarCustomElement} from '../components/member-actions-bar';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
 @inject(Session, DataService, CommunityService, EventAggregator, Ps, I18N, 
-  AureliaConfiguration, Utils, Parent.of(Community), Validator, NewInstance.of(ValidationController), LogManager)
+  AureliaConfiguration, Utils, Parent.of(Community), MemberActionsBarCustomElement, Validator, NewInstance.of(ValidationController), LogManager)
 export class Communities {
   communities: Array<Object>;
   items:Array<Object>;
@@ -44,7 +45,7 @@ export class Communities {
 
   constructor(private session: Session, private dataService: DataService, 
     private communityService: CommunityService, private evt: EventAggregator, Ps, 
-    private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community, private validator:Validator) {
+    private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community, private memberActions: MemberActionsBarCustomElement, private validator:Validator) {
 
     // var Ps = require('perfect-scrollbar');
 

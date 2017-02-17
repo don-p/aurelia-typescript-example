@@ -68,6 +68,9 @@ export class MemberActionsBarCustomElement {
       }
     });
 
+    // Get list of alert/notification categories.
+    let promise1 = this.getAlertCategoriesPage(0, 500);
+
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
@@ -93,10 +96,6 @@ export class MemberActionsBarCustomElement {
   bind(context, originalContext) {
     this.parent = context;
 
-    // Get list of alert/notification categories.
-    let promise1 = this.getAlertCategoriesPage(0, 500);
-
-    return promise1;
   }
   
   hasAction (action: string) {
@@ -108,13 +107,12 @@ export class MemberActionsBarCustomElement {
     return true;
   }
 
-  makeCallCommunityMembers() {
+  makeCallCommunityMembers(communityMembers, communities) {
     let maxParticipants = this.appConfig.get('server.MAX_CONFERENCE_PARTICIPANTS');
     this.logger.debug('makeCallCommunityMembers() => MAX_CONFERENCE_PARTICIPANTS = ' + maxParticipants);
 
     let message = null;
     var me = this;
-    let communityMembers:any[] = this.selectedMembers;
 
     if(communityMembers.length === 1) {
       message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
