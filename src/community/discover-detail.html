@@ -21,7 +21,9 @@
 					<button type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(false)"> <i class="ico-filter3"></i><span>${'global.showAll' | t}</span></button>
 				</div>
 				<div class="pull-right">
-					<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
+					<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(showSelectedCommunitiesGrid?gridOptionsSelected:gridOptions)">
+						<i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span>
+					</button>
 				</div>
 				<!--
 				<div class="filter-label-text">Applied filters: </div>
