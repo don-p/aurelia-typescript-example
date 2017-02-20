@@ -1,0 +1,24 @@
+<template>
+    <div>
+        <div class="dialog-section">
+            <div style="margin-bottom:12px;">${item.message}</div>
+        </div>
+        <div  if.bind="!(status)" class="dialog-section">
+            <label class="blg-form-required" i18n='[prepend]community.connections.message'>: </label>
+            <div class="send-alert-message-text">				  
+                <textarea class="send-alert-textarea" input.delegate="currentStep.isDirty=true"
+                value.bind="item.requestMessage & validate"></textarea>
+            </div>                    
+        </div>
+    </div>
+
+    <div if.bind="!!(status)">
+        <div class="dialog-section">
+            <label>&nbsp;</label>
+            <div class="send-alert-message-text" style="border:none; padding:0px;">
+                <span if.bind="!!(messagePrefix)" class="wizard-result-message-prefix" class.bind="status==='ERROR'?'wizard-result-message-prefix-error':''">${messagePrefix | t}: </span>${message}
+            </div>
+        </div>
+    </div>
+
+</template>
