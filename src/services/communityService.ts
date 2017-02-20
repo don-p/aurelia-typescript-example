@@ -227,4 +227,21 @@ export class CommunityService {
         return p;
     }
 
+    async sendConnectionRequest(memberIds: string[], requestMessage: string) {
+        await fetch;
+
+        let body = {
+            memberId: memberIds,
+            statusComment: requestMessage
+        };
+
+        let response = this.getHttpClient().fetch('v1/member-connects', 
+            {
+                method: 'POST',
+                body: JSON.stringify(body)
+            }
+        );
+        return response;
+
+    }
 }
