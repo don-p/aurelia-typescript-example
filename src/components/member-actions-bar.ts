@@ -21,7 +21,6 @@ export class MemberActionsBarCustomElement {
     selectedMembers: Array<Object>;
     selectedOrganizationMembers: Array<Object>;
     selectedCmty: any;
-    communityMembers: Array<Object>;
     membersGrid: Object;
     cmtyMembersGrid: any;
     cmtyMembersSelectedGrid: any;
@@ -56,7 +55,6 @@ export class MemberActionsBarCustomElement {
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
     private evt: EventAggregator, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils/*, private parent: Community*/){
     
-    this.communityMembers = null;
     this.pageSize = 200;
     let me = this;
     this.evt.subscribe('communityMembersSelected', payload => {
@@ -488,17 +486,17 @@ export class MemberActionsBarCustomElement {
                 // Filter out existing community members.
                 let totalCount = data.totalCount;
                 let filteredData = data.responseCollection;
-                let communityMembers = me.communityMembers?me.communityMembers:me.parent.communityMembers;
-                if(Array.isArray(communityMembers) && communityMembers.length > 0) {
-                  filteredData = data.responseCollection.filter(function(item) {
-                    if(communityMembers.indexOf(item.memberId) < 0) {
-                      return true;
-                    } else {
-                      return false;
-                    }
-                  });
-                  totalCount = totalCount - (me.pageSize - filteredData.length);
-                }
+                // let communityMembers = me.communityMembers?me.communityMembers:me.parent.communityMembers;
+                // if(Array.isArray(communityMembers) && communityMembers.length > 0) {
+                //   filteredData = data.responseCollection.filter(function(item) {
+                //     if(communityMembers.indexOf(item.memberId) < 0) {
+                //       return true;
+                //     } else {
+                //       return false;
+                //     }
+                //   });
+                //   totalCount = totalCount - (me.pageSize - filteredData.length);
+                // }
                 if(gridDataSource.rowCount === null) {
                   gridDataSource.rowCount = totalCount;
                 }
@@ -749,6 +747,78 @@ export class MemberActionsBarCustomElement {
           }).catch(error => {
             model.errorMessage = "Failed"; 
             me.logger.error("Community member delete() failed."); 
+            me.logger.error(error); 
+            return Promise.reject(error);
+          })
+      };
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          this.logger.debug('Cancel');
+        }
+      })
+    });
+  }
+
+  sendConnectionRequest(communityMembers:Array<any>) {
+
+    let message = null;
+    var me = this;
+    // let communityMembers:any[];
+    // communityMembers = this.gridOptions.api.getSelectedRows();
+
+    if(communityMembers.length === 1) {
+      message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
+          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
+          communityMembers[0].physicalPersonProfile.lastName});
+    } else if(communityMembers.length >= 1) {
+      message = this.i18n.tr('community.communities.members.call.callConfirmMessage',
+          {memberCount: communityMembers.length});
+    }
+    const vRules = ValidationRules
+      .ensure('item').maxItems(1)
+      .withMessage(this.i18n.tr('community.communities.call.callParticipantMaxCountError', {count:1}))
+      .rules;
+
+    this.dataService.openPromptDialog(this.i18n.tr('community.communities.sendConnectionRequest'),
+      message,
+      communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise', '')
+    .then((controller:any) => {
+      let model = controller.settings;
+      // Callback function for submitting the dialog.
+      controller.viewModel.submit = (communityMembers:any[]) => {
+        // Add logged-in user to the call list.
+        communityMembers.unshift(me.session.auth['member']);
+        let memberIDs = communityMembers.map(function(value) {
+          return {
+            "participantId": value.memberId,
+            "participantType": "MEMBER"
+          }
+        });
+        // Call the service to start the call.
+        let modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
+        controller.viewModel.modelPromise = modelPromise;        
+        modelPromise
+        .then(response => response.json())
+        .then(data => {
+            // Update the message for success.
+            controller.viewModel.messagePrefix = 'global.success';
+            controller.viewModel.status = 'OK';
+            controller.viewModel.message = this.i18n.tr('community.communities.members.call.callSuccessMessage');
+            controller.viewModel.okText = this.i18n.tr('button.ok');
+            controller.viewModel.showCancel = false;
+            // Close dialog on success.
+            delete controller.viewModel.submit;
+          }, error => {
+            controller.viewModel.messagePrefix = 'global.failed';
+            controller.viewModel.status = 'ERROR';
+            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
+            me.logger.error("Community member call() rejected."); 
+          }).catch(error => {
+            controller.viewModel.messagePrefix = 'global.failed';
+            controller.viewModel.status = 'ERROR';
+            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
+            me.logger.error("Community member call() failed."); 
             me.logger.error(error); 
             return Promise.reject(error);
           })
