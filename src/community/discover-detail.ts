@@ -26,7 +26,6 @@ export class DiscoverDetail {
   selectedMembers: Array<Object>;
   selectedOrganization: any;
   orgFilters: Array<any>;
-  communityMembers: Array<Object>;
   membersGrid: Object;
   orgMembersGrid: any;
   orgMembersSelectedGrid: any;
@@ -53,8 +52,6 @@ export class DiscoverDetail {
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
     private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community) {
-
-    this.communityMembers = null;
 
     // this.ps = Ps; // SCROLL
 

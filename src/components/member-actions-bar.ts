@@ -21,7 +21,6 @@ export class MemberActionsBarCustomElement {
     selectedMembers: Array<Object>;
     selectedOrganizationMembers: Array<Object>;
     selectedCmty: any;
-    communityMembers: Array<Object>;
     membersGrid: Object;
     cmtyMembersGrid: any;
     cmtyMembersSelectedGrid: any;
@@ -56,7 +55,6 @@ export class MemberActionsBarCustomElement {
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
     private evt: EventAggregator, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils/*, private parent: Community*/){
     
-    this.communityMembers = null;
     this.pageSize = 200;
     let me = this;
     this.evt.subscribe('communityMembersSelected', payload => {

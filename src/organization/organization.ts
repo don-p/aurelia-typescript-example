@@ -23,8 +23,6 @@ export class Organization {
   navigationInstruction: NavigationInstruction;
   selectedOrganizationMembers: Array<Object>;
   selectedItem: Object;
-  // communityMembers: { get: () => any[] };
-  communityMembers: Array<Object>;
   membersGrid: Object;
   cmtyMembersGrid: any;
   addCmtyMembersGrid: any;
