@@ -764,39 +764,40 @@ export class MemberActionsBarCustomElement {
 
     let message = null;
     var me = this;
-    // let communityMembers:any[];
-    // communityMembers = this.gridOptions.api.getSelectedRows();
+    let item = {}
 
     if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
+      message = this.i18n.tr('community.connections.connectionRequestMessageSingle', 
           {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
           communityMembers[0].physicalPersonProfile.lastName});
     } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.communities.members.call.callConfirmMessage',
+      message = this.i18n.tr('community.connections.connectionRequestMessage',
           {memberCount: communityMembers.length});
     }
+    item['members'] = communityMembers;
+    item['message'] = message;
+    item['requestMessage'] = '';
+
     const vRules = ValidationRules
-      .ensure('item').maxItems(1)
-      .withMessage(this.i18n.tr('community.communities.call.callParticipantMaxCountError', {count:1}))
+      .ensure('requestMessage')
+      .displayName(this.i18n.tr('community.connections.message'))
+      .required()
+      .then()
+      .minLength(1)
       .rules;
 
-    this.dataService.openPromptDialog(this.i18n.tr('community.communities.sendConnectionRequest'),
-      message,
-      communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise', '')
+    this.dataService.openResourceEditDialog({title: this.i18n.tr('community.connections.sendConnectionRequest'),
+      modelView: '../model/connectionRequest.html', loadingTitle: 'app.loading', 
+      item: item, okText: this.i18n.tr('button.send'), validationRules: vRules})
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.
-      controller.viewModel.submit = (communityMembers:any[]) => {
-        // Add logged-in user to the call list.
-        communityMembers.unshift(me.session.auth['member']);
-        let memberIDs = communityMembers.map(function(value) {
-          return {
-            "participantId": value.memberId,
-            "participantType": "MEMBER"
-          }
+      controller.viewModel.submit = (result:any) => {
+        let memberIDs = result.members.map(function(value) {
+          return value.memberId
         });
         // Call the service to start the call.
-        let modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
+        let modelPromise = this.communityService.sendConnectionRequest(memberIDs, result.requestMessage);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
         .then(response => response.json())
@@ -804,7 +805,7 @@ export class MemberActionsBarCustomElement {
             // Update the message for success.
             controller.viewModel.messagePrefix = 'global.success';
             controller.viewModel.status = 'OK';
-            controller.viewModel.message = this.i18n.tr('community.communities.members.call.callSuccessMessage');
+            controller.viewModel.message = this.i18n.tr('community.connections.connectionRequestSuccessMessage');
             controller.viewModel.okText = this.i18n.tr('button.ok');
             controller.viewModel.showCancel = false;
             // Close dialog on success.
@@ -812,12 +813,12 @@ export class MemberActionsBarCustomElement {
           }, error => {
             controller.viewModel.messagePrefix = 'global.failed';
             controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
+            model.errorMessage = this.i18n.tr('community.connections.connectionRequestFailedMessage'); 
             me.logger.error("Community member call() rejected."); 
           }).catch(error => {
             controller.viewModel.messagePrefix = 'global.failed';
             controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
+            model.errorMessage = this.i18n.tr('community.connections.connectionRequestFailedMessage'); 
             me.logger.error("Community member call() failed."); 
             me.logger.error(error); 
             return Promise.reject(error);

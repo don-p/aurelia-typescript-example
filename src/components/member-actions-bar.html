@@ -12,7 +12,7 @@
 
         <span class="dummy-btn"></span>
 
-        <button id="btn-members-send-request" if.bind="hasAction(ADDCONNECTION)" click.delegate="sendConnectionRequest()" class="btn btn-info btn-xs-square " title="Send connection request">
+        <button id="btn-members-send-request" if.bind="hasAction(ADDCONNECTION)" click.delegate="sendConnectionRequest(selectedMembers)" class="btn btn-info btn-xs-square " i18n="[title]community.connections.altText" disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)">
             <i class="ico-link"></i>
         </button>
         <button id="btn-members-disconnect" if.bind="hasAction(REMOVECONNECTION)" click.delegate="sendConnectionRequest()" class="btn btn-danger btn-xs-square " title="Disconnect">

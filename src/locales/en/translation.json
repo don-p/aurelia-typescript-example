@@ -59,7 +59,6 @@
             "search":"Search",
             "createCommunity":"Create Community",
             "editCommunity":"Update Community",
-            "sendConnectionRequest": "Send Connection Request",
             "confirmDelete": {
                 "title": "Delete Community?",
                 "message": "Delete the community '{{communityName}}'?"
@@ -137,7 +136,14 @@
             "advSearchHelp": "Filter results using the column header filters; separate search entries with commas. Use advanced filters to refine your search."
         },
         "connections": {
-            "title": "Connections"
+            "title": "Connections",
+            "message": "Message",
+            "sendConnectionRequest": "Send Connection Request",
+            "altText": "Send connection request",
+            "connectionRequestMessageSingle": "Send connection request to member '{{memberName}}':",
+            "connectionRequestMessage": "Send connection request to {{memberCount}} selected members:",
+            "connectionRequestSuccessMessage": "The connection request has been sent.",
+            "connectionRequestFailedMessage": "The connection request could not be sent."
         }
     },
     "organization":{
@@ -218,7 +224,8 @@
         "deleteCommunity":"Delete community",
         "editCommunity":"Update community",
         "createCommunity":"Create community",
-        "removeAttachment":"Remove attachment"        
+        "removeAttachment":"Remove attachment",
+        "send": "Send"    
     },
 
     "global": {
