@@ -76,10 +76,14 @@ export class CommunityDetail {
         // this.loadData();
 
         // this.initGrid(this);
-
+        
+        // Clear all member selections.
         me.gridOptions.api.deselectAll();
         me.gridOptions.api.setFilterModel(null)
         me.gridOptions.api.setSortModel(null);
+        me.gridOptionsSelected.api.deselectAll();
+        me.gridOptionsSelected.api.setFilterModel(null)
+        me.gridOptionsSelected.api.setSortModel(null);
 
         // Save selected communityId.
         me.gridOptions['communityId'] = me.selectedCmty.communityId;
