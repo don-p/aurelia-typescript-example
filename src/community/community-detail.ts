@@ -25,7 +25,7 @@ export class CommunityDetail {
   navigationInstruction: NavigationInstruction;
   selectedMembers: Array<Object>;
   selectedCmty: any;
-  communityMembers: Array<Object>;
+  // communityMembers: Array<Object>;
   membersGrid: Object;
   cmtyMembersGrid: any;
   cmtyMembersSelectedGrid: any;
@@ -53,7 +53,7 @@ export class CommunityDetail {
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
     private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community) {
 
-    this.communityMembers = null;
+    // this.communityMembers = null;
 
     // this.ps = Ps; // SCROLL
 
@@ -85,13 +85,13 @@ export class CommunityDetail {
         me.gridOptions['communityId'] = me.selectedCmty.communityId;
         // Set up the virtual scrolling grid displaying community members.
         me.utils.setCommunityMembersGridDataSource('communityMembers', me.gridOptions, me.pageSize, me.communityService, null, false);
-        // Set up collection to track available community members.
-        me.gridOptions.api.showLoadingOverlay();
-        // FIXME: Query for IDs, in order to exclude community members from organization search.
-        me.getCommunityMemberIDs(me.selectedCmty.communityId, 20000).then(() => {
-          me.gridOptions.api.hideOverlay();
-        });
-        // FIXME: Query for IDs, in order to exclude community members from organization search.
+        // // FIXME: Query for IDs, in order to exclude community members from organization search.
+        // // Set up collection to track available community members.
+        // me.gridOptions.api.showLoadingOverlay();
+        // me.getCommunityMemberIDs(me.selectedCmty.communityId, 20000).then(() => {
+        //   me.gridOptions.api.hideOverlay();
+        // });
+        // // FIXME: Query for IDs, in order to exclude community members from organization search.
      }
     });
     this.evt.subscribe('communityMembersSelected', payload => {
@@ -291,98 +291,26 @@ export class CommunityDetail {
     });
   }
 */
-  async getCommunityMemberIDs(communityId: string, pageSize: number) : Promise<void> {
-    let me = this;
-    return this.communityService.getCommunity(communityId, 0, pageSize, null)
-    .then(response => response.json())
-    .then((data: any) => {
-      me.logger.debug(data);
-//      this.session=me.session;
-      me.communityMembers = data.responseCollection.map(function(item) {
-        return item.memberId;
-      });
-      // me.agGridWrap.rowsChanged(me.communityMembers, null);
-    }).catch(error => {
-      me.logger.error("Communities members() failed."); 
-      me.logger.error(error); 
-    });
-  }
+
+  // async getCommunityMemberIDs(communityId: string, pageSize: number) : Promise<void> {
+  //   let me = this;
+  //   return this.communityService.getCommunity(communityId, 0, pageSize, null)
+  //   .then(response => response.json())
+  //   .then((data: any) => {
+  //     me.logger.debug(data);
+  //     me.communityMembers = data.responseCollection.map(function(item) {
+  //       return item.memberId;
+  //     });
+  //     // me.agGridWrap.rowsChanged(me.communityMembers, null);
+  //   }).catch(error => {
+  //     me.logger.error("Communities members() failed."); 
+  //     me.logger.error(error); 
+  //   });
+  // }
 
   membersSelectionChanged(scope) {
     let rows = scope.api.getSelectedRows();
     this.evt.publish('communityMembersSelected', {selectedMembers: rows});
-  }
-
-  sendConnectionRequest() {
-
-    let message = null;
-    var me = this;
-    let communityMembers:any[];
-    communityMembers = this.gridOptions.api.getSelectedRows();
-
-    if(communityMembers.length === 1) {
-      message = this.i18n.tr('community.communities.members.call.callConfirmMessageSingle', 
-          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
-          communityMembers[0].physicalPersonProfile.lastName});
-    } else if(communityMembers.length >= 1) {
-      message = this.i18n.tr('community.communities.members.call.callConfirmMessage',
-          {memberCount: communityMembers.length});
-    }
-    const vRules = ValidationRules
-      .ensure('item').maxItems(1)
-      .withMessage(this.i18n.tr('community.communities.call.callParticipantMaxCountError', {count:1}))
-      .rules;
-
-    this.dataService.openPromptDialog(this.i18n.tr('community.communities.sendConnectionRequest'),
-      message,
-      communityMembers, this.i18n.tr('button.call'), true, vRules, 'modelPromise', '')
-    .then((controller:any) => {
-      let model = controller.settings;
-      // Callback function for submitting the dialog.
-      controller.viewModel.submit = (communityMembers:any[]) => {
-        // Add logged-in user to the call list.
-        communityMembers.unshift(me.session.auth['member']);
-        let memberIDs = communityMembers.map(function(value) {
-          return {
-            "participantId": value.memberId,
-            "participantType": "MEMBER"
-          }
-        });
-        // Call the service to start the call.
-        let modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs});
-        controller.viewModel.modelPromise = modelPromise;        
-        modelPromise
-        .then(response => response.json())
-        .then(data => {
-            // Update the message for success.
-            controller.viewModel.messagePrefix = 'global.success';
-            controller.viewModel.status = 'OK';
-            controller.viewModel.message = this.i18n.tr('community.communities.members.call.callSuccessMessage');
-            controller.viewModel.okText = this.i18n.tr('button.ok');
-            controller.viewModel.showCancel = false;
-            // Close dialog on success.
-            delete controller.viewModel.submit;
-          }, error => {
-            controller.viewModel.messagePrefix = 'global.failed';
-            controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
-            me.logger.error("Community member call() rejected."); 
-          }).catch(error => {
-            controller.viewModel.messagePrefix = 'global.failed';
-            controller.viewModel.status = 'ERROR';
-            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
-            me.logger.error("Community member call() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
-          })
-      };
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
-    });
   }
 
 
