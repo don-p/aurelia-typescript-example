@@ -77,9 +77,13 @@ export class CommunityDetail {
 
         // this.initGrid(this);
 
+        // Clear all member selections.
         me.gridOptions.api.deselectAll();
         me.gridOptions.api.setFilterModel(null)
         me.gridOptions.api.setSortModel(null);
+        me.gridOptionsSelected.api.deselectAll();
+        me.gridOptionsSelected.api.setFilterModel(null)
+        me.gridOptionsSelected.api.setSortModel(null);
 
         // Save selected communityId.
         me.gridOptions['communityId'] = me.selectedCmty.communityId;
@@ -146,7 +150,10 @@ export class CommunityDetail {
   // }
 
   get isGridFiltered() {
-    return this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent();
+    return (!(this.showSelectedCommunitiesGrid) && 
+      (this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent())) ||
+      ((this.showSelectedCommunitiesGrid) && 
+      (this.gridOptionsSelected && this.gridOptionsSelected.api && this.gridOptionsSelected.api.isAnyFilterPresent())) ;
   }
 
   initGrid(me) {

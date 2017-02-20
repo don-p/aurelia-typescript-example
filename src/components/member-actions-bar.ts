@@ -25,6 +25,7 @@ export class MemberActionsBarCustomElement {
     cmtyMembersGrid: any;
     cmtyMembersSelectedGrid: any;
     addCmtyMembersGrid: any;
+    addCmtyMembersSelectedGrid: any;
     currentMember: Object;
 
     alertCategories: Array<Object>;
@@ -461,6 +462,7 @@ export class MemberActionsBarCustomElement {
   setOrganizationMembersGridDataSource(gridOptions, pageSize, organizationService) {
     const me = this;
 
+    let selection = gridOptions.selection;
     let gridDataSource = {
         name: 'organizationMembers',
         /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
@@ -501,6 +503,20 @@ export class MemberActionsBarCustomElement {
                   gridDataSource.rowCount = totalCount;
                 }
                 params.successCallback(filteredData, totalCount);
+                // pre-select nodes as needed.
+                if(Array.isArray(selection)) {
+                  gridOptions.api.forEachNode( function (node) {
+                      if (selection.find(function(item:any, index:number, array:any[]) {
+                        return item.memberId === node.data.memberId
+                      })) {
+                          node.setSelected(true);
+                          gridOptions.api.refreshRows([node]);
+                      } else {
+                          node.setSelected(false);
+                          gridOptions.api.refreshRows([node]);
+                      }
+                  });
+                }
                 gridOptions.api.hideOverlay();
                this.loading = false;
             });
@@ -554,9 +570,16 @@ export class MemberActionsBarCustomElement {
     let selectedCommunityType;
 
     // Grid for "Communities" view.
-    let gridOptions
+    let gridOptions;
+    let gridOptionsSelected;
     if(!!(selectedCmty)) {
       gridOptions = this.utils.getGridOptions('addMembers', this.pageSize);
+      gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
+      gridOptionsSelected.enableServerSideSorting = false;
+      gridOptionsSelected.enableServerSideFilter = false;
+      gridOptionsSelected.enableSorting = true;
+      gridOptionsSelected.enableFilter = true;
+      gridOptionsSelected.rowModelType = 'normal';
     }
     this.dataService.openResourceEditDialog({modelView:'model/organizationMembersListModel.html', 
       title:this.i18n.tr('community.communities.members.addMembers'), loadingTitle: 'app.loading',
@@ -582,6 +605,7 @@ export class MemberActionsBarCustomElement {
       model.isSubmitDisabled = true;
       // Grid for "Communities" view.
       if(!!(selectedCmty)) {
+        // Org members grid.
         gridOptions.onSelectionChanged = function() {
           controller.viewModel.item.membersList = gridOptions.api.getSelectedRows();
           controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
@@ -592,10 +616,22 @@ export class MemberActionsBarCustomElement {
         let addMembersGrid = new Grid(controller.viewModel.addCmtyMembersGrid, gridOptions); //create a new grid
         gridOptions['api'].sizeColumnsToFit();
         me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
+        // Selected org members grid.
+        gridOptionsSelected.onSelectionChanged = function() {
+          gridOptions.selection = gridOptionsSelected.api.getSelectedRows();
+          controller.viewModel.isSubmitDisabled = gridOptionsSelected.api.getSelectedRows().length === 0;
+        };
+        gridOptionsSelected.getRowNodeId = function(row) {
+          return row.memberId.toString();
+        };
+        let addMembersSelectedGrid = new Grid(controller.viewModel.addCmtyMembersSelectedGrid, gridOptionsSelected); //create a new grid
+        gridOptionsSelected['api'].sizeColumnsToFit();
+        
         controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
         controller.viewModel.organizations = me.parent.parent.organizations;
         controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
         controller.viewModel.gridOptions = gridOptions;
+        controller.viewModel.gridOptionsSelected = gridOptionsSelected;
         let organizationId = me.parent.parent.organizations[0]['organizationId'];
         gridOptions['organizationId'] = organizationId;
         // Get list of members in a selected organization.
@@ -607,13 +643,28 @@ export class MemberActionsBarCustomElement {
           }
         }
         controller.viewModel.showSelectedOrganizationMembers = function(showSelected:boolean) {
+          controller.viewModel.showSelected = showSelected;
           if(showSelected) {
             let selection = gridOptions.api.getSelectedRows();
-            me.setSelectedOrganizationMembersGridDataSource(gridOptions, me.pageSize, selection);
+            gridOptions.selection = selection;
+            gridOptionsSelected.api.setRowData(selection);
+            gridOptionsSelected.api.selectAll();
+            gridOptionsSelected.api.refreshView();
+            gridOptionsSelected['api'].sizeColumnsToFit();
           } else {
             me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
           }
-        };        
+        };
+        controller.viewModel.$isGridFiltered = function() {
+          let filtered = (!(controller.viewModel.showSelected) && 
+            (controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent())) ||
+            (!!(controller.viewModel.showSelected) && 
+            (controller.viewModel.gridOptionsSelected && controller.viewModel.gridOptionsSelected.api && controller.viewModel.gridOptionsSelected.api.isAnyFilterPresent()));
+          console.debug(">>>> ISGRIDFILTERED: " + filtered);
+          return filtered;
+        };
+
+      
       } else {
         controller.viewModel.selectCommunityType = function(communityType:string, selectedCommunity:Object) {
           let communitiesPromise = me.communityService.getCommunities(communityType, 0, 10000);
