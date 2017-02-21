@@ -424,6 +424,16 @@ header .navbar-nav {
   bottom: 0;
 }
 
+.blg-right-panel {
+  position: absolute;
+  width: 475px;
+  right: 15px;
+  top: 115px;
+  background: transparent;
+  border-radius: 3px;
+  min-height: 600px;
+  bottom: 0;
+}
 
 .blg-left-panel .blg-inner-content {
   border-bottom: 1px solid $blg-grey-lighter;
@@ -841,6 +851,11 @@ header .navbar-nav {
   right: 0;
   left: 0;
   min-width: 900px;
+}
+
+.connections-table {
+  margin: 75px 510px 10px 0px;
+  left: 15px;
 }
 
 .message-board .blg-btns-content,

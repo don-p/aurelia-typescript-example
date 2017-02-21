@@ -8,25 +8,27 @@ import {I18N} from 'aurelia-i18n';
 import {ValidationRules, ValidationController, Rules, validateTrigger} from 'aurelia-validation';
 import {Community} from './community';
 import {Utils} from '../services/util';
-import {OrganizationService} from '../services/organizationService';
+import {CommunityService} from '../services/communityService';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(I18N, AureliaConfiguration, Utils, OrganizationService, Parent.of(Community), EventAggregator, NewInstance.of(ValidationController), LogManager)
-export class Discover {
+@inject(I18N, AureliaConfiguration, Utils, CommunityService, Parent.of(Community), EventAggregator, NewInstance.of(ValidationController), LogManager)
+export class Connections {
 
   $filterValues: Array<any>;
   selectedOrganization: any;
 
+  connections: Array<any>;
+  requestType: string;
   router: Router;
 
   logger: Logger;
 
   constructor(private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
-    private organizationService:OrganizationService, private parent: Community, private evt: EventAggregator, private vController:ValidationController) {
+    private communityService:CommunityService, private parent: Community, private evt: EventAggregator, private vController:ValidationController) {
 
-    this.resetSearchFilters();
+    this.requestType = 'INVITED';
 
     // ValidationRules
     // .ensureObject()
@@ -81,6 +83,8 @@ export class Discover {
   }
 
   bind(bindingContext: Object, overrideContext: Object) {
+    this.showRequests(this.requestType);
+
     this.logger.debug("Community | bind()");
   }
 
@@ -89,6 +93,29 @@ export class Discover {
   }
   activate(params, navigationInstruction) {
     // this.selectOrganization(this.parent.organizations[0]);
+  }
+
+  showRequests(type: string) {
+    this.requestType = type;
+    let me = this;
+    let connectionsPromise = this.communityService.getMemberConnections(type, 0, 10000, null);
+    connectionsPromise
+    .then(response => {return response.json()
+      .then(data => {
+        me.connections = data.responseCollection;
+        return data;
+        // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
+      }).catch(error => {
+        me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
+        return Promise.reject(error);
+      })
+    })
+    .catch(error => {
+      me.logger.error('Communities list() failed in then(response). Error: ' + error); 
+      me.logger.error(error); 
+      //throw error;
+      return Promise.reject(error);
+    });
   }
 
   selectOrganization = function(organization: any) {
