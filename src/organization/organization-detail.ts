@@ -83,71 +83,6 @@ export class OrganizationDetail {
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
-  getGridColumns(type: string) { 
-    let columns = [];
-     columns.push({
-      headerName: this.i18n.tr('community.communities.members.firstname'), 
-      field: "physicalPersonProfile.firstName",
-      filter: TextSearchFilter
-    });
-    columns.push({
-      headerName: this.i18n.tr('community.communities.members.lastname'), 
-      field: "physicalPersonProfile.lastName", 
-      filter: TextSearchFilter
-    });
-    columns.push({
-      headerName: this.i18n.tr('community.communities.members.title'), 
-      field: "physicalPersonProfile.jobTitle",
-      filter: TextSearchFilter
-    });
-    columns.push({
-      headerName: this.i18n.tr('community.communities.members.city'), 
-      field: "physicalPersonProfile.locationProfile.city",
-      filter: TextSearchFilter
-    });
-    columns.push({
-      headerName: this.i18n.tr('community.communities.members.state'), 
-      field: "physicalPersonProfile.locationProfile.stateCode", 
-      filter: TextSearchFilter,
-      width: 100
-    });
-    columns.push({
-      headerName: this.i18n.tr('community.communities.members.zip'), 
-      field: "physicalPersonProfile.locationProfile.zipCode", 
-      filter: TextSearchFilter,
-      width: 80
-    });
-
-    return columns;
-  }
-
-  getGridOptions(type): GridOptions {
-    let me = this;
-      return {
-      columnDefs: this.getGridColumns(type),
-      rowSelection: 'multiple',
-      rowHeight: 30,
-      headerHeight: 40,
-      suppressMenuHide: true,
-      // pageSize: this.pageSize,
-      paginationPageSize: this.pageSize,
-      sortingOrder: ['desc','asc'],
-      enableServerSideSorting: true,
-      enableServerSideFilter: true,
-      enableColResize: true,
-      debug: false,
-      rowModelType: 'virtual',
-      maxPagesInCache: 2,
-      onViewportChanged: function() {
-        if(!this.api) return;
-        this.api.sizeColumnsToFit();
-      },
-      onGridSizeChanged: function(){
-        if(!this.api) return;
-        this.api.sizeColumnsToFit();
-      }
-    };
-  }
 
   attached(params, navigationInstruction) {
     // // Custom scrollbar:
@@ -155,14 +90,8 @@ export class OrganizationDetail {
     // this.ps.initialize(container);
     // this.ps.update(container);
     let me = this;
-    let cols = this.getGridColumns('listMembers').map(function(col) {
-        return {
-            headerName: col.headerName,
-            field: col.field
-        };
-    });
 
-    let gridOptions = this.getGridOptions('listMembers');
+    let gridOptions = this.utils.getGridOptions('organizationMembers', this.pageSize);
     gridOptions.getRowNodeId = function(item) {
       return item.memberId.toString();
     };

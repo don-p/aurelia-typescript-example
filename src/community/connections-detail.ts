@@ -17,32 +17,22 @@ import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from
 import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
 import {Utils} from '../services/util';
 
-@inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, 
+@inject(Session, Router, DataService, CommunityService, EventAggregator, 
   Ps, I18N, AureliaConfiguration, Utils, Parent.of(Community), LogManager) // SCROLL
-export class DiscoverDetail {
+export class ConnectionsDetail {
   member: Object;
 
-  navigationInstruction: NavigationInstruction;
   selectedMembers: Array<Object>;
   selectedOrganization: any;
-  orgFilters: Array<any>;
-  communityMembers: Array<Object>;
-  membersGrid: Object;
-  orgMembersGrid: any;
-  orgMembersSelectedGrid: any;
-  addCmtyMembersGrid: any;
-  currentMember: Object;
+  membersGrid: any;
+  membersSelectedGrid: any;
   // remoteData: RemoteData;
 
   membersPromise: Promise<Response>;
-  cmtyMembersCachePromise:  Promise<void>;
-  // @bindable columns;
-  // @bindable rows;
   @bindable pageSize;
   gridOptions: GridOptions;
   gridOptionsSelected: GridOptions;
   showSelectedCommunitiesGrid: boolean;
-  gridCreated: boolean;
   gridColumns: Array<any>;
   grid: any;
 
@@ -51,10 +41,8 @@ export class DiscoverDetail {
   logger: Logger;
   
   constructor(private session: Session, private router: Router, 
-    private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
+    private dataService: DataService, private communityService: CommunityService,
     private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community) {
-
-    this.communityMembers = null;
 
     // this.ps = Ps; // SCROLL
 
@@ -73,43 +61,9 @@ export class DiscoverDetail {
       me.orgMembersSelectionChanged(this);
     };
     gridOptions.getRowNodeId = function(item) {
-      return item.memberId.toString();
+      return item.connectId.toString();
     };
     this.gridOptions = gridOptions;
-    this.evt.subscribe('orgSearch', payload => {
-      me.selectedOrganization = payload.organization;
-      me.orgFilters = payload.filters;
-
-      me.gridOptions.api.deselectAll();
-      me.gridOptions.api.setFilterModel(null)
-      me.gridOptions.api.setSortModel(null);
-
-      // Save selected organizationId.
-      me.gridOptions['organizationId'] = me.selectedOrganization.organizationId;
-      me.gridOptions['orgFilters'] = me.orgFilters;
-      // Set up the virtual scrolling grid displaying organization members.
-      me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
-      // Set up collection to track available community members.
-      me.gridOptions.api.showLoadingOverlay();
-     
-    });
-    this.evt.subscribe('orgSelected', payload => {
-      me.selectedOrganization = payload.organization;
-      me.orgFilters = [];
-      // Save selected organizationId.
-      me.gridOptions['organizationId'] = me.selectedOrganization.organizationId;
-      me.gridOptions['orgFilters'] = me.orgFilters;
-     if(!!(me.gridOptions.api)) {
-        me.gridOptions.api.deselectAll();
-        me.gridOptions.api.setFilterModel(null)
-        me.gridOptions.api.setSortModel(null);
-
-        // Set up the virtual scrolling grid displaying community members.
-        me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
-        // Set up collection to track available community members.
-        me.gridOptions.api.showLoadingOverlay();
-      }
-    });
     this.evt.subscribe('communityMembersSelected', payload => {
       me.selectedMembers = payload.selectedMembers;
     });
@@ -135,7 +89,7 @@ export class DiscoverDetail {
 
     this.initGrid(this);
     // Load the grid data.
-    me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
+    me.setMemberConnectionsGridDataSource(me.gridOptions, me.pageSize, me.communityService);
 
     this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
     this.gridOptionsSelected.enableServerSideSorting = false;
@@ -147,7 +101,7 @@ export class DiscoverDetail {
       me.orgMembersSelectionChanged(this);
       me.gridOptions['selection'] = me.selectedMembers;
     };
-    new Grid(this.orgMembersSelectedGrid, this.gridOptionsSelected); //create a new grid
+    new Grid(this.membersSelectedGrid, this.gridOptionsSelected); //create a new grid
     this.gridOptionsSelected['api'].sizeColumnsToFit();
   }
 
@@ -163,20 +117,18 @@ export class DiscoverDetail {
 
   initGrid(me) {
     // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
-    new Grid(this.orgMembersGrid, this.gridOptions); //create a new grid
+    new Grid(this.membersGrid, this.gridOptions); //create a new grid
     // this.agGridWrap.gridCreated = true;
     this.gridOptions['api'].sizeColumnsToFit();
   }
 
-  setOrganizationMembersGridDataSource(gridOptions, pageSize, organizationService) {
+  setMemberConnectionsGridDataSource(gridOptions, pageSize, communityService) {
     const me = this;
-    let organizationId = gridOptions.organizationId;
-    let filters = gridOptions.orgFilters;
 
     gridOptions.selection = null;
 
     let gridDataSource = {
-        name: 'organizationMembers',
+        name: 'memberConnections',
         /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
         rowCount: null,
         paginationPageSize: pageSize,
@@ -189,20 +141,29 @@ export class DiscoverDetail {
         getRows: function(params: IGetRowsParams) {
             gridOptions.api.showLoadingOverlay();
           if(!this.loading) {
-            me.logger.debug("..... setOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
+            me.logger.debug("..... setMemberConnectionsGridDataSource Loading Grid rows | startIndex: " + params.startRow);
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
-            let  organizationId = gridOptions.organizationId;
-            let orgPromise = organizationService.searchOrganizationMembers(organizationId, filters, params.startRow, pageSize, params);
-            orgPromise.then(response => response.json())
+            let memberId = me.session.auth['member'].memberId;
+            let connectionsPromise = communityService.getMemberConnections('CONNECTED', params.startRow, pageSize, params);
+            connectionsPromise.then(response => response.json())
               .then(data => {
                 // Filter out existing community members.
                 let totalCount = data.totalCount;
                 if(gridDataSource.rowCount === null) {
                   gridDataSource.rowCount = totalCount;
                 }
-                params.successCallback(data.responseCollection, totalCount);
+                let result = data.responseCollection.map(function(item){
+                  return {
+                    connectId: item.connectId,
+                    connectStatus: item.connectStatus,
+                    memberEntityType: item.member.memberEntityType,
+                    memberId: item.member.memberId,
+                    physicalPersonProfile: item.member.physicalPersonProfile
+                  }
+                });
+                params.successCallback(result, totalCount);
                 // pre-select nodes as needed.
                 let selection = gridOptions.selection;
                 if(Array.isArray(selection)) {

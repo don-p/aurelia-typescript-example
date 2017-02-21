@@ -1,51 +1,93 @@
 <template>
+
     <div id="discover-tab" class="blg-tab-section tab-content">
         <div class="blg-inner-content tab-pane active" id="discover">
         
             <div class="conv-buttons-bar">
-                <div class="right-select">
-                    <span class="community-select-label">Organization: </span>
-                    <select class="form-control select select-default-blg select-organization" value.bind="selectedOrganization" change.delegate="selectOrganization(selectedOrganization)">
-                        <option repeat.for="organization of parent.organizations" model.bind="organization">${organization.organizationName}</option>
-                    </select>
+                <div >
+                    <span style="float: left;" class="community-select-label">Requests</span>
+                    <a style="float: right;" click.delegate="showRequests('PENDING')">Received&nbsp;&nbsp;</a>
+                   <a style="float: right;" click.delegate="showRequests('INVITED')">Sent&nbsp;&nbsp;</a>
                 </div>								
             </div>
 
-            <div class="blg-search-content">
+            <div if.bind="requestType == 'INVITED'" class="blg-search-content">
                 <div class="discover-list">
-                    <ul>
-                        <li repeat.for="filter of filterValues" class="discover-line">
-                            <select class="form-control select select-default-blg" change.delegate="onFilterChange($index, $event, $this)" value.bind="filterValues[$index].attr">
-                                <option model.bind="'physicalPersonProfile.firstName'">First name</option>
-                                <option model.bind="'physicalPersonProfile.lastName'">Last name</option>
-                                <option model.bind="'physicalPersonProfile.jobTitle'">Job title</option>
-                                <option model.bind="'physicalPersonProfile.locationProfile.zipCode'">Zip code</option>												
-                            </select>
-                            <select class="form-control select select-default-blg" title=""  value.bind="filterValues[$index].op">
-                                <option value="LIKE">Contains</option>
-                                <option value="EQUAL">Matches</option>
-                                <option value="excludes">Exludes</option>
-                            </select>
-                            <input type="text" style="display:none;" model.bind="$index" value.bind="filterValues[$index].id"/>
-                            <div class="form-group form-group-sm discover-input">
-                                <input type="text" class="form-control" value.bind="filterValues[$index].value & validate">
+                <div>SENT</div>
+
+                    <div class="blg-community-content">
+                    <div id="community-list" class="community-list">
+                        <ul>
+                        <div class="panel-group communities-panel-list list1" id="accordion_communities">
+                            <div id="connect-${connection.connectId}" repeat.for="connection of connections" class='list-item'>
+                            <div class='panel panel-default'>
+                                <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
+                                role='tab'>
+                                <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
+                                    <h4 class='panel-title'>
+                                    <span class="community-name">${connection.member.physicalPersonProfile.firstName} ${connection.member.physicalPersonProfile.lastName}</span>
+                                    <span class="members-count">(${connection.member.physicalPersonProfile.jobTitle})</span>
+                                    <span class='community-buttons'>
+                                        <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                        click.delegate="deleteCommunity(community, $event)" i18n='[title]button.deleteCommunity'>
+                                        <i class="ico-bin float-right"></i>
+                                        </a>
+                                        <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                        click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.transferOwnership'>
+                                        <i class="ico-circle-right6 float-right"></i>
+                                        </a>                                
+                                    </span>
+                                    <div class="community-description">${(connection.member.physicalPersonProfile !==null) ? (connection.member.physicalPersonProfile.locationProfile.city + ', ' + connection.member.physicalPersonProfile.locationProfile.stateCode + ' ' + connection.member.physicalPersonProfile.locationProfile.zipCode):'&nbsp;'}</div>                               
+                                    </h4>
+                                </a>
+                                </div>
                             </div>
-                            <div class="discover-icon">
-                                <i show.bind="filterValues.length > 1" class="ico-minus-circle" i18n="[title]community.discover.removeFilter" click.delegate="removeFilter($index)"></i>
-                            </div>			
-                        </li>
-                        <li class="discover-line">
-                            <div class="discover-icon">
-                            <i class="ico-plus-circle" i18n="[title]community.discover.addFilter" click.delegate="addFilter()"></i>
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                        </ul>
+                    </div>
+                    </div>
                 </div>
             </div>
-            <div class="discover-footer">
-                <button type="button" click.delegate="resetSearchFilters()" class="btn btn-default-blg">Reset</button>
-                <button type="button" click.delegate="searchOrganizationMembers(selectedOrganizationId, filterValues)" class="btn btn-info">Search</button>                
+            <div if.bind="requestType == 'PENDING'" class="blg-search-content">
+                <div class="discover-list">
+                <div>RECEIVED</div>
+
+                <div class="blg-community-content">
+                    <div id="community-list" class="community-list">
+                        <ul>
+                        <div class="panel-group communities-panel-list list1" id="accordion_communities">
+                            <div id="connect-${connection.connectId}" repeat.for="connection of connections" class='list-item'>
+                            <div class='panel panel-default'>
+                                <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
+                                role='tab'>
+                                <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
+                                    <h4 class='panel-title'>
+                                    <span class="community-name">${connection.member.physicalPersonProfile.firstName} ${connection.member.physicalPersonProfile.lastName}</span>
+                                    <span class="members-count">(${connection.member.physicalPersonProfile.jobTitle})</span>
+                                    <span class='community-buttons'>
+                                        <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                        click.delegate="deleteCommunity(community, $event)" i18n='[title]button.deleteCommunity'>
+                                        <i class="ico-bin float-right"></i>
+                                        </a>
+                                        <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                        click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.transferOwnership'>
+                                        <i class="ico-circle-right6 float-right"></i>
+                                        </a>                                
+                                    </span>
+                                    <div class="community-description">${(connection.member.physicalPersonProfile !==null) ? (connection.member.physicalPersonProfile.locationProfile.city + ', ' + connection.member.physicalPersonProfile.locationProfile.stateCode + ' ' + connection.member.physicalPersonProfile.locationProfile.zipCode):'&nbsp;'}</div>                               
+                                    </h4>
+                                </a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>						
     </div>
+
 </template>
