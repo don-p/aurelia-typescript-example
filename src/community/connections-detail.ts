@@ -5,6 +5,7 @@ import {Router, NavigationInstruction} from 'aurelia-router';
 import {AureliaConfiguration} from 'aurelia-configuration';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {Community} from './community';
+import {Connections} from './connections';
 import {Session} from '../services/session';
 import {DataService} from '../services/dataService';
 import {CommunityService} from '../services/communityService';
@@ -18,7 +19,7 @@ import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-
 import {Utils} from '../services/util';
 
 @inject(Session, Router, DataService, CommunityService, EventAggregator, 
-  Ps, I18N, AureliaConfiguration, Utils, Parent.of(Community), LogManager) // SCROLL
+  Ps, I18N, AureliaConfiguration, Utils, Parent.of(Connections), LogManager) // SCROLL
 export class ConnectionsDetail {
   member: Object;
 
@@ -42,7 +43,7 @@ export class ConnectionsDetail {
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService,
-    private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community) {
+    private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Connections) {
 
     // this.ps = Ps; // SCROLL
 
@@ -212,6 +213,7 @@ export class ConnectionsDetail {
     let rows = scope.api.getSelectedRows();
     this.evt.publish('communityMembersSelected', {selectedMembers: rows});
   }
+
 
 }
 

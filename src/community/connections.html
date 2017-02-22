@@ -23,8 +23,8 @@
                                 role='tab'>
                                 <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
                                     <h4 class='panel-title'>
-                                    <span class="community-name">${connection.member.physicalPersonProfile.firstName} ${connection.member.physicalPersonProfile.lastName}</span>
-                                    <span class="members-count">(${connection.member.physicalPersonProfile.jobTitle})</span>
+                                    <span class="community-name">${connection.physicalPersonProfile.firstName} ${connection.physicalPersonProfile.lastName}</span>
+                                    <span class="members-count">(${connection.physicalPersonProfile.jobTitle})</span>
                                     <span class='community-buttons'>
                                         <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
                                         click.delegate="deleteCommunity(community, $event)" i18n='[title]button.deleteCommunity'>
@@ -35,7 +35,7 @@
                                         <i class="ico-circle-right6 float-right"></i>
                                         </a>                                
                                     </span>
-                                    <div class="community-description">${(connection.member.physicalPersonProfile !==null) ? (connection.member.physicalPersonProfile.locationProfile.city + ', ' + connection.member.physicalPersonProfile.locationProfile.stateCode + ' ' + connection.member.physicalPersonProfile.locationProfile.zipCode):'&nbsp;'}</div>                               
+                                    <div class="community-description">${(connection.physicalPersonProfile !==null) ? (connection.physicalPersonProfile.locationProfile.city + ', ' + connection.physicalPersonProfile.locationProfile.stateCode + ' ' + connection.physicalPersonProfile.locationProfile.zipCode):'&nbsp;'}</div>                               
                                     </h4>
                                 </a>
                                 </div>
@@ -59,19 +59,19 @@
                                 role='tab'>
                                 <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
                                     <h4 class='panel-title'>
-                                    <span class="community-name">${connection.member.physicalPersonProfile.firstName} ${connection.member.physicalPersonProfile.lastName}</span>
-                                    <span class="members-count">(${connection.member.physicalPersonProfile.jobTitle})</span>
+                                    <span class="community-name">${connection.physicalPersonProfile.firstName} ${connection.physicalPersonProfile.lastName}</span>
+                                    <span class="members-count">(${connection.physicalPersonProfile.jobTitle})</span>
                                     <span class='community-buttons'>
-                                        <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                        <a href="javascript:void(0);" 
                                         click.delegate="deleteCommunity(community, $event)" i18n='[title]button.deleteCommunity'>
                                         <i class="ico-bin float-right"></i>
                                         </a>
-                                        <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                        click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.transferOwnership'>
+                                        <a href="javascript:void(0);" 
+                                        click.delegate="editConnectionRequest([connection], 'ACCEPT')" i18n='[title]button.transferOwnership'>
                                         <i class="ico-circle-right6 float-right"></i>
                                         </a>                                
                                     </span>
-                                    <div class="community-description">${(connection.member.physicalPersonProfile !==null) ? (connection.member.physicalPersonProfile.locationProfile.city + ', ' + connection.member.physicalPersonProfile.locationProfile.stateCode + ' ' + connection.member.physicalPersonProfile.locationProfile.zipCode):'&nbsp;'}</div>                               
+                                    <div class="community-description">${(connection.physicalPersonProfile !==null) ? (connection.physicalPersonProfile.locationProfile.city + ', ' + connection.physicalPersonProfile.locationProfile.stateCode + ' ' + connection.physicalPersonProfile.locationProfile.zipCode):'&nbsp;'}</div>                               
                                     </h4>
                                 </a>
                                 </div>
