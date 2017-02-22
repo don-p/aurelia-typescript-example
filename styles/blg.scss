@@ -455,7 +455,8 @@ header .navbar-nav {
   z-index: 0;
 }
 
-.blg-left-panel .blg-organization-content {
+.blg-left-panel .blg-organization-content,
+.blg-right-panel .blg-connection-content {
   padding: 12px 10px 0px 0px;
   position: absolute;
   top: 38px;
@@ -469,6 +470,21 @@ header .navbar-nav {
   border-radius: 0px 0px 6px 6px;
   background-color: $blg-white;
   z-index: 0;
+}
+
+.connections-tabs a{
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 3px;
+  border-left: 1px solid #eeeeee;
+  border-right: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
+}
+
+.connections-tabs a.active{
+  background-color: #e9eff2;
 }
 
 .blg-left-panel .blg-community-content .blg-address-content,

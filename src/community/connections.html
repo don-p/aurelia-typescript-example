@@ -4,17 +4,15 @@
         <div class="blg-inner-content tab-pane active" id="discover">
         
             <div class="conv-buttons-bar">
-                <div >
+                <div class="connections-tabs">
                     <span style="float: left;" class="community-select-label">Requests</span>
-                    <a style="float: right;" click.delegate="showRequests('PENDING')">Received&nbsp;&nbsp;</a>
-                   <a style="float: right;" click.delegate="showRequests('INVITED')">Sent&nbsp;&nbsp;</a>
-                </div>								
+                    <a style="float: right;" class.bind="requestType == 'PENDING'?'active':''" click.delegate="showRequests('PENDING')">Received</a>
+                    <a style="float: right;" class.bind="requestType == 'INVITED'?'active':''" click.delegate="showRequests('INVITED')">Sent</a>
+                </div>
             </div>
 
-            <div if.bind="requestType == 'INVITED'" class="blg-search-content">
+            <div if.bind="requestType == 'INVITED'" class="blg-connection-content">
                 <div class="discover-list">
-                <div>SENT</div>
-
                     <div class="blg-community-content">
                     <div id="community-list" class="community-list">
                         <ul>
@@ -49,10 +47,8 @@
                     </div>
                 </div>
             </div>
-            <div if.bind="requestType == 'PENDING'" class="blg-search-content">
+            <div if.bind="requestType == 'PENDING'" class="blg-connection-content">
                 <div class="discover-list">
-                <div>RECEIVED</div>
-
                 <div class="blg-community-content">
                     <div id="community-list" class="community-list">
                         <ul>
