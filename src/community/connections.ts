@@ -102,8 +102,17 @@ export class Connections {
     connectionsPromise
     .then(response => {return response.json()
       .then(data => {
-        me.connections = data.responseCollection;
-        return data;
+        let result = data.responseCollection.map(function(item){
+          return {
+            connectId: item.connectId,
+            connectStatus: item.connectStatus,
+            memberEntityType: item.member.memberEntityType,
+            memberId: item.member.memberId,
+            physicalPersonProfile: item.member.physicalPersonProfile
+          }
+        });
+        me.connections = result;
+        return result;
         // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
       }).catch(error => {
         me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
@@ -115,6 +124,18 @@ export class Connections {
       me.logger.error(error); 
       //throw error;
       return Promise.reject(error);
+    });
+  }
+
+  editConnectionRequest(connections: Array<any>, status) {
+    let memberIds = connections.map(function(connection) {
+      return connection.memberId;
+    })
+    this.communityService.editConnectionRequest(memberIds, status)
+    .then(response => response.json())
+    .then(data => {
+      // Filter out existing community members.
+      let totalCount = data['totalCount'];
     });
   }
 

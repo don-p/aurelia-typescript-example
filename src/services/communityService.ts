@@ -245,6 +245,24 @@ export class CommunityService {
 
     }
 
+    async editConnectionRequest(memberIds: Array<string>, status: string) {
+        await fetch;
+
+        let body = {
+            memberId: memberIds,
+            status: status,
+            statusComment: status
+        };
+        let response = this.getHttpClient().fetch('v1/member-connects', 
+            {
+                method: 'PUT',
+                body: JSON.stringify(body)
+            }
+        );
+        return response;
+
+    }
+
     async getMemberConnections(connectionStatus: string, startIndex: number, pageSize:number, params:Object): Promise<Response> {
         await fetch;
         let criteriaParams;
