@@ -32,6 +32,7 @@ export class Connections {
   constructor(private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
     private communityService:CommunityService, private parent: Community, private evt: EventAggregator, private vController:ValidationController) {
 
+      this['id'] = new Date().getTime();
     this.requestType = 'PENDING';
     this.pageSize = 100000;
 
@@ -60,8 +61,8 @@ export class Connections {
   }
 
   bind(bindingContext: Object, overrideContext: Object) {
-
-    this.logger.debug("Community | bind()");
+    bindingContext['parent'].vm = this;
+    this.logger.debug("Connections | bind()");
   }
 
   attached() {
@@ -84,10 +85,12 @@ export class Connections {
     let me = this;
 
     if(type === 'PENDING') {
-       this.gridOptionsReceived.api.refreshView();
+       //me.gridOptionsReceived.api.refreshView();
+       me.utils.setMemberConnectionRequestsGridDataSource(me.gridOptionsReceived, me.pageSize, me.communityService, type);
     } else if(type === 'INVITED') {
-      this.gridOptionsSent.api.refreshView();
-    }
+      //me.gridOptionsSent.api.refreshView();
+      me.utils.setMemberConnectionRequestsGridDataSource(me.gridOptionsSent, me.pageSize, me.communityService, type);
+   }
 
   }
 
