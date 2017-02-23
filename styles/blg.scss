@@ -871,12 +871,16 @@ header .navbar-nav {
   margin: 75px 15px 10px 510px;
   position: absolute;
   box-sizing: border-box;
-  min-height: 611px;
+  min-height: 585px;
   bottom: 5px;
   top: 40px;
   right: 0;
   left: 0;
   min-width: 900px;
+}
+
+.members-table.connections-table {
+  min-width: 0px;
 }
 
 .connections-table {
