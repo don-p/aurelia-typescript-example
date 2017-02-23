@@ -101,7 +101,7 @@ export class Utils {
             headerName: '',
             cellRenderer: function(params) {
               var eDiv = document.createElement('div');
-              eDiv.innerHTML = '<i onclick="editConnectionRequest([connection], \'ACCEPT\')" click.delegate="editConnectionRequest([connection], \'ACCEPT\')" class="ico-bin float-right"></i> <i click.delegate="editConnectionRequest([connection], \'ACCEPT\')" class="ico-circle-right6 float-right"></i>';
+              eDiv.innerHTML = '<i if.bind="requestType==\'INVITED\'" onclick="parent.editConnectionRequest([\'' + params.data.memberId + '\'], \'ACCEPT\')" click.delegate="parent.editConnectionRequest([connection], \'ACCEPT\')" class="ico-bin float-right"></i> <i click.delegate="editConnectionRequest([connection], \'ACCEPT\')" class="ico-circle-right6 float-right"></i>';
               var eButton = eDiv.querySelectorAll('.btn-simple')[0];
 
               return eDiv;
