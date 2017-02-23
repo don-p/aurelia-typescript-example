@@ -1,4 +1,4 @@
-import {inject, Lazy, bindable, LogManager, Parent} from 'aurelia-framework';
+import {inject, Lazy, bindable, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
@@ -19,7 +19,7 @@ import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-
 import {Utils} from '../services/util';
 
 @inject(Session, Router, DataService, CommunityService, EventAggregator, 
-  Ps, I18N, AureliaConfiguration, Utils, Parent.of(Connections), LogManager) // SCROLL
+  Ps, I18N, AureliaConfiguration, Utils, LogManager) // SCROLL
 export class ConnectionsDetail {
   member: Object;
 
@@ -38,12 +38,13 @@ export class ConnectionsDetail {
   grid: any;
 
   ps: any; // SCROLL
-
+  parent: Connections;
   logger: Logger;
   
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService,
-    private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Connections) {
+    private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, 
+    private utils: Utils) {
 
     // this.ps = Ps; // SCROLL
 
@@ -80,7 +81,8 @@ export class ConnectionsDetail {
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
-  bind(bindingContext: Object, overrideContext: Object) {
+  bind(bindingContext: Object, overrideContext: any) {
+    this.parent = overrideContext.parentOverrideContext.bindingContext.vm;
     this.logger.debug("DiscoverDetail | bind()");
   }
 

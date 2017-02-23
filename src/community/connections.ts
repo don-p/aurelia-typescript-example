@@ -61,7 +61,7 @@ export class Connections {
   }
 
   bind(bindingContext: Object, overrideContext: Object) {
-    bindingContext['parent'].vm = this;
+    // bindingContext['parent'].vm = this;
     this.logger.debug("Connections | bind()");
   }
 

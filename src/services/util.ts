@@ -116,7 +116,7 @@ export class Utils {
         let isConnectionRequests = type === 'listConnectionRequests';
         let rowModel = type === 'listConnectionRequests'?'normal':'virtual';
 
-        return {
+        return <GridOptions>{
         columnDefs: this.getGridColumns(type),
         rowSelection: 'multiple',
         suppressRowClickSelection: true,

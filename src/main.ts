@@ -117,6 +117,7 @@ export async function configure(aurelia: Aurelia) {
       })
       .plugin('aurelia-validation')
       .plugin('aurelia-dialog')
+      .plugin('ag-grid-aurelia')
       // .plugin('aurelia-ui-virtualization')
       .postTask(function() {  // Additional bootstraping after framework start-up.
         let dataInstance = aurelia.container.get(DataService);
