@@ -15,7 +15,7 @@
         <div class="blg-inner-content tab-pane active" id="requests">
             <div show.bind="requestType == 'PENDING'" class="blg-connection-content">
                 <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
-                    <ag-grid-aurelia id="receivedRequestsGrid" #agGrid style="width: 100%; " class="ag-fresh"
+                    <ag-grid-aurelia id="receivedRequestsGrid" #agGrid style="width: 100%; " class="ag-blg"
                                     grid-options.bind="gridOptionsReceived"
                                     column-defs.bind="gridOptionsReceived.columnDefs"
                                     context.bind="$this"
@@ -37,7 +37,7 @@
             </div>
             <div show.bind="requestType == 'INVITED'" class="blg-connection-content">
                 <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
-                   <ag-grid-aurelia id="sentRequestsGrid" #agGrid style="width: 100%;" class="ag-fresh"
+                   <ag-grid-aurelia id="sentRequestsGrid" #agGrid style="width: 100%;" class="ag-blg"
                                     grid-options.bind="gridOptionsSent"
                                     column-defs.bind="gridOptionsSent.columnDefs"
                                     context.bind="$this"
