@@ -15,7 +15,7 @@
         <button id="btn-members-send-request" if.bind="hasAction(ADDCONNECTION)" click.delegate="sendConnectionRequest(selectedMembers)" class="btn btn-info btn-xs-square" i18n="[title]community.connections.addConnections" disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)">
             <i class="ico-link"></i>
         </button>
-        <button id="btn-members-disconnect" if.bind="hasAction(REMOVECONNECTION)" click.delegate="parent.parent.editConnectionRequest(selectedMembers, 'TERMINATE')" class="btn btn-danger btn-xs-square" i18n="[title]community.connections.removeConnections" disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)">
+        <button id="btn-members-disconnect" if.bind="hasAction(REMOVECONNECTION)" click.delegate="parent.parent.editConnectionRequest(selectedMembers, 'TERMINATE', 'CONNECTION_TERMINATED')" class="btn btn-danger btn-xs-square" i18n="[title]community.connections.removeConnections" disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)">
             <i class="ico-unlink2"></i>
         </button>        			
         <button id="btn-members-add-member" if.bind="hasAction(ADDMEMBER)" click.delegate="addCommunityMembers()" class="btn btn-info btn-xs-square" i18n="[title]button.addMembers" disabled.bind="((!selectedMembers) || (selectedMembers.length === 0) && !(selectedCmty))">
