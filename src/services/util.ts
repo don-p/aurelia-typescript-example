@@ -394,7 +394,8 @@ export class Utils {
             connectStatus: item.connectStatus,
             memberEntityType: item.member.memberEntityType,
             memberId: item.member.memberId,
-            physicalPersonProfile: item.member.physicalPersonProfile
+            physicalPersonProfile: item.member.physicalPersonProfile,
+            statusComment: item.statusComment
           }
         });
         gridOptions.api.setRowData(result);
