@@ -15,24 +15,30 @@
         <div class="blg-inner-content tab-pane active" id="requests">
             <div show.bind="requestType == 'PENDING'" class="blg-connection-content">
                 <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
-                    <ag-grid-aurelia id="receivedRequestsGrid" #agGrid style="width: 100%; " class="ag-blg"
+                    <ag-grid-aurelia id="receivedRequestsGrid" #agGrid style="bottom: 215px;top: 39px;position: absolute;width: 100%; " class="ag-blg"
                                     grid-options.bind="gridOptionsReceived"
-                                    column-defs.bind="gridOptionsReceived.columnDefs"
                                     context.bind="$this"
                                     enable-col-resize
                                     enable-sorting
                                     enable-filter="false"
-                                    suppress-row-click-selection
+                                    row-clicked.call="onReceivedRequestSelected($event)"
                                     debug>
                         <ag-grid-column header-name="${'community.communities.members.firstname' | t}" field="physicalPersonProfile.firstName"></ag-grid-column>
                         <ag-grid-column header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" ></ag-grid-column>
                         <ag-grid-column header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" ></ag-grid-column>
-                        <ag-grid-column header-name="" >
-                            <ag-cell-template>
-                                <i if.bind="requestType=='INVITED'" click.delegate="params.context.editConnectionRequest([params.data], 'DECLINE')" class="ico-bin float-right"></i> <i click.delegate="params.context.editConnectionRequest([params.data], 'ACCEPT', 'REQUEST_ACCEPTED')" class="ico-circle-right6 float-right"></i>
-                            </ag-cell-template>
-                        </ag-grid-column>
-                    </ag-grid-aurelia>       
+                    </ag-grid-aurelia>  
+                    <div style="position: absolute;height: 200px; border: 1px solid; bottom: 15px; width: 100%;">
+                        <div show.bind="!!(selectedRequest)">
+                            <div>From:</div><div>${selectedRequest.physicalPersonProfile.firstName} ${selectedRequest.physicalPersonProfile.lastName} </div>
+                            <div>Organization:</div><div>${selectedRequest.physicalPersonProfile.organization.organizationName}</div>
+                            <div>Date:</div><div></div>
+                            <div>Message:</div><div>${selectedRequest.statusComment}</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')">Decline</button>
+                            <button  type="submit" class="btn btn-primary" click.trigger="editConnectionRequest([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')">Accept</button>
+                        </div>
+                    </div>     
                 </div>
             </div>
             <div show.bind="requestType == 'INVITED'" class="blg-connection-content">

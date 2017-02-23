@@ -24,6 +24,8 @@ export class Connections {
   connections: Array<any>;
   connectionsPromise: Promise<Response>;
   requestType: string;
+  selectedRequest: any;
+
   router: Router;
   @bindable pageSize;
 
@@ -83,6 +85,7 @@ export class Connections {
   showRequests(type: string) {
     this.requestType = type;
     let me = this;
+    this.selectedRequest = null;
 
     if(type === 'PENDING') {
        //me.gridOptionsReceived.api.refreshView();
@@ -92,6 +95,11 @@ export class Connections {
       me.utils.setMemberConnectionRequestsGridDataSource(me.gridOptionsSent, me.pageSize, me.communityService, type);
    }
 
+  }
+
+  onReceivedRequestSelected(event) {
+    let connection = event.data;
+    this.selectedRequest = connection;
   }
 
   editConnectionRequest(connections: Array<any>, status:string, event:string) {
