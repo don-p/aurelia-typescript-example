@@ -1,4 +1,5 @@
 <template>
+<require from="../lib/loading-mask/loading-mask"></require>
 
     <div id="discover-tab" class="blg-tab-section tab-content">
         <div class="blg-inner-content tab-pane active" id="discover">
@@ -11,77 +12,19 @@
                 </div>
             </div>
 
-            <div if.bind="requestType == 'INVITED'" class="blg-connection-content">
-                <div class="discover-list">
-                    <div class="blg-community-content">
-                    <div id="community-list" class="community-list">
-                        <ul>
-                        <div class="panel-group communities-panel-list list1" id="accordion_communities">
-                            <div id="connect-${connection.connectId}" repeat.for="connection of connections" class='list-item'>
-                            <div class='panel panel-default'>
-                                <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
-                                role='tab'>
-                                <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
-                                    <h4 class='panel-title'>
-                                    <span class="community-name">${connection.physicalPersonProfile.firstName} ${connection.physicalPersonProfile.lastName}</span>
-                                    <span class="members-count">(${connection.physicalPersonProfile.jobTitle})</span>
-                                    <span class='community-buttons'>
-                                        <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                        click.delegate="deleteCommunity(community, $event)" i18n='[title]button.deleteCommunity'>
-                                        <i class="ico-bin float-right"></i>
-                                        </a>
-                                        <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                        click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.transferOwnership'>
-                                        <i class="ico-circle-right6 float-right"></i>
-                                        </a>                                
-                                    </span>
-                                    <div class="community-description">${(connection.physicalPersonProfile !==null) ? (connection.physicalPersonProfile.locationProfile.city + ', ' + connection.physicalPersonProfile.locationProfile.stateCode + ' ' + connection.physicalPersonProfile.locationProfile.zipCode):'&nbsp;'}</div>                               
-                                    </h4>
-                                </a>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        </ul>
-                    </div>
-                    </div>
+            <div show.bind="requestType == 'INVITED'" class="blg-connection-content">
+            <loading id="connections-loading" promise.bind="'connectionsPromise'" message-key.bind="'app.loading'">
+                <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
+                    <div id="sentRequestsGrid" ref="sentRequestsGrid" style="height: 100%;" class="ag-blg" ></div>
                 </div>
+             </loading>
             </div>
-            <div if.bind="requestType == 'PENDING'" class="blg-connection-content">
-                <div class="discover-list">
-                <div class="blg-community-content">
-                    <div id="community-list" class="community-list">
-                        <ul>
-                        <div class="panel-group communities-panel-list list1" id="accordion_communities">
-                            <div id="connect-${connection.connectId}" repeat.for="connection of connections" class='list-item'>
-                            <div class='panel panel-default'>
-                                <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
-                                role='tab'>
-                                <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
-                                    <h4 class='panel-title'>
-                                    <span class="community-name">${connection.physicalPersonProfile.firstName} ${connection.physicalPersonProfile.lastName}</span>
-                                    <span class="members-count">(${connection.physicalPersonProfile.jobTitle})</span>
-                                    <span class='community-buttons'>
-                                        <a href="javascript:void(0);" 
-                                        click.delegate="deleteCommunity(community, $event)" i18n='[title]button.deleteCommunity'>
-                                        <i class="ico-bin float-right"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" 
-                                        click.delegate="editConnectionRequest([connection], 'ACCEPT')" i18n='[title]button.transferOwnership'>
-                                        <i class="ico-circle-right6 float-right"></i>
-                                        </a>                                
-                                    </span>
-                                    <div class="community-description">${(connection.physicalPersonProfile !==null) ? (connection.physicalPersonProfile.locationProfile.city + ', ' + connection.physicalPersonProfile.locationProfile.stateCode + ' ' + connection.physicalPersonProfile.locationProfile.zipCode):'&nbsp;'}</div>                               
-                                    </h4>
-                                </a>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        </ul>
-                    </div>
+            <div show.bind="requestType == 'PENDING'" class="blg-connection-content">
+            <loading id="connections-loading" promise.bind="'connectionsPromise'" message-key.bind="'app.loading'">
+                <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
+                    <div id="receivedRequestsGrid" ref="receivedRequestsGrid" style="height: 100%;" class="ag-blg" ></div>
                 </div>
-            </div>
+            </loading>
             </div>
         </div>						
     </div>

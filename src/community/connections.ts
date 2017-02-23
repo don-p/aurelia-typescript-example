@@ -1,9 +1,10 @@
-import {inject, NewInstance, Lazy, Parent, LogManager} from 'aurelia-framework';
+import {inject, NewInstance, Lazy, Parent, LogManager, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {AureliaConfiguration} from 'aurelia-configuration';
+import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {I18N} from 'aurelia-i18n';
 import {ValidationRules, ValidationController, Rules, validateTrigger} from 'aurelia-validation';
 import {Community} from './community';
@@ -16,12 +17,15 @@ const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(
 @inject(I18N, AureliaConfiguration, Utils, CommunityService, Parent.of(Community), EventAggregator, NewInstance.of(ValidationController), LogManager)
 export class Connections {
 
-  $filterValues: Array<any>;
-  selectedOrganization: any;
-
+  sentRequestsGrid: any;
+  receivedRequestsGrid: any;
+  gridOptionsSent: GridOptions;
+  gridOptionsReceived: GridOptions;
   connections: Array<any>;
+  connectionsPromise: Promise<Response>;
   requestType: string;
   router: Router;
+  @bindable pageSize;
 
   logger: Logger;
 
@@ -29,6 +33,7 @@ export class Connections {
     private communityService:CommunityService, private parent: Community, private evt: EventAggregator, private vController:ValidationController) {
 
     this.requestType = 'INVITED';
+    this.pageSize = 100000;
 
     // ValidationRules
     // .ensureObject()
@@ -38,58 +43,37 @@ export class Connections {
 
     // ValidationRules.on(this).passes(validatePhoneNumber);
 
-    const vRules = ValidationRules
-      // .ensure('value')
-      // .satisfies(this.filterValid)
+    this.gridOptionsSent = this.utils.getGridOptions('listConnectionRequests', this.pageSize);
+    this.gridOptionsReceived = this.utils.getGridOptions('listConnectionRequests', this.pageSize);
 
-      // .ensure('$filterValues').displayName("First name")
-      //   .required()
-      //   .satisfies(v => this.filterValid(v)).withMessage('${$displayName} cannot have leading or trailing spaces.')
-  .ensure('$filterValues').satisfies(this.filterValid).withMessage('Passwords must match')
-      // .displayName(this.i18n.tr('community.communities.alert.recipientsList'))
-      // .minItems(1)
-      // .then()
-      // .ensure('alertMessage')
-      // .displayName(this.i18n.tr('community.communities.alert.message'))
-      // .required()
-      // .then()
-      // .maxLength(maxMessageLength)
-      .rules;
-    Rules.set(this, vRules);
-    this.vController.validateTrigger = validateTrigger.changeOrBlur;
+    let me = this;
+    this.evt.subscribe('connectionChanged', payload => {
+      if(payload === 'REQUEST_TERMINATED' || 
+        payload === 'REQUEST_ACCEPTED' || 
+        payload === 'REQUEST_DECLINED') {
+        me.showRequests(me.requestType);
+      }
+    });
 
     this.logger = LogManager.getLogger(this.constructor.name);
     
   }
 
-  filterValid(value) {
-    return this.$filterValues.length  >0;
-  }
-
-  addFilter(filter) {
-    this.$filterValues.push({attr:'fn', op:'LIKE', value:''});
-  }
-
-  removeFilter(filter: any) {
-    this.$filterValues.splice(filter, 1);
-  }
-
-  onFilterChange(filterId, event, model) {
-    model.toString();
-  }
-
-  get filterValues() {
-    return this.$filterValues;
-  }
-
   bind(bindingContext: Object, overrideContext: Object) {
-    this.showRequests(this.requestType);
 
     this.logger.debug("Community | bind()");
   }
 
   attached() {
-    this.selectOrganization(this.parent.organizations[0]);
+    new Grid(this.sentRequestsGrid, this.gridOptionsSent); //create a new grid
+    this.gridOptionsSent['api'].sizeColumnsToFit();
+    this.utils.setMemberConnectionRequestsGridDataSource(this.gridOptionsSent, this.pageSize, this.communityService, 'INVITED');
+    new Grid(this.receivedRequestsGrid, this.gridOptionsReceived); //create a new grid
+    this.gridOptionsReceived['api'].sizeColumnsToFit();
+    this.utils.setMemberConnectionRequestsGridDataSource(this.gridOptionsReceived, this.pageSize, this.communityService, 'PENDING');
+
+    //this.showRequests(this.requestType);
+
   }
   activate(params, navigationInstruction) {
     // this.selectOrganization(this.parent.organizations[0]);
@@ -98,60 +82,30 @@ export class Connections {
   showRequests(type: string) {
     this.requestType = type;
     let me = this;
-    let connectionsPromise = this.communityService.getMemberConnections(type, 0, 10000, null);
-    connectionsPromise
-    .then(response => {return response.json()
-      .then(data => {
-        let result = data.responseCollection.map(function(item){
-          return {
-            connectId: item.connectId,
-            connectStatus: item.connectStatus,
-            memberEntityType: item.member.memberEntityType,
-            memberId: item.member.memberId,
-            physicalPersonProfile: item.member.physicalPersonProfile
-          }
-        });
-        me.connections = result;
-        return result;
-        // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
-      }).catch(error => {
-        me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
-        return Promise.reject(error);
-      })
-    })
-    .catch(error => {
-      me.logger.error('Communities list() failed in then(response). Error: ' + error); 
-      me.logger.error(error); 
-      //throw error;
-      return Promise.reject(error);
-    });
+
+    if(type === 'PENDING') {
+       this.gridOptionsReceived.api.refreshView();
+    } else if(type === 'INVITED') {
+      this.gridOptionsSent.api.refreshView();
+    }
+
   }
 
-  editConnectionRequest(connections: Array<any>, status) {
+  editConnectionRequest(connections: Array<any>, status:string, event:string) {
+    let me = this;
     let memberIds = connections.map(function(connection) {
       return connection.memberId;
     })
     this.communityService.editConnectionRequest(memberIds, status)
     .then(response => response.json())
     .then(data => {
+      // update view
+      me.evt.publish('connectionChanged', event);
       // Filter out existing community members.
       let totalCount = data['totalCount'];
     });
   }
 
-  selectOrganization = function(organization: any) {
-    this.resetSearchFilters();
-    return this.evt.publish('orgSelected', {organization: organization});
-  }
-
-  resetSearchFilters() {
-    this.$filterValues = [{attr:'physicalPersonProfile.firstName', op:'LIKE', value:''}];
-  }
-
-  searchOrganizationMembers(organization: any, filters: Array<any>) {
-    return this.evt.publish('orgSearch', {organization: organization, filters: filters});
-    // return this.organizationService.searchOrganizationMembers(organization, filters, 0, 500);
-  }
 
 }
 

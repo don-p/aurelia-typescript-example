@@ -68,6 +68,15 @@ export class ConnectionsDetail {
     this.evt.subscribe('communityMembersSelected', payload => {
       me.selectedMembers = payload.selectedMembers;
     });
+    this.evt.subscribe('connectionChanged', payload => {
+      if(payload === 'CONNECTION_TERMINATED' || 
+        payload === 'REQUEST_ACCEPTED') {
+        me.gridOptions.api.refreshVirtualPageCache();
+        me.gridOptions.api.refreshView();
+        me.gridOptionsSelected.api.refreshVirtualPageCache();
+        me.gridOptionsSelected.api.refreshView();
+      }
+    });
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
@@ -90,7 +99,7 @@ export class ConnectionsDetail {
 
     this.initGrid(this);
     // Load the grid data.
-    me.setMemberConnectionsGridDataSource(me.gridOptions, me.pageSize, me.communityService);
+    me.utils.setMemberConnectionsGridDataSource(me.gridOptions, me.pageSize, me.communityService, 'CONNECTED');
 
     this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
     this.gridOptionsSelected.enableServerSideSorting = false;
@@ -123,71 +132,71 @@ export class ConnectionsDetail {
     this.gridOptions['api'].sizeColumnsToFit();
   }
 
-  setMemberConnectionsGridDataSource(gridOptions, pageSize, communityService) {
-    const me = this;
+  // setMemberConnectionsGridDataSource(gridOptions, pageSize, communityService) {
+  //   const me = this;
 
-    gridOptions.selection = null;
+  //   gridOptions.selection = null;
 
-    let gridDataSource = {
-        name: 'memberConnections',
-        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-        rowCount: null,
-        paginationPageSize: pageSize,
-        //  paginationOverflowSize: 1,
-          maxConcurrentDatasourceRequests: 2,
-        //  maxPagesInPaginationCache: 2,
-        loading: false,
+  //   let gridDataSource = {
+  //       name: 'memberConnections',
+  //       /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
+  //       rowCount: null,
+  //       paginationPageSize: pageSize,
+  //       //  paginationOverflowSize: 1,
+  //         maxConcurrentDatasourceRequests: 2,
+  //       //  maxPagesInPaginationCache: 2,
+  //       loading: false,
 
-        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-        getRows: function(params: IGetRowsParams) {
-            gridOptions.api.showLoadingOverlay();
-          if(!this.loading) {
-            me.logger.debug("..... setMemberConnectionsGridDataSource Loading Grid rows | startIndex: " + params.startRow);
-            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
-            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
-            this.loading = true;
-            let memberId = me.session.auth['member'].memberId;
-            let connectionsPromise = communityService.getMemberConnections('CONNECTED', params.startRow, pageSize, params);
-            connectionsPromise.then(response => response.json())
-              .then(data => {
-                // Filter out existing community members.
-                let totalCount = data.totalCount;
-                if(gridDataSource.rowCount === null) {
-                  gridDataSource.rowCount = totalCount;
-                }
-                let result = data.responseCollection.map(function(item){
-                  return {
-                    connectId: item.connectId,
-                    connectStatus: item.connectStatus,
-                    memberEntityType: item.member.memberEntityType,
-                    memberId: item.member.memberId,
-                    physicalPersonProfile: item.member.physicalPersonProfile
-                  }
-                });
-                params.successCallback(result, totalCount);
-                // pre-select nodes as needed.
-                let selection = gridOptions.selection;
-                if(Array.isArray(selection)) {
-                  gridOptions.api.forEachNode( function (node) {
-                      if (selection.find(function(item:any, index:number, array:any[]) {
-                        return item.memberId === node.data.memberId
-                      })) {
-                          node.setSelected(true);
-                          gridOptions.api.refreshRows([node]);
-                      } else {
-                          node.setSelected(false);
-                          gridOptions.api.refreshRows([node]);
-                      }
-                  });
-                }
-                gridOptions.api.hideOverlay();
-               this.loading = false;
-            });
-          }
-        }
-    }
-    gridOptions.api.setDatasource(gridDataSource);
-  }
+  //       /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
+  //       getRows: function(params: IGetRowsParams) {
+  //           gridOptions.api.showLoadingOverlay();
+  //         if(!this.loading) {
+  //           me.logger.debug("..... setMemberConnectionsGridDataSource Loading Grid rows | startIndex: " + params.startRow);
+  //           me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
+  //           me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
+  //           this.loading = true;
+  //           let memberId = me.session.auth['member'].memberId;
+  //           let connectionsPromise = communityService.getMemberConnections('CONNECTED', params.startRow, pageSize, params);
+  //           connectionsPromise.then(response => response.json())
+  //             .then(data => {
+  //               // Filter out existing community members.
+  //               let totalCount = data.totalCount;
+  //               if(gridDataSource.rowCount === null) {
+  //                 gridDataSource.rowCount = totalCount;
+  //               }
+  //               let result = data.responseCollection.map(function(item){
+  //                 return {
+  //                   connectId: item.connectId,
+  //                   connectStatus: item.connectStatus,
+  //                   memberEntityType: item.member.memberEntityType,
+  //                   memberId: item.member.memberId,
+  //                   physicalPersonProfile: item.member.physicalPersonProfile
+  //                 }
+  //               });
+  //               params.successCallback(result, totalCount);
+  //               // pre-select nodes as needed.
+  //               let selection = gridOptions.selection;
+  //               if(Array.isArray(selection)) {
+  //                 gridOptions.api.forEachNode( function (node) {
+  //                     if (selection.find(function(item:any, index:number, array:any[]) {
+  //                       return item.memberId === node.data.memberId
+  //                     })) {
+  //                         node.setSelected(true);
+  //                         gridOptions.api.refreshRows([node]);
+  //                     } else {
+  //                         node.setSelected(false);
+  //                         gridOptions.api.refreshRows([node]);
+  //                     }
+  //                 });
+  //               }
+  //               gridOptions.api.hideOverlay();
+  //              this.loading = false;
+  //           });
+  //         }
+  //       }
+  //   }
+  //   gridOptions.api.setDatasource(gridDataSource);
+  // }
 
   clearGridFilters(gridOptions) {
       this.utils.clearGridFilters(gridOptions);

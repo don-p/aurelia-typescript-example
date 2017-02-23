@@ -41,7 +41,8 @@ export class Utils {
     getGridColumns(type: string) { 
         let columns = [];
         // return [
-        if(type !== 'transferOwnership') {
+        if(type !== 'transferOwnership' &&
+          type !== 'listConnectionRequests') {
             columns.push({
                 colId: 'select',
                 headerName: '', 
@@ -62,7 +63,7 @@ export class Utils {
             field: "physicalPersonProfile.lastName", 
             filter: TextSearchFilter
         });
-        if(type == 'listMembers') {
+        if(type == 'listMembers' || type == 'listConnectionRequests') {
             columns.push({
                 headerName: this.i18n.tr('community.communities.members.organization'), 
                 field: "physicalPersonProfile.organization.organizationName",
@@ -76,29 +77,45 @@ export class Utils {
             filter: TextSearchFilter
         });
         // }
-        columns.push({
-            headerName: this.i18n.tr('community.communities.members.city'), 
-            field: "physicalPersonProfile.locationProfile.city",
-            filter: TextSearchFilter
-        });
-        columns.push({
-            headerName: this.i18n.tr('community.communities.members.state'), 
-            field: "physicalPersonProfile.locationProfile.stateCode", 
-            filter: TextSearchFilter,
-            width: 100
-        });
-        columns.push({
-            headerName: this.i18n.tr('community.communities.members.zip'), 
-            field: "physicalPersonProfile.locationProfile.zipCode", 
-            filter: TextSearchFilter,
-            width: 80
-        });
+        if(type !== 'listConnectionRequests') {
+          columns.push({
+              headerName: this.i18n.tr('community.communities.members.city'), 
+              field: "physicalPersonProfile.locationProfile.city",
+              filter: TextSearchFilter
+          });
+          columns.push({
+              headerName: this.i18n.tr('community.communities.members.state'), 
+              field: "physicalPersonProfile.locationProfile.stateCode", 
+              filter: TextSearchFilter,
+              width: 100
+          });
+          columns.push({
+              headerName: this.i18n.tr('community.communities.members.zip'), 
+              field: "physicalPersonProfile.locationProfile.zipCode", 
+              filter: TextSearchFilter,
+              width: 80
+          });
+        }
+        if(type == 'listConnectionRequests') {
+          columns.push({
+            headerName: '',
+            cellRenderer: function(params) {
+              var eDiv = document.createElement('div');
+              eDiv.innerHTML = '<i onclick="editConnectionRequest([connection], \'ACCEPT\')" click.delegate="editConnectionRequest([connection], \'ACCEPT\')" class="ico-bin float-right"></i> <i click.delegate="editConnectionRequest([connection], \'ACCEPT\')" class="ico-circle-right6 float-right"></i>';
+              var eButton = eDiv.querySelectorAll('.btn-simple')[0];
 
+              return eDiv;
+            }
+          })
+        }
         return columns;
     }
 
     getGridOptions(type, pageSize): GridOptions {
         let me = this;
+        let isConnectionRequests = type === 'listConnectionRequests';
+        let rowModel = type === 'listConnectionRequests'?'normal':'virtual';
+
         return {
         columnDefs: this.getGridColumns(type),
         rowSelection: 'multiple',
@@ -109,11 +126,13 @@ export class Utils {
         // pageSize: this.pageSize,
         paginationPageSize: pageSize,
         sortingOrder: ['desc','asc'],
-        enableServerSideSorting: true,
-        enableServerSideFilter: true,
+        enableServerSideSorting: !isConnectionRequests,
+        enableServerSideFilter: !isConnectionRequests,
+        enableSorting: isConnectionRequests,
+        enableFilter: false,
         enableColResize: true,
         debug: false,
-        rowModelType: 'virtual',
+        rowModelType: rowModel,
         maxPagesInCache: 2,
         onViewportChanged: function() {
             if(!this.api) return;
@@ -297,7 +316,96 @@ export class Utils {
     gridOptions.api.setDatasource(gridDataSource);
   }
   
-    $isDirty(originalItem, item) {
+  setMemberConnectionsGridDataSource(gridOptions, pageSize, communityService, status) {
+    const me = this;
+
+    gridOptions.selection = null;
+
+    let gridDataSource = {
+        name: 'memberConnections',
+        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
+        rowCount: null,
+        paginationPageSize: pageSize,
+        //  paginationOverflowSize: 1,
+          maxConcurrentDatasourceRequests: 2,
+        //  maxPagesInPaginationCache: 2,
+        loading: false,
+
+        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
+        getRows: function(params: IGetRowsParams) {
+            gridOptions.api.showLoadingOverlay();
+          if(!this.loading) {
+            me.logger.debug("..... setMemberConnectionsGridDataSource Loading Grid rows | startIndex: " + params.startRow);
+            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
+            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
+            this.loading = true;
+            let memberId = me.session.auth['member'].memberId;
+            let connectionsPromise = communityService.getMemberConnections(status, params.startRow, pageSize, params);
+            connectionsPromise.then(response => response.json())
+              .then(data => {
+                // Filter out existing community members.
+                let totalCount = data.totalCount;
+                if(gridDataSource.rowCount === null) {
+                  gridDataSource.rowCount = totalCount;
+                }
+                let result = data.responseCollection.map(function(item){
+                  return {
+                    connectId: item.connectId,
+                    connectStatus: item.connectStatus,
+                    memberEntityType: item.member.memberEntityType,
+                    memberId: item.member.memberId,
+                    physicalPersonProfile: item.member.physicalPersonProfile
+                  }
+                });
+                params.successCallback(result, totalCount);
+                // pre-select nodes as needed.
+                let selection = gridOptions.selection;
+                if(Array.isArray(selection)) {
+                  gridOptions.api.forEachNode( function (node) {
+                      if (selection.find(function(item:any, index:number, array:any[]) {
+                        return item.memberId === node.data.memberId
+                      })) {
+                          node.setSelected(true);
+                          gridOptions.api.refreshRows([node]);
+                      } else {
+                          node.setSelected(false);
+                          gridOptions.api.refreshRows([node]);
+                      }
+                  });
+                }
+                gridOptions.api.hideOverlay();
+               this.loading = false;
+            });
+          }
+        }
+    }
+    gridOptions.api.setDatasource(gridDataSource);
+  }
+
+  setMemberConnectionRequestsGridDataSource(gridOptions:GridOptions, pageSize, communityService, status) {
+    const me = this;
+
+    let connectionsPromise = communityService.getMemberConnections(status, 0, pageSize);
+    connectionsPromise.then(response => response.json())
+      .then(data => {
+        let result = data.responseCollection.map(function(item){
+          return {
+            connectId: item.connectId,
+            connectStatus: item.connectStatus,
+            memberEntityType: item.member.memberEntityType,
+            memberId: item.member.memberId,
+            physicalPersonProfile: item.member.physicalPersonProfile
+          }
+        });
+        gridOptions.api.setRowData(result);
+        gridOptions.api.hideOverlay();
+    });
+  }
+
+  /**
+   * Utilities
+   */
+  $isDirty(originalItem, item) {
     if(!(originalItem) || !(item)) {
       return false;
     }
