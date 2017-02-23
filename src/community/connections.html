@@ -29,7 +29,7 @@
                         <ag-grid-column header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" ></ag-grid-column>
                         <ag-grid-column header-name="" >
                             <ag-cell-template>
-                                <i if.bind="requestType=='INVITED'" click.delegate="params.context.editConnectionRequest([params.data], 'DECLINE')" class="ico-bin float-right"></i> <i click.delegate="params.context.editConnectionRequest([params.data], 'ACCEPT', 'CONNECTION_ACCEPTED')" class="ico-circle-right6 float-right"></i>
+                                <i if.bind="requestType=='INVITED'" click.delegate="params.context.editConnectionRequest([params.data], 'DECLINE')" class="ico-bin float-right"></i> <i click.delegate="params.context.editConnectionRequest([params.data], 'ACCEPT', 'REQUEST_ACCEPTED')" class="ico-circle-right6 float-right"></i>
                             </ag-cell-template>
                         </ag-grid-column>
                     </ag-grid-aurelia>       
