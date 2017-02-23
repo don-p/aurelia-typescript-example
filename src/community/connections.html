@@ -1,24 +1,26 @@
 <template>
 <require from="../lib/loading-mask/loading-mask"></require>
 
-    <div id="discover-tab" class="blg-tab-section tab-content">
-        <div class="blg-inner-content tab-pane active" id="discover">
+    <ul class="nav nav-tabs nav-append-content">
+        <li class="active">
+            <a id="tabReceivedRequests" class.bind="requestType == 'PENDING'?'active':''" click.delegate="showRequests('PENDING')">Received requests</a>
+        </li>
+        <li>
+            <a id="tabSentRequests" class.bind="requestType == 'INVITED'?'active':''" click.delegate="showRequests('INVITED')">Sent requests</a>
+        </li>
+    </ul>
+
+    <div id="requests-tab" class="blg-tab-section tab-content ">
+        <div class="blg-inner-content tab-pane active" id="requests">
         
-            <div class="conv-buttons-bar">
+            <!--div class="conv-buttons-bar">
                 <div class="connections-tabs">
                     <span style="float: left;" class="community-select-label">Requests</span>
                     <a style="float: right;" class.bind="requestType == 'PENDING'?'active':''" click.delegate="showRequests('PENDING')">Received</a>
                     <a style="float: right;" class.bind="requestType == 'INVITED'?'active':''" click.delegate="showRequests('INVITED')">Sent</a>
                 </div>
-            </div>
+            </div-->
 
-            <div show.bind="requestType == 'INVITED'" class="blg-connection-content">
-            <loading id="connections-loading" promise.bind="'connectionsPromise'" message-key.bind="'app.loading'">
-                <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
-                    <div id="sentRequestsGrid" ref="sentRequestsGrid" style="height: 100%;" class="ag-blg" ></div>
-                </div>
-             </loading>
-            </div>
             <div show.bind="requestType == 'PENDING'" class="blg-connection-content">
             <loading id="connections-loading" promise.bind="'connectionsPromise'" message-key.bind="'app.loading'">
                 <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
@@ -26,6 +28,14 @@
                 </div>
             </loading>
             </div>
+            <div show.bind="requestType == 'INVITED'" class="blg-connection-content">
+            <loading id="connections-loading" promise.bind="'connectionsPromise'" message-key.bind="'app.loading'">
+                <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
+                    <div id="sentRequestsGrid" ref="sentRequestsGrid" style="height: 100%;" class="ag-blg" ></div>
+                </div>
+             </loading>
+            </div>
+
         </div>						
     </div>
 
