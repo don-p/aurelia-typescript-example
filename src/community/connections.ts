@@ -32,7 +32,7 @@ export class Connections {
   constructor(private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
     private communityService:CommunityService, private parent: Community, private evt: EventAggregator, private vController:ValidationController) {
 
-    this.requestType = 'INVITED';
+    this.requestType = 'PENDING';
     this.pageSize = 100000;
 
     // ValidationRules
@@ -70,9 +70,9 @@ export class Connections {
     this.utils.setMemberConnectionRequestsGridDataSource(this.gridOptionsSent, this.pageSize, this.communityService, 'INVITED');
     // new Grid(this.receivedRequestsGrid, this.gridOptionsReceived); //create a new grid
     // this.gridOptionsReceived['api'].sizeColumnsToFit();
-    // this.utils.setMemberConnectionRequestsGridDataSource(this.gridOptionsReceived, this.pageSize, this.communityService, 'PENDING');
+    this.utils.setMemberConnectionRequestsGridDataSource(this.gridOptionsReceived, this.pageSize, this.communityService, 'PENDING');
 
-    //this.showRequests(this.requestType);
+    // this.showRequests(this.requestType);
 
   }
   activate(params, navigationInstruction) {
