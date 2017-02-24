@@ -383,24 +383,24 @@ export class Utils {
   }
 
   setMemberConnectionRequestsGridDataSource(gridOptions:GridOptions, pageSize, communityService, status) {
-    const me = this;
-
-    let connectionsPromise = communityService.getMemberConnections(status, 0, pageSize);
-    connectionsPromise.then(response => response.json())
-      .then(data => {
-        let result = data.responseCollection.map(function(item){
-          return {
-            connectId: item.connectId,
-            connectStatus: item.connectStatus,
-            memberEntityType: item.member.memberEntityType,
-            memberId: item.member.memberId,
-            physicalPersonProfile: item.member.physicalPersonProfile,
-            statusComment: item.statusComment
-          }
-        });
-        gridOptions.api.setRowData(result);
-        gridOptions.api.hideOverlay();
-    });
+      const me = this;
+      gridOptions.api.showLoadingOverlay();
+      let connectionsPromise = communityService.getMemberConnections(status, 0, pageSize);
+      connectionsPromise.then(response => response.json())
+        .then(data => {
+          let result = data.responseCollection.map(function(item){
+            return {
+              connectId: item.connectId,
+              connectStatus: item.connectStatus,
+              memberEntityType: item.member.memberEntityType,
+              memberId: item.member.memberId,
+              physicalPersonProfile: item.member.physicalPersonProfile,
+              statusComment: item.statusComment
+            }
+          });
+          gridOptions.api.setRowData(result);
+          gridOptions.api.hideOverlay();
+      });
   }
 
   /**
