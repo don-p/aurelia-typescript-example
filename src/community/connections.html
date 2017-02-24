@@ -27,8 +27,9 @@
                         <ag-grid-column header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" ></ag-grid-column>
                         <ag-grid-column header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" ></ag-grid-column>
                     </ag-grid-aurelia>  
-                    <div show.bind="!!(selectedRequest)" style="position: absolute;height: 200px; border: 1px solid; bottom: 15px; width: 100%;">
-                        <div >
+                    <div style="position: absolute;height: 200px; border: 1px solid; bottom: 15px; width: 100%;">
+                        <div show.bind="!!(selectedRequest)" >
+                        <div>
                             <div>From:</div><div>${selectedRequest.physicalPersonProfile.firstName} ${selectedRequest.physicalPersonProfile.lastName} </div>
                             <div>Organization:</div><div>${selectedRequest.physicalPersonProfile.organization.organizationName}</div>
                             <div>Date:</div><div></div>
@@ -37,6 +38,7 @@
                         <div class="modal-footer">
                             <button class="btn btn-secondary" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')">Decline</button>
                             <button  type="submit" class="btn btn-primary" click.trigger="editConnectionRequest([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')">Accept</button>
+                        </div>
                         </div>
                     </div>     
                 </div>
