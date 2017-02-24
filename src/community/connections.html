@@ -28,29 +28,31 @@
                         <ag-grid-column header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" ></ag-grid-column>
                     </ag-grid-aurelia>  
                     <div class="request-details">
-                        <div show.bind="!!(selectedRequest)" class="request-details-content">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="table-label">From:</td>
-                                        <td class="table-text">${selectedRequest.physicalPersonProfile.firstName} ${selectedRequest.physicalPersonProfile.lastName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-label">Organization:</td>
-                                        <td class="table-text">${selectedRequest.physicalPersonProfile.organization.organizationName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-label">Message:</td>
-                                        <td class="table-text">${selectedRequest.statusComment}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div show.bind="!!(selectedRequest)" class="requestDetailContainer">
+                            <div class="request-details-content">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td class="table-label">From:</td>
+                                            <td class="table-text">${selectedRequest.physicalPersonProfile.firstName} ${selectedRequest.physicalPersonProfile.lastName}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="table-label">Organization:</td>
+                                            <td class="table-text">${selectedRequest.physicalPersonProfile.organization.organizationName}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="table-label">Message:</td>
+                                            <td class="table-text">${selectedRequest.statusComment}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')"><i class="ico-cancel-circle2"></i>&nbsp; Decline</button>
+                                <button  type="submit" class="btn btn-success btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
+                            </div>
                         </div>
-                        <div show.bind="!!(selectedRequest)" class="modal-footer">
-                            <button class="btn btn-danger btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')"><i class="ico-cancel-circle2"></i>&nbsp; Decline</button>
-                            <button  type="submit" class="btn btn-success btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
-                        </div>
-                        </div>
+                    </div>
                     </div>     
                 </div>
             </div>
