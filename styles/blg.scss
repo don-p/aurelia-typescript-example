@@ -1959,3 +1959,62 @@ span.recipientsListItem:not(:last-child)::after {
 .nav-tabs.tabs-bar > li.active > a > i {
   visibility: visible !important;  
 }
+
+.requests-grid {
+  position: absolute;
+  bottom: 215px;
+  top: 20px;
+  width: 97.95%;  
+}
+
+#receivedRequestsGrid .ag-row {
+  cursor: pointer;
+}
+
+.requests-content {
+  height: 100%;
+}
+
+.cancel-request {
+  top: 2px;
+  right: 4px;  
+  font-size: 18px;
+  color: $blg-red-light;
+  cursor: pointer;
+}
+
+.request-details {
+  position: absolute;
+  left: 0px;
+  right: 0px;  
+  height: 200px;
+  bottom: 5px;
+  border-top: 1px solid $blg-grey-light;
+  background-color: $blg-white; 
+}
+
+.request-details .modal-footer {
+  position: absolute;
+  padding: 15px;
+  bottom: -4px;
+  right: 0;
+}
+
+.table-label {
+    width: 110px;
+    text-align: right;
+    vertical-align: top;
+    color: $blg-blue;
+    font-weight: 900;
+    padding: 0px 10px 0px 0px;
+}
+
+.table-text {
+    vertical-align: top;
+    padding-bottom: 0px;
+}
+
+.request-details-content {
+  padding: 15px;
+  font-size: 15px;
+}

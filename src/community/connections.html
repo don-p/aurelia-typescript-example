@@ -14,8 +14,8 @@
     <div id="requests-tab" class="blg-tab-section tab-content ">
         <div class="blg-inner-content tab-pane active" id="requests">
             <div show.bind="requestType == 'PENDING'" class="blg-connection-content">
-                <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
-                    <ag-grid-aurelia id="receivedRequestsGrid" #agGrid style="bottom: 215px;top: 39px;position: absolute;width: 100%; " class="ag-blg"
+                <div class="requests-content" id="membersTableContent">	
+                    <ag-grid-aurelia id="receivedRequestsGrid" #agGrid class="ag-blg requests-grid"
                                     grid-options.bind="gridOptionsReceived"
                                     context.bind="$this"
                                     enable-col-resize
@@ -27,25 +27,36 @@
                         <ag-grid-column header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" ></ag-grid-column>
                         <ag-grid-column header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" ></ag-grid-column>
                     </ag-grid-aurelia>  
-                    <div style="position: absolute;height: 200px; border: 1px solid; bottom: 15px; width: 100%;">
-                        <div show.bind="!!(selectedRequest)" >
-                        <div>
-                            <div>From:</div><div>${selectedRequest.physicalPersonProfile.firstName} ${selectedRequest.physicalPersonProfile.lastName} </div>
-                            <div>Organization:</div><div>${selectedRequest.physicalPersonProfile.organization.organizationName}</div>
-                            <div>Date:</div><div></div>
-                            <div>Message:</div><div>${selectedRequest.statusComment}</div>
+                    <div class="request-details">
+                        <div show.bind="!!(selectedRequest)" class="request-details-content">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-label">From:</td>
+                                        <td class="table-text">${selectedRequest.physicalPersonProfile.firstName} ${selectedRequest.physicalPersonProfile.lastName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">Organization:</td>
+                                        <td class="table-text">${selectedRequest.physicalPersonProfile.organization.organizationName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">Message:</td>
+                                        <td class="table-text">${selectedRequest.statusComment}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')">Decline</button>
-                            <button  type="submit" class="btn btn-primary" click.trigger="editConnectionRequest([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')">Accept</button>
+                        <div show.bind="!!(selectedRequest)" class="modal-footer">
+                            <button class="btn btn-danger btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')"><i class="ico-cancel-circle2"></i>&nbsp; Decline</button>
+                            <button  type="submit" class="btn btn-success btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
                         </div>
                         </div>
                     </div>     
                 </div>
             </div>
             <div show.bind="requestType == 'INVITED'" class="blg-connection-content">
-                <div style="height: 100%;" class="members-table-content" id="membersTableContent">	
-                   <ag-grid-aurelia id="sentRequestsGrid" #agGrid style="width: 100%;" class="ag-blg"
+                <div class="requests-content" id="membersTableContent">	
+                   <ag-grid-aurelia id="sentRequestsGrid" class="ag-blg requests-grid"
                                     grid-options.bind="gridOptionsSent"
                                     column-defs.bind="gridOptionsSent.columnDefs"
                                     context.bind="$this"
@@ -57,9 +68,9 @@
                         <ag-grid-column header-name="${'community.communities.members.firstname' | t}" field="physicalPersonProfile.firstName"></ag-grid-column>
                         <ag-grid-column header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" ></ag-grid-column>
                         <ag-grid-column header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" ></ag-grid-column>
-                        <ag-grid-column header-name="" >
+                        <ag-grid-column header-name="">
                             <ag-cell-template>
-                                <i click.delegate="params.context.editConnectionRequest([params.data], 'TERMINATE', 'REQUEST_TERMINATED')" class="ico-bin float-right"></i>
+                                <i click.delegate="params.context.editConnectionRequest([params.data], 'TERMINATE', 'REQUEST_TERMINATED')" class="ico-cancel-circle2 float-right cancel-request" title="Terminate request"></i>
                             </ag-cell-template>
                         </ag-grid-column>
                     </ag-grid-aurelia>       
