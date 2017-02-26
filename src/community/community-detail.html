@@ -16,10 +16,10 @@
 		
 			<div role="status" id="example_info" class="members-table-info">
 				<div if.bind="!showSelectedCommunitiesGrid" class="pull-right" >
-					<button disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(true)"><i class="ico-filter4"></i><span>${'global.showSelected' | t}</span></button>
+					<button disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(true)"><span>${'global.showSelected' | t}</span></button>
 				</div>
 				<div if.bind="showSelectedCommunitiesGrid" class="pull-right" >
-					<button type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(false)"> <i class="ico-filter3"></i><span>${'global.showAll' | t}</span></button>
+					<button type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(false)"> <span>${'global.showAll' | t}</span></button>
 				</div>
 				<div class="pull-right">
 					<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(showSelectedCommunitiesGrid?gridOptionsSelected:gridOptions)">

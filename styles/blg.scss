@@ -768,6 +768,17 @@ header .navbar-nav {
   }
 }
 
+.btn.btn-default-blg {
+  &.disabled,
+  &[disabled],
+  &[disabled]:focus,
+  &[disabled]:hover,   
+  fieldset[disabled] & {
+    color: $blg-white;
+    @include opacity(.7);
+  }
+}
+
 .btn-sm-square {
   @include button-size(2px, 7px, $btn-font-size-sm-square, $btn-line-height-base, $border-radius-large);
   margin: 0px 1px 0px 0px;
@@ -1962,9 +1973,16 @@ span.recipientsListItem:not(:last-child)::after {
 
 .requests-grid {
   position: absolute;
-  bottom: 215px;
   top: 20px;
   width: 97.95%;  
+}
+
+#receivedRequestsGrid.requests-grid {
+  bottom: 210px;
+}
+
+#sentRequestsGrid.requests-grid {
+  bottom: 5px;
 }
 
 #receivedRequestsGrid .ag-row {

@@ -36,10 +36,10 @@
 				</select>
 			</div>
 			<div if.bind="!(showSelected)"  class="pull-right" >
-				<button disabled.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(true)"><i class="ico-filter4"></i><span>${'global.showSelected' | t}</span></button>
+				<button disabled.bind="(!((isDirty) && (!hasValidationErrors)))" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(true)"><span>${'global.showSelected' | t}</span></button>
 			</div>
 			<div if.bind="showSelected" class="pull-right" >
-				<button type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(false)"> <i class="ico-filter3"></i><span>${'global.showAll' | t}</span></button>
+				<button type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(false)"> <span>${'global.showAll' | t}</span></button>
 			</div>
 			<div class="pull-right">
 				<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(showSelected?gridOptionsSelected:gridOptions)">
