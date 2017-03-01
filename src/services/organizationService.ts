@@ -114,6 +114,9 @@ export class OrganizationService {
     }
 
     static getDiscoveryRuleFromParams(filters: Array<any>) {
+        if(!!(filters)) {
+            return '';
+        }
         let result = {};
         // Create the server-compatible filter criteria.
         result['parameters'] = [];
