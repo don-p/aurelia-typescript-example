@@ -114,7 +114,7 @@ export class OrganizationService {
     }
 
     static getDiscoveryRuleFromParams(filters: Array<any>) {
-        if(!!(filters)) {
+        if(!(filters)) {
             return '';
         }
         let result = {};
