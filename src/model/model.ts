@@ -83,6 +83,12 @@ export class Model {
     this.logger.debug('... itemChanged');
   }
 
+  clearError() {
+    // let me = this;
+    // this.vResults = [];
+    this.vController.validate();
+  };
+
   $isDirty() {
     if(!(this.originalItem) || !(this.item)) {
       return false;

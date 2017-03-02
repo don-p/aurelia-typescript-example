@@ -405,7 +405,6 @@ export class Communities {
       .required()
       .then()
       .minLength(3)
-      .then()
       .maxLength(120)
 //      .then()
       .ensure((community: any) => community.communityDescription)
