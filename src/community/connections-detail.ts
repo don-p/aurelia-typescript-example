@@ -130,6 +130,8 @@ export class ConnectionsDetail {
   initGrid(me) {
     // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
     new Grid(this.membersGrid, this.gridOptions); //create a new grid
+    //FIXME: temp
+    this.gridOptions.columnApi.getColumn('physicalPersonProfile.lastName')['sort'] = 'asc';
     // this.agGridWrap.gridCreated = true;
     this.gridOptions['api'].sizeColumnsToFit();
   }
