@@ -205,6 +205,12 @@ export class MemberActionsBarCustomElement {
     });
   }  
 
+  communitiesHaveMembers(communities: Array<any>) {
+    return communities.some(function(element, index, array) {
+      return element.memberCount > 0;
+    });
+  }
+
   sendAlertCommunityMembers(communityMembers, communities) {
     let me = this;
 
