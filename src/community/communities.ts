@@ -7,7 +7,6 @@ import {Session} from '../services/session';
 import {DataService} from '../services/dataService';
 import {CommunityService} from '../services/communityService';
 import {Community} from './community';
-import {VirtualRepeat} from 'aurelia-ui-virtualization';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import * as Ps from 'perfect-scrollbar';
@@ -37,7 +36,6 @@ export class Communities {
   selectedItem: Object;
   selectedCommunities: Array<Object>;
   selectAll: boolean;
-  _virtualRepeat: VirtualRepeat;
 
   router: Router;
 
