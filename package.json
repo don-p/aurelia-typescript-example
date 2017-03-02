@@ -67,8 +67,7 @@
   "aurelia": {
     "build": {
       "resources": [
-        "aurelia-auth/auth-filter",
-        "aurelia-ui-virtualization/virtual-repeat-next"
+        "aurelia-auth/auth-filter"
       ]
     }
   },
@@ -95,7 +94,6 @@
     "aurelia-templating-binding": "^1.1.0",
     "aurelia-templating-resources": "^1.2.0",
     "aurelia-templating-router": "^1.0.0",
-    "aurelia-ui-virtualization": "^1.0.0-beta.2.0.0",
     "aurelia-validation": "^1.0.0-beta.1.0.1",
     "bluebird": "^3.4.6",
     "bootstrap-sass": "^3.3.7",
