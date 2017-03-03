@@ -32,9 +32,9 @@
                     <select class="form-control select select-default-blg" style="display:inline-block;" value.bind="controller.dialogController.alertModel.alertType">
                         <option repeat.for="alertCategory of controller.alertCategories" value="${alertCategory.categoryId}" model.bind="alertCategory">${alertCategory.categoryName}</option>
                     </select>
-                    <span class="pull-right alert-counter">
+                    <!--<span class="pull-right alert-counter">
                         ${(controller.maxMessageLength - controller.dialogController.alertModel.alertMessage.length) | mathMax:0} ${'global.charsRemaining' | t}
-                    </span>
+                    </span>-->
                 </div>
             </div>
             <div class="div-table-row">
@@ -53,7 +53,7 @@
                     <span class="wizard-content-label">${'community.communities.alert.attachment' | t}:</span>
                 </div>
                 <div class="div-table-cell">
-                    <form class="select-file2">
+                    <form class="select-file2" style="float:left;">
                         <input type="file" id="inputfile2" class="inputfile2" 
                         change.delegate="controller.onAlertAttachmentFile($event, step.model.fileList)" load.delegate="controller.handleFiles($event)" files.bind="controller.dialogController.alertModel.fileList" />
                         <label for="inputfile2">
@@ -67,6 +67,9 @@
 			                </button>
                         </label>
                     </form>
+                    <span class="pull-right alert-counter" style="top:0;">
+                        ${(controller.maxMessageLength - controller.dialogController.alertModel.alertMessage.length) | mathMax:0} ${'global.charsRemaining' | t}
+                    </span>
                 </div>
             </div>
         </div>
