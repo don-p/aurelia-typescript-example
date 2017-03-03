@@ -100,7 +100,7 @@ export class DiscoverDetail {
         me.gridOptions.api.deselectAll();
         me.gridOptions.api.setFilterModel(null)
         me.gridOptions.api.setSortModel(null);
-
+        // Load the grid data.
         // Set up the virtual scrolling grid displaying community members.
         me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
         // Set up collection to track available community members.
@@ -131,8 +131,6 @@ export class DiscoverDetail {
     });
 
     this.initGrid(this);
-    // Load the grid data.
-    me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
 
     this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
     this.gridOptionsSelected.enableServerSideSorting = false;
@@ -146,6 +144,8 @@ export class DiscoverDetail {
     };
     new Grid(this.orgMembersSelectedGrid, this.gridOptionsSelected); //create a new grid
     this.gridOptionsSelected['api'].sizeColumnsToFit();
+
+    this.evt.publish('childViewAttached', 'discover-detail');
   }
 
   // findGridColumnDef(gridOptions: GridOptions, fieldName: string):Object {
