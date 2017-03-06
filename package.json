@@ -152,7 +152,7 @@
     "typings": "^2.0.0",
     "wait-on": "^2.0.1",
     "webpack": "^2.2.0",
-    "webpack-dev-server": "^2.2.0-rc.0"
+    "webpack-dev-server": "^2.4.1"
   },
   "babel": {
     "presets": [

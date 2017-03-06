@@ -57,6 +57,14 @@ export class Discover {
     Rules.set(this, vRules);
     this.vController.validateTrigger = validateTrigger.changeOrBlur;
 
+    let me = this;
+    this.evt.subscribe('childViewAttached', payload => {
+      if(payload === 'discover-detail') {
+        me.selectOrganization(me.parent.organizations[0]);
+      }
+    });
+    
+
     this.logger = LogManager.getLogger(this.constructor.name);
     
   }
@@ -82,11 +90,11 @@ export class Discover {
   }
 
   bind(bindingContext: Object, overrideContext: Object) {
-    this.logger.debug("Community | bind()");
+    this.logger.debug("Discover | bind()");
   }
 
   attached() {
-    this.selectOrganization(this.parent.organizations[0]);
+    this.logger.debug("Discover | attached()");
   }
   activate(params, navigationInstruction) {
     // this.selectOrganization(this.parent.organizations[0]);

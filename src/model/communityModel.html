@@ -5,7 +5,7 @@
             <!--<input id="name" attach-focus="true" value.two-way="item.communityName & validate" 
             change.delegate="vController.validate({ object: $this.item, rules: vRules })" 
             class="form-control input-lg"/>-->
-            <input id="name"  input.delegate="controller.clearError()" change.delegate="controller.clearError()" attach-focus="true" value.two-way="item.communityName & validate" 
+            <input id="name"  input.delegate="clearError()" change.delegate="clearError()" attach-focus="true" value.bind="item.communityName & validate" 
              
             class="form-control input-lg"/>
         </div>
@@ -14,7 +14,7 @@
             <!--<input id="name" value.bind="item.communityDescription & validate" 
             change.delegate="vController.validate({ object: $this.item, rules: vRules })" 
             class="form-control input-lg" />-->
-            <input id="desc" input.delegate="controller.clearError()" change.delegate="controller.clearError()" value.bind="item.communityDescription & validate" 
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.communityDescription & validate" 
             class="form-control input-lg" />
         </div>
         <div class="dialog-section" if.bind="(!(item.communityId) || item.communityId == null)">

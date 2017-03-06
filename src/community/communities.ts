@@ -392,6 +392,7 @@ export class Communities {
     if(community === null) {
       // Create an empty or cloned object model for the edit dialog.
       community = new CommunityResource();
+      community.communityType = "TEAM";
       title = this.i18n.tr('community.communities.createCommunity');
     } else {
       // Clone the object so we do not edit the live/bound model.
@@ -404,7 +405,6 @@ export class Communities {
       .required()
       .then()
       .minLength(3)
-      .then()
       .maxLength(120)
 //      .then()
       .ensure((community: any) => community.communityDescription)
