@@ -406,11 +406,29 @@ export class MemberActionsBarCustomElement {
       controller.errorMessage = '';
       controller.alertModel = alertModel;
       controller.viewModel.alertCategories = me.alertCategories;
+      controller.alertModel.alertType = controller.viewModel.alertCategories[0];
+      controller.viewModel.selectedAlertTemplate = '';
+
+
       // Get selected alert category.
       controller.viewModel.selectAlertCategory = function(event: any) {
         if(this.selectedAlertCategory !== event.target.value) {
           this.selectedAlertCategory = event.target.value;
         }
+      };
+      // Get notification templates.
+      me.organizationService.getOrganizationNotificationTemplates(
+        me.session.auth['organization'].organizationId,
+        controller.alertModel.alertType.categoryId
+      )
+      .then(response => response.json())
+      .then((data:any) => {
+        controller.viewModel.notificationTemplates = data.responseCollection;
+      });
+      // Get selected alert template.
+      controller.viewModel.selectAlertTemplate = function(event: any) {
+        let template = controller.viewModel.selectedAlertTemplate;
+        controller.alertModel.alertMessage = template.templateName;
       };
       controller.viewModel.onAlertAttachmentFile = function(event, fileList) {
         let fileArray = Array.from(fileList);

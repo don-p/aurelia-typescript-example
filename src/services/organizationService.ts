@@ -113,6 +113,23 @@ export class OrganizationService {
         return response;
     }
 
+    async getOrganizationNotificationTemplates(organizationId:string, categoryId:string) {
+        await fetch;
+        let response = this.getHttpClient().fetch('v1/alert-message-templates?start_index=' + 
+            0 + '&page_size=' + 10000 + '&organizationId=' + organizationId +
+            '&categoryId=' + categoryId, 
+            {
+                method: 'GET'
+            }
+        );
+        return response;
+        
+    }
+
+    /*
+    Utility methods.
+    */
+
     static getDiscoveryRuleFromParams(filters: Array<any>) {
         if(!(filters)) {
             return '';
