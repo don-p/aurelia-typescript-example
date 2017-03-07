@@ -28,7 +28,6 @@ export class MemberActionsBarCustomElement {
     addCmtyMembersSelectedGrid: any;
     currentMember: Object;
 
-    alertCategories: Array<Object>;
     parent: any;
  
     membersPromise: Promise<Response>;
@@ -66,9 +65,6 @@ export class MemberActionsBarCustomElement {
         me.selectedCmty = payload.community;
       }
     });
-
-    // Get list of alert/notification categories.
-    let promise1 = this.getAlertCategoriesPage(0, 500);
 
     this.logger = LogManager.getLogger(this.constructor.name);
   }
@@ -184,26 +180,6 @@ export class MemberActionsBarCustomElement {
     });
   }
 
-  getAlertCategoriesPage(startIndex: number, pageSize: number): Promise<Response> {
-    var me = this;
-    var alertPromise = this.dataService.getAlertCategories(startIndex,  pageSize);
-    return alertPromise
-    .then(response => {return response.json()
-      .then(data => {
-        me.alertCategories = data.responseCollection;
-        // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
-      }).catch(error => {
-        me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
-        return Promise.reject(error);
-      })
-    })
-    .catch(error => {
-      me.logger.error('Community getAlertCategoriesPage() failed in then(response). Error: ' + error); 
-      me.logger.error(error); 
-      //throw error;
-      return Promise.reject(error);
-    });
-  }  
 
   communitiesHaveMembers(communities: Array<any>) {
     return communities.some(function(element, index, array) {
@@ -224,6 +200,7 @@ export class MemberActionsBarCustomElement {
       files: []
     };
     const maxMessageLength = this.appConfig.get('maxAlertMessageSize');
+    const alertTemplates = this.appConfig.get('alertTemplates');
     const vRules = ValidationRules
       .ensure('communityMembers')
       .displayName(this.i18n.tr('community.communities.alert.recipientsList'))
@@ -405,30 +382,36 @@ export class MemberActionsBarCustomElement {
       controller.viewModel.maxMessageLength = maxMessageLength;
       controller.errorMessage = '';
       controller.alertModel = alertModel;
-      controller.viewModel.alertCategories = me.alertCategories;
-      controller.alertModel.alertType = controller.viewModel.alertCategories[0];
-      controller.viewModel.selectedAlertTemplate = '';
-
+      controller.viewModel.alertCategories = me.appConfig.get('alertCategories');
+      controller.alertModel.alertType = controller.viewModel.alertCategories[0].categoryId;
+      controller.viewModel.notificationTemplates = controller.viewModel.alertCategories[0].categoryTemplates;      
+      controller.viewModel.selectedAlertTemplate = {};
 
       // Get selected alert category.
       controller.viewModel.selectAlertCategory = function(event: any) {
-        if(this.selectedAlertCategory !== event.target.value) {
-          this.selectedAlertCategory = event.target.value;
-        }
+        controller.viewModel.notificationTemplates = this.selectedAlertCategory.categoryTemplates;
+        alertModel.alertType = this.selectedAlertCategory.categoryId;
+      
       };
-      // Get notification templates.
-      me.organizationService.getOrganizationNotificationTemplates(
-        me.session.auth['organization'].organizationId,
-        controller.alertModel.alertType.categoryId
-      )
-      .then(response => response.json())
-      .then((data:any) => {
-        controller.viewModel.notificationTemplates = data.responseCollection;
-      });
+      // // Get notification templates.
+      // me.organizationService.getOrganizationNotificationTemplates(
+      //   me.session.auth['organization'].organizationId, null
+      // )
+      // .then(response => response.json())
+      // .then((data:any) => {
+      //   controller.viewModel.notificationTemplates = data.responseCollection;
+      // });
       // Get selected alert template.
       controller.viewModel.selectAlertTemplate = function(event: any) {
-        let template = controller.viewModel.selectedAlertTemplate;
-        controller.alertModel.alertMessage = template.templateName;
+        let template:Object = controller.viewModel.selectedAlertTemplate;
+        if(template.hasOwnProperty('defaultMessage')) {
+          controller.alertModel.alertMessage = template['defaultMessage'];
+          controller.viewModel.wizard.currentStep.isDirty = true;
+        } else {
+          controller.alertModel.alertMessage = '';
+        }
+        // Validate the message content.
+        controller.viewModel.vController.validate({ object: alertModel, propertyName: 'alertMessage' });
       };
       controller.viewModel.onAlertAttachmentFile = function(event, fileList) {
         let fileArray = Array.from(fileList);

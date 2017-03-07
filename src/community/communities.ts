@@ -110,6 +110,7 @@ export class Communities {
     .then(response => {return response.json()
       .then(data => {
         me.communities = data.responseCollection;
+        return data.responseCollection;
         // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
       }).catch(error => {
         me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
@@ -447,10 +448,28 @@ export class Communities {
         modelPromise
         .then(response => response.json())
         .then(data => {
-          me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then(function(){
+          me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then((communitiesResult:any) => {
             if(community === null || typeof community.communityId !== 'string') {
+              // select the new community
               me.selectCommunity(data);
             }
+            // re-select the selected communities
+            if(me.selectedCommunities.length > 0) {
+              let temp = [];
+              for(community of communitiesResult) {
+                let found = me.selectedCommunities.find(function(item: any) {
+                  return item.communityId == community.communityId;
+                })
+                
+                if(!!(found)) {
+                  temp.push(community);
+                  // let index = me.selectedCommunities.indexOf(found);
+                  // me.selectedCommunities[index] = community;
+                }
+              }
+              me.selectedCommunities = temp;
+            }
+
           });
           // Close dialog on success.
           controller.ok();

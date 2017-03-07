@@ -8,20 +8,23 @@ import {I18N} from 'aurelia-i18n';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {AuthService} from 'aurelia-auth';
 import {DataService} from './services/dataService';
+import {OrganizationService} from './services/organizationService';
 import {Utils} from './services/util';
 import{RedirectWithParams} from './lib/RedirectWithParams';
 
-@inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, AureliaConfiguration, Router, Utils, LogManager)
+@inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, OrganizationService, AureliaConfiguration, Router, Utils, LogManager)
 export class App {
   session: Session;
   logger: Logger;
 
   constructor(Session, private fetchConfig: FetchConfig, private i18n: I18N, 
     private evt: EventAggregator, private authService: AuthService, 
-    private dataService: DataService, private appConfig:AureliaConfiguration, private router:Router) {
+    private dataService: DataService, private organizationService: OrganizationService, 
+    private appConfig:AureliaConfiguration, private router:Router) {
+
     this.session = Session;
     let me = this;
-    // Subscribe to authentication events.
+    // Subscribe to authentication events.  Bootstrap other services.
     this.evt.subscribe('authenticated', auth => {
       // Get server config data and merge server config with local.
       me.dataService.getCallServiceConfig()
@@ -32,6 +35,40 @@ export class App {
       }).catch(error => {
         me.logger.debug('getCallServiceConfig() returned error: ' + error);
       })
+
+      // Get alert categories/types.
+      me.dataService.getAlertCategories(0,  10000)
+      .then(response => {return response.json()
+        .then(data => {
+          let categories = data.responseCollection;
+          // Get alert notification template set.
+          me.organizationService.getOrganizationNotificationTemplates(
+            me.session.auth['organization'].organizationId, null
+          )
+          .then(response => response.json())
+          .then((data:any) => {
+            let templateCategoryIds = Object.keys(data);
+            templateCategoryIds.forEach(function(templateCategoryId) {
+              let category = categories.find(function(item) {
+                return item.categoryId === templateCategoryId;
+              })
+              category['categoryTemplates'] = data[templateCategoryId].responseCollection;
+            });
+            me.appConfig.set('alertCategories', categories);
+            //me.appConfig.set('alertTemplates', data);
+          });
+        }).catch(error => {
+          me.logger.error('getAlertCategories() failed in response.json(). Error: ' + error); 
+          return Promise.reject(error);
+        })
+      })
+      .catch(error => {
+        me.logger.error('getAlertCategoriesPage() failed in then(response). Error: ' + error); 
+        me.logger.error(error); 
+        //throw error;
+        return Promise.reject(error);
+      });
+      
     });    
     
     // Subscribe to request/response errors.
