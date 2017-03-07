@@ -115,9 +115,12 @@ export class OrganizationService {
 
     async getOrganizationNotificationTemplates(organizationId:string, categoryId:string) {
         await fetch;
-        let response = this.getHttpClient().fetch('v1/alert-message-templates?start_index=' + 
-            0 + '&page_size=' + 10000 + '&organizationId=' + organizationId +
-            '&categoryId=' + categoryId, 
+        let categoryIdParam = '';
+        if(!!(categoryId)) {
+            categoryIdParam = '&categoryId=' + categoryId;
+        }
+        let response = this.getHttpClient().fetch('/v1/organizations/' + organizationId + '/alert-message-templates?start_index=' + 
+            0 + '&page_size=' + 10000  + categoryIdParam, 
             {
                 method: 'GET'
             }

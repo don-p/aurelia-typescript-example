@@ -26,16 +26,16 @@
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell column-label">            
-                    <span class="wizard-content-label blg-form-required" i18n='[prepend]community.communities.alert.alertType' change.delegate="controller.selectAlertCategory($event)" value.bind="step.model.selectedAlertCategory">:</span>
+                    <span class="wizard-content-label blg-form-required" i18n='[prepend]community.communities.alert.alertType'>:</span>
                 </div>
                 <div class="div-table-cell">
-                    <select class="form-control select select-default-blg" style="display:inline-block;" value.bind="controller.dialogController.alertModel.alertType">
-                        <option repeat.for="alertCategory of controller.alertCategories" value="${alertCategory.categoryId}" model.bind="alertCategory">${alertCategory.categoryName}</option>
+                    <select class="form-control select select-default-blg" style="display:inline-block;" value.bind="controller.selectedAlertCategory"  change.delegate="controller.selectAlertCategory($event)">
+                        <option repeat.for="alertCategory of controller.alertCategories" model.bind="alertCategory">${alertCategory.categoryName}</option>
                     </select>
                     <span style="margin-right:16px;"></span>
-                    <span class="wizard-content-label blg-form-required" i18n='[prepend]community.communities.alert.messageType'>:</span>
-                    <select class="form-control select select-default-blg" style="display:inline-block;" value.bind="controller.selectedAlertTemplate" change.delegate="controller.selectAlertTemplate($event)">
-                        <option value="" >None</option>
+                    <span class="column-label wizard-content-label blg-form-required" style="display:inline-block; width:auto;" i18n='[prepend]community.communities.alert.messageType'>:</span>
+                    <select class="form-control select select-default-blg" style="display:inline-block;margin-left: -4px;" value.bind="controller.selectedAlertTemplate" change.delegate="controller.selectAlertTemplate($event)">
+                        <option model.bind="{}" >None</option>
                         <option repeat.for="alertTemplate of controller.notificationTemplates" model.bind="alertTemplate">${alertTemplate.templateName}</option>
                     </select>
                 </div>
