@@ -115,6 +115,7 @@
                 "confirm": "Review & Send",
                 "finish": "Finish",
                 "alertType": "Alert type",
+                "messageType": "Message type",
                 "recipients":"Recipients",
                 "message":"Message",
                 "attachment":"Attachment",

@@ -127,7 +127,7 @@ export class Login {
         me.session.auth = data;
         me.session.auth['isLoggedIn'] = true;
 
-        me.authService['auth'].storage.set('auth', JSON.stringify(auth));
+        me.authService['auth'].storage.set('auth', JSON.stringify(me.session.auth));
         if(data.mfa.isRequired) {
           me.router.navigateToRoute('login-2');          
         } else {
