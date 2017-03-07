@@ -160,7 +160,6 @@ export class Communities {
     } else {
       this.scrollToCommunityInList(this.selectedItem);
     }
-    this.selectedCommunities = [];
     this.evt.publish('cmtySelected', {community: this.selectedItem});
   }
 
@@ -352,12 +351,28 @@ export class Communities {
             // }
             
             let idx = me.communities.indexOf(community);
-            me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then(function(data){
+            me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then((communitiesResult:any) => {
               // After deleting community, select the next available community.
               if(me.selectedItem['communityId'] === community.communityId) {
                 idx = idx===0?0:idx-1;
                 let cmty = me.communities[idx];
                 me.selectCommunity(cmty);
+              }
+              // re-select the selected communities
+              if(me.selectedCommunities.length > 0) {
+                let temp = [];
+                for(community of communitiesResult) {
+                  let found = me.selectedCommunities.find(function(item: any) {
+                    return item.communityId == community.communityId;
+                  })
+                  
+                  if(!!(found)) {
+                    temp.push(community);
+                    // let index = me.selectedCommunities.indexOf(found);
+                    // me.selectedCommunities[index] = community;
+                  }
+                }
+                me.selectedCommunities = temp;
               }
             });
             // Close dialog on success.
