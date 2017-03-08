@@ -106,11 +106,11 @@ export class ConnectionsDetail {
     // Load the grid data.
     me.utils.setMemberConnectionsGridDataSource(me.gridOptions, me.pageSize, me.communityService, 'CONNECTED');
 
-    this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
+    this.gridOptionsSelected = this.utils.getGridOptions('selectedCommunityMembers', null);
     this.gridOptionsSelected.enableServerSideSorting = false;
     this.gridOptionsSelected.enableServerSideFilter = false;
     this.gridOptionsSelected.enableSorting = true;
-    this.gridOptionsSelected.enableFilter = true;
+    this.gridOptionsSelected.enableFilter = false;
     this.gridOptionsSelected.rowModelType = 'normal';
     this.gridOptionsSelected.onSelectionChanged = function() {
       me.orgMembersSelectionChanged(this);

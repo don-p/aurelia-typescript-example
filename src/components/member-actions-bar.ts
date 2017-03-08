@@ -585,7 +585,7 @@ export class MemberActionsBarCustomElement {
       gridOptionsSelected.enableServerSideSorting = false;
       gridOptionsSelected.enableServerSideFilter = false;
       gridOptionsSelected.enableSorting = true;
-      gridOptionsSelected.enableFilter = true;
+      gridOptionsSelected.enableFilter = false;
       gridOptionsSelected.rowModelType = 'normal';
     }
     this.dataService.openResourceEditDialog({modelView:'model/organizationMembersListModel.html', 
