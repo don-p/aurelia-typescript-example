@@ -42,7 +42,8 @@ export class Utils {
         let columns = [];
         // return [
         if(type !== 'transferOwnership' &&
-          type !== 'listConnectionRequests') {
+          type !== 'listConnectionRequests' &&
+          type != 'organizationMembers') {
             columns.push({
                 colId: 'select',
                 headerName: '', 
@@ -145,9 +146,24 @@ export class Utils {
         };
     }
 
-  clearGridFilters(gridOptions) {
-      gridOptions.api.setFilterModel({});
-      gridOptions.api.refreshView();
+  clearGridFilters(gridOptions, filterName) {
+      if(!!(filterName)) {
+        let filterComponent = gridOptions.api.getFilterInstance(filterName);
+        filterComponent.setFilter(null);
+        gridOptions.api.onFilterChanged();
+      } else {
+        gridOptions.api.setFilterModel({});
+        gridOptions.api.refreshView();
+      }
+  }
+
+  setGridFilterMap(gridOptions) {
+      let filters = new Map();
+      let obj = gridOptions.api.getFilterModel();
+      Object.keys(obj).forEach(key => {
+        filters.set(key, obj[key]);
+      });
+      gridOptions['filters'] = filters;    
   }
 
   findGridColumnDef(gridOptions: GridOptions, fieldName: string):Object {
@@ -452,6 +468,5 @@ export class Utils {
 
     return false;
   }
-
 
 }

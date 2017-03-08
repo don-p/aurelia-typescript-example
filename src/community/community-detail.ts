@@ -132,6 +132,9 @@ export class CommunityDetail {
     gridOptions.getRowNodeId = function(item) {
       return item.memberId.toString();
     };
+    gridOptions.onFilterChanged = function(event) {
+      me.utils.setGridFilterMap(gridOptions);
+    }
     this.gridOptions = gridOptions;
     this.initGrid(this);
     this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
@@ -263,8 +266,8 @@ export class CommunityDetail {
     */
   }
 
-  clearGridFilters(gridOptions) {
-      this.utils.clearGridFilters(gridOptions);
+  clearGridFilters(gridOptions, filterName) {
+      this.utils.clearGridFilters(gridOptions, filterName);
   }
   
   showSelectedCommunityMembers(showSelected:boolean) {

@@ -133,6 +133,7 @@ export class Communities {
     this.getCommunitiesPage(communityType, 0, this.pageSizeList).then(function(){
       if(typeof selectedCommunity !== 'object') {
         me.selectDefaultCommunity();
+        me.selectedCommunities = [];
       } else {
         me.scrollToCommunityInList(selectedCommunity);
       }

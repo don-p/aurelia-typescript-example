@@ -617,6 +617,9 @@ export class MemberActionsBarCustomElement {
           controller.viewModel.item.membersList = gridOptions.api.getSelectedRows();
           controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
         };
+        gridOptions.onFilterChanged = function(event) {
+          me.utils.setGridFilterMap(gridOptions);
+        }
         gridOptions.getRowNodeId = function(row) {
           return row.memberId.toString();
         };
