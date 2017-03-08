@@ -192,8 +192,8 @@ export class OrganizationDetail {
   bind() {
   }
 
-  clearGridFilters(gridOptions) {
-      this.utils.clearGridFilters(gridOptions);
+  clearGridFilters(gridOptions, filterName) {
+      this.utils.clearGridFilters(gridOptions, filterName);
   }
 
   addOrganizationMembers() {

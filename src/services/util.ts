@@ -289,7 +289,7 @@ export class Utils {
     return gridDataSource
   }
 
-  getSelectedCommunityMembersGridDataSource(dataSourceName, gridOptions: GridOptions):Object {
+  getSelectedCommunityMembersGridDataSource(dataSourceName, gridOptions: GridOptions):any {
     const me = this;
 
     // Set local row model.
