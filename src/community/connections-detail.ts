@@ -127,7 +127,10 @@ export class ConnectionsDetail {
   // }
 
   get isGridFiltered() {
-    return this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent();
+    return (!(this.showSelectedCommunitiesGrid) && 
+      (this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent())) ||
+      ((this.showSelectedCommunitiesGrid) && 
+      (this.gridOptionsSelected && this.gridOptionsSelected.api && this.gridOptionsSelected.api.isAnyFilterPresent())) ;
   }
 
   initGrid(me) {

@@ -65,7 +65,7 @@ export class DiscoverDetail {
     this.showSelectedCommunitiesGrid = false;
 
     let me = this;
-    let gridOptions = this.utils.getGridOptions('organizationMembers', this.pageSize);
+    let gridOptions = this.utils.getGridOptions('organizationMembersDiscover', this.pageSize);
     gridOptions.onSelectionChanged = function() {
       me.orgMembersSelectionChanged(this);
     };
