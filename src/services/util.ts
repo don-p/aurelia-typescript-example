@@ -64,7 +64,9 @@ export class Utils {
             field: "physicalPersonProfile.lastName", 
             filter: TextSearchFilter
         });
-        if(type == 'listMembers' || type == 'listConnectionRequests') {
+        if(type == 'listMembers' || 
+          type == 'listConnectionRequests' || 
+          type == 'selectedCommunityMembers') {
             columns.push({
                 headerName: this.i18n.tr('community.communities.members.organization'), 
                 field: "physicalPersonProfile.organization.organizationName",
@@ -294,7 +296,7 @@ export class Utils {
     gridOptions.enableServerSideSorting = false;
     gridOptions.enableServerSideFilter = false;
     gridOptions.enableSorting = true;
-    gridOptions.enableFilter = true;
+    gridOptions.enableFilter = false;
     gridOptions.rowModelType = 'normal';
 
     let gridDataSource = {

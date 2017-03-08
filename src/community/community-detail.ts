@@ -137,8 +137,8 @@ export class CommunityDetail {
     }
     this.gridOptions = gridOptions;
     this.initGrid(this);
-    this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
-    this.gridOptionsSelected.onSelectionChanged = function() {
+    this.gridOptionsSelected = this.utils.getGridOptions('selectedCommunityMembers', null);
+     this.gridOptionsSelected.onSelectionChanged = function() {
       me.membersSelectionChanged(this);
       me.gridOptions['selection'] = me.selectedMembers;
     };
