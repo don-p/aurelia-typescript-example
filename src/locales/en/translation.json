@@ -204,7 +204,19 @@
     "grid": {
         "filter": "Filter..."
     },
-    
+    "physicalPersonProfile": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "jobTitle": "Title",
+        "organization": {
+            "organizationName": "Organization"
+        },
+        "locationProfile": {
+            "city": "City",
+            "stateCode": "State",
+            "zipCode": "ZIP"
+        }
+    },
     "button": {
         "ok": "OK",
         "cancel": "Cancel",

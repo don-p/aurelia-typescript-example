@@ -69,6 +69,9 @@ export class DiscoverDetail {
     gridOptions.onSelectionChanged = function() {
       me.orgMembersSelectionChanged(this);
     };
+    gridOptions.onFilterChanged = function(event) {
+      me.utils.setGridFilterMap(gridOptions);
+    }
     gridOptions.getRowNodeId = function(item) {
       return item.memberId.toString();
     };
@@ -227,8 +230,8 @@ export class DiscoverDetail {
     gridOptions.api.setDatasource(gridDataSource);
   }
 
-  clearGridFilters(gridOptions) {
-      this.utils.clearGridFilters(gridOptions);
+  clearGridFilters(gridOptions, filterName) {
+      this.utils.clearGridFilters(gridOptions, filterName);
   }
   
   showSelectedCommunityMembers(showSelected:boolean) {
