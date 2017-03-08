@@ -153,9 +153,13 @@ export class Model {
   }
 
   get isGridFiltered() {
-    window.console.debug('--- isGridFiltered ---');
+    return this.$isGridFiltered();
+  }
+
+  $isGridFiltered() {
     return this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent();
   }
+  
  
 }
 
