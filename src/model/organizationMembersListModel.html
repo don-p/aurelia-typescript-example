@@ -50,7 +50,7 @@
 				<ul class="dropdown-menu" style="font-size: 14px;">
 					<li repeat.for="[filterName, filter] of gridOptions.filters">
 						<a click.delegate="clearGridFilters(showSelectedCommunitiesGrid?gridOptionsSelected:gridOptions, filterName)" style="padding-top: 3px;padding-left:10px;padding-bottom: 3px;padding-right:32px;" href="#">
-							${filterName | t}: ${filter.filter}
+							<span style="font-weight:bold;">${filterName | t}:</span> ${filter.filter}
 							<i style="right: 0px;margin-right: -24px;top: 3px;" class="ico-cancel-circle2 float-right cancel-request"></i>
 						</a>
 					</li>
