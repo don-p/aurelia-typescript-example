@@ -1693,7 +1693,7 @@ li.complete .map-check {
 .div-table{
 	display: table;
 	width: 100%;
-  padding: 0px 15px;
+  padding: 0px 15px 0px 0px;
 }
 
 .step-process .div-table{
@@ -1740,7 +1740,7 @@ li.complete .map-check {
 
 .alert-counter {
   position: relative;
-  top: 15px;
+  top: -30px;
 }
 
 .send-alert-textarea {

@@ -56,23 +56,35 @@
                     <span class="wizard-content-label">${'community.communities.alert.attachment' | t}:</span>
                 </div>
                 <div class="div-table-cell">
-                    <form class="select-file2" style="float:left;">
-                        <input type="file" id="inputfile2" class="inputfile2" 
-                        change.delegate="controller.onAlertAttachmentFile($event, step.model.fileList)" load.delegate="controller.handleFiles($event)" files.bind="controller.dialogController.alertModel.fileList" />
-                        <label for="inputfile2">
-                            <strong>
-                                <i class="ico-attachment"></i>
-                            </strong>
-                            <span if.bind="(!(step.model.files) || step.model.files.length === 0)">${'community.communities.alert.selectFile' | t}&hellip;</span>
-                            <span if.bind="((step.model.files) && step.model.files.length !== 0)">${step.model.files[0].name}</span>
-                            <button if.bind="((step.model.files) && step.model.files.length !== 0)" id="btn-remove-attachment" click.delegate="controller.removeAttachment(step.model.files[0])" class="btn btn-xs send-alert-remove-attachment" i18n="[title]button.removeAttachment">
-				                <i class="ico-cancel-square2"></i>
-			                </button>
-                        </label>
-                    </form>
-                    <span class="pull-right alert-counter" style="top:0;line-height: 1;">
-                        ${(controller.maxMessageLength - controller.dialogController.alertModel.alertMessage.length) | mathMax:0} ${'global.charsRemaining' | t}
-                    </span>
+
+                    <div class="div-table">
+                        <div class="div-table-body">
+                            <div class="div-table-row">
+                                <div class="div-table-cell"> 
+                                    <form class="select-file2">
+                                        <input type="file" id="inputfile2" class="inputfile2" 
+                                        change.delegate="controller.onAlertAttachmentFile($event, step.model.fileList)" load.delegate="controller.handleFiles($event)" files.bind="controller.dialogController.alertModel.fileList" />
+                                        <label for="inputfile2">
+                                            <strong>
+                                                <i class="ico-attachment"></i>
+                                            </strong>
+                                            <span if.bind="(!(step.model.files) || step.model.files.length === 0)">${'community.communities.alert.selectFile' | t}&hellip;</span>
+                                            <span if.bind="((step.model.files) && step.model.files.length !== 0)">${step.model.files[0].name}</span>
+                                            <button if.bind="((step.model.files) && step.model.files.length !== 0)" id="btn-remove-attachment" click.delegate="controller.removeAttachment(step.model.files[0])" class="btn btn-xs send-alert-remove-attachment" i18n="[title]button.removeAttachment">
+                                                <i class="ico-cancel-square2"></i>
+                                            </button>
+                                        </label>
+                                    </form>
+                                </div>    
+                                <div class="div-table-cell">                    
+                                    <span class="pull-right alert-counter">
+                                        ${(controller.maxMessageLength - controller.dialogController.alertModel.alertMessage.length) | mathMax:0} ${'global.charsRemaining' | t}
+                                    </span>
+                                </div>
+                                </div>
+                            </div>
+                        </div>                
+
                 </div>
             </div>
         </div>
