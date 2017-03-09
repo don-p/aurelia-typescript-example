@@ -321,6 +321,7 @@ export class CommunityDetail {
 
   membersSelectionChanged(scope) {
     let rows = scope.api.getSelectedRows();
+    this.gridOptions['selection'] = rows;
     this.evt.publish('communityMembersSelected', {selectedMembers: rows});
   }
 
