@@ -64,6 +64,7 @@ var getStep = function(action) {
 }
 var initEvents = function() {
   this.events.subscribe("wizard:action", (action) => {
+    console.debug("Wizard|initEvents: next");
     let newStep = getStep.call(this, action)
     if (newStep) {
       setStep.call(this, newStep)

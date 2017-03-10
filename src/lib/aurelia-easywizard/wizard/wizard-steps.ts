@@ -42,6 +42,7 @@ export class WizardSteps {
   }
 
   setCurrent(currentStep) {
+    console.debug("WizardSteps|setCurrent: " + currentStep);
     if (this.currentStep.id) {
       this.currentStep.setIsCurrent(false)
      } 

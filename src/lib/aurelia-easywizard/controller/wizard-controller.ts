@@ -82,6 +82,7 @@ export class WizardController {
     return this.steps[this.steps.length - 1]
   }
   nextStep(currentStep) {
+    console.debug("WizardController|nextStep: " + currentStep);
     if (currentStep != this.lastStep()) {
       return this.stepList.next(currentStep)
     }
