@@ -221,7 +221,7 @@ export class MemberActionsBarCustomElement {
         canValidate: true,
         model: alertModel,
         attachedFn: function(){
-          me.logger.debug( "------attached");
+          me.logger.debug( "------attached step1config");
           let message = '';
           if(Array.isArray(communityMembers) && communityMembers.length > 0) {
             if(communityMembers.length === 1) {
@@ -247,7 +247,7 @@ export class MemberActionsBarCustomElement {
         canValidate: false,
         model: alertModel,
         attachedFn: function(){
-          me.logger.debug( "------attached");
+          me.logger.debug( "------attached step2config");
           let wizardController = this.controller;
           let message = '';
           if(Array.isArray(communityMembers) && communityMembers.length > 0) {
@@ -269,7 +269,7 @@ export class MemberActionsBarCustomElement {
           // this.step.errorMessage = me.i18n.tr('community.members.alert.alertConfirmMessage', {alertType: this.controller.dialogController.alertModel.alertType.categoryName, attCount: ((this.controller.dialogController.alertModel.fileList)?this.controller.dialogController.alertModel.fileList.length:0), recipientCount: this.controller.dialogController.alertModel.communityMembers.length});
         },
         callback: function(step){
-          me.logger.debug( "------attached");
+          me.logger.debug( "------callback step2config");
           // Call the service to send the alert.
           let view = this;
           let modelPromise = me.communityService.sendNotification(this.controller.dialogController.alertModel.communityMembers, 

@@ -23,7 +23,9 @@ export class WizardActions {
     event.stopPropagation();
     event.preventDefault();
     event.cancelBubble = true;
+    // TODO: FEED-442 - action is undefined?
     let action = $(event.target).data('action');
+    console.debug("WizardActions|process: " + action);
     if (typeof this[action] === 'function') {
       this[action]();
     }
@@ -44,6 +46,7 @@ export class WizardActions {
     if (this.isNotLastStep) {
       this.nextDisabled = true;
       this.logger.debug('XX Next disabled - true');
+    console.debug("WizardActions|next: " );
       doAction.call(this, "next");
     }
   }
@@ -82,6 +85,7 @@ var initEvents = function() {
   })
 }
 var doNextAction = function() {
+    console.debug("WizardActions|doNextAction: " );
    publish.call(this, "action", this.nextAction);
    this.nextAction = undefined;
   this.nextDisabled = false;
@@ -154,5 +158,6 @@ var doAction = function(action) {
 }
 var publish = function(event, option) {
   let action = `wizard:${event}`
+    console.debug("WizardActions|publish: " + action);
   this.events.publish(action, option) 
 }
