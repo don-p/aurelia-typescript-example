@@ -197,7 +197,11 @@ export class MemberActionsBarCustomElement {
       communities: communities,
       alertType: '',
       alertMessage: '',
-      files: []
+      files: [],
+      schedule: {
+         isReceiverTZ: false, 
+        sendDate: null
+      }
     };
     const maxMessageLength = this.appConfig.get('maxAlertMessageSize');
     const alertTemplates = this.appConfig.get('alertTemplates');
@@ -412,6 +416,10 @@ export class MemberActionsBarCustomElement {
         }
         // Validate the message content.
         controller.viewModel.vController.validate({ object: alertModel, propertyName: 'alertMessage' });
+      };
+      controller.viewModel.onSendDateChange = function(event: any) {
+        alertModel.schedule.sendDate = new Date();
+      
       };
       controller.viewModel.onAlertAttachmentFile = function(event, fileList) {
         let fileArray = Array.from(fileList);
