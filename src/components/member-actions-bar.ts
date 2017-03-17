@@ -276,9 +276,7 @@ export class MemberActionsBarCustomElement {
           me.logger.debug( "------callback step2config");
           // Call the service to send the alert.
           let view = this;
-          let modelPromise = me.communityService.sendNotification(this.controller.dialogController.alertModel.communityMembers, 
-          this.controller.dialogController.alertModel.communities, 
-          {message: this.controller.dialogController.alertModel.alertMessage, notificationCategory: this.controller.dialogController.alertModel.alertType.categoryId, attachmentRefs: this.controller.dialogController.alertModel.files});
+          let modelPromise = me.communityService.sendNotification(this.controller.dialogController.alertModel);
           step.controller.wizard.wizLoadingPromise = modelPromise;        
           
           return modelPromise.then(response => response.content)
