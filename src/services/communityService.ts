@@ -154,8 +154,23 @@ export class CommunityService {
         return response;
     }
 
-    async sendNotification(members:Array<any>, communities:Array<any>, notificationConfig:Object):Promise<HttpResponseMessage> {
+    async sendNotification(alertModel:any):Promise<HttpResponseMessage> {
         await fetch;
+
+        let members:Array<any> = alertModel.communityMembers; 
+        let communities:Array<any> = alertModel.communities; 
+        let notificationConfig:Object = {
+            message: alertModel.alertMessage, 
+            notificationCategory: alertModel.alertType, 
+            attachmentRefs: alertModel.files
+        };
+        let schedule:Object;
+
+        if(typeof alertModel.schedule == 'object' && alertModel.schedule.sendDate.constructor.name == 'Date') {
+            schedule = alertModel.schedule;
+            schedule['sendDate'] = alertModel.schedule.sendDate.getTime();
+        }
+
         let memberIds = members.map(function(member) {
             return member.memberId;
         });
@@ -170,6 +185,10 @@ export class CommunityService {
             message: notificationConfig['message'],
             notificationCategory: notificationConfig['notificationCategory']
         };
+
+        if(!!(schedule)) {
+            body['schedule'] = schedule;
+        }
 
         var form = new FormData();
         form.append('notification', JSON.stringify(body));
