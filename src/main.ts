@@ -7,6 +7,7 @@ import {ConsoleAppender} from "aurelia-logging-console";
  // Vendor CSS libs:
 import 'font-awesome/css/font-awesome.css';
 import 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
+import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css';
 // Application CSS + Bootstrap:
 import '../styles/style.scss';
 // import 'ag-grid/dist/styles/theme-blue.css';
@@ -118,6 +119,7 @@ export async function configure(aurelia: Aurelia) {
       .plugin('aurelia-validation')
       .plugin('aurelia-dialog')
       .plugin('ag-grid-aurelia')
+      .plugin('aurelia-bootstrap-datetimepicker')
       // .plugin('aurelia-ui-virtualization')
       .postTask(function() {  // Additional bootstraping after framework start-up.
         let dataInstance = aurelia.container.get(DataService);

@@ -45,6 +45,9 @@ const outDir = path.resolve('dist');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ExtractCustomCSS = new ExtractTextPlugin('style.[chunkhash].css');
 
+const ProvidePlugin = require('webpack/lib/ProvidePlugin')
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
+
 const coreBundles = {
   bootstrap: [
     'aurelia-bootstrapper-webpack',
@@ -147,9 +150,23 @@ let config = generateConfig(
           }
         },
       }),
-      ExtractCustomCSS
-    ]    
-  },
+      ExtractCustomCSS,
+    new ContextReplacementPlugin(/moment[\/\\]locale$/, /en|fr/),
+    new ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      'window.jQuery': 'jquery',
+      'window.Tether': 'tether',
+      Tether: 'tether'
+    })
+    ],    
+  resolve: {
+      alias: {
+          // Force all modules to use the same jquery version.
+          'jquery': path.join(__dirname, 'node_modules/jquery/src/jquery')
+      }
+  }
+   },
 
   /**
    * Don't be afraid, you can put bits of standard Webpack configuration here

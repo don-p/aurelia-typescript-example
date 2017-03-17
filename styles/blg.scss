@@ -1741,6 +1741,7 @@ li.complete .map-check {
 .alert-counter {
   position: relative;
   top: 15px;
+  font-size: 12px;
 }
 
 .send-alert-textarea {
@@ -2035,4 +2036,17 @@ span.recipientsListItem:not(:last-child)::after {
 .request-details-content {
   padding: 15px;
   font-size: 15px;
+}
+
+.datepicker > div.datepicker-days {
+  display: block;
+}
+
+.input-group.date {
+  width: 220px;
+  display:inline-block; 
+}
+
+.input-group.date > input {
+  width: 180px;
 }

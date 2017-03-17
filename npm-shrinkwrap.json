@@ -499,6 +499,11 @@
       "from": "aurelia-binding@>=1.1.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/aurelia-binding/-/aurelia-binding-1.2.0.tgz"
     },
+    "aurelia-bootstrap-datetimepicker": {
+      "version": "0.3.3",
+      "from": "aurelia-bootstrap-datetimepicker@latest",
+      "resolved": "https://registry.npmjs.org/aurelia-bootstrap-datetimepicker/-/aurelia-bootstrap-datetimepicker-0.3.3.tgz"
+    },
     "aurelia-bootstrapper-webpack": {
       "version": "1.1.0",
       "from": "aurelia-bootstrapper-webpack@>=1.1.0 <2.0.0",
@@ -1224,6 +1229,11 @@
       "version": "2.10.1",
       "from": "boom@>=2.0.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/boom/-/boom-2.10.1.tgz"
+    },
+    "bootstrap": {
+      "version": "3.3.7",
+      "from": "bootstrap@>=3.3.7 <4.0.0",
+      "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.7.tgz"
     },
     "bootstrap-sass": {
       "version": "3.3.7",
@@ -2284,6 +2294,11 @@
       "from": "entities@>=1.1.1 <1.2.0",
       "resolved": "https://registry.npmjs.org/entities/-/entities-1.1.1.tgz",
       "dev": true
+    },
+    "eonasdan-bootstrap-datetimepicker": {
+      "version": "4.17.47",
+      "from": "eonasdan-bootstrap-datetimepicker@>=4.17.46 <5.0.0",
+      "resolved": "https://registry.npmjs.org/eonasdan-bootstrap-datetimepicker/-/eonasdan-bootstrap-datetimepicker-4.17.47.tgz"
     },
     "errno": {
       "version": "0.1.4",
@@ -4722,8 +4737,12 @@
     "moment": {
       "version": "2.17.1",
       "from": "moment@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/moment/-/moment-2.17.1.tgz",
-      "dev": true
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.17.1.tgz"
+    },
+    "moment-timezone": {
+      "version": "0.4.1",
+      "from": "moment-timezone@>=0.4.0 <0.5.0",
+      "resolved": "https://registry.npmjs.org/moment-timezone/-/moment-timezone-0.4.1.tgz"
     },
     "ms": {
       "version": "0.7.2",
