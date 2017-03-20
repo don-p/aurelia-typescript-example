@@ -1121,6 +1121,9 @@ table.blg-dataTable.display tbody td {
 .members-table-content .ag-header-container {
   margin-top: 5px;
 }
+.ag-gridCheckboxHeader, .ag-pinned-left-header > .ag-header-row {
+  cursor: default;
+}
 
 .ag-header-row,
 .ag-blg img {
