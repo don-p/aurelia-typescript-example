@@ -1547,6 +1547,10 @@ li.complete .map-check {
   padding: 70px 0 50px;
 }
 
+.select-file2 label {
+    margin-bottom: -5px;  
+}
+
 .inputfile,
 .inputfile2 {
   width: 0.1px;
@@ -1719,6 +1723,10 @@ li.complete .map-check {
 	padding: 0px 0px 15px 0px;
 }
 
+.inside-table .div-table-cell {
+	padding: 0px;
+}
+
 .step-process .div-table-cell {
 	display: table-cell;
   padding: 0px 4px;    
@@ -1743,8 +1751,7 @@ li.complete .map-check {
 
 .alert-counter {
   position: relative;
-  top: 15px;
-  font-size: 12px;
+  top: -20px;
 }
 
 .send-alert-textarea {
@@ -2052,4 +2059,43 @@ span.recipientsListItem:not(:last-child)::after {
 
 .input-group.date > input {
   width: 180px;
+}
+
+.send-alert {
+  vertical-align: top;
+  margin-right: 5px;
+  display: inline-block;  
+}
+
+abp-datetime-picker .input-group-addon {
+  background-color: $blg-blue;
+  color: $blg-white;
+  border-top: 1px solid $blg-blue;
+  border-right: 1px solid $blg-blue;
+  border-bottom: 1px solid $blg-blue;
+  padding-bottom: 7px;  
+}
+
+.recepient-tz {
+  display: inline-block;
+  margin-left: 50px;
+  margin-bottom: -5px;
+  top: -6px;
+}
+
+.recepient-tz input {
+  cursor: pointer;
+  right: 15px;  
+}
+
+.recepient-tz-label {
+    display: inline-block;
+    position: relative;    
+    bottom: 9px;
+    right: 10px;
+}
+
+.timepicker-picker a.btn:hover {
+  background-color: #eee;
+  color: #666;
 }
