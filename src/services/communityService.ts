@@ -282,7 +282,12 @@ export class CommunityService {
 
     }
 
-    async getMemberConnections(connectionStatus: string, startIndex: number, pageSize:number, params:Object): Promise<Response> {
+    async getMemberConnections(args: any): Promise<Response> {
+        let connectionStatus = args.connectionStatus; 
+        let startIndex = args.startIndex; 
+        let pageSize = args.pageSize; 
+        let params = args.params;
+
         await fetch;
         let criteriaParams;
         let criteriaParamsQueryString = ''

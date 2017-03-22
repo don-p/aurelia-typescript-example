@@ -1380,7 +1380,7 @@ ai-dialog-container {
   margin-right: 15px;
 }
 
-.btn-filter.btn-xs {
+.btn-filter.btn-xs, .btn-group > .btn-filter.btn:first-child  {
   padding: 3px 8px 4px;
   background-color: $blg-wet-asphalt-lighter;
   color: $blg-white;
