@@ -5,7 +5,6 @@ import {AureliaConfiguration} from 'aurelia-configuration';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {Community} from './community';
 import {Session} from '../services/session';
-import {DataService} from '../services/dataService';
 import {CommunityService} from '../services/communityService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
@@ -13,10 +12,9 @@ import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {Utils} from '../services/util';
 
-@inject(Session, DataService, CommunityService, EventAggregator, 
+@inject(Session, CommunityService, EventAggregator, 
   Ps, I18N, AureliaConfiguration, Utils, Parent.of(Community), LogManager) // SCROLL
 export class CommunityDetail {
-  member: Object;
 
   isSelectedMembers: boolean;
   showSelectedMembers: boolean;
@@ -34,13 +32,12 @@ export class CommunityDetail {
 
   logger: Logger;
   
-  constructor(private session: Session, private dataService: DataService, private communityService: CommunityService,
+  constructor(private session: Session, private communityService: CommunityService,
     private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community) {
 
     // this.ps = Ps; // SCROLL
 
     this.pageSize = 100000;
-
     this.showSelectedMembers = false;
     let me = this;
 

@@ -86,8 +86,14 @@ export class OrganizationService {
         return response;
     }
 
-    async searchOrganizationMembers(organization: any, filters: Array<any>, startIndex: number, pageSize:number, params:Object) {
+    async searchOrganizationMembers(args: any) {
         await fetch;
+
+        let organization = args.organizationId; 
+        let startIndex = args.startIndex; 
+        let pageSize = args.pageSize; 
+        let params = args.params;
+        let filters = args.filters;
 
         // Params from filter elements.
         let criteriaParams = OrganizationService.getDiscoveryRuleFromParams(filters);
