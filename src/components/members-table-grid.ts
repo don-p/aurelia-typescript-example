@@ -6,7 +6,6 @@ import {I18N} from 'aurelia-i18n';
 import {Utils} from '../services/util';
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
-import {SelectedFilter} from '../lib/grid/selectedFilter';
 
 @inject(Session, EventAggregator, I18N, Utils, LogManager) 
 @viewResources('./members-table-grid')
