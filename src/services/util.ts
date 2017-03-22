@@ -355,7 +355,7 @@ export class Utils {
 
         /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
         getRows: function(params: IGetRowsParams) {
-            gridOptions.api.showLoadingOverlay();
+          gridOptions.api.showLoadingOverlay();
           if(!this.loading) {
             me.logger.debug("..... setMemberGridDataSource Loading Grid rows | startIndex: " + params.startRow);
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
@@ -375,15 +375,20 @@ export class Utils {
                   if(gridDataSource.rowCount === null) {
                     gridDataSource.rowCount = totalCount;
                   }
-                  let result = data.responseCollection.map(function(item){
-                    return {
-                      connectId: item.connectId,
-                      connectStatus: item.connectStatus,
-                      memberEntityType: item.member.memberEntityType,
-                      memberId: item.member.memberId,
-                      physicalPersonProfile: item.member.physicalPersonProfile
-                    }
-                  });
+                  let result = data.responseCollection;
+                  let idProperty = 'memberId';
+                  if(callback.name === 'getMemberConnections') { // Normalize Connections response member entity.
+                    result = data.responseCollection.map(function(item){
+                      return {
+                        connectId: item.connectId,
+                        connectStatus: item.connectStatus,
+                        memberEntityType: item.member.memberEntityType,
+                        memberId: item.member.memberId,
+                        physicalPersonProfile: item.member.physicalPersonProfile
+                      }
+                    });
+                    idProperty = 'connectId';
+                  }
 
                   
                   if(!!(gridOptions.showSelected)) { // Filter out only selectedItems.
@@ -391,7 +396,7 @@ export class Utils {
                     let rows:Array<any> = result;
                     rows.forEach(function(node, index, array) {
                       if (rowSelection.find(function(item:any, index:number, array:any[]) {
-                        return item.connectId === node.connectId;
+                        return item[idProperty] === node[idProperty];
                       })) {
                           filteredData.push(node);
                       }

@@ -118,7 +118,6 @@ export class CommunityDetail {
     this.gridOptions['showSelected'] = showSelected;
     this.showSelectedMembers = showSelected;
     this.gridOptions.api.refreshVirtualPageCache();
-
   };
 
 

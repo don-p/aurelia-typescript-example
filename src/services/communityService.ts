@@ -53,8 +53,14 @@ export class CommunityService {
    /**
      * Get an individual community's members for logged-in user.
      */
-    async getCommunity(communityId: string, startIndex: number, pageSize:number, params:Object): Promise<Response> {
+    async getCommunity(args:any): Promise<Response> {
         await fetch;
+
+        let communityId = args.communityId; 
+        let startIndex = args.startIndex; 
+        let pageSize = args.pageSize; 
+        let params = args.params;
+
         let criteriaParams;
         let criteriaParamsQueryString = ''
         if((params && typeof params === 'object') &&
