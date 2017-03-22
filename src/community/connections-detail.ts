@@ -17,13 +17,10 @@ import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 @inject(Session, CommunityService, EventAggregator, 
   Ps, I18N, AureliaConfiguration, Utils, LogManager) // SCROLL
 export class ConnectionsDetail {
-  member: Object;
 
   isSelectedMembers: boolean;
   showSelectedMembers: boolean;
   selectedOrganization: any;
-  membersGrid: any;
-  membersSelectedGrid: any;
 
   membersPromise: Promise<Response>;
   @bindable pageSize;
@@ -43,10 +40,6 @@ export class ConnectionsDetail {
     this.showSelectedMembers = false;
 
     let me = this;
-    let gridOptions = this.utils.getGridOptions('listMembers', this.pageSize);
-    gridOptions.getRowNodeId = function(item) {
-      return item.connectId.toString();
-    };
 
     this.gridOptions = <GridOptions>{};
     this.gridOptions.getRowNodeId = function(item) {
@@ -113,14 +106,6 @@ export class ConnectionsDetail {
   get isGridFiltered() {
     return (this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent()) ;
   }
-
-  initGrid(me) {
-    new Grid(this.membersGrid, this.gridOptions); //create a new grid
-    //FIXME: temp
-    this.gridOptions.columnApi.getColumn('physicalPersonProfile.lastName')['sort'] = 'asc';
-    this.gridOptions['api'].sizeColumnsToFit();
-  }
-
 
   clearGridFilters(gridOptions, filterName) {
       this.utils.clearGridFilters(gridOptions, filterName);

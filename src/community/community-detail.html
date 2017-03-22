@@ -2,6 +2,7 @@
 	<!-- <require from="../components/member-actions-bar.html"></require> -->
 	<require from="../lib/loading-mask/loading-mask"></require>
 	<require from="../components/member-actions-bar"></require>
+	<require from="../components/members-table-grid"></require>
 
 	<section id="membersTable" class="members-table">
 		
@@ -56,8 +57,19 @@
 		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
 <div class="members-table-content" id="membersTableContent">	
-	<div show.bind="!showSelectedCommunitiesGrid" id="cmtyMembersGrid" ref="cmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
-	<div show.bind="!!(showSelectedCommunitiesGrid)" id="cmtyMembersSelectedGrid" ref="cmtyMembersSelectedGrid" style="height: 100%;" class="ag-blg" ></div>
+
+		<members-table-grid 
+			grid-id.bind="membersGrid"
+			grid-options.bind="gridOptions" 
+			grid-ready-func.bind="onGridReady"
+			grid-filter-func.bind="onFilterChanged"
+			grid-selection-changed-func.bind="onSelectionChanged"
+			pagination-page-size.bind="pageSize"
+			enable-sorting.bind="true"
+			enable-server-side-sorting.bind="true"
+			enable-filter.bind="true"
+			enable-server-side-filter.bind="true"></members-table-grid>
+	
 </div>
 		<!--<div class="blg-btns-content panel-footer"></div>										-->
 
