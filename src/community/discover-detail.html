@@ -1,6 +1,7 @@
 <template>
 	<require from="../lib/loading-mask/loading-mask"></require>
 	<require from="../components/member-actions-bar"></require>
+	<require from="../components/members-table-grid"></require>
 
 	<section id="membersTable" class="members-table">
 		
@@ -14,18 +15,7 @@
 
 		
 			<div role="status" id="example_info" class="members-table-info">
-				<div if.bind="!showSelectedCommunitiesGrid" class="pull-right" >
-					<button disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(true)"><span>${'global.showSelected' | t}</span></button>
-				</div>
-				<div if.bind="showSelectedCommunitiesGrid" class="pull-right" >
-					<button type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(false)"> <span>${'global.showAll' | t}</span></button>
-				</div>
-				<!--<div class="pull-right">
-					<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(showSelectedCommunitiesGrid?gridOptionsSelected:gridOptions)">
-						<i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span>
-					</button>
-				</div>-->
-				<div show.bind="!showSelectedCommunitiesGrid" class="btn-group pull-right">
+				<div class="btn-group pull-right">
 					<button disabled.bind="!isGridFiltered" type="button" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(showSelectedCommunitiesGrid?gridOptionsSelected:gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
 					<button disabled.bind="!isGridFiltered" type="button" class="btn btn-filter btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<span class="caret"></span>
@@ -40,6 +30,12 @@
 						</li>
 					</ul>
 				</div>				
+				<div if.bind="!showSelectedMembers" class="pull-right" >
+					<button disabled.bind="(!isSelectedMembers) || (selectedMembers.length === 0)" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(true)"><span>${'global.showSelected' | t}</span></button>
+				</div>
+				<div if.bind="!!(showSelectedMembers)" class="pull-right" >
+					<button type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedCommunityMembers(false)"> <span>${'global.showAll' | t}</span></button>
+				</div>
 				<!--
 				<div class="filter-label-text">Applied filters: </div>
 				<div class="filter-labels">
@@ -55,9 +51,19 @@
 		</div>		
 		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
-<div class="members-table-content" id="membersTableContent">	
-	<div show.bind="!(showSelectedCommunitiesGrid)" id="cmtyMembersGrid" ref="orgMembersGrid" style="height: 100%;" class="ag-blg" ></div>
-	<div show.bind="!!(showSelectedCommunitiesGrid)" id="cmtyMembersSelectedGrid" ref="orgMembersSelectedGrid" style="height: 100%;" class="ag-blg" ></div>
+<div class="members-table-content" id="membersTableContent">
+
+		<members-table-grid 
+			grid-id.bind="membersGrid"
+			grid-options.bind="gridOptions" 
+			grid-ready-func.bind="onGridReady"
+			grid-filter-func.bind="onFilterChanged"
+			grid-selection-changed-func.bind="onSelectionChanged"
+			pagination-page-size.bind="pageSize"
+			enable-sorting.bind="true"
+			enable-server-side-sorting.bind="true"
+			enable-filter.bind="true"
+			enable-server-side-filter.bind="true"></members-table-grid>
 </div>
 		<!--<div class="blg-btns-content panel-footer"></div>										-->
 

@@ -1,29 +1,26 @@
 import {inject, Lazy, bindable, LogManager, Parent} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
-import {Router, NavigationInstruction} from 'aurelia-router';
 import {AureliaConfiguration} from 'aurelia-configuration';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {Community} from './community';
 import {Session} from '../services/session';
-import {DataService} from '../services/dataService';
-import {CommunityService} from '../services/communityService';
 import {OrganizationService} from '../services/organizationService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {Prompt} from '../model/prompt';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
-import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
 import {Utils} from '../services/util';
 
-@inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, 
+@inject(Session, OrganizationService, EventAggregator, 
   Ps, I18N, AureliaConfiguration, Utils, Parent.of(Community), LogManager) // SCROLL
 export class DiscoverDetail {
-  member: Object;
 
-  navigationInstruction: NavigationInstruction;
-  selectedMembers: Array<Object>;
+  isSelectedMembers: boolean;
+  showSelectedMembers: boolean;
+  selectedCmty: any;
+
   selectedOrganization: any;
   orgFilters: Array<any>;
   membersGrid: Object;
@@ -39,43 +36,26 @@ export class DiscoverDetail {
   // @bindable rows;
   @bindable pageSize;
   gridOptions: GridOptions;
-  gridOptionsSelected: GridOptions;
-  showSelectedCommunitiesGrid: boolean;
-  gridCreated: boolean;
-  gridColumns: Array<any>;
-  grid: any;
 
   ps: any; // SCROLL
 
   logger: Logger;
   
-  constructor(private session: Session, private router: Router, 
-    private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
+  constructor(private session: Session, private organizationService: OrganizationService,
     private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community) {
 
     // this.ps = Ps; // SCROLL
 
-    this.pageSize = 200;
-
-    const sortAsc = Column.SORT_ASC;
-    const sortDesc = Column.SORT_DESC;
-    const filterEquals = TextFilter.EQUALS;
-    const filterContains = TextFilter.CONTAINS;
-
-    this.showSelectedCommunitiesGrid = false;
+    this.pageSize = 100000;
+    this.showSelectedMembers = false;
 
     let me = this;
-    let gridOptions = this.utils.getGridOptions('organizationMembersDiscover', this.pageSize);
-    gridOptions.onSelectionChanged = function() {
-      me.orgMembersSelectionChanged(this);
-    };
-    gridOptions.onFilterChanged = function(event) {
-      me.utils.setGridFilterMap(gridOptions);
-    }
-    gridOptions.getRowNodeId = function(item) {
+    this.gridOptions = <GridOptions>{};
+    this.gridOptions.getRowNodeId = function(item) {
       return item.memberId.toString();
     };
-    this.gridOptions = gridOptions;
+    this.gridOptions.rowModelType = 'virtual';
+
     this.evt.subscribe('orgSearch', payload => {
       me.selectedOrganization = payload.organization;
       me.orgFilters = payload.filters;
@@ -88,7 +68,7 @@ export class DiscoverDetail {
       me.gridOptions['organizationId'] = me.selectedOrganization.organizationId;
       me.gridOptions['orgFilters'] = me.orgFilters;
       // Set up the virtual scrolling grid displaying organization members.
-      me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
+      me.utils.setMemberGridDataSource(me.gridOptions, me.organizationService, me.organizationService.searchOrganizationMembers, {startIndex: 0, pageSize: me.pageSize, organizationId: me.selectedOrganization.organizationId, filters: []});
       // Set up collection to track available community members.
       me.gridOptions.api.showLoadingOverlay();
      
@@ -105,13 +85,15 @@ export class DiscoverDetail {
         me.gridOptions.api.setSortModel(null);
         // Load the grid data.
         // Set up the virtual scrolling grid displaying community members.
-        me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
+        me.gridOptions.api.refreshVirtualPageCache();
+        me.gridOptions.api.refreshView();
         // Set up collection to track available community members.
         me.gridOptions.api.showLoadingOverlay();
       }
+      me.utils.setMemberGridDataSource(me.gridOptions, me.organizationService, me.organizationService.searchOrganizationMembers, {startIndex: 0, pageSize: me.pageSize, organizationId: me.selectedOrganization.organizationId, filters: []});
     });
     this.evt.subscribe('communityMembersSelected', payload => {
-      me.selectedMembers = payload.selectedMembers;
+      me.isSelectedMembers = payload.selectedMembers;
     });
     this.logger = LogManager.getLogger(this.constructor.name);
   }
@@ -121,34 +103,13 @@ export class DiscoverDetail {
   }
 
   attached(params, navigationInstruction) {
+    this.logger.debug("DiscoverDetail | attached()");
     // // Custom scrollbar:
     // var container = document.getElementById('community-member-list'); // SCROLL
     // this.ps.initialize(container);
     // this.ps.update(container);
-    let me = this;
-    let cols = this.utils.getGridColumns('listMembers').map(function(col) {
-        return {
-            headerName: col.headerName,
-            field: col.field
-        };
-    });
 
-    this.initGrid(this);
-
-    this.gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
-    this.gridOptionsSelected.enableServerSideSorting = false;
-    this.gridOptionsSelected.enableServerSideFilter = false;
-    this.gridOptionsSelected.enableSorting = true;
-    this.gridOptionsSelected.enableFilter = false;
-    this.gridOptionsSelected.rowModelType = 'normal';
-    this.gridOptionsSelected.onSelectionChanged = function() {
-      me.orgMembersSelectionChanged(this);
-      me.gridOptions['selection'] = me.selectedMembers;
-    };
-    new Grid(this.orgMembersSelectedGrid, this.gridOptionsSelected); //create a new grid
-    this.gridOptionsSelected['api'].sizeColumnsToFit();
-
-    this.evt.publish('childViewAttached', 'discover-detail');
+    // this.evt.publish('childViewAttached', 'discover-detail');
   }
 
   // findGridColumnDef(gridOptions: GridOptions, fieldName: string):Object {
@@ -157,77 +118,23 @@ export class DiscoverDetail {
   //   });
   // }
 
+  onGridReady(event) {
+    let grid:any = this;
+    // grid.context.utils.setMemberGridDataSource(grid.context.gridOptions, grid.context.communityService, grid.context.communityService.getMemberConnections, {startIndex: 0, pageSize: grid.context.pageSize, communityId: grid.context.selectedCmty.communityId});
+    grid.context.evt.publish('childViewAttached', 'discover-detail');
+    event.api.sizeColumnsToFit();
+  }
+
+  onFilterChanged = function(event) {
+    this.utils.setGridFilterMap(this.gridOptions);
+  }
+
+  onSelectionChanged = function() {
+    this.context.membersSelectionChanged(this.context.gridOptions);
+  };
+
   get isGridFiltered() {
-    return (!(this.showSelectedCommunitiesGrid) && 
-      (this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent())) ||
-      ((this.showSelectedCommunitiesGrid) && 
-      (this.gridOptionsSelected && this.gridOptionsSelected.api && this.gridOptionsSelected.api.isAnyFilterPresent())) ;
-  }
-
-  initGrid(me) {
-    // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
-    new Grid(this.orgMembersGrid, this.gridOptions); //create a new grid
-    // this.agGridWrap.gridCreated = true;
-    this.gridOptions['api'].sizeColumnsToFit();
-  }
-
-  setOrganizationMembersGridDataSource(gridOptions, pageSize, organizationService) {
-    const me = this;
-    let organizationId = gridOptions.organizationId;
-    let filters = gridOptions.orgFilters;
-
-    gridOptions.selection = null;
-
-    let gridDataSource = {
-        name: 'organizationMembers',
-        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-        rowCount: null,
-        paginationPageSize: pageSize,
-        //  paginationOverflowSize: 1,
-          maxConcurrentDatasourceRequests: 2,
-        //  maxPagesInPaginationCache: 2,
-        loading: false,
-
-        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-        getRows: function(params: IGetRowsParams) {
-            gridOptions.api.showLoadingOverlay();
-          if(!this.loading) {
-            me.logger.debug("..... setOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
-            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
-            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
-            this.loading = true;
-            let  organizationId = gridOptions.organizationId;
-            let orgPromise = organizationService.searchOrganizationMembers(organizationId, filters, params.startRow, pageSize, params);
-            orgPromise.then(response => response.json())
-              .then(data => {
-                // Filter out existing community members.
-                let totalCount = data.totalCount;
-                if(gridDataSource.rowCount === null) {
-                  gridDataSource.rowCount = totalCount;
-                }
-                params.successCallback(data.responseCollection, totalCount);
-                // pre-select nodes as needed.
-                let selection = gridOptions.selection;
-                if(Array.isArray(selection)) {
-                  gridOptions.api.forEachNode( function (node) {
-                      if (selection.find(function(item:any, index:number, array:any[]) {
-                        return item.memberId === node.data.memberId
-                      })) {
-                          node.setSelected(true);
-                          gridOptions.api.refreshRows([node]);
-                      } else {
-                          node.setSelected(false);
-                          gridOptions.api.refreshRows([node]);
-                      }
-                  });
-                }
-                gridOptions.api.hideOverlay();
-               this.loading = false;
-            });
-          }
-        }
-    }
-    gridOptions.api.setDatasource(gridDataSource);
+    return (this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent()) ;
   }
 
   clearGridFilters(gridOptions, filterName) {
@@ -235,24 +142,15 @@ export class DiscoverDetail {
   }
   
   showSelectedCommunityMembers(showSelected:boolean) {
-    if(showSelected) {
-      this.showSelectedCommunitiesGrid = showSelected;
-      let selection = this.gridOptions.api.getSelectedRows();
-      // this.gridOptions.api.setDatasource(this.utils.getSelectedCommunityMembersGridDataSource('selectedCommunityMembers', this.gridOptions));
-      this.gridOptionsSelected.api.setRowData(selection);
-      this.gridOptionsSelected.api.selectAll();
-      this.gridOptionsSelected.api.refreshView();
-      this.gridOptionsSelected['api'].sizeColumnsToFit();
-    } else {
-      this.showSelectedCommunitiesGrid = showSelected;
-      this.gridOptions.api.refreshVirtualPageCache();
-    }
+    this.gridOptions['showSelected'] = showSelected;
+    this.showSelectedMembers = showSelected;
+    this.gridOptions.api.refreshVirtualPageCache();
 
   };
 
-  orgMembersSelectionChanged(scope) {
-    let rows = scope.api.getSelectedRows();
-    this.evt.publish('communityMembersSelected', {selectedMembers: rows});
+  membersSelectionChanged(scope) {
+    let selected = scope.api.getSelectedRows().length != 0;
+    this.evt.publish('communityMembersSelected', {selectedMembers: selected, memberType: 'ORG'});
   }
 
 }
