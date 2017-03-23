@@ -25,6 +25,7 @@ export class MembersTableGridCustomElement {
     @bindable enableServerSideFilter: boolean;
     @bindable enableSorting: boolean;
     @bindable enableServerSideSorting: boolean;
+    @bindable displayColumns: Array<String> = [];
 
     context: any;
     logger: Logger;
@@ -62,5 +63,9 @@ export class MembersTableGridCustomElement {
 
   private getTextSearchFilter(): any {
     return TextSearchFilter;
+  }
+
+  private showColumn(column: String): boolean {
+    return this.displayColumns.includes(column);
   }
 }

@@ -88,7 +88,13 @@ export class ConnectionsDetail {
 
   onGridReady(event, scope) {
     let grid:any = this;
-    grid.context.utils.setMemberGridDataSource(grid.context.gridOptions, grid.context.communityService, grid.context.communityService.getMemberConnections, {startIndex: 0, pageSize: grid.context.pageSize, connectionStatus: 'CONNECTED'});
+    grid.context.utils.setMemberGridDataSource(
+      grid.context.gridOptions, 
+      grid.context.communityService, 
+      grid.context.communityService.getMemberConnections, 
+      {startIndex: 0, pageSize: grid.context.pageSize, connectionStatus: 'CONNECTED'},
+      true
+    );
     event.api.sizeColumnsToFit();
   }
 

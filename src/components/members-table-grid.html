@@ -20,23 +20,22 @@
                                 filter-changed.call="gridFilterFunc($event)"
                                 selection-changed.call="gridSelectionChangedFunc($this)"
                                 debug>
-        <ag-grid-column col-id="checkbox-col" header-name='' 
+        <ag-grid-column if.bind="showColumn('selection')" col-id="checkbox-col" header-name='' 
             width.bind="30" min-width.bind="30" 
             checkbox-selection.bind="true" suppress-sorting.bind="true" 
             suppress-filter.bind="false" suppress-resize.bind="true" 
-            filter.bind="getSelectedFilter()"
             suppress-movable.bind="true" suppress-menu.bind="true" 
             pinned.bind="true" header-class.bind="ag-gridCheckboxHeader"></ag-grid-column>
-        <ag-grid-column header-name="${'community.communities.members.firstname' | t}" field="physicalPersonProfile.firstName" filter.bind="getTextSearchFilter()"></ag-grid-column>
-        <ag-grid-column header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()">
+        <ag-grid-column if.bind="showColumn('firstName')" header-name="${'community.communities.members.firstname' | t}" field="physicalPersonProfile.firstName" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('lastName')" header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()">
             <ag-cell-template>
                 ${params.data.physicalPersonProfile.lastName} <i show.bind="!!(params.data.connectStatus) || (params.data.connectStatus === 'CONNECTED')" class="fa fa-address-card-o" aria-hidden="true"></i>
             </ag-cell-template>
         </ag-grid-column>
-        <ag-grid-column header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" filter.bind="getTextSearchFilter()"></ag-grid-column>
-        <ag-grid-column header-name="${'community.communities.members.title' | t}" field="physicalPersonProfile.jobTitle" filter.bind="getTextSearchFilter()"></ag-grid-column>
-        <ag-grid-column header-name="${'community.communities.members.city' | t}" field="physicalPersonProfile.locationProfile.city" filter.bind="getTextSearchFilter()"></ag-grid-column>
-        <ag-grid-column header-name="${'community.communities.members.state' | t}" field="physicalPersonProfile.locationProfile.stateCode" width.bind="100" filter.bind="getTextSearchFilter()"></ag-grid-column>
-        <ag-grid-column header-name="${'community.communities.members.zip' | t}" field="physicalPersonProfile.locationProfile.zipCode" width.bind="80" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('organization')" header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('title')" header-name="${'community.communities.members.title' | t}" field="physicalPersonProfile.jobTitle" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('city')" header-name="${'community.communities.members.city' | t}" field="physicalPersonProfile.locationProfile.city" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('state')" header-name="${'community.communities.members.state' | t}" field="physicalPersonProfile.locationProfile.stateCode" width.bind="100" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('zip')" header-name="${'community.communities.members.zip' | t}" field="physicalPersonProfile.locationProfile.zipCode" width.bind="80" filter.bind="getTextSearchFilter()"></ag-grid-column>
     </ag-grid-aurelia>       
 </template>

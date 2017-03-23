@@ -50,19 +50,18 @@
 		</div>		
 		
 		<div class="members-table-content" id="membersTableContent">	
-
-		<members-table-grid 
-			grid-id.bind="membersGrid"
-			grid-options.bind="gridOptions" 
-			grid-ready-func.bind="onGridReady"
-			grid-filter-func.bind="onFilterChanged"
-			grid-selection-changed-func.bind="onSelectionChanged"
-			pagination-page-size.bind="pageSize"
-			enable-sorting.bind="true"
-			enable-server-side-sorting.bind="true"
-			enable-filter.bind="true"
-			enable-server-side-filter.bind="true"></members-table-grid>
-
+			<members-table-grid 
+				grid-id.bind="membersGrid"
+				grid-options.bind="gridOptions" 
+				grid-ready-func.bind="onGridReady"
+				grid-filter-func.bind="onFilterChanged"
+				grid-selection-changed-func.bind="onSelectionChanged"
+				pagination-page-size.bind="pageSize"
+				enable-sorting.bind="true"
+				enable-server-side-sorting.bind="true"
+				enable-filter.bind="true"
+				enable-server-side-filter.bind="true"
+				display-columns.bind="['selection','firstName','lastName','organization','title','city','state','zip']"></members-table-grid>
 		</div>
 		<!--<div class="blg-btns-content panel-footer"></div>										-->
 
