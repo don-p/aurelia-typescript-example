@@ -25,8 +25,14 @@ export class OrganizationService {
 
     // ORGANIZATION
 
-    async getOrgMembers(organizationId: string, startIndex: number, pageSize:number, params:Object): Promise<Response> {
+    async getOrgMembers(args: any): Promise<Response> {
         await fetch;
+
+        let organizationId = args.organizationId; 
+        let startIndex = args.startIndex; 
+        let pageSize = args.pageSize; 
+        let params = args.params;
+        
         let criteriaParams;
         let criteriaParamsQueryString = ''
         if((params && typeof params === 'object') &&

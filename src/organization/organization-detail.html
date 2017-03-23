@@ -1,5 +1,6 @@
 <template>
 	<require from="../lib/loading-mask/loading-mask"></require>
+	<require from="../components/members-table-grid"></require>
 
 	<section id="membersTable" class="members-table">
 		
@@ -17,9 +18,21 @@
 			
 			
 			<div role="status" id="example_info" class="members-table-info">
-				<div class="pull-right">
-					<button type="button" disabled.bind="!isGridFiltered" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
-				</div>
+				<div class="btn-group pull-right">
+					<button disabled.bind="!isGridFiltered" type="button" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
+					<button disabled.bind="!isGridFiltered" type="button" class="btn btn-filter btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+					</button>
+					<ul class="dropdown-menu" style="font-size: 14px;">
+						<li repeat.for="[filterName, filter] of gridOptions.filters">
+							<a click.delegate="clearGridFilters(gridOptions, filterName)" style="padding-top: 3px;padding-left:10px;padding-bottom: 3px;padding-right:32px;" href="#">
+								<span style="font-weight:bold;">${filterName | t}:</span> ${filter.filter}
+								<i style="right: 0px;margin-right: -24px;top: 3px;" class="ico-cancel-circle2 float-right cancel-request"></i>
+							</a>
+						</li>
+					</ul>
+				</div>				
 				<!--
 				<div class="filter-label-text">Applied filters: </div>
 				<div class="filter-labels">
@@ -35,10 +48,19 @@
 		</div>		
 		
 				  <!-- <ag-grid ref="myGrid"  class="ag-blue"></ag-grid> -->
-<div class="members-table-content" id="membersTableContent">	
-	<div id="orgMembersGrid" ref="orgMembersGrid" style="height: 100%;" class="ag-blg" >
-	</div>
-</div>
+		<div class="members-table-content" id="membersTableContent">	
+			<members-table-grid 
+				grid-id.bind="membersGrid"
+				grid-options.bind="gridOptions" 
+				grid-ready-func.bind="onGridReady"
+				grid-filter-func.bind="onFilterChanged"
+				pagination-page-size.bind="pageSize"
+				enable-sorting.bind="true"
+				enable-server-side-sorting.bind="true"
+				enable-filter.bind="true"
+				enable-server-side-filter.bind="true"
+				display-columns.bind="['firstName','lastName','title','city','state','zip']"></members-table-grid>
+		</div>
 		<!--<div class="blg-btns-content panel-footer"></div>										-->
 
 	</section>

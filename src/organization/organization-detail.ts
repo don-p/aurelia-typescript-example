@@ -1,7 +1,6 @@
 import {inject, bindable, LogManager} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
-import {Router, NavigationInstruction} from 'aurelia-router';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {Session} from '../services/session';
 import {DataService} from '../services/dataService';
@@ -11,31 +10,21 @@ import {I18N} from 'aurelia-i18n';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
-import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
 import {Utils} from '../services/util';
 
-@inject(Session, Router, DataService, OrganizationService, EventAggregator, Ps, I18N, Utils, LogManager) // SCROLL
+@inject(Session, DataService, OrganizationService, EventAggregator, Ps, I18N, Utils, LogManager) // SCROLL
 export class OrganizationDetail {
   member: Object;
 
-  navigationInstruction: NavigationInstruction;
-  selectedOrganizationMembers: Array<Object>;
   selectedOrg: any;
-  organizationMembers: Array<Object>;
   membersGrid: Object;
   orgMembersGrid: any;
   // addCmtyMembersGrid: any;
   currentMember: Object;
   // remoteData: RemoteData;
 
-  membersPromise: Promise<Response>;
-  orgMembersCachePromise:  Promise<void>;
-  // @bindable columns;
-  // @bindable rows;
   @bindable pageSize;
   gridOptions: GridOptions;
-  gridCreated: boolean;
-  gridColumns: Array<any>;
   grid: any;
 
 
@@ -43,41 +32,41 @@ export class OrganizationDetail {
 
   logger: Logger;
   
-  constructor(private session: Session, private router: Router, 
-    private dataService: DataService, private organizationService: OrganizationService,  
+  constructor(private session: Session, private dataService: DataService, private organizationService: OrganizationService,  
     private evt: EventAggregator, Ps, private i18n: I18N, private utils: Utils) {
-
-    this.organizationMembers = null;
 
     // this.ps = Ps; // SCROLL
 
-    this.pageSize = 200;
-
-    const sortAsc = Column.SORT_ASC;
-    const sortDesc = Column.SORT_DESC;
-    const filterEquals = TextFilter.EQUALS;
-    const filterContains = TextFilter.CONTAINS;
-
+    this.pageSize = 100000;
 
     var me = this;
+
+    this.gridOptions = <GridOptions>{};
+    this.gridOptions.getRowNodeId = function(item) {
+      return item.memberId.toString();
+    };
+    this.gridOptions.rowModelType = 'virtual';
+
+
     this.evt.subscribe('orgSelected', payload => {
       if((!me.selectedOrg || me.selectedOrg === null) || (me.selectedOrg.organizationId !== payload.organization.organizationId)) {
         me.selectedOrg = payload.organization;
-        // this.remoteData.setDataApi('v1/communities/' + selectedCmty + '/members')
-        // DEBUG TEMP - this.getorganizationMembers(this.selectedCmty, 0);
-        // this.gridDataSource.getRows({startRow: 0, endRow: this.pageSize});
-        // this.loadData();
 
-        // this.initGrid(this);
-
-        me.gridOptions.api.deselectAll();
-        me.gridOptions.api.setFilterModel(null)
-        me.gridOptions.api.setSortModel(null);
-
+        if(!!(me.gridOptions.api)) {
+          me.gridOptions.api.setFilterModel(null)
+          me.gridOptions.api.setSortModel(null);
+        }
+      
         // Save selected orgId.
         me.gridOptions['organizationId'] = me.selectedOrg.organizationId;
         // Set up the virtual scrolling grid displaying community members.
-        me.setOrganizationMembersGridDataSource(me.gridOptions, me.pageSize, me.organizationService);
+        me.utils.setMemberGridDataSource(
+          me.gridOptions, 
+          me.organizationService, 
+          me.organizationService.getOrgMembers, 
+          {startIndex: 0, pageSize: me.pageSize, organizationId: me.selectedOrg.organizationId}, 
+          false
+        );
      }
     });
     this.logger = LogManager.getLogger(this.constructor.name);
@@ -89,105 +78,21 @@ export class OrganizationDetail {
     // var container = document.getElementById('community-member-list'); // SCROLL
     // this.ps.initialize(container);
     // this.ps.update(container);
-    let me = this;
-
-    let gridOptions = this.utils.getGridOptions('organizationMembers', this.pageSize);
-    gridOptions.getRowNodeId = function(item) {
-      return item.memberId.toString();
-    };
-    this.gridOptions = gridOptions;
-    this.initGrid(this);
   }
 
-  findGridColumnDef(fieldName: string):Object {
-    return this.gridOptions.columnDefs.find(function(colDef: Object){
-      return colDef['field'] === fieldName;
-    });
+  onGridReady(event) {
+    let grid:any = this;
+    event.api.sizeColumnsToFit();
+  }
+
+  onFilterChanged = function(event) {
+    this.utils.setGridFilterMap(this.gridOptions);
   }
 
   get isGridFiltered() {
     return this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent();
   }
 
-  initGrid(me) {
-    // this.cmtyMembersGrid.setGridOptions(this.gridOptions);
-    new Grid(this.orgMembersGrid, this.gridOptions); //create a new grid
-    // this.agGridWrap.gridCreated = true;
-    this.gridOptions['api'].sizeColumnsToFit();
-  }
-
-  setOrganizationMembersGridDataSource(gridOptions, pageSize, organizationService) {
-    const me = this;
-
-    let gridDataSource = {
-        name: 'organizationMembers',
-        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-        rowCount: null,
-        paginationPageSize: pageSize,
-        //  paginationOverflowSize: 1,
-          maxConcurrentDatasourceRequests: 2,
-        //  maxPagesInPaginationCache: 2,
-        loading: false,
-
-        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-        getRows: function(params: IGetRowsParams) {
-            gridOptions.api.showLoadingOverlay();
-          if(!this.loading) {
-            me.logger.debug("..... setOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
-            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
-            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
-            this.loading = true;
-            let filter = me.findGridColumnDef(Object.keys(params.filterModel)[0]);
-            let  organizationId = gridOptions.organizationId;
-            let orgPromise = organizationService.getOrgMembers(organizationId, params.startRow, pageSize, params);
-            orgPromise.then(response => response.json())
-              .then(data => {
-                // Filter out existing community members.
-                let totalCount = data.totalCount;
-                // let filteredData = data.responseCollection.filter(function(item) {
-                //   if(me.organizationMembers.indexOf(item.id) < 0) {
-                //     return true;
-                //   } else {
-                //     totalCount--;
-                //     return false;
-                //   }
-                // });
-                if(gridDataSource.rowCount === null) {
-                  gridDataSource.rowCount = totalCount;
-                }
-                gridOptions.api.hideOverlay();
-                params.successCallback(data.responseCollection, totalCount);
-                this.loading = false;
-            });
-          }
-        }
-    }
-    gridOptions.api.setDatasource(gridDataSource);
-  }
-
-  setSelectedOrganizationMembersGridDataSource(gridOptions, pageSize, selection) {
-    const me = this;
-
-    let gridDataSource = {
-        name: 'selectedOrganizationMembers',
-        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-        rowCount: null,
-        paginationPageSize: pageSize,
-        //  paginationOverflowSize: 1,
-        maxConcurrentDatasourceRequests: 2,
-        //  maxPagesInPaginationCache: 2,
-        loading: false,
-
-        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-        getRows: function(params: IGetRowsParams) {
-          me.logger.debug("..... setSelectedOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
-          gridOptions.api.showLoadingOverlay();
-          params.successCallback(selection, selection.length);
-          gridOptions.api.hideOverlay();
-        }
-    }
-    gridOptions.api.setDatasource(gridDataSource);
-  }
 
   bind() {
   }
