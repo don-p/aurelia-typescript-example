@@ -172,7 +172,9 @@ export class CommunityService {
         };
         let schedule:Object;
 
-        if(typeof alertModel.schedule == 'object' && alertModel.schedule.sendDate.constructor.name == 'Date') {
+        if(typeof alertModel.schedule == 'object' && 
+            !!(alertModel.schedule.sendDate) &&
+            alertModel.schedule.sendDate.constructor.name == 'Date') {
             schedule = alertModel.schedule;
             schedule['sendDate'] = alertModel.schedule.sendDate.getTime();
         }
