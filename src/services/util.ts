@@ -334,7 +334,7 @@ export class Utils {
     gridOptions.api.setDatasource(gridDataSource);
   }
 
-  setMemberGridDataSource(gridOptions, dataService: any, callback: Function, args: any) {
+  setMemberGridDataSource(gridOptions, dataService: any, callback: Function, args: any, isConnectionType: boolean) {
     const me = this;
 
     // gridOptions.isExternalFilterPresent = function() {
@@ -377,7 +377,7 @@ export class Utils {
                   }
                   let result = data.responseCollection;
                   let idProperty = 'memberId';
-                  if(callback.name === 'getMemberConnections') { // Normalize Connections response member entity.
+                  if(!!(isConnectionType)) { // Normalize Connections response member entity.
                     result = data.responseCollection.map(function(item){
                       return {
                         connectId: item.connectId,
