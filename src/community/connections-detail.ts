@@ -48,7 +48,7 @@ export class ConnectionsDetail {
     this.gridOptions.rowModelType = 'virtual';
 
     this.evt.subscribe('communityMembersSelected', payload => {
-      me.isSelectedMembers = payload.selectedMembers;
+      me.isSelectedMembers = payload.isSelectedMembers;
     });
     this.evt.subscribe('connectionChanged', payload => {
       if(payload === 'CONNECTION_TERMINATED' || 
@@ -125,7 +125,7 @@ export class ConnectionsDetail {
 
   membersSelectionChanged(scope: GridOptions) {
     let selected = scope.api.getSelectedRows().length != 0;
-    this.evt.publish('communityMembersSelected', {selectedMembers: selected, memberType: 'CON'});
+    this.evt.publish('communityMembersSelected', {selectedMembers: scope.api.getSelectedRows(), isSelectedMembers: selected, memberType: 'CON'});
   }
 
 
