@@ -22,8 +22,6 @@ export class CommunityDetail {
 
   currentMember: Object;
 
-  membersPromise: Promise<Response>;
-  cmtyMembersCachePromise:  Promise<void>;
   @bindable pageSize;
   gridOptions: GridOptions;
   grid: any;
@@ -64,7 +62,13 @@ export class CommunityDetail {
           me.gridOptions.api.refreshVirtualPageCache();
           me.gridOptions.api.refreshView();
         }
-        me.utils.setMemberGridDataSource(me.gridOptions, me.communityService, me.communityService.getCommunity, {startIndex: 0, pageSize: me.pageSize, communityId: me.selectedCmty.communityId});
+        me.utils.setMemberGridDataSource(
+          me.gridOptions, 
+          me.communityService, 
+          me.communityService.getCommunity, 
+          {startIndex: 0, pageSize: me.pageSize, communityId: me.selectedCmty.communityId}, 
+          false
+        );
 
         // me.utils.setCommunityMembersGridDataSource('communityMembers', me.gridOptions, me.pageSize, me.communityService, null, false);
      }

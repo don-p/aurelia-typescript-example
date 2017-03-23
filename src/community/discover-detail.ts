@@ -68,8 +68,13 @@ export class DiscoverDetail {
       me.gridOptions['organizationId'] = me.selectedOrganization.organizationId;
       me.gridOptions['orgFilters'] = me.orgFilters;
       // Set up the virtual scrolling grid displaying organization members.
-      me.utils.setMemberGridDataSource(me.gridOptions, me.organizationService, me.organizationService.searchOrganizationMembers, 
-        {startIndex: 0, pageSize: me.pageSize, organizationId: me.selectedOrganization.organizationId, filters: me.orgFilters});
+      me.utils.setMemberGridDataSource(
+        me.gridOptions, 
+        me.organizationService, 
+        me.organizationService.searchOrganizationMembers, 
+        {startIndex: 0, pageSize: me.pageSize, organizationId: me.selectedOrganization.organizationId, filters: me.orgFilters},
+        false
+      );
       // Set up collection to track available community members.
       me.gridOptions.api.showLoadingOverlay();
      
@@ -91,8 +96,13 @@ export class DiscoverDetail {
         // Set up collection to track available community members.
         me.gridOptions.api.showLoadingOverlay();
       }
-      me.utils.setMemberGridDataSource(me.gridOptions, me.organizationService, me.organizationService.searchOrganizationMembers, 
-        {startIndex: 0, pageSize: me.pageSize, organizationId: me.selectedOrganization.organizationId, filters: me.orgFilters});
+      me.utils.setMemberGridDataSource(
+        me.gridOptions, 
+        me.organizationService, 
+        me.organizationService.searchOrganizationMembers, 
+        {startIndex: 0, pageSize: me.pageSize, organizationId: me.selectedOrganization.organizationId, filters: me.orgFilters}, 
+        false
+      );
     });
     this.evt.subscribe('communityMembersSelected', payload => {
       me.isSelectedMembers = payload.selectedMembers;
