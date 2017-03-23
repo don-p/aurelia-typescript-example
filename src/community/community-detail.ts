@@ -74,7 +74,7 @@ export class CommunityDetail {
      }
     });
     this.evt.subscribe('communityMembersSelected', payload => {
-      me.isSelectedMembers = payload.selectedMembers;
+      me.isSelectedMembers = payload.isSelectedMembers;
     });
     this.logger = LogManager.getLogger(this.constructor.name);
   }
@@ -124,7 +124,7 @@ export class CommunityDetail {
 
   membersSelectionChanged(scope) {
     let selected = scope.api.getSelectedRows().length != 0;
-    this.evt.publish('communityMembersSelected', {selectedMembers: selected, memberType: 'COM'});
+    this.evt.publish('communityMembersSelected', {selectedMembers: scope.api.getSelectedRows(), isSelectedMembers: selected, memberType: 'COM'});
   }
 
 }
