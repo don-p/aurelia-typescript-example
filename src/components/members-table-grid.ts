@@ -69,7 +69,7 @@ export class MembersTableGridCustomElement {
       event.api && event.api.sizeColumnsToFit();
     };
 
-    this.gridReadyFunc.call(this, event);
+    scope.gridReadyFunc.call(this, event);
   }
 
   private getTextSearchFilter(): any {
