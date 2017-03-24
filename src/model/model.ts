@@ -40,6 +40,7 @@ export class Model {
     this.isSubmitDisabled = typeof this.controller.settings.isSubmitDisabled === 'boolean' && this.controller.settings.isSubmitDisabled === true?
       this.controller.settings.isSubmitDisabled:false;
     this.item = this.controller.settings.item;
+    this.gridOptions = this.controller.settings.gridOptions;
     this.errorMessage = null;
     this.vRules = this.controller.settings.rules;
     if(this.controller.settings.rules) {

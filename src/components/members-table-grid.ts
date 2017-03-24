@@ -41,14 +41,14 @@ export class MembersTableGridCustomElement {
 
   bind(bindingContext, overrideBindingContext) {
     this.context = bindingContext;
-    this.gridOptions.onViewportChanged = function() {
-      if(!this.api) return;
-      this.api.sizeColumnsToFit();
-    };
-    this.gridOptions.onGridSizeChanged = function(){
-        if(!this.api) return;
-        this.api.sizeColumnsToFit();
-    };
+    // this.gridOptions.onViewportChanged = function() {
+    //   if(!this.api) return;
+    //   this.api.sizeColumnsToFit();
+    // };
+    // this.gridOptions.onGridSizeChanged = function(){
+    //     if(!this.api) return;
+    //     this.api.sizeColumnsToFit();
+    // };
 
     this.logger.debug("BInd");
   }
@@ -59,6 +59,19 @@ export class MembersTableGridCustomElement {
 
   attached() {
     this.logger.debug("attached");
+  }
+
+  onGridReady(event, scope) {
+    this.gridOptions.onViewportChanged = function() {
+      if(!this.api) return;
+      event.api.sizeColumnsToFit();
+    };
+    this.gridOptions.onGridSizeChanged = function(){
+        if(!event.api) return;
+        event.api.sizeColumnsToFit();
+    };
+
+    this.gridReadyFunc.call(this, event);
   }
 
   private getTextSearchFilter(): any {

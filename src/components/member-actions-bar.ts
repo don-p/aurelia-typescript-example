@@ -55,7 +55,7 @@ export class MemberActionsBarCustomElement {
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
     private evt: EventAggregator, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils/*, private parent: Community*/){
     
-    this.pageSize = 200;
+    this.pageSize = 100000;
     let me = this;
     this.evt.subscribe('communityMembersSelected', payload => {
       me.selectedMembers = payload.selectedMembers;
@@ -495,7 +495,7 @@ export class MemberActionsBarCustomElement {
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
             let  organizationId = gridOptions.organizationId;
-            let orgPromise = organizationService.getOrgMembers(organizationId, params.startRow, pageSize, params);
+            let orgPromise = organizationService.getOrgMembers({startIndex: 0, pageSize: me.pageSize, organizationId: organizationId, params: params});
             orgPromise.then(response => response.json())
               .then(data => {
                 // Filter out existing community members.
@@ -583,20 +583,30 @@ export class MemberActionsBarCustomElement {
     let selectedCommunityType;
 
     // Grid for "Communities" view.
-    let gridOptions;
-    let gridOptionsSelected;
+    let gridOptions = <GridOptions>{};
     if(!!(selectedCmty)) {
-      gridOptions = this.utils.getGridOptions('addMembers', this.pageSize);
-      gridOptionsSelected = this.utils.getGridOptions('selectedMembers', null);
-      gridOptionsSelected.enableServerSideSorting = false;
-      gridOptionsSelected.enableServerSideFilter = false;
-      gridOptionsSelected.enableSorting = true;
-      gridOptionsSelected.enableFilter = false;
-      gridOptionsSelected.rowModelType = 'normal';
+      gridOptions.getRowNodeId = function(item) {
+        return item.memberId.toString();
+      };
+      gridOptions.rowModelType = 'virtual';
+      // gridOptions.onSelectionChanged = function() {
+      //   this.context.item.membersList = gridOptions.api.getSelectedRows();
+      //   this.context.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
+      // };
+      // gridOptions.onFilterChanged = function(event) {
+      //   me.utils.setGridFilterMap(gridOptions);
+      // }
+      gridOptions.onGridReady = function(event) {
+        let grid:any = this;
+        event.api.sizeColumnsToFit();
+      };
+      gridOptions.getRowNodeId = function(row) {
+        return row.memberId.toString();
+      };
     }
     this.dataService.openResourceEditDialog({modelView:'model/organizationMembersListModel.html', 
       title:this.i18n.tr('community.communities.members.addMembers'), loadingTitle: 'app.loading',
-      item: item, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
+      item: item, gridOptions: gridOptions, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
     .then((controller:any) => {
       // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
       let activeElement = <HTMLElement> document.activeElement;
@@ -619,37 +629,37 @@ export class MemberActionsBarCustomElement {
       // Grid for "Communities" view.
       if(!!(selectedCmty)) {
         // Org members grid.
-        gridOptions.onSelectionChanged = function() {
-          controller.viewModel.item.membersList = gridOptions.api.getSelectedRows();
-          controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
-        };
-        gridOptions.onFilterChanged = function(event) {
-          me.utils.setGridFilterMap(gridOptions);
-        }
-        gridOptions.getRowNodeId = function(row) {
-          return row.memberId.toString();
-        };
-        let addMembersGrid = new Grid(controller.viewModel.addCmtyMembersGrid, gridOptions); //create a new grid
-        gridOptions['api'].sizeColumnsToFit();
-        me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
-        // Selected org members grid.
-        gridOptionsSelected.onSelectionChanged = function() {
-          gridOptions.selection = gridOptionsSelected.api.getSelectedRows();
-          controller.viewModel.isSubmitDisabled = gridOptionsSelected.api.getSelectedRows().length === 0;
-        };
-        gridOptionsSelected.getRowNodeId = function(row) {
-          return row.memberId.toString();
-        };
-        let addMembersSelectedGrid = new Grid(controller.viewModel.addCmtyMembersSelectedGrid, gridOptionsSelected); //create a new grid
-        gridOptionsSelected['api'].sizeColumnsToFit();
+        controller.viewModel.gridOptions = gridOptions;
+        // gridOptions.onSelectionChanged = function() {
+        //   controller.viewModel.item.membersList = gridOptions.api.getSelectedRows();
+        //   controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
+        // };
+        // gridOptions.onFilterChanged = function(event) {
+        //   me.utils.setGridFilterMap(gridOptions);
+        // }
+        // gridOptions.getRowNodeId = function(row) {
+        //   return row.memberId.toString();
+        // };
+        // me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
         
+        // controller.viewModel.onGridReady = function(event) {
+        //   let grid:any = this;
+        //   event.api.sizeColumnsToFit();
+        // };
+
         controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
         controller.viewModel.organizations = me.parent.parent.organizations;
         controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
-        controller.viewModel.gridOptions = gridOptions;
-        controller.viewModel.gridOptionsSelected = gridOptionsSelected;
         let organizationId = me.parent.parent.organizations[0]['organizationId'];
         gridOptions['organizationId'] = organizationId;
+        me.utils.setMemberGridDataSource(
+          gridOptions, 
+          me.organizationService, 
+          me.organizationService.getOrgMembers, 
+          {startIndex: 0, pageSize: me.pageSize, organizationId: organizationId}, 
+          false
+        );
+
         // Get list of members in a selected organization.
         controller.viewModel.selectOrganization = function(event: any) {
           if(this.selectedOrganization !== event.target.value) {
@@ -659,31 +669,19 @@ export class MemberActionsBarCustomElement {
           }
         }
         controller.viewModel.showSelectedOrganizationMembers = function(showSelected:boolean) {
-          controller.viewModel.showSelected = showSelected;
-          if(showSelected) {
-            let selection = gridOptions.api.getSelectedRows();
-            gridOptions.selection = selection;
-            gridOptionsSelected.api.setRowData(selection);
-            gridOptionsSelected.api.selectAll();
-            gridOptionsSelected.api.refreshView();
-            gridOptionsSelected['api'].sizeColumnsToFit();
-          } else {
-            me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
-          }
+          gridOptions['showSelected'] = showSelected;
+          controller.viewModel.showSelectedMembers = showSelected;
+          gridOptions.api.refreshVirtualPageCache();
         };
         controller.viewModel.$isGridFiltered = function() {
-          let filtered = (!(controller.viewModel.showSelected) && 
-            (controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent())) ||
-            (!!(controller.viewModel.showSelected) && 
-            (controller.viewModel.gridOptionsSelected && controller.viewModel.gridOptionsSelected.api && controller.viewModel.gridOptionsSelected.api.isAnyFilterPresent()));
-          console.debug(">>>> ISGRIDFILTERED: " + filtered);
+          let filtered =  controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent();
           return filtered;
         };
 
       
       } else {
         controller.viewModel.selectCommunityType = function(communityType:string, selectedCommunity:Object) {
-          let communitiesPromise = me.communityService.getCommunities(communityType, 0, 10000);
+          let communitiesPromise = me.communityService.getCommunities(communityType, 0, 100000);
           controller.viewModel.communitiesPromise = communitiesPromise;
           communitiesPromise
           .then(response => response.json())
