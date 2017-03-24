@@ -1,5 +1,6 @@
 <template>
-<require from="../lib/loading-mask/loading-mask"></require>
+	<require from="../lib/loading-mask/loading-mask"></require>
+	<require from="../components/members-table-grid"></require>
 
 	<div if.bind="!(item.selectedCmty)" >
     <loading id="cmty-loading" promise.bind="'communitiesPromise'" message-key.bind="loadingTitle">                
@@ -63,10 +64,18 @@
 			</div>		-->
 		</div>
 		<div class="members-table-content organization-members-table" id="membersTableContent">				  
-			<!--<require from="../lib/loading-mask/loading-mask"></require>-->
-			<!--<loading promise.bind="'membersPromise'">-->
-			<div show.bind="!(showSelected)" id="addCmtyMembersGrid" ref="addCmtyMembersGrid" style="height: 100%;" class="ag-blg" ></div>
-			<div show.bind="!!(showSelected)" id="addCmtyMembersSelectedGrid" ref="addCmtyMembersSelectedGrid" style="height: 100%;" class="ag-blg" ></div>
+			<members-table-grid 
+				grid-id.bind="membersGrid"
+				grid-options.bind="gridOptions" 
+				grid-ready-func.bind="gridOptions.onGridReady"
+				grid-filter-func.bind="onFilterChanged"
+				grid-selection-changed-func.bind="onSelectionChanged"
+				pagination-page-size.bind="pageSize"
+				enable-sorting.bind="true"
+				enable-server-side-sorting.bind="true"
+				enable-filter.bind="true"
+				enable-server-side-filter.bind="true"
+				display-columns.bind="['selection','firstName','lastName','organization','title','city','state','zip']"></members-table-grid>
 		</div>
 	</div>
 	<input type="hidden" value.bind="item.selectedCmty.communityId" />

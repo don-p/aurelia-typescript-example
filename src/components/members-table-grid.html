@@ -16,7 +16,7 @@
                                 enable-server-side-filter.bind="enableServerSideFilter"
                                 suppress-row-click-selection
                                 row-selection="multiple"
-                                grid-ready.call="gridReadyFunc($event, $this)"
+                                grid-ready.call="onGridReady($event, $this)"
                                 filter-changed.call="gridFilterFunc($event)"
                                 selection-changed.call="gridSelectionChangedFunc($this)"
                                 debug>
@@ -29,7 +29,7 @@
         <ag-grid-column if.bind="showColumn('firstName')" header-name="${'community.communities.members.firstname' | t}" field="physicalPersonProfile.firstName" filter.bind="getTextSearchFilter()"></ag-grid-column>
         <ag-grid-column if.bind="showColumn('lastName')" header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()">
             <ag-cell-template>
-                ${params.data.physicalPersonProfile.lastName} <i show.bind="!!(params.data.connectStatus) || (params.data.connectStatus === 'CONNECTED')" class="fa fa-address-card-o" aria-hidden="true"></i>
+                ${params.data.physicalPersonProfile.lastName} <i show.bind="(!!(params.data.connectStatus) && (params.data.connectStatus === 'CONNECTED')) || !!(params.data.isConnected)" class="fa fa-address-card-o" aria-hidden="true"></i>
             </ag-cell-template>
         </ag-grid-column>
         <ag-grid-column if.bind="showColumn('organization')" header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" filter.bind="getTextSearchFilter()"></ag-grid-column>
