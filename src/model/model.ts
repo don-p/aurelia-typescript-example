@@ -20,6 +20,7 @@ export class Model {
   loadingTitle: string;
 
   item: any;
+  model:any;
   originalItem: any;
   vRules: ValidationRules;
 
@@ -38,8 +39,9 @@ export class Model {
     this.showCancel = this.controller.settings.showCancel;
     this.showErrors = typeof this.controller.settings.showErrors === 'boolean'?this.controller.settings.showErrors:true;
     this.isSubmitDisabled = typeof this.controller.settings.isSubmitDisabled === 'boolean' && this.controller.settings.isSubmitDisabled === true?
-      this.controller.settings.isSubmitDisabled:false;
+    this.controller.settings.isSubmitDisabled:false;
     this.item = this.controller.settings.item;
+    this.model = this.controller.settings.model;
     this.gridOptions = this.controller.settings.gridOptions;
     this.errorMessage = null;
     this.vRules = this.controller.settings.rules;
@@ -56,10 +58,11 @@ export class Model {
   }
   attached() {
     // Clone the model item.
-    if(Array.isArray(this.item )) {
-      this.originalItem = this.item.splice(0);
-    } else if(typeof this.item === 'object') {
-      this.originalItem = Object.assign({}, this.item);
+    let theItem = !!(this.model)?this.model:this.item;
+    if(Array.isArray(theItem )) {
+      this.originalItem = theItem.splice(0);
+    } else if(typeof theItem === 'object') {
+      this.originalItem = Object.assign({}, theItem);
     } 
 
     this.logger.debug('attached');
@@ -91,7 +94,8 @@ export class Model {
   };
 
   $isDirty() {
-    if(!(this.originalItem) || !(this.item)) {
+    let theItem = !!(this.model)?this.model:this.item;
+    if(!(this.originalItem) || !(theItem)) {
       return false;
     }
     let me = this;
@@ -105,7 +109,7 @@ export class Model {
       me.logger.debug('... dirty-checking in Model: ' + !equal);
       return equal;
     };
-    return !(isEqual(this.item, this.originalItem));
+    return !(isEqual(theItem, this.originalItem));
   }
 
   isObjectEqual(obj1, obj2) {
@@ -119,6 +123,8 @@ export class Model {
 
   isArrayEqual(obj1:Array<any>, obj2:Array<any>) {
     let me = this;
+    if(obj1.length !== obj2.length) return false;
+    if(obj1.length == 0 && obj2.length == 0) return true;
     return obj2.every(
       function(key) { 
         return obj1.indexOf(key) !== -1
