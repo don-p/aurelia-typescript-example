@@ -29,7 +29,7 @@
         <ag-grid-column if.bind="showColumn('firstName')" header-name="${'community.communities.members.firstname' | t}" field="physicalPersonProfile.firstName" filter.bind="getTextSearchFilter()"></ag-grid-column>
         <ag-grid-column if.bind="showColumn('lastName')" header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()">
             <ag-cell-template>
-                ${params.data.physicalPersonProfile.lastName} <i show.bind="(!!(params.data.connectStatus) && (params.data.connectStatus === 'CONNECTED')) || !!(params.data.isConnected)" class="ico-power-cord2 member-connected" aria-hidden="true" title="Connected"></i>
+                ${params.data.physicalPersonProfile.lastName} <i show.bind="(!!(params.data.connectStatus) && (params.data.connectStatus === 'CONNECTED')) || !!(params.data.isConnected)" class="ico-link member-connected" aria-hidden="true" title="Connected"></i>
             </ag-cell-template>
         </ag-grid-column>
         <ag-grid-column if.bind="showColumn('organization')" header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" filter.bind="getTextSearchFilter()"></ag-grid-column>
