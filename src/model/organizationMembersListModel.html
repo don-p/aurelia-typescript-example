@@ -67,7 +67,7 @@
 			<members-table-grid 
 				grid-id.bind="membersGrid"
 				grid-options.bind="gridOptions" 
-				grid-ready-func.bind="gridOptions.onGridReady"
+				grid-ready-func.bind="gridOptions['onGridReady']"
 				grid-filter-func.bind="onFilterChanged"
 				grid-selection-changed-func.bind="onSelectionChanged"
 				pagination-page-size.bind="pageSize"

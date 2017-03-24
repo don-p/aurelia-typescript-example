@@ -33,11 +33,7 @@ export class MemberActionsBarCustomElement {
     membersPromise: Promise<Response>;
     cmtyMembersCachePromise:  Promise<void>;
     @bindable pageSize;
-    gridOptions: GridOptions;
-    gridOptionsSelected: GridOptions;
-    showSelectedCommunitiesGrid: boolean;
-    gridCreated: boolean;
-    gridColumns: Array<any>;
+    gridOptions: GridOptions;    gridOptionsSelected: GridOptions;
     grid: any;
 
     logger: Logger;
