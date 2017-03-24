@@ -216,7 +216,7 @@ export class DataService {
                     }
                     u.search = params;
 
-                    let result:Request = Object.defineProperty(request, 'url', {value: u.href});
+                    let result:Request = Object.defineProperty(request, 'url', {value: u.href, configurable: true});
                 }
                 return request;
             },
@@ -390,6 +390,7 @@ export class DataService {
             title: settings.title, 
             loadingTitle: settings.loadingTitle,
             item: settings.item, 
+            gridOptions: settings.gridOptions,
             rules: settings.validationRules,
             okText: settings.okText,
             showErrors: settings.showErrors,
