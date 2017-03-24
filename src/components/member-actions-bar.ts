@@ -33,11 +33,7 @@ export class MemberActionsBarCustomElement {
     membersPromise: Promise<Response>;
     cmtyMembersCachePromise:  Promise<void>;
     @bindable pageSize;
-    gridOptions: GridOptions;
-    gridOptionsSelected: GridOptions;
-    showSelectedCommunitiesGrid: boolean;
-    gridCreated: boolean;
-    gridColumns: Array<any>;
+    gridOptions: GridOptions;    gridOptionsSelected: GridOptions;
     grid: any;
 
     logger: Logger;
@@ -755,7 +751,7 @@ export class MemberActionsBarCustomElement {
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.
-          gridOptions.api.destroy();
+          // controller.viewModel.gridOptions.api.destroy();
           this.logger.debug('Cancel');
         }
       })
