@@ -62,13 +62,11 @@ export class MembersTableGridCustomElement {
   }
 
   onGridReady(event, scope) {
-    this.gridOptions.onViewportChanged = function() {
-      if(!this.api) return;
-      event.api.sizeColumnsToFit();
+    event.api.gridOptionsWrapper.gridOptions.onViewportChanged = function() {
+      event.api && event.api.sizeColumnsToFit();
     };
-    this.gridOptions.onGridSizeChanged = function(){
-        if(!event.api) return;
-        event.api.sizeColumnsToFit();
+    event.api.gridOptionsWrapper.gridOptions.onGridSizeChanged = function(){
+      event.api && event.api.sizeColumnsToFit();
     };
 
     this.gridReadyFunc.call(this, event);
