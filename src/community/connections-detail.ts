@@ -56,6 +56,9 @@ export class ConnectionsDetail {
         me.gridOptions.api.refreshVirtualPageCache();
         me.gridOptions.api.refreshView();
       }
+      if(payload === 'CONNECTION_TERMINATED') {
+        me.isSelectedMembers = false; // When removing conn, selected members are removed from list.
+      }
     });
     this.logger = LogManager.getLogger(this.constructor.name);
   }
