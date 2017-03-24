@@ -751,7 +751,7 @@ export class MemberActionsBarCustomElement {
       controller.result.then((response) => {
         if (response.wasCancelled) {
           // Cancel.
-          gridOptions.api.destroy();
+          // controller.viewModel.gridOptions.api.destroy();
           this.logger.debug('Cancel');
         }
       })
