@@ -390,6 +390,7 @@ export class DataService {
             title: settings.title, 
             loadingTitle: settings.loadingTitle,
             item: settings.item, 
+            model: settings.model, 
             gridOptions: settings.gridOptions,
             rules: settings.validationRules,
             okText: settings.okText,

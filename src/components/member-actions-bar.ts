@@ -468,97 +468,6 @@ export class MemberActionsBarCustomElement {
     });
   }
 
-  setOrganizationMembersGridDataSource(gridOptions, pageSize, organizationService) {
-    const me = this;
-
-    let selection = gridOptions.selection;
-    let gridDataSource = {
-        name: 'organizationMembers',
-        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-        rowCount: null,
-        paginationPageSize: pageSize,
-        //  paginationOverflowSize: 1,
-          maxConcurrentDatasourceRequests: 2,
-        //  maxPagesInPaginationCache: 2,
-        loading: false,
-
-        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-        getRows: function(params: IGetRowsParams) {
-            gridOptions.api.showLoadingOverlay();
-          if(!this.loading) {
-            me.logger.debug("..... setOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
-            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
-            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
-            this.loading = true;
-            let  organizationId = gridOptions.organizationId;
-            let orgPromise = organizationService.getOrgMembers({startIndex: 0, pageSize: me.pageSize, organizationId: organizationId, params: params});
-            orgPromise.then(response => response.json())
-              .then(data => {
-                // Filter out existing community members.
-                let totalCount = data.totalCount;
-                let filteredData = data.responseCollection;
-                // let communityMembers = me.communityMembers?me.communityMembers:me.parent.communityMembers;
-                // if(Array.isArray(communityMembers) && communityMembers.length > 0) {
-                //   filteredData = data.responseCollection.filter(function(item) {
-                //     if(communityMembers.indexOf(item.memberId) < 0) {
-                //       return true;
-                //     } else {
-                //       return false;
-                //     }
-                //   });
-                //   totalCount = totalCount - (me.pageSize - filteredData.length);
-                // }
-                if(gridDataSource.rowCount === null) {
-                  gridDataSource.rowCount = totalCount;
-                }
-                params.successCallback(filteredData, totalCount);
-                // pre-select nodes as needed.
-                if(Array.isArray(selection)) {
-                  gridOptions.api.forEachNode( function (node) {
-                      if (selection.find(function(item:any, index:number, array:any[]) {
-                        return item.memberId === node.data.memberId
-                      })) {
-                          node.setSelected(true);
-                          gridOptions.api.refreshRows([node]);
-                      } else {
-                          node.setSelected(false);
-                          gridOptions.api.refreshRows([node]);
-                      }
-                  });
-                }
-                gridOptions.api.hideOverlay();
-               this.loading = false;
-            });
-          }
-        }
-    }
-    gridOptions.api.setDatasource(gridDataSource);
-  }
-
-  setSelectedOrganizationMembersGridDataSource(gridOptions, pageSize, selection) {
-    const me = this;
-
-    let gridDataSource = {
-        name: 'selectedOrganizationMembers',
-        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-        rowCount: null,
-        paginationPageSize: pageSize,
-        //  paginationOverflowSize: 1,
-        maxConcurrentDatasourceRequests: 2,
-        //  maxPagesInPaginationCache: 2,
-        loading: false,
-
-        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-        getRows: function(params: IGetRowsParams) {
-          me.logger.debug("..... setSelectedOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
-          gridOptions.api.showLoadingOverlay();
-          params.successCallback(selection, selection.length);
-          gridOptions.api.hideOverlay();
-        }
-    }
-    gridOptions.api.setDatasource(gridDataSource);
-  }
-
 
   orgMembersSelectionChanged(scope) {
     let rows = scope.api.getSelectedRows();
@@ -585,13 +494,7 @@ export class MemberActionsBarCustomElement {
         return item.memberId.toString();
       };
       gridOptions.rowModelType = 'virtual';
-      // gridOptions.onSelectionChanged = function() {
-      //   this.context.item.membersList = gridOptions.api.getSelectedRows();
-      //   this.context.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
-      // };
-      // gridOptions.onFilterChanged = function(event) {
-      //   me.utils.setGridFilterMap(gridOptions);
-      // }
+
       gridOptions.onGridReady = function(event) {
         let grid:any = this;
         event.api.sizeColumnsToFit();
@@ -602,7 +505,7 @@ export class MemberActionsBarCustomElement {
     }
     this.dataService.openResourceEditDialog({modelView:'model/organizationMembersListModel.html', 
       title:this.i18n.tr('community.communities.members.addMembers'), loadingTitle: 'app.loading',
-      item: item, gridOptions: gridOptions, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
+      item: item, model: item['membersList'], gridOptions: gridOptions, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
     .then((controller:any) => {
       // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
       let activeElement = <HTMLElement> document.activeElement;
@@ -610,6 +513,7 @@ export class MemberActionsBarCustomElement {
 
       let communities = [];
       item['communities'] = communities;
+
       if(!(selectedCmty)) {
         communitiesPromise = me.communityService.getCommunities(controller.viewModel.selectedCommunityType, 0, 10000);
         controller.viewModel.communitiesPromise = communitiesPromise;
@@ -626,26 +530,18 @@ export class MemberActionsBarCustomElement {
       if(!!(selectedCmty)) {
         // Org members grid.
         controller.viewModel.gridOptions = gridOptions;
-        // gridOptions.onSelectionChanged = function() {
-        //   controller.viewModel.item.membersList = gridOptions.api.getSelectedRows();
-        //   controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
-        // };
-        // gridOptions.onFilterChanged = function(event) {
-        //   me.utils.setGridFilterMap(gridOptions);
-        // }
-        // gridOptions.getRowNodeId = function(row) {
-        //   return row.memberId.toString();
-        // };
-        // me.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService);
-        
-        // controller.viewModel.onGridReady = function(event) {
-        //   let grid:any = this;
-        //   event.api.sizeColumnsToFit();
-        // };
+        controller.viewModel.onSelectionChanged = function() {
+          controller.viewModel.item.membersList = gridOptions.api.getSelectedRows();
+          controller.viewModel.model = controller.viewModel.item.membersList;
+          controller.viewModel.isSubmitDisabled = gridOptions.api.getSelectedRows().length === 0;
+          controller.viewModel.isSelectedMembers = controller.viewModel.item.membersList.length > 0;
+        };
+       controller.viewModel.onFilterChanged = function(event) {
+          me.utils.setGridFilterMap(gridOptions);
+        }
 
         controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
         controller.viewModel.organizations = me.parent.parent.organizations;
-        controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
         let organizationId = me.parent.parent.organizations[0]['organizationId'];
         gridOptions['organizationId'] = organizationId;
         me.utils.setMemberGridDataSource(
@@ -661,7 +557,13 @@ export class MemberActionsBarCustomElement {
           if(this.selectedOrganization !== event.target.value) {
             this.selectedOrganization = event.target.value;
             gridOptions['organizationId'] = this.selectedOrganization;
-            this.setOrganizationMembersGridDataSource(gridOptions, me.pageSize, me.organizationService, this.selectedOrganization);
+            me.utils.setMemberGridDataSource(
+              gridOptions, 
+              me.organizationService, 
+              me.organizationService.getOrgMembers, 
+              {startIndex: 0, pageSize: me.pageSize, organizationId: this.selectedOrganization}, 
+              false
+            );
           }
         }
         controller.viewModel.showSelectedOrganizationMembers = function(showSelected:boolean) {
