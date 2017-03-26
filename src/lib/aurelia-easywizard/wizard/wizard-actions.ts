@@ -20,11 +20,11 @@ export class WizardActions {
   }
 
   process(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    event.cancelBubble = true;
-    // TODO: FEED-442 - action is undefined?
-    let action = $(event.target).data('action');
+    // event.stopPropagation();
+    // event.preventDefault();
+    // event.cancelBubble = true;
+    // FEED-442 - action is undefined?
+    let action = event; //$(event.target).data('action');
     console.debug("WizardActions|process: " + action);
     if (typeof this[action] === 'function') {
       this[action]();

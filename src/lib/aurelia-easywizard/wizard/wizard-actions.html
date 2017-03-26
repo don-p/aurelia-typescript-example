@@ -1,15 +1,15 @@
 <template>
 
-<div show.bind="hasSteps" class="wizard-actions" click.delegate="process($event)">
+<div show.bind="hasSteps" class="wizard-actions" >
   <div class="modal-footer">
     <button class="btn btn-default-blg cancel" if.bind="canCancel" click.trigger="controller.dialogController.cancel()">${ 'button.cancel' | t}</button>
-    <button if.bind="isNotFirstStep && canGoBack" class="btn-prev btn btn-info" data-action="prev">
+    <button if.bind="isNotFirstStep && canGoBack" class="btn-prev btn btn-info" click.delegate="process('prev')">
       <i class="ico-arrow-left3"></i> ${'button.previous' | t}
     </button>
-    <button disabled.bind="!(wizardSteps.currentStep.isValid)" if.bind="isLastStep" class="btn-prev btn btn-info" data-action="submit">
+    <button disabled.bind="!(wizardSteps.currentStep.isValid)" if.bind="isLastStep" class="btn-prev btn btn-info" click.delegate="process('submit')" >
        ${'button.done' | t}
     </button>
-    <button disabled.bind="(nextDisabled) || (!(wizardSteps.currentStep.isValid) || (wizardSteps.currentStep.canValidate && !(wizardSteps.currentStep.isDirty)))" if.bind="isNotLastStep" class="btn-next btn btn-info" data-action="next" data-last="Finish ">
+    <button disabled.bind="(nextDisabled) || (!(wizardSteps.currentStep.isValid) || (wizardSteps.currentStep.canValidate && !(wizardSteps.currentStep.isDirty)))" if.bind="isNotLastStep" class="btn-next btn btn-info" click.delegate="process('next')" data-last="Finish ">
       <span if.bind="!(nextDisabled)">${'button.next' | t} <i class="ico-arrow-right3"></i></span>
       <span if.bind="(nextDisabled)">${'button.loading' | t}</span>
     </button>
