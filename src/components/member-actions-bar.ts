@@ -589,6 +589,7 @@ export class MemberActionsBarCustomElement {
         }
         let message = null;
         let members = me.parent.gridOptions.api.getSelectedRows();
+          controller.viewModel.model = members;
         if(members.length === 1) {
           message = this.i18n.tr('community.communities.members.addMembersMessageSingle', 
               {memberName: members[0].physicalPersonProfile.firstName + ' ' +
