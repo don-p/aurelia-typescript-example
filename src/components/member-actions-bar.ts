@@ -589,6 +589,7 @@ export class MemberActionsBarCustomElement {
         }
         let message = null;
         let members = me.parent.gridOptions.api.getSelectedRows();
+          controller.viewModel.model = members;
         if(members.length === 1) {
           message = this.i18n.tr('community.communities.members.addMembersMessageSingle', 
               {memberName: members[0].physicalPersonProfile.firstName + ' ' +
@@ -741,12 +742,14 @@ export class MemberActionsBarCustomElement {
     item['message'] = message;
     item['requestMessage'] = '';
 
+    let maxLength = 120;
     const vRules = ValidationRules
       .ensure('requestMessage')
       .displayName(this.i18n.tr('community.connections.message'))
       .required()
       .then()
       .minLength(1)
+      .maxLength(maxLength)
       .rules;
 
     this.dataService.openResourceEditDialog({title: this.i18n.tr('community.connections.sendConnectionRequest'),
@@ -754,6 +757,7 @@ export class MemberActionsBarCustomElement {
       item: item, okText: this.i18n.tr('button.send'), validationRules: vRules})
     .then((controller:any) => {
       let model = controller.settings;
+      controller.viewModel.maxMessageLength = maxLength;
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (result:any) => {
         let memberIDs = result.members.map(function(value) {
