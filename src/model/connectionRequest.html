@@ -1,4 +1,6 @@
 <template>
+<require from="../lib/converters"></require>
+
     <div>
         <div class="dialog-section">
             <div style="margin-bottom:12px;">${item.message}</div>
@@ -9,6 +11,11 @@
                 <textarea class="send-alert-textarea" input.delegate="currentStep.isDirty=true"
                 value.bind="item.requestMessage & validate"></textarea>
             </div>                    
+            <div class="dialog-section">                    
+                <span class="pull-right alert-counter" style="top:0;">
+                    ${(maxMessageLength - item.requestMessage.length) | mathMax:0} ${'global.charsRemaining' | t}
+                </span>
+            </div>
         </div>
     </div>
 
