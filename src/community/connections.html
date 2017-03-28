@@ -74,7 +74,7 @@
                         <ag-grid-column header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" ></ag-grid-column>
                         <ag-grid-column header-name="">
                             <ag-cell-template>
-                                <i click.delegate="params.context.editConnectionRequest([params.data], 'TERMINATE', 'REQUEST_TERMINATED')" class="ico-cancel-circle2 float-right cancel-request" title="Terminate request"></i>
+                                <i click.delegate="params.context.editConnectionRequest([params.data], 'TERMINATE', 'REQUEST_TERMINATED')" class="ico-cancel-circle2 float-right cancel-request" i18n="[title]community.connections.terminateRequest"></i>
                             </ag-cell-template>
                         </ag-grid-column>
                     </ag-grid-aurelia>       
