@@ -125,7 +125,9 @@
                 "alertRecipientsMessageSingle": "{{member.physicalPersonProfile.firstName}} {{member.physicalPersonProfile.lastName}}",
                 "alertRecipientsMessage": "{{memberCount}} members",
                 "alertCommunityRecipientsMessageSingle": "{{community}}",
-                "alertCommunityRecipientsMessage": "{{communityCount}} communities"
+                "alertCommunityRecipientsMessage": "{{communityCount}} communities",
+                "sendNow": "Now",
+                "sendLater": "Later"
             }
         },
         "discover": {

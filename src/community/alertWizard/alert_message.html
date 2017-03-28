@@ -87,15 +87,15 @@
 
                 </div>
             </div>
-            <!-- Removing controls for scheduled alert/notification.
+            <!-- TODO: Removing controls for scheduled alert/notification. 
             <div class="div-table-row">
                 <div class="div-table-cell column-label">
                     <span class="wizard-content-label blg-form-required" i18n='[prepend]community.communities.alert.sendType'>:</span>
                 </div>
                 <div class="div-table-cell">
                     <select class="form-control select select-default-blg send-alert" value.bind="sendType" change.delegate="controller.onSendDateChange($event)">
-                        <option model.bind="null" >RIGHT NOW</option>
-                        <option model.bind="'SCH'">LATER</option>
+                        <option model.bind="null" >${'community.communities.alert.sendNow' | t}</option>
+                        <option model.bind="'SCH'">${'community.communities.alert.sendLater' | t}</option>
                     </select>
                     <abp-datetime-picker show.bind="sendType=='SCH'" 
                         element.bind="picker" model.bind="controller.dialogController.alertModel.schedule.sendDate" 
