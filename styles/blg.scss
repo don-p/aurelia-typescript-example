@@ -1121,7 +1121,7 @@ table.blg-dataTable.display tbody td {
 .members-table-content .ag-header-container {
   margin-top: 5px;
 }
-.ag-gridCheckboxHeader, .ag-pinned-left-header > .ag-header-row {
+.ag-gridCheckboxHeader, .ag-pinned-left-header > .ag-header-row, [colid=icon-col].ag-header-cell {
   cursor: default;
 }
 
@@ -2104,4 +2104,9 @@ abp-datetime-picker .input-group-addon {
   font-size: 14px;
   color: $blg-blue;
   margin-left: 5px;
+}
+
+.member-icon {
+  margin-left: 0px;
+  margin-right: 5px;
 }
