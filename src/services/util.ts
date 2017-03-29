@@ -1,7 +1,7 @@
 import {inject, LogManager} from 'aurelia-framework';
 import {AuthService} from 'aurelia-auth';
 import {Session} from './session';
-import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
+import {Grid, GridOptions, IGetRowsParams, Column, TextFilter} from 'ag-grid/main';
 import {I18N} from 'aurelia-i18n';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 import {Logger} from 'aurelia-logging';
@@ -368,7 +368,7 @@ export class Utils {
               let rowSelection = gridOptions.api.getSelectedRows();
               args['params'] = params;
               let membersPromise = callback.call(dataService, args);
-              membersPromise.then(response => response.json())
+              membersPromise//.then(response => response.json())
                 .then(data => {
                   // Filter out existing community members.
                   let totalCount = data.totalCount;
