@@ -254,6 +254,23 @@ export class CommunityService {
         return p;
     }
 
+    async setCommunityCoordinators(memberIds: Array<string>, communityId: string, role) {
+        await fetch;
+
+        let data = memberIds.map(function(item){
+            return {memberId: item, role: role};
+        });
+
+        let response = this.getHttpClient().fetch('v1/communities/' + communityId + '/members', 
+            {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            }
+        );
+        return response;
+
+    }
+
     async sendConnectionRequest(memberIds: string[], requestMessage: string) {
         await fetch;
 

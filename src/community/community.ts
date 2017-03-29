@@ -4,7 +4,7 @@ import {Router, NavigationInstruction} from 'aurelia-router';
 import {DataService} from '../services/dataService';
 import {Session} from '../services/session';
 import {I18N} from 'aurelia-i18n';
-import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
+import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {WizardControllerStep} from '../lib/aurelia-easywizard/controller/wizard-controller-step';
 import {AureliaConfiguration} from 'aurelia-configuration';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
@@ -47,7 +47,8 @@ export class Community {
             MemberActionsBarCustomElement.ADDMEMBER, 
             MemberActionsBarCustomElement.STARTCONVERSATION,
             MemberActionsBarCustomElement.REMOVEMEMBER,
-            MemberActionsBarCustomElement.TRANSFEROWNER
+            MemberActionsBarCustomElement.TRANSFEROWNER,
+            MemberActionsBarCustomElement.SETCOORDINATOR
           ]
         }
       },

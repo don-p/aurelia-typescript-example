@@ -11,14 +11,14 @@ import {AureliaConfiguration} from 'aurelia-configuration';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {Utils} from '../services/util';
-import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
+import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 
 @inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, 
   I18N, AureliaConfiguration, Utils, /*Parent.of(Community),*/ LogManager) // SCROLL
 export class MemberActionsBarCustomElement {  
 
     navigationInstruction: NavigationInstruction;
-    selectedMembers: Array<Object>;
+    selectedMembers: Array<Object> = [];
     selectedOrganizationMembers: Array<Object>;
     selectedCmty: any;
     membersGrid: Object;
@@ -46,6 +46,7 @@ export class MemberActionsBarCustomElement {
     static ADDMEMBER: string = 'addmember';
     static REMOVEMEMBER: string = 'removemember';
     static TRANSFEROWNER: string = 'transferowner';
+    static SETCOORDINATOR: string = 'setcoordinator';
 
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
@@ -73,6 +74,7 @@ export class MemberActionsBarCustomElement {
   get ADDMEMBER() { return MemberActionsBarCustomElement.ADDMEMBER; }
   get REMOVEMEMBER() { return MemberActionsBarCustomElement.REMOVEMEMBER; }
   get TRANSFEROWNER() { return MemberActionsBarCustomElement.TRANSFEROWNER; }
+  get SETCOORDINATOR() { return MemberActionsBarCustomElement.SETCOORDINATOR; }
 
   // activate(model) {
   //     this.parent = model.parent;
@@ -800,5 +802,81 @@ export class MemberActionsBarCustomElement {
     });
   }
 
+  setCommunityCoordinatorRoles(communityMembers, role) {
+    let me = this;
+    // selected community from "Communities" view.
+    let selectedCmty = this.selectedCmty;
+    let members = me.parent.gridOptions.api.getSelectedRows();
+    let memberIds = members.map(function(member) {
+      return member.memberId;
+    })
 
+    let message = null;
+
+    if(communityMembers.length === 1) {
+      message = this.i18n.tr(role==='COORDINATOR'?'community.communities.members.setCoordinatorMessageSingle':'community.communities.members.removeCoordinatorMessageSingle', 
+          {memberName: communityMembers[0].physicalPersonProfile.firstName + ' ' +
+          communityMembers[0].physicalPersonProfile.lastName, communityName: selectedCmty.communityName});
+    } else if(communityMembers.length >= 1) {
+      message = this.i18n.tr(role==='COORDINATOR'?'community.communities.members.setCoordinatorMessage':'community.communities.members.removeCoordinatorMessage',
+          {memberCount: communityMembers.length, communityName: selectedCmty.communityName});
+    }
+
+    this.dataService.openPromptDialog(
+      this.i18n.tr(role==='COORDINATOR'?'community.communities.members.setCoordinator':'community.communities.members.removeCoordinator'),
+      message,
+      memberIds, this.i18n.tr('button.ok'), true, null, 'modelPromise', '')
+    .then((controller:any) => {
+      let model = controller.settings;
+      // Callback function for submitting the dialog.
+      controller.viewModel.submit = (communityMembers:any[]) => {
+
+        // Call the service to set the roles.
+        let modelPromise = this.communityService.setCommunityCoordinators(memberIds, selectedCmty.communityId, role);
+        controller.viewModel.modelPromise = modelPromise;        
+        modelPromise
+        .then(response => response.json())
+        .then(data => {
+            me.parent.gridOptions.api.refreshVirtualPageCache();
+            me.parent.gridOptions.api.refreshView();
+            me.parent.gridOptions.api.deselectAll();
+            // me.selectedMembers = me.parent.gridOptions.api.getSelectedRows();
+            // Update the message for success.
+            controller.viewModel.messagePrefix = 'global.success';
+            controller.viewModel.status = 'OK';
+            controller.viewModel.message = 
+              this.i18n.tr(role==='COORDINATOR'?'community.communities.members.setCoordinatorSuccessMessage':'community.communities.members.removeCoordinatorSuccessMessage');
+            controller.viewModel.okText = this.i18n.tr('button.ok');
+            controller.viewModel.showCancel = false;
+            // Close dialog on success.
+            delete controller.viewModel.submit;
+          }, error => {
+            controller.viewModel.messagePrefix = 'global.failed';
+            controller.viewModel.status = 'ERROR';
+            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
+            me.logger.error("Community member call() rejected."); 
+          }).catch(error => {
+            controller.viewModel.messagePrefix = 'global.failed';
+            controller.viewModel.status = 'ERROR';
+            model.errorMessage = this.i18n.tr('community.communities.members.call.callFailedMessage'); 
+            me.logger.error("Community member call() failed."); 
+            me.logger.error(error); 
+            return Promise.reject(error);
+          })
+      };
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Cancel.
+          this.logger.debug('Cancel');
+        }
+      })
+    });
+  }
+
+  get hasCoordinatorRole(): boolean {
+    let result = this.selectedMembers.some(function(member:any) {
+        return member.entitlementRole === 'COORDINATOR';
+      });
+    return result;
+  }
 }

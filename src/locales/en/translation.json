@@ -99,7 +99,15 @@
                     "failedMessage": "Community owner could not be changed."
                 },
                 "addMembers": "Add Community Members",
-                "fullName": "{{member.firstName}} {{member.lastName}}"
+                "fullName": "{{member.firstName}} {{member.lastName}}",
+                "setCoordinator": "Set Community Coordinator",
+                "setCoordinatorMessageSingle": "Set '{{memberName}}' as coordinator of '{{communityName}}'?",
+                "setCoordinatorMessage": "Set {{memberCount}} members as coordinators of '{{communityName}}'?",
+                "setCoordinatorSuccessMessage": "The community coordinator(s) have been set.",
+                "removeCoordinator": "Remove Community Coordinator",
+                "removeCoordinatorMessageSingle": "Remove '{{memberName}}' as coordinator of '{{communityName}}'?",
+                "removeCoordinatorMessage": "Remove {{memberCount}} members as coordinators of '{{communityName}}'?",
+                "removeCoordinatorSuccessMessage": "The community coordinator(s) have been removed."
             },          
             "call": {
                 "title": "Start GridCall",
@@ -125,7 +133,9 @@
                 "alertRecipientsMessageSingle": "{{member.physicalPersonProfile.firstName}} {{member.physicalPersonProfile.lastName}}",
                 "alertRecipientsMessage": "{{memberCount}} members",
                 "alertCommunityRecipientsMessageSingle": "{{community}}",
-                "alertCommunityRecipientsMessage": "{{communityCount}} communities"
+                "alertCommunityRecipientsMessage": "{{communityCount}} communities",
+                "sendNow": "Now",
+                "sendLater": "Later"
             }
         },
         "discover": {
@@ -143,6 +153,7 @@
             "sendConnectionRequest": "Send Connection Request",
             "addConnections": "Send connection request",
             "removeConnections": "Remove connections",
+            "terminateRequest": "Cancel request",
             "connectionRequestMessageSingle": "Send connection request to member '{{memberName}}':",
             "connectionRequestMessage": "Send connection request to {{memberCount}} selected members:",
             "connectionRequestSuccessMessage": "The connection request has been sent.",
@@ -236,6 +247,8 @@
         "addMembers":"Add members",
         "deleteMembers":"Remove members",
         "transferOwnership":"Change community owner",
+        "addCoordinator": "Set coordinator(s)",
+        "removeCoordinator": "Remove coordinator(s)",
         "deleteCommunity":"Delete community",
         "editCommunity":"Update community",
         "createCommunity":"Create community",
