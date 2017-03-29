@@ -875,7 +875,13 @@ export class MemberActionsBarCustomElement {
 
   get hasCoordinatorRole(): boolean {
     let result = this.selectedMembers.some(function(member:any) {
-        return member.entitlementRole === 'COORDINATOR';
+        return member.hasCoordinatorRole;
+      });
+    return result;
+  }
+  get hasMemberRole(): boolean {
+    let result = this.selectedMembers.some(function(member:any) {
+        return member.hasMemberRole;
       });
     return result;
   }

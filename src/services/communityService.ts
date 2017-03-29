@@ -7,6 +7,7 @@ import {FetchConfig} from 'aurelia-auth';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
+import {MemberResource} from '../model/memberResource';
 import {DataService} from './dataService';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
@@ -31,6 +32,14 @@ export class CommunityService {
     getHttpClient() {
         return this.httpClient;
     }
+
+    // getMemberHttpClient() {
+    //     return new HttpClient().configure(x=> {
+    //         x.withReviver((k,v) => {        
+    //             return typeof v === 'object' ? new Person(v) : v;
+    //         });  
+    //     });
+    // }
 
     // COMMUNITIES
 
@@ -76,7 +85,20 @@ export class CommunityService {
                 method: 'GET'
             }
         );
-        return response;
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                let json = JSON.stringify(data);
+                let content = JSON.parse(json, (k, v) => { 
+                    if (Number.isInteger(Number.parseInt(k)) && typeof this == 'object' && typeof v == 'object') {
+                        return new MemberResource(v);
+                    } 
+                    return v;                
+                });
+                return content;
+            })
+        });
+
     }
 
     async createCommunity(community: Object) {
@@ -329,7 +351,23 @@ export class CommunityService {
                 method: 'GET'
             }
         );
-        return response;
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                let json = JSON.stringify(data);
+                let content = JSON.parse(json, (k, v) => { 
+                    if (Number.isInteger(Number.parseInt(k)) && typeof this == 'object' && typeof v == 'object' /*Array.isArray(this)*/) {
+                        if(v.hasOwnProperty('member') && typeof v.member == 'object') {
+                            Object.assign(v, v.member);
+                            delete v.member;
+                        }
+                        return new MemberResource(v);
+                    } 
+                    return v;                
+                });
+                return content;
+            })
+        });
     }
 
 }

@@ -1,7 +1,7 @@
 import {inject, LogManager} from 'aurelia-framework';
 import {AuthService} from 'aurelia-auth';
 import {Session} from './session';
-import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
+import {Grid, GridOptions, IGetRowsParams, Column, TextFilter} from 'ag-grid/main';
 import {I18N} from 'aurelia-i18n';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 import {Logger} from 'aurelia-logging';
@@ -368,7 +368,7 @@ export class Utils {
               let rowSelection = gridOptions.api.getSelectedRows();
               args['params'] = params;
               let membersPromise = callback.call(dataService, args);
-              membersPromise.then(response => response.json())
+              membersPromise//.then(response => response.json())
                 .then(data => {
                   // Filter out existing community members.
                   let totalCount = data.totalCount;
@@ -378,15 +378,6 @@ export class Utils {
                   let result = data.responseCollection;
                   let idProperty = 'memberId';
                   if(!!(isConnectionType)) { // Normalize Connections response member entity.
-                    result = data.responseCollection.map(function(item){
-                      return {
-                        connectId: item.connectId,
-                        connectStatus: item.connectStatus,
-                        memberEntityType: item.member.memberEntityType,
-                        memberId: item.member.memberId,
-                        physicalPersonProfile: item.member.physicalPersonProfile
-                      }
-                    });
                     idProperty = 'connectId';
                   }
 
@@ -458,18 +449,9 @@ export class Utils {
       const me = this;
       gridOptions.api.showLoadingOverlay();
       let connectionsPromise = communityService.getMemberConnections({startIndex: 0, pageSize: pageSize, connectionStatus: status});
-      connectionsPromise.then(response => response.json())
+      connectionsPromise//.then(response => response.json())
         .then(data => {
-          let result = data.responseCollection.map(function(item){
-            return {
-              connectId: item.connectId,
-              connectStatus: item.connectStatus,
-              memberEntityType: item.member.memberEntityType,
-              memberId: item.member.memberId,
-              physicalPersonProfile: item.member.physicalPersonProfile,
-              statusComment: item.statusComment
-            }
-          });
+          let result = data.responseCollection;
           gridOptions.api.setRowData(result);
           gridOptions.api.hideOverlay();
       });
