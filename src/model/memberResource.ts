@@ -9,6 +9,9 @@ export class MemberResource {
   entitlementRole: string;
   isConnected: boolean;
   memberId: string;
+  connectId: string;
+  connectStatus: string;
+  statusComment: string;
   
   constructor(member?:any) {
       if(member && member !== null) {
@@ -16,7 +19,9 @@ export class MemberResource {
         this.entitlementRole = member.entitlementRole;
         this.memberId = member.memberId;
         this.physicalPersonProfile = member.physicalPersonProfile;
-
+        this.connectId = member.connectId;
+        this.connectStatus = member.connectStatus;
+        this.statusComment = member.statusComment;
       } else {
         this.isConnected = false;
         this.memberId = '';

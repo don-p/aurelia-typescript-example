@@ -5,6 +5,7 @@ import {FetchConfig} from 'aurelia-auth';
 import {Session} from './session';
 import {DataService} from './dataService';
 import * as QueryString from 'query-string';
+import {MemberResource} from '../model/memberResource';
 
 @inject(HttpClient, Http, Session, DataService, FetchConfig)
 export class OrganizationService {  
@@ -48,7 +49,19 @@ export class OrganizationService {
                 method: 'GET'
             }
         );
-        return response;
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                let json = JSON.stringify(data);
+                let content = JSON.parse(json, (k, v) => { 
+                    if (Number.isInteger(Number.parseInt(k)) && typeof this == 'object' && typeof v == 'object') {
+                        return new MemberResource(v);
+                    } 
+                    return v;                
+                });
+                return content;
+            })
+        });
 
     }
 
@@ -122,7 +135,19 @@ export class OrganizationService {
                 method: 'GET',
             }
         );
-        return response;
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                let json = JSON.stringify(data);
+                let content = JSON.parse(json, (k, v) => { 
+                    if (Number.isInteger(Number.parseInt(k)) && typeof this == 'object' && typeof v == 'object') {
+                        return new MemberResource(v);
+                    } 
+                    return v;                
+                });
+                return content;
+            })
+        });
     }
 
     async getOrganizationNotificationTemplates(organizationId:string, categoryId:string) {

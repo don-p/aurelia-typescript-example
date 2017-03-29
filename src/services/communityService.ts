@@ -90,14 +90,14 @@ export class CommunityService {
             .then(data => {
                 let json = JSON.stringify(data);
                 let content = JSON.parse(json, (k, v) => { 
-                    if (Number.isInteger(Number.parseInt(k)) && typeof this == 'object' && typeof v == 'object' /*Array.isArray(this)*/) {
+                    if (Number.isInteger(Number.parseInt(k)) && typeof this == 'object' && typeof v == 'object') {
                         return new MemberResource(v);
                     } 
                     return v;                
                 });
                 return content;
             })
-        })
+        });
 
     }
 
@@ -351,7 +351,23 @@ export class CommunityService {
                 method: 'GET'
             }
         );
-        return response;
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                let json = JSON.stringify(data);
+                let content = JSON.parse(json, (k, v) => { 
+                    if (Number.isInteger(Number.parseInt(k)) && typeof this == 'object' && typeof v == 'object' /*Array.isArray(this)*/) {
+                        if(v.hasOwnProperty('member') && typeof v.member == 'object') {
+                            Object.assign(v, v.member);
+                            delete v.member;
+                        }
+                        return new MemberResource(v);
+                    } 
+                    return v;                
+                });
+                return content;
+            })
+        });
     }
 
 }
