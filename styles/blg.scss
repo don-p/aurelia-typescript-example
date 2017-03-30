@@ -2103,10 +2103,9 @@ abp-datetime-picker .input-group-addon {
 .member-connected {
   font-size: 14px;
   color: $blg-blue;
-  margin-left: 5px;
 }
 
-.member-icon {
-  margin-left: 0px;
-  margin-right: 5px;
+.member-status-icon {
+  width: 20px;
+  display: inline-block;
 }
