@@ -26,10 +26,6 @@
             suppress-filter.bind="true" suppress-resize.bind="true" 
             suppress-movable.bind="true" suppress-menu.bind="true" 
             pinned.bind="true" header-class.bind="ag-gridCheckboxHeader"></ag-grid-column>
-        <ag-grid-column if.bind="showColumn('firstName')" header-name="${'community.communities.members.firstname' | t}" field="physicalPersonProfile.firstName" filter.bind="getTextSearchFilter()"></ag-grid-column>
-        <ag-grid-column if.bind="showColumn('lastName')" header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()">
-                    ${params.data.physicalPersonProfile.lastName} 
-        </ag-grid-column>
         <ag-grid-column col-id="icon-col" header-name='' 
             suppress-click-edit.bind="true"
             suppress-sorting.bind="true" suppress-navigable.bind="true"
@@ -37,12 +33,17 @@
             suppress-movable.bind="true" suppress-menu.bind="true" 
             width.bind="55" min-width.bind="55" max-width.bind="75">
             <ag-cell-template>
-                <span style="position: relative; display: inline-block;">
-                    <i show.bind="(!!(params.data.connectStatus) && (params.data.connectStatus === 'CONNECTED')) || !!(params.data.isConnected)" class="ico-link member-connected member-icon" aria-hidden="true" title="Connected"></i>
-                   <i show.bind="(!!(params.data.entitlementRole) && (params.data.entitlementRole === 'COORDINATOR'))" class="fa fa-users member-connected member-icon"></i>
-                   <span style="width: 3px;position: relative; display: inline-block;"></span>
-                 </span>
+                <span class="member-status-icon">
+                   <i show.bind="(!!(params.data.entitlementRole) && (params.data.entitlementRole === 'COORDINATOR'))" class="ico-flag3 member-connected" aria-hidden="true" title="Coordinator"></i>
+                </span>
+                <span class="member-status-icon">
+                   <i show.bind="(!!(params.data.connectStatus) && (params.data.connectStatus === 'CONNECTED')) || !!(params.data.isConnected)" class="ico-link member-connected" aria-hidden="true" title="Connected"></i>
+                </span>
             </ag-cell-template>
+        </ag-grid-column>        
+        <ag-grid-column if.bind="showColumn('firstName')" header-name="${'community.communities.members.firstname' | t}" field="physicalPersonProfile.firstName" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('lastName')" header-name="${'community.communities.members.lastname' | t}" field="physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()">
+                    ${params.data.physicalPersonProfile.lastName} 
         </ag-grid-column>
         <ag-grid-column if.bind="showColumn('organization')" header-name="${'community.communities.members.organization' | t}" field="physicalPersonProfile.organization.organizationName" filter.bind="getTextSearchFilter()"></ag-grid-column>
         <ag-grid-column if.bind="showColumn('title')" header-name="${'community.communities.members.title' | t}" field="physicalPersonProfile.jobTitle" filter.bind="getTextSearchFilter()"></ag-grid-column>
