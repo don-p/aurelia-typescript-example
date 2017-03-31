@@ -67,11 +67,12 @@ export class Communities {
 
   attached() {
     this.logger.debug("Community | attached()");
-    
+/*    
     // Custom scrollbar:
     var container = document.getElementById('community-list');
     this.ps.initialize(container);
     this.ps.update(container);
+*/
     let me = this;
     this.commType = 'TEAM';
     this.getCommunitiesPage(this.commType, 0, this.pageSizeList).then(function(){
@@ -111,6 +112,7 @@ export class Communities {
       .then(data => {
         me.communities = data.responseCollection;
         return data.responseCollection;
+        // return Promise.resolve(data.responseCollection);
         // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
       }).catch(error => {
         me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
@@ -123,6 +125,8 @@ export class Communities {
       //throw error;
       return Promise.reject(error);
     });
+    // return cmtysPromise;
+
   }
 
   selectCommunityType(communityType:string, selectedCommunity:Object) {
@@ -137,6 +141,7 @@ export class Communities {
       } else {
         me.scrollToCommunityInList(selectedCommunity);
       }
+      // me.evt.publish('cmtySelected', {community: selectedCommunity});      
       me.onCommunitySelectionChanged(null);
     })
   }
@@ -160,7 +165,9 @@ export class Communities {
       this.selectCommunityType(type, this.selectedItem);
     } else {
       this.scrollToCommunityInList(this.selectedItem);
+      // this.evt.publish('cmtySelected', {community: this.selectedItem});
     }
+    // TODO: move event to prmoise resolved?
     this.evt.publish('cmtySelected', {community: this.selectedItem});
   }
 
@@ -178,7 +185,11 @@ export class Communities {
         let elBottom = el.offsetTop + el.offsetHeight;
         let clientTop = container.scrollTop;
         let clientBottom = container.scrollTop + container.clientHeight;
-        let scrollVisible = (elTop >= clientTop && elBottom <= clientBottom);
+        let scrollVisible = !($(childEl).position().top >= container.clientHeight);
+        // if(!scrollVisible) {
+        //   container.scrollTop = $(element).position().top;
+        // }
+        // let scrollVisible = (elTop >= clientTop && elBottom <= clientBottom);
         if(!scrollVisible) {
           container.scrollTop = element.offsetTop;
         }
