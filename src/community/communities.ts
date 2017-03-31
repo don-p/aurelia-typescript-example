@@ -185,7 +185,7 @@ export class Communities {
         let elBottom = el.offsetTop + el.offsetHeight;
         let clientTop = container.scrollTop;
         let clientBottom = container.scrollTop + container.clientHeight;
-        let scrollVisible = !($(childEl).position().top >= container.clientHeight);
+        let scrollVisible = !(($(childEl).position().top >= container.clientHeight) || ($(childEl).position().top < 0));
         // if(!scrollVisible) {
         //   container.scrollTop = $(element).position().top;
         // }
@@ -369,6 +369,8 @@ export class Communities {
                 idx = idx===0?0:idx-1;
                 let cmty = me.communities[idx];
                 me.selectCommunity(cmty);
+              } else {
+                me.selectDefaultCommunity();
               }
               // re-select the selected communities
               if(me.selectedCommunities.length > 0) {
