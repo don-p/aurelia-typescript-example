@@ -34,7 +34,7 @@
             width.bind="55" min-width.bind="55" max-width.bind="75">
             <ag-cell-template>
                 <span class="member-status-icon">
-                   <i show.bind="(!!(params.data.entitlementRole) && (params.data.entitlementRole === 'COORDINATOR'))" class="ico-flag3 member-connected" aria-hidden="true" title="Coordinator"></i>
+                   <i show.bind="(!!(params.data.entitlementRole) && (params.data.entitlementRole === 'COORDINATOR'))" class="ico-shield5 member-coordinator" aria-hidden="true" title="Coordinator"></i>
                 </span>
                 <span class="member-status-icon">
                    <i show.bind="(!!(params.data.connectStatus) && (params.data.connectStatus === 'CONNECTED')) || !!(params.data.isConnected)" class="ico-link member-connected" aria-hidden="true" title="Connected"></i>
