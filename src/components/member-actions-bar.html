@@ -27,14 +27,11 @@
         <button id="btn-members-delete-member" if.bind="hasAction(REMOVEMEMBER)" click.delegate="deleteCommunityMembers(selectedMembers)" class="btn btn-danger btn-xs-square" i18n="[title]button.deleteMembers" disabled.bind="(!selectedMembers) || (selectedMembers.length === 0)">
             <i class="ico-user-minus"></i>
         </button>
-
-        <span class="dummy-btn"></span>
-
         <button id="btn-members-add-coordinator" if.bind="hasAction(SETCOORDINATOR)" click.delegate="setCommunityCoordinatorRoles(selectedMembers, 'COORDINATOR')" class="btn btn-info btn-xs-square" i18n="[title]button.addCoordinator" disabled.bind="((!selectedMembers) || (selectedMembers.length === 0)) ||!(hasMemberRole)">
-            <i class="ico-flag-plus"></i>
+            <i class="ico-shield-plus"></i>
         </button>
         <button id="btn-members-delete-coordinator" if.bind="hasAction(SETCOORDINATOR)" click.delegate="setCommunityCoordinatorRoles(selectedMembers, 'MEMBER')" class="btn btn-danger btn-xs-square" i18n="[title]button.removeCoordinator" disabled.bind="((!selectedMembers) || (selectedMembers.length === 0)) || !(hasCoordinatorRole)">
-            <i class="ico-flag-cancel"></i>
+            <i class="ico-shield-cancel"></i>
         </button>
     </div>
 </template>
