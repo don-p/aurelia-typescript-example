@@ -2103,6 +2103,13 @@ abp-datetime-picker .input-group-addon {
 .member-connected {
   font-size: 14px;
   color: $blg-blue;
+  top: 1px;
+}
+
+.member-coordinator {
+  font-size: 16px;
+  color: $blg-blue;
+  top: 3px;
 }
 
 .member-status-icon {
