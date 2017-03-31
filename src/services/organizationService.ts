@@ -54,7 +54,7 @@ export class OrganizationService {
             .then(data => {
                 let json = JSON.stringify(data);
                 let content = JSON.parse(json, (k, v) => { 
-                    if (Number.isInteger(Number.parseInt(k)) && typeof this == 'object' && typeof v == 'object') {
+                    if ((k !== '')  && typeof this == 'object' && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
                         return new MemberResource(v);
                     } 
                     return v;                
@@ -140,7 +140,7 @@ export class OrganizationService {
             .then(data => {
                 let json = JSON.stringify(data);
                 let content = JSON.parse(json, (k, v) => { 
-                    if (Number.isInteger(Number.parseInt(k)) && typeof this == 'object' && typeof v == 'object') {
+                    if ((k !== '')  && typeof this == 'object' && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
                         return new MemberResource(v);
                     } 
                     return v;                
