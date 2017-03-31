@@ -440,7 +440,7 @@ header .navbar-nav {
 }
 
 .blg-left-panel .blg-community-content {
-  padding: 12px 10px 0px 0px;
+  padding: 0px;
   position: absolute;
   top: 94px;
   bottom: 15px;
@@ -531,9 +531,10 @@ header .navbar-nav {
 
 .community-list,
 .organization-list {
-  padding: 4px 5px 5px 0px;
+  padding: 5px 5px 5px 0px;
   height: 100%;
   position: relative;
+  overflow-y: scroll;
 }
 .conversation-list li, .community-list li {
   list-style: none;
