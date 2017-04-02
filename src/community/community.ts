@@ -45,7 +45,7 @@ export class Community {
             MemberActionsBarCustomElement.ALERT, 
             MemberActionsBarCustomElement.ADDCONNECTION, 
             MemberActionsBarCustomElement.ADDMEMBER, 
-            MemberActionsBarCustomElement.STARTCONVERSATION,
+            // MemberActionsBarCustomElement.STARTCONVERSATION,
             MemberActionsBarCustomElement.REMOVEMEMBER,
             MemberActionsBarCustomElement.TRANSFEROWNER,
             MemberActionsBarCustomElement.SETCOORDINATOR
@@ -61,7 +61,7 @@ export class Community {
             MemberActionsBarCustomElement.GRIDCALL, 
             MemberActionsBarCustomElement.ALERT, 
             MemberActionsBarCustomElement.REMOVECONNECTION, 
-            MemberActionsBarCustomElement.STARTCONVERSATION
+            // MemberActionsBarCustomElement.STARTCONVERSATION
           ]
         }
       },
@@ -75,7 +75,7 @@ export class Community {
             MemberActionsBarCustomElement.ALERT, 
             MemberActionsBarCustomElement.ADDCONNECTION, 
             MemberActionsBarCustomElement.ADDMEMBER ,
-            MemberActionsBarCustomElement.STARTCONVERSATION
+            // MemberActionsBarCustomElement.STARTCONVERSATION
           ]
         }
       }
