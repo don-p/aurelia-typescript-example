@@ -1,6 +1,7 @@
 <template>
 	<require from="../lib/loading-mask/loading-mask"></require>
 	<require from="../components/members-table-grid"></require>
+	<require from="../components/clear-filter-button"></require>
 
 	<div if.bind="!(item.selectedCmty)" >
     <loading id="cmty-loading" promise.bind="'communitiesPromise'" message-key.bind="loadingTitle">                
@@ -36,21 +37,7 @@
 					<option repeat.for="organization of organizations" value="${organization.organizationId}" model.bind="organization">${organization.organizationName}</option>
 				</select>
 			</div>
-			<div show.bind="!(showSelected)" class="btn-group pull-right">
-				<button disabled.bind="!isGridFiltered" type="button" class="btn btn-filter btn-xs" click.delegate="clearGridFilters(showSelectedCommunitiesGrid?gridOptionsSelected:gridOptions)"><i class="ico-filter4"></i><span>${'global.clearFilters' | t}</span></button>
-				<button disabled.bind="!isGridFiltered" type="button" class="btn btn-filter btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<span class="caret"></span>
-					<span class="sr-only">Toggle Dropdown</span>
-				</button>
-				<ul class="dropdown-menu" style="font-size: 14px;">
-					<li repeat.for="[filterName, filter] of gridOptions.filters">
-						<a click.delegate="clearGridFilters(showSelectedCommunitiesGrid?gridOptionsSelected:gridOptions, filterName)" style="padding-top: 3px;padding-left:10px;padding-bottom: 3px;padding-right:32px;" href="#">
-							<span style="font-weight:bold;">${filterName | t}:</span> ${filter.filter}
-							<i style="right: 0px;margin-right: -24px;top: 3px;" class="ico-cancel-circle2 float-right cancel-request"></i>
-						</a>
-					</li>
-				</ul>
-			</div>				
+            <clear-filter-button  grid-options.bind="gridOptions"></clear-filter-button>
 			<div if.bind="!showSelectedMembers"  class="pull-right" >
 				<button disabled.bind="(!isSelectedMembers)" type="button" class="btn btn-filter btn-xs" click.delegate="showSelectedOrganizationMembers(true)"><span>${'global.showSelected' | t}</span></button>
 			</div>
