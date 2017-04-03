@@ -124,12 +124,6 @@ export class DiscoverDetail {
     // this.evt.publish('childViewAttached', 'discover-detail');
   }
 
-  // findGridColumnDef(gridOptions: GridOptions, fieldName: string):Object {
-  //   return this.gridOptions.columnDefs.find(function(colDef: Object){
-  //     return colDef['field'] === fieldName;
-  //   });
-  // }
-
   onGridReady(event) {
     let grid:any = this;
     // grid.context.utils.setMemberGridDataSource(grid.context.gridOptions, grid.context.communityService, grid.context.communityService.getMemberConnections, {startIndex: 0, pageSize: grid.context.pageSize, communityId: grid.context.selectedCmty.communityId});
