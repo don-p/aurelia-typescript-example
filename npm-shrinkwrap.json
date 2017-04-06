@@ -264,14 +264,14 @@
       }
     },
     "ag-grid": {
-      "version": "8.1.1",
-      "from": "ag-grid@8.1.1",
-      "resolved": "https://registry.npmjs.org/ag-grid/-/ag-grid-8.1.1.tgz"
+      "version": "9.0.0",
+      "from": "ag-grid@9.0.0",
+      "resolved": "https://registry.npmjs.org/ag-grid/-/ag-grid-9.0.0.tgz"
     },
     "ag-grid-aurelia": {
-      "version": "8.1.0",
-      "from": "ag-grid-aurelia@8.1.0",
-      "resolved": "https://registry.npmjs.org/ag-grid-aurelia/-/ag-grid-aurelia-8.1.0.tgz"
+      "version": "9.0.0",
+      "from": "ag-grid-aurelia@9.0.0",
+      "resolved": "https://registry.npmjs.org/ag-grid-aurelia/-/ag-grid-aurelia-9.0.0.tgz"
     },
     "agent-base": {
       "version": "2.0.1",

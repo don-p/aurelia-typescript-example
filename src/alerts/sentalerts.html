@@ -1,0 +1,36 @@
+<template>
+	<require from="../components/alerts-actions-bar"></require>
+	<require from="../components/notifications-table-grid"></require>
+	<require from="../components/clear-filter-button"></require>
+
+	<section id="membersTable" class="members-table notifications-table">
+		
+		<div class="members-table-header" id="membersTableHeader">Sent Notifications</div>
+		<aside class="blg-left-panel" style="top:0px;width:720px;">
+		<alerts-actions-bar></alerts-actions-bar>
+
+		<div class="members-table-info-bar">
+			<div role="status" id="example_info" class="members-table-info">
+                <input placeholder="Filter..." type="text" input.delegate="onQuickFilterChanged($event)"/>
+                <clear-filter-button  grid-options.bind="gridOptions"></clear-filter-button>
+			</div>
+		</div>		
+		
+		<div class="members-table-content" id="membersTableContent">	
+			<notifications-table-grid 
+				grid-id.bind="membersGrid"
+				grid-options.bind="gridOptions" 
+				grid-ready-func.bind="onGridReady"
+				grid-filter-func.bind="onFilterChanged"
+				grid-selection-changed-func.bind="onSelectionChanged"
+				pagination-page-size.bind="pageSize"
+				enable-sorting.bind="true"
+				enable-server-side-sorting.bind="true"
+				enable-filter.bind="true"
+				enable-server-side-filter.bind="true"
+				display-columns.bind="['selection','to','from','message','organization','category','attachments']"></notifications-table-grid>
+		</div>
+		</aside>
+	</section>
+<!-- -->
+</template>

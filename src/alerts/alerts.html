@@ -1,0 +1,18 @@
+<template>
+
+  <div class="blg-fixed-wrapper">
+    <ul class="nav nav-tabs nav-append-content tabs-bar">
+      <li  repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">
+        <a href.bind="route.href" id="tabCommunitiesTitle"><i class="ico-grid4 tab-icon"></i>${route.title}</a>
+      </li>
+    </ul>
+      <router-view containerless></router-view>
+
+    <aside class.bind="'blg-right-panel'">
+    </aside>
+    <!-- switch detail view based on settings associated with master view. -->
+    <!--<compose view-model="./${router.currentInstruction.config.settings.detailView}"></compose>-->
+
+</div>
+
+</template>

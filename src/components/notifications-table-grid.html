@@ -1,0 +1,64 @@
+<template>
+
+    <ag-grid-aurelia #membersGrid ref="gridEl" show.bind="!(showSelectedCommunitiesGrid)" style="height: 100%;" class="ag-blg"
+                                grid-options.bind="gridOptions"
+                                context.bind="$this"
+                                enable-col-resize
+                                row-height.bind=60
+                                header-height.bind=40
+                                suppress-menu-hide
+                                sorting-order.bind="['desc','asc']"
+                                pagination-page-size.bind="paginationPageSize"
+                                max-pages-in-cache.bind=0
+                                enable-sorting.bind="enableSorting"
+                                enable-server-side-sorting.bind="enableServerSideSorting"
+                                enable-filter.bind="enableFilter"
+                                enable-server-side-filter.bind="enableServerSideFilter"
+                                suppress-row-click-selection.bind="true"
+                                row-selection="multiple"
+                                grid-ready.call="onGridReady($event, $this)"
+                                filter-changed.call="gridFilterFunc($event)"
+                                selection-changed.call="gridSelectionChangedFunc($this)"
+                                does-data-flower.bind="doesDataFlower"
+                                full-width-cell-renderer.bind="fullWidthCellRenderer"
+                                is-full-width-cell.bind="isFullWidthCell"
+                                get-row-height.bind="getRowHeight"
+                                get-node-child-details.bind="getNodeChildDetails"
+                                debug>
+        <ag-grid-column if.bind="showColumn('selection')" col-id="checkbox-col" header-name='' 
+            width.bind="30" min-width.bind="30" 
+            checkbox-selection.bind="true" suppress-sorting.bind="true" 
+            suppress-filter.bind="true" suppress-resize.bind="true" 
+            suppress-movable.bind="true" suppress-menu.bind="true" 
+            pinned.bind="true" header-class.bind="ag-gridCheckboxHeader"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('category')" header-name="${'alerts.notifications.sentDate' | t}" field="formattedSentDate" width.bind="150" suppress-filter.bind="true"></ag-grid-column>
+        <!--<ag-grid-column if.bind="showColumn('category')" header-name="${'alerts.notifications.category' | t}" field="notificationCategory.categoryName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
+        <ag-grid-column if.bind="showColumn('message')" header-name="${'alerts.notifications.message' | t}" field="message" hide.bind="true" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('from')" header-name="${'alerts.notifications.from' | t}" field="senderFullName" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <!--<ag-grid-column if.bind="showColumn('from')" header-name="${'alerts.notifications.from' | t}" field="senderReference.physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
+        <ag-grid-column if.bind="showColumn('organization')" header-name="${'alerts.notifications.organization' | t}" field="senderReference.physicalPersonProfile.organization.organizationName" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('organization')" width.bind="60" header-name="R | U" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span style="text-align: center;display: block;">${params.data.readCount} | ${params.data.unreadCount}</span>
+            </ag-cell-template>
+        </ag-grid-column>
+        <ag-grid-column if.bind="showColumn('organization')" width.bind="60" header-name="A | D" suppress-menu.bind="true" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span style="text-align: center;display: block;">${params.data.acceptedCount} | ${params.data.declinedCount}</span>
+            </ag-cell-template>
+        </ag-grid-column>
+        <ag-grid-column if.bind="showColumn('organization')" width.bind="80" header-name="Replies" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span style="text-align: center;display: block;">${params.data.repliedCount}</span>
+            </ag-cell-template>
+        </ag-grid-column>
+        <ag-grid-column if.bind="showColumn('organization')" width.bind="56" header-name="" field="attachmentCount" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span class="member-status-icon" style="float: right;margin-right: 24px;text-align: center;display: block;">
+                   <i show.bind="params.data.attachmentCount > 0" class="fa fa-paperclip" aria-hidden="true" title="Attachments"></i>
+                </span>
+            </ag-cell-template>
+        </ag-grid-column>
+        <!--<ag-grid-column if.bind="showColumn('attachments')" header-name="${'alerts.notifications.attachments' | t}" field="attachmentCount" suppress-filter.bind="true"></ag-grid-column>-->
+    </ag-grid-aurelia>       
+</template>
