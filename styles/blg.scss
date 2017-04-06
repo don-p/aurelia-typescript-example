@@ -1143,6 +1143,32 @@ table.blg-dataTable.display tbody td {
   float: left;  
 }
 
+.ag-header-cell.ag-notification-group-child-header {
+  display: none;
+  width: 0px;
+
+  /*visibility: hidden;*/
+}
+
+div.ag-group-cell.ag-notification-group-child, div.ag-notification-group-child {
+  width: 100% !important;
+  left: 0px !important;
+  display: block;
+  position: relative;
+  top: 25px;
+  height: 25px;
+}
+
+div.ag-notification-group-child.ag-notification-group-category {
+  width: 60px !important;
+  display: inline-block;
+}
+
+div.ag-notification-group-child.ag-notification-group-message {
+  width: inherit !important;
+  display: inline-block;
+}
+
 .filter-label-text {
   position: relative;
   bottom: 2px;

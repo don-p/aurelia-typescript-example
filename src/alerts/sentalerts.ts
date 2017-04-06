@@ -21,6 +21,8 @@ export class SentAlerts {
   gridOptions: GridOptions;
   grid: any;
 
+  selectedNotification: any;
+
   ps: any; // SCROLL
 
   logger: Logger;
@@ -102,11 +104,15 @@ export class SentAlerts {
     this.utils.setGridFilterMap(this.gridOptions);
   }
 
-  onSelectionChanged = function() {
-    this.context.membersSelectionChanged(this.context.gridOptions);
+  onSelectionChanged = function(event) {
+    this.context.notificationSelectionChanged(this.context.gridOptions);
   };
 
-  membersSelectionChanged(scope) {
+  onRowSelectionChanged = function(event) {
+    this.context.notificationSelectionChanged(this.context.gridOptions);
+  };
+
+  notificationSelectionChanged(scope) {
     let selected = scope.api.getSelectedRows().length != 0;
     this.evt.publish('notificationsSelected', {selectedNotifications: scope.api.getSelectedRows(), notificationType: 'SENT'});
   }
