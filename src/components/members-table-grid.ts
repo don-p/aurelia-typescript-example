@@ -4,7 +4,7 @@ import {Session} from '../services/session';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {Utils} from '../services/util';
-import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
+import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 
 @inject(Session, EventAggregator, I18N, Utils, LogManager) 
@@ -37,6 +37,7 @@ export class MembersTableGridCustomElement {
     this.logger = LogManager.getLogger(this.constructor.name);
 
     this.gridSelectionChangedFunc = function(){};
+    this.gridFilterFunc = function(){};
   }
 
   bind(bindingContext, overrideBindingContext) {

@@ -68,13 +68,14 @@
     "build": {
       "resources": [
         "aurelia-auth/auth-filter",
-        "aurelia-bootstrap-datepicker/aurelia-bootstrap-datetimepicker"
+        "aurelia-bootstrap-datepicker/aurelia-bootstrap-datetimepicker",
+        "moment/moment.js"
       ]
     }
   },
   "dependencies": {
-    "ag-grid": "^8.1.1",
-    "ag-grid-aurelia": "^8.1.0",
+    "ag-grid": "^9.0.0",
+    "ag-grid-aurelia": "^9.0.0",
     "aurelia-auth": "^3.0.2",
     "aurelia-bootstrap-datetimepicker": "^0.3.4",
     "aurelia-bootstrapper-webpack": "^1.1.0",

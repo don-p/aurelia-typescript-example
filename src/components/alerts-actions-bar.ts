@@ -1,4 +1,4 @@
-import {inject, Lazy, bindable, LogManager, Parent} from 'aurelia-framework';
+import {inject, Lazy, bindable, LogManager, Parent, customElement} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
@@ -13,12 +13,13 @@ import {I18N} from 'aurelia-i18n';
 import {Utils} from '../services/util';
 import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 
+// @customElement('alerts-action-bar')
 @inject(Session, Router, DataService, CommunityService, OrganizationService, EventAggregator, 
-  I18N, AureliaConfiguration, Utils, LogManager) // SCROLL
-export class MemberActionsBarCustomElement {  
+  I18N, AureliaConfiguration, Utils,LogManager) 
+export class AlertsActionsBarCustomElement {  
 
     navigationInstruction: NavigationInstruction;
-    selectedMembers: Array<Object> = [];
+    selectedNotifications: Array<Object> = [];
     selectedOrganizationMembers: Array<Object>;
     selectedCmty: any;
     membersGrid: Object;
@@ -38,15 +39,11 @@ export class MemberActionsBarCustomElement {
 
     logger: Logger;
 
-    static GRIDCALL: string = 'gridcall';
-    static ALERT: string = 'alert';
-    static ADDCONNECTION: string = 'connect';
-    static REMOVECONNECTION: string = 'disconnect';
-    static STARTCONVERSATION: string = 'startconversation';
-    static ADDMEMBER: string = 'addmember';
-    static REMOVEMEMBER: string = 'removemember';
-    static TRANSFEROWNER: string = 'transferowner';
-    static SETCOORDINATOR: string = 'setcoordinator';
+    static DELETE: string = 'deletealert';
+    static RESEND: string = 'resendalert';
+    static ACCEPT: string = 'acceptalert';
+    static REJECT: string = 'rejectalert';
+    static REPLY: string = 'replyalert';
 
   constructor(private session: Session, private router: Router, 
     private dataService: DataService, private communityService: CommunityService, private organizationService: OrganizationService,
@@ -54,8 +51,8 @@ export class MemberActionsBarCustomElement {
     
     this.pageSize = 100000;
     let me = this;
-    this.evt.subscribe('communityMembersSelected', payload => {
-      me.selectedMembers = payload.selectedMembers;
+    this.evt.subscribe('notificationsSelected', payload => {
+      me.selectedNotifications = payload.selectedNotifications;
     });
     this.evt.subscribe('cmtySelected', payload => {
       if((!me.selectedCmty || me.selectedCmty === null) || (me.selectedCmty.communityId !== payload.community.communityId)) {
@@ -66,25 +63,11 @@ export class MemberActionsBarCustomElement {
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
-  get GRIDCALL() { return MemberActionsBarCustomElement.GRIDCALL; }
-  get ALERT() { return MemberActionsBarCustomElement.ALERT; }
-  get ADDCONNECTION() { return MemberActionsBarCustomElement.ADDCONNECTION; }
-  get REMOVECONNECTION() { return MemberActionsBarCustomElement.REMOVECONNECTION; }
-  get STARTCONVERSATION() { return MemberActionsBarCustomElement.STARTCONVERSATION; }
-  get ADDMEMBER() { return MemberActionsBarCustomElement.ADDMEMBER; }
-  get REMOVEMEMBER() { return MemberActionsBarCustomElement.REMOVEMEMBER; }
-  get TRANSFEROWNER() { return MemberActionsBarCustomElement.TRANSFEROWNER; }
-  get SETCOORDINATOR() { return MemberActionsBarCustomElement.SETCOORDINATOR; }
-
-  // activate(model) {
-  //     this.parent = model.parent;
-  //   // Wait for required view data before routing, by returning a Promise from activate().
-
-  //   // Get list of alert/notification categories.
-  //   let promise1 = this.getAlertCategoriesPage(0, 500);
-
-  //   return promise1;
-  // }
+  get DELETE() { return AlertsActionsBarCustomElement.DELETE; }
+  get RESEND() { return AlertsActionsBarCustomElement.RESEND; }
+  get ACCEPT() { return AlertsActionsBarCustomElement.ACCEPT; }
+  get REJECT() { return AlertsActionsBarCustomElement.REJECT; }
+  get REPLY() { return AlertsActionsBarCustomElement.REPLY; }
 
   bind(context, originalContext) {
     this.parent = context;
@@ -873,16 +856,4 @@ export class MemberActionsBarCustomElement {
     });
   }
 
-  get hasCoordinatorRole(): boolean {
-    let result = this.selectedMembers.some(function(member:any) {
-        return member.hasCoordinatorRole;
-      });
-    return result;
-  }
-  get hasMemberRole(): boolean {
-    let result = this.selectedMembers.some(function(member:any) {
-        return member.hasMemberRole;
-      });
-    return result;
-  }
 }

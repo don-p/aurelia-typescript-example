@@ -15,7 +15,9 @@
             "organization":"Organization",
             "alerts":"Alerts",
             "tracker":"Tracker",
-            "conversations":"Conversations"
+            "conversations":"Conversations",
+            "receivedAlerts": "Received",
+            "sentAlerts": "Sent"
         }
     },
     
@@ -212,22 +214,41 @@
             }
         }
     },
+    "alerts": {
+        "notifications": {
+            "from": "From",
+            "to": "To",
+            "message": "Message",
+            "category": "Type",
+            "organization": "Organization",
+            "attachments":"Attachments",
+            "sentDate": "Sent",
+            "dateFormat": "MMM DD HH:mm"
+        }
+    },
 
     "grid": {
         "filter": "Filter..."
     },
-    "physicalPersonProfile": {
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "jobTitle": "Title",
-        "organization": {
-            "organizationName": "Organization"
+    "filterName": {
+        "physicalPersonProfile": {
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "jobTitle": "Title",
+            "organization": {
+                "organizationName": "Organization"
+            },
+            "locationProfile": {
+                "city": "City",
+                "stateCode": "State",
+                "zipCode": "ZIP"
+            }
         },
-        "locationProfile": {
-            "city": "City",
-            "stateCode": "State",
-            "zipCode": "ZIP"
-        }
+        "notificationCategory": {
+            "categoryName": "Alert type"
+        },
+        "message": "Message"
+
     },
     "button": {
         "ok": "OK",
@@ -253,10 +274,15 @@
         "editCommunity":"Update community",
         "createCommunity":"Create community",
         "removeAttachment":"Remove attachment",
-        "send": "Send"    
+        "send": "Send",
+        "reply": "Reply",
+        "accept": "Accept",
+        "reject": "Reject",
+        "resend": "Re-send"
     },
 
     "global": {
+        "memberFullName": "{{firstName}} {{lastName}}",
         "blueLineGridInc":"BlueLine Grid, Inc.",
         "name": "Name",
         "description": "Description",

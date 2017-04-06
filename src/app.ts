@@ -181,9 +181,9 @@ export class App {
       { 
         route: 'alerts', 
         name: 'alerts', 
-        moduleId: './alerts', 
+        moduleId: './alerts/alerts', 
         nav: true, 
-        settings: {auth: true, roles: ['user']},
+        settings: {auth: true, roles: ['user', 'admin']},
         className: 'ico-bullhorn',   
         title: this.i18n.tr('router.nav.alerts') 
       },

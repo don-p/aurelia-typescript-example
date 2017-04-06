@@ -168,170 +168,9 @@ export class Utils {
       gridOptions['filters'] = filters;    
   }
 
-  findGridColumnDef(gridOptions: GridOptions, fieldName: string):Object {
-    return gridOptions.columnDefs.find(function(colDef: Object){
-      return colDef['field'] === fieldName;
-    });
-  }
-
   setCommunityMembersGridDataSource(dataSourceName, gridOptions, pageSize, communityService, selection, showSelected) {
-    const me = this;
 
-    // Adjust column visibility based on community type - TEAM or COI.
-    // let type = this.selectedCmty.communityType;
-  //   if(type === 'TEAM') {
-  //     // Show title and org column.
-  //     gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', true);
-  //     gridOptions.columnApi.setColumnVisible('physicalPersonProfile.jobTitle', true);      
-  //     gridOptions.api.sizeColumnsToFit();
-  //   } else {
-  //     gridOptions.columnApi.setColumnVisible('physicalPersonProfile.organization.organizationName', true);      
-  //     gridOptions.api.sizeColumnsToFit();
-  //     gridOptions.columnApi.autoSizeColumn('physicalPersonProfile.organization.organizationName');
-  //  }
-    let name = dataSourceName; //showSelected?'selectedCommunityMembers':'communityMembers';
-    // let selectionFilterComponent:SelectedRowFilter = gridOptions.api.getFilterInstance('select');
-    // if(showSelected) {
-    //   selectionFilterComponent.setActive(true);
-    //   // gridOptions.columnDefs[0].filter = new SelectedRowFilter();
-    // } else {
-    //   selectionFilterComponent.setActive(false);
-    //   // gridOptions.columnDefs[0].filter = null;
-    // }
-
-    selection = gridOptions.selection;
-
-    let gridDataSource = this.getCommunityMembersGridDataSource(dataSourceName, gridOptions, pageSize, communityService);
-    gridOptions.api.setDatasource(gridDataSource);
-  }
-
-  getCommunityMembersGridDataSource(dataSourceName, gridOptions, pageSize, communityService) {
-    const me = this;
-
-    let name = dataSourceName; //showSelected?'selectedCommunityMembers':'communityMembers';
-    // let selectionFilterComponent:SelectedRowFilter = gridOptions.api.getFilterInstance('select');
-    // if(showSelected) {
-    //   selectionFilterComponent.setActive(true);
-    //   // gridOptions.columnDefs[0].filter = new SelectedRowFilter();
-    // } else {
-    //   selectionFilterComponent.setActive(false);
-    //   // gridOptions.columnDefs[0].filter = null;
-    // }
-
-    let selection = gridOptions.selection;
-
-    let gridDataSource = {
-        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-        name: name,
-        rowCount: null,
-        paginationPageSize: pageSize,
-        //  paginationOverflowSize: 1,
-        maxConcurrentDatasourceRequests: 2,
-        //  maxPagesInPaginationCache: 2,
-        loading: false,
-
-        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-        getRows: function(params: IGetRowsParams) {
-          gridOptions.api.showLoadingOverlay();
-          let selection = gridOptions.selection;
-          // if(!this.loading) {
-            me.logger.debug("..... setCommunityMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
-            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
-            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
-            this.loading = true;
-            let filter = me.findGridColumnDef(gridOptions, Object.keys(params.filterModel)[0]);
-            me.logger.debug('Filter >> :' + JSON.stringify(params.filterModel));
-            let  communityId = gridOptions.communityId;
-            let membersPromise = communityService.getCommunity(communityId, params.startRow, pageSize, params);
-            membersPromise.then(response => response.json())
-              .then(data => {
-                // if(gridDataSource.rowCount === null) {
-                  gridDataSource.rowCount = data.totalCount;
-                // }
-                /*
-                // Filter out only selectedItems.
-                if(showSelected) {
-                  let filteredData = [];
-                  let rows:Array<any> = data.responseCollection;
-                  rows.forEach(function(node, index, array) {
-                    if (selection.find(function(item:any, index:number, array:any[]) {
-                      return item.memberId === node.memberId;
-                    })) {
-                        filteredData.push(node);
-                    }
-                  });
-                  data.responseCollection = filteredData;
-                  data.totalCount = filteredData.length;
-                }
-                */
-                params.successCallback(data.responseCollection, data.totalCount);
-                // pre-select nodes as needed.
-                if(Array.isArray(selection)) {
-                  gridOptions.api.forEachNode( function (node) {
-                      if (selection.find(function(item:any, index:number, array:any[]) {
-                        return item.memberId === node.data.memberId
-                      })) {
-                          node.setSelected(true);
-                          gridOptions.api.refreshRows([node]);
-                      } else {
-                          node.setSelected(false);
-                          gridOptions.api.refreshRows([node]);
-                      }
-                  });
-                }
-                gridOptions.api.hideOverlay();
-                
-                this.loading = false;
-            });
-          // }
-        }
-    }
-    return gridDataSource
-  }
-
-  getSelectedCommunityMembersGridDataSource(dataSourceName, gridOptions: GridOptions):any {
-    const me = this;
-
-    // Set local row model.
-    gridOptions.enableServerSideSorting = false;
-    gridOptions.enableServerSideFilter = false;
-    gridOptions.enableSorting = true;
-    gridOptions.enableFilter = false;
-    gridOptions.rowModelType = 'normal';
-
-    let gridDataSource = {
-        name: dataSourceName,
-        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
-        rowCount: null,
-        // paginationPageSize: pageSize,
-        //  paginationOverflowSize: 1,
-        maxConcurrentDatasourceRequests: 2,
-        //  maxPagesInPaginationCache: 2,
-        loading: false,
-
-        // /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
-        // getRows: function(params: IGetRowsParams) {
-        //   me.logger.debug("..... setSelectedOrganizationMembersGridDataSource Loading Grid rows | startIndex: " + params.startRow);
-        //   gridOptions.api.showLoadingOverlay();
-        //   params.successCallback(selection, selection.length);
-        //   gridOptions.api.hideOverlay();
-        // }
-    }
-    return gridDataSource;
-  }
-  setSelectedCommunityMembersGridDataSource(gridOptions: GridOptions, pageSize, selection) {
-    const me = this;
-
-    // Set local row model.
-    gridOptions.enableServerSideSorting = false;
-    gridOptions.enableServerSideFilter = false;
-    gridOptions.enableSorting = true;
-    gridOptions.enableFilter = true;
-    gridOptions.rowModelType = '';
-    gridOptions.api.setRowData(selection);
-
-    let gridDataSource = this.getSelectedCommunityMembersGridDataSource('selectedCommunityMembers', gridOptions);
-    gridOptions.api.setDatasource(gridDataSource);
+    // FIXME: DEPRECATED - remove
   }
 
   setMemberGridDataSource(gridOptions, dataService: any, callback: Function, args: any, isConnectionType: boolean) {
@@ -455,6 +294,78 @@ export class Utils {
           gridOptions.api.setRowData(result);
           gridOptions.api.hideOverlay();
       });
+  }
+
+  setNotificationsGridDataSource(gridOptions, dataService: any, callback: Function, args: any, isConnectionType: boolean) {
+    const me = this;
+
+    let gridDataSource = {
+        name: 'memberNotifications',
+        /** If you know up front how many rows are in the dataset, set it here. Otherwise leave blank.*/
+        rowCount: null,
+        maxConcurrentDatasourceRequests: 2,
+        loading: false,
+
+        /** Callback the grid calls that you implement to fetch rows from the server. See below for params.*/
+        getRows: function(params: IGetRowsParams) {
+          gridOptions.api.showLoadingOverlay();
+          if(!this.loading) {
+            me.logger.debug("..... setNotificationsGridDataSource Loading Grid rows | startIndex: " + params.startRow);
+            me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
+            me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
+            this.loading = true;
+            let memberId = me.session.auth['member'].memberId;
+            args['params'] = params;
+            let membersPromise = callback.call(dataService, args);
+            membersPromise//.then(response => response.json())
+              .then(data => {
+                // Filter out existing community members.
+                let totalCount = data.totalCount;
+                if(gridDataSource.rowCount === null) {
+                  gridDataSource.rowCount = totalCount;
+                }
+                let result = data.responseCollection;
+                params.successCallback(result, totalCount);
+
+                gridOptions.api.hideOverlay();
+                this.loading = false;
+              });
+/*
+            } else { // showSelected
+              let rowSelection = gridOptions.api.getSelectedRows();
+              gridOptions.api.deselectAll();
+              params.successCallback(rowSelection, rowSelection.length);
+              // re-select nodes as needed.
+              gridOptions.api.forEachNode( function (node) {
+                 node.setSelected(true);
+               });
+              gridOptions.api.hideOverlay();
+              this.loading = false;
+            }
+*/
+          }
+        }
+    }
+    gridOptions.api.setDatasource(gridDataSource);
+    return gridDataSource;
+  }
+
+  setNotificationsGridMemoryDataSource(gridOptions, dataService: any, callback: Function, args: any, isConnectionType: boolean) {
+    const me = this;
+
+    gridOptions.api.showLoadingOverlay();
+    let membersPromise = callback.call(dataService, args);
+    membersPromise//.then(response => response.json())
+      .then(data => {
+        // Filter out existing community members.
+        let totalCount = data.totalCount;
+        let result = data.responseCollection;
+        gridOptions.api.setRowData(result);
+
+        gridOptions.api.hideOverlay();
+      });
+
+
   }
 
   /**
