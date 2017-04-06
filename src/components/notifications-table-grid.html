@@ -14,16 +14,18 @@
                                 enable-server-side-sorting.bind="enableServerSideSorting"
                                 enable-filter.bind="enableFilter"
                                 enable-server-side-filter.bind="enableServerSideFilter"
-                                suppress-row-click-selection.bind="true"
+                                suppress-row-click-selection.bind="false"
                                 row-selection="multiple"
                                 grid-ready.call="onGridReady($event, $this)"
                                 filter-changed.call="gridFilterFunc($event)"
                                 selection-changed.call="gridSelectionChangedFunc($this)"
+                                row-selected.call="rowSelectionChangedFunc($this)"
                                 does-data-flower.bind="doesDataFlower"
                                 full-width-cell-renderer.bind="fullWidthCellRenderer"
                                 is-full-width-cell.bind="isFullWidthCell"
                                 get-row-height.bind="getRowHeight"
                                 get-node-child-details.bind="getNodeChildDetails"
+                                suppress-menu-filter-panel.bind="true"
                                 debug>
         <ag-grid-column if.bind="showColumn('selection')" col-id="checkbox-col" header-name='' 
             width.bind="30" min-width.bind="30" 
@@ -37,12 +39,12 @@
         <ag-grid-column if.bind="showColumn('from')" header-name="${'alerts.notifications.from' | t}" field="senderFullName" filter.bind="getTextSearchFilter()"></ag-grid-column>
         <!--<ag-grid-column if.bind="showColumn('from')" header-name="${'alerts.notifications.from' | t}" field="senderReference.physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
         <ag-grid-column if.bind="showColumn('organization')" header-name="${'alerts.notifications.organization' | t}" field="senderReference.physicalPersonProfile.organization.organizationName" filter.bind="getTextSearchFilter()"></ag-grid-column>
-        <ag-grid-column if.bind="showColumn('organization')" width.bind="60" header-name="R | U" suppress-sorting.bind="true" suppress-filter.bind="true">
+        <ag-grid-column if.bind="showColumn('organization')" header-tooltip="Read | Unread" width.bind="120" header-name="R | U" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
                 <span style="text-align: center;display: block;">${params.data.readCount} | ${params.data.unreadCount}</span>
             </ag-cell-template>
         </ag-grid-column>
-        <ag-grid-column if.bind="showColumn('organization')" width.bind="60" header-name="A | D" suppress-menu.bind="true" suppress-sorting.bind="true" suppress-filter.bind="true">
+        <ag-grid-column if.bind="showColumn('organization')" width.bind="120" header-name="A | D" suppress-menu.bind="true" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
                 <span style="text-align: center;display: block;">${params.data.acceptedCount} | ${params.data.declinedCount}</span>
             </ag-cell-template>
@@ -56,6 +58,20 @@
             <ag-cell-template>
                 <span class="member-status-icon" style="float: right;margin-right: 24px;text-align: center;display: block;">
                    <i show.bind="params.data.attachmentCount > 0" class="fa fa-paperclip" aria-hidden="true" title="Attachments"></i>
+                </span>
+            </ag-cell-template>
+        </ag-grid-column>
+        <ag-grid-column header-class="ag-notification-group-child-header" hide.bind="true" width.bind="0" get-quick-filter-text.bind="getMessageQuickFilterText(params)" cell-class="ag-notification-group-child ag-notification-group-category" if.bind="showColumn('organization')" header-name="group" field="notificationCategory.categoryName" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span  style="display: block;">
+                    ${params.data.notificationCategory.categoryName}
+                </span>
+            </ag-cell-template>
+        </ag-grid-column>
+        <ag-grid-column header-class="ag-notification-group-child-header" hide.bind="true" width.bind="0" get-quick-filter-text.bind="getMessageQuickFilterText(params)" cell-class="ag-notification-group-child  ag-notification-group-message" if.bind="showColumn('organization')" header-name="group" field="message" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span  style="display: block;">
+                    ${params.data.message}
                 </span>
             </ag-cell-template>
         </ag-grid-column>

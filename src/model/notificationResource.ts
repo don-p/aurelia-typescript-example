@@ -69,6 +69,11 @@ export class NotificationResource {
     return (moment as any).default(this.sentDate).format(NotificationResource.dateFormat);
   }
 
+  get categoryAndMessage(): string {
+    
+    return this.notificationCategory.categoryName + ': ' + this.message;
+  }
+
   get senderFullName() {
     let i18n = Container.instance.get(I18N);
     return i18n.tr('global.memberFullName', {firstName: this.senderReference.physicalPersonProfile.firstName, lastName: this.senderReference.physicalPersonProfile.lastName});

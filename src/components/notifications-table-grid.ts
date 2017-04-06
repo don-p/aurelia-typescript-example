@@ -20,6 +20,7 @@ export class NotificationsTableGridCustomElement {
     @bindable gridReadyFunc: Function;
     @bindable gridFilterFunc: Function;
     @bindable gridSelectionChangedFunc: Function;
+    @bindable rowSelectionChangedFunc: Function;
     @bindable paginationPageSize: Number;
     @bindable enableFilter: boolean;
     @bindable enableServerSideFilter: boolean;
@@ -40,6 +41,7 @@ export class NotificationsTableGridCustomElement {
     this.logger = LogManager.getLogger(this.constructor.name);
 
     this.gridSelectionChangedFunc = function(){};
+    this.rowSelectionChangedFunc = function(){};
     this.gridFilterFunc = function(){};
     this.dataFlowerFunc = this.doesDataFlower;
     // this.gridOptions['doesDataFlower'] = function(){
@@ -110,12 +112,12 @@ export class NotificationsTableGridCustomElement {
         // the flower row shares the same data as the parent row
         var data = params.node.data;
 
-        var template =
-            '<div class="full-width-panel">' +
-            '  <div class="full-width-summary">' +
-            '    <label>' + data.category + ':&nbsp;</label><span>'+data.message+'</span>'+
-            '  </div>' +
-            '</div>';
+        var template = '<div></div>';
+            // '<div class="full-width-panel">' +
+            // '  <div class="full-width-summary">' +
+            // '    <label>' + data.category + ':&nbsp;</label><span>'+data.message+'</span>'+
+            // '  </div>' +
+            // '</div>';
 
         return template;
     };
@@ -149,6 +151,7 @@ export class NotificationsTableGridCustomElement {
   }
 
   onGridReady(event, scope) {
+    this.logger.debug("=== onGridReady ===");
     event.api.gridOptionsWrapper.gridOptions.onViewportChanged = function() {
       event.api && event.api.sizeColumnsToFit();
     };
@@ -160,6 +163,12 @@ export class NotificationsTableGridCustomElement {
 
     scope.gridReadyFunc.call(this, event);
   }
+
+  getMessageQuickFilterText(params) {
+    this.logger.debug("===== getMessageQuickFilterText ===== " + params);
+    return !!(params)?params.data.notificationCategory.categoryName + '_' + params.data.message:'';
+  }
+
   isFullWidthCell(rowNode) {
      return rowNode.level === 1;
   }
@@ -178,7 +187,7 @@ export class NotificationsTableGridCustomElement {
   getNodeChildDetails(record) {
     if(record.sentDate) {
       return {
-        group: true,
+        // group: true,
         key: record.notificationId,
           // the key is used by the default group cellRenderer
         expanded: true,

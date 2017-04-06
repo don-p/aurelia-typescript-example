@@ -68,7 +68,7 @@ export class AlertsService {
                 let json = JSON.stringify(data);
                 let content = JSON.parse(json, (k, v) => { 
                     if(k == 'sentDate') {
-                        return new Date(v);
+                        return new Date(Number.parseInt(v));
                     }
                     if(k == 'ackStatusSummary') {
                         let status = {};
