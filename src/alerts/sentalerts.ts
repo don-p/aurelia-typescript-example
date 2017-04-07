@@ -13,6 +13,8 @@ import {AlertsService} from '../services/alertsService';
 import {OrganizationService} from '../services/organizationService';
 import {Utils} from '../services/util';
 import {MemberActionsBarCustomElement} from '../components/member-actions-bar';
+import {NotificationResource} from '../model/notificationResource';
+import {NotificationAckResource} from '../model/notificationAckResource';
 
 @inject(Session, DataService, AlertsService, OrganizationService, I18N, EventAggregator, AureliaConfiguration, Utils, MemberActionsBarCustomElement, LogManager)
 export class SentAlerts {
@@ -21,7 +23,9 @@ export class SentAlerts {
   gridOptions: GridOptions;
   grid: any;
 
-  selectedNotification: any;
+  @bindable selectedNotification: NotificationResource;
+  selectedNotifications: Array<NotificationResource>;
+  selectedNotificationAcks: Array<NotificationAckResource>;
 
   ps: any; // SCROLL
 
@@ -39,35 +43,17 @@ export class SentAlerts {
     this.gridOptions.getRowNodeId = function(item) {
       return item.notificationId?item.notificationId.toString():null;
     };
-    this.gridOptions.rowModelType = 'normal';
-/*
-    this.evt.subscribe('cmtySelected', payload => {
-      if((!me.selectedCmty || me.selectedCmty === null) || (me.selectedCmty.communityId !== payload.community.communityId)) {
-        me.selectedCmty = payload.community;
-        // Save selected communityId.
-        me.gridOptions['communityId'] = me.selectedCmty.communityId;
-        // Clear all member selections.
-        me.isSelectedMembers = false;
-        me.showSelectedMembers = false;
 
-        if(!!(me.gridOptions.api)) {
-          me.gridOptions.api.deselectAll();
-          me.gridOptions.api.setFilterModel(null)
-          me.gridOptions.api.setSortModel(null);
-          // Set up the virtual scrolling grid displaying community members.
-          me.gridOptions.api.refreshVirtualPageCache();
-          me.gridOptions.api.refreshView();
-        }
-        */
-        // me.utils.setNotificationsGridDataSource(
-        //   me.gridOptions, 
-        //   me.alertsService, 
-        //   me.alertsService.getReceivedNotifications, 
-        //   {startIndex: 0, pageSize: me.pageSize}, 
-        //   false
-        // );
-/*  }*/
-      this.logger = LogManager.getLogger(this.constructor.name);
+    this.gridOptions.rowModelType = 'normal';
+
+    this.evt.subscribe('notificationSelected', payload => {
+      me.onNotificationSelected(payload);
+     });
+    this.evt.subscribe('notificationsSelected', payload => {
+      me.selectedNotifications = payload.selectedNotifications;
+    });
+
+    this.logger = LogManager.getLogger(this.constructor.name);
     
   }
 
@@ -108,13 +94,28 @@ export class SentAlerts {
     this.context.notificationSelectionChanged(this.context.gridOptions);
   };
 
-  onRowSelectionChanged = function(event) {
-    this.context.notificationSelectionChanged(this.context.gridOptions);
+  onRowclick = function(event) {
+    event.context.evt.publish('notificationSelected', {notification: event.data});
   };
+
+  onNotificationSelected(payload) {
+    let selectedNotification = payload.notification;
+    this.selectedNotification = selectedNotification;
+    let me = this;
+    this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000).then(function(data:any){
+      me.showSelectedNotification(data.responseCollection);
+    });;
+    // get the notification details.
+
+  }
 
   notificationSelectionChanged(scope) {
     let selected = scope.api.getSelectedRows().length != 0;
     this.evt.publish('notificationsSelected', {selectedNotifications: scope.api.getSelectedRows(), notificationType: 'SENT'});
+  }
+
+  showSelectedNotification(notificationAcks) {
+    this.selectedNotificationAcks = notificationAcks;
   }
 
   get isGridFiltered() {

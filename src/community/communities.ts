@@ -12,7 +12,7 @@ import {I18N} from 'aurelia-i18n';
 import * as Ps from 'perfect-scrollbar';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {CommunityResource} from '../model/communityResource';
-import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
+import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {Utils} from '../services/util';
 import {MemberActionsBarCustomElement} from '../components/member-actions-bar';
 

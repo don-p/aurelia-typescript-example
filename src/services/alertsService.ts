@@ -8,6 +8,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
 import {NotificationResource} from '../model/notificationResource';
+import {NotificationAckResource} from '../model/notificationAckResource';
 import {DataService} from './dataService';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
@@ -82,6 +83,53 @@ export class AlertsService {
                     }
                     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
                         return new NotificationResource(v);
+                    } 
+                    return v;                
+                });
+                return content;
+            })
+        });
+    }
+
+    /**
+     * Get list of alerts for logged-in user.
+     */
+    async getNotification(memberId:string, notificationId:string, startIndex:number, pageSize:number): Promise<Response> {
+        await fetch;
+
+        // let notificationId:string = args.memberId;
+        // let startIndex:number = args.startIndex;
+        // let pageSize:number = args.pageSize;
+        // let direction:string = args.direction;
+
+        const http =  this.getHttpClient();
+        var me = this;
+        var response = http.fetch('v2/members/' + memberId + 
+            '/notifications/' + notificationId + '/acks?start_index=' + startIndex + '&page_size=' + pageSize, 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                let json = JSON.stringify(data);
+                let content = JSON.parse(json, (k, v) => { 
+                    if(k == 'acknowledgementDate') {
+                        return new Date(Number.parseInt(v));
+                    }
+                    if(k == 'ackStatusSummary') {
+                        let status = {};
+                        status = v.reduce(function(acc, curVal, curIndex) {
+                            let key = curVal.ackStatus;
+                            let val = curVal.count;
+                            acc[key] = val;
+                            return acc;
+                        }, {});
+                        return status;
+                    }
+                    if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
+                        return new NotificationAckResource(v);
                     } 
                     return v;                
                 });

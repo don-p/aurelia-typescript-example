@@ -9,7 +9,7 @@ import {CommunityService} from '../services/communityService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import * as Ps from 'perfect-scrollbar'; // SCROLL
-import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
+import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {Utils} from '../services/util';
 
 @inject(Session, CommunityService, EventAggregator, 
