@@ -23,7 +23,7 @@
 				grid-ready-func.bind="onGridReady"
 				grid-filter-func.bind="onFilterChanged"
 				grid-selection-changed-func.bind="onSelectionChanged"
-				row-selection-changed-func.bind="onRowSelectionChanged"
+				row-selection-changed-func.bind="onRowclick"
 				pagination-page-size.bind="pageSize"
 				enable-sorting.bind="true"
 				enable-server-side-sorting.bind="false"
@@ -32,26 +32,41 @@
 				display-columns.bind="['selection','to','from','message','organization','category','attachments']"></notifications-table-grid>
 		</div>
 		</aside>
-
-        <div class="request-details">
-            <div show.bind="!!(selectedNotification)" class="requestDetailContainer">
+        <aside class="blg-right-panel">
+        <div>
+            <div show.bind="!!(selectedNotification) && !!(selectedNotificationAcks)" class="requestDetailContainer">
                 <div class="request-details-content">
                     <table>
                         <tbody>
                             <tr>
-                                <td class="table-label">From:</td>
-                                <td class="table-text">${selectedRequest.physicalPersonProfile.firstName} ${selectedRequest.physicalPersonProfile.lastName}</td>
+                                <td class="table-label">To:</td>
+                                <td class="table-text">${selectedNotification.senderFullName}</td>
                             </tr>
                             <tr>
-                                <td class="table-label">Organization:</td>
-                                <td class="table-text">${selectedRequest.physicalPersonProfile.organization.organizationName}</td>
+                                <td class="table-label">Send date:</td>
+                                <td class="table-text">${selectedNotification.formattedSentDate}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Alert type:</td>
+                                <td class="table-text">${selectedNotification.notificationCategory.categoryName}</td>
                             </tr>
                             <tr>
                                 <td class="table-label">Message:</td>
-                                <td class="table-text">${selectedRequest.statusComment}</td>
+                                <td class="table-text">${selectedNotification.message}</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div>
+                    <ul >
+                    <li  repeat.for="ack of selectedNotificationAcks" >
+                        <div>Recipient: ${ack.recipientName}</div>
+                        <div>Status: ${ack.ackStatus}</div>
+                        <div>Reply: ${ack.ackMessage}</div>
+                        <div>Reply date: ${ack.formattedAckDate}</div>
+                    </li>
+                    </ul>
+                    
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')"><i class="ico-cancel-circle2"></i>&nbsp; Decline</button>
@@ -59,7 +74,7 @@
                 </div>
             </div>
         </div>
-
+        </aside>
 
 	</section>
 <!-- -->
