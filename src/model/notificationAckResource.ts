@@ -45,9 +45,10 @@ export class NotificationAckResource {
   get recipientName(): string {
     let i18n = Container.instance.get(I18N);
     if(this.ackParty.memberEntityType === 'PHYSICAL_PERSON') {
-     return i18n.tr('global.memberFullName', {firstName: this.ackParty.physicalPersonProfile.firstName, lastName: this.ackParty.physicalPersonProfile.lastName});     return this.ackParty.physicalPersonProfile.firstName;
+      return i18n.tr('global.memberFullName', {firstName: this.ackParty.physicalPersonProfile.firstName, lastName: this.ackParty.physicalPersonProfile.lastName});     
+    } else {
+      return this.ackParty.communityName;
     }
-    return this.ackParty.communityName;
   }
   get readCount(): Number {
     return !!(this.notificationStatus.ackStatusSummary.READ)?this.notificationStatus.ackStatusSummary.READ:0;
