@@ -425,10 +425,11 @@ header .navbar-nav {
 }
 
 .blg-right-panel {
-  position: absolute;
+/*  position: absolute;
   width: 475px;
   right: 15px;
-  top: 115px;
+  top: 115px;*/
+  height: 100%;
   background: transparent;
   border-radius: 3px;
   min-height: 600px;

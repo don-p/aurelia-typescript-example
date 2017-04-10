@@ -31,17 +31,16 @@
 				enable-server-side-sorting.bind="false"
 				enable-filter.bind="true"
 				enable-server-side-filter.bind="false"
-				display-columns.bind="['selection','to','from','message','organization','category','attachments']"></notifications-table-grid>
+				display-columns.bind="['selection','status','date','to','message','organization','category','attachments']"></notifications-table-grid>
 		</div>
 		</aside>
 	</section>
     <section class="members-table notifications-table-right">
 		<div class="members-table-header" id="membersTableHeader">Alert Detail</div>
-        <aside class="blg-right-panel" style="width: 640px;padding: 12px;right: 0px;top: 80px;">
-        <div style="height:100%;">
+        <aside class="blg-right-panel" style="right: 0px;top: 80px;">
+        <div class="members-table-content" style="height:100%;top:40px;padding:24px;position:relative;">
           <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
-            <!--<div show.bind="!!(selectedNotification) && !!(selectedNotificationAcks)" class="requestDetailContainer" style="height:100%;">-->
-            <div  class="requestDetailContainer" style="height:100%;">
+            <div show.bind="!!(selectedNotification) && !!(selectedNotificationAcks)" class="requestDetailContainer" style="height:100%;">
                 <div class="request-details-content">
                     <table>
                         <tbody>
@@ -89,7 +88,7 @@
                                 enable-server-side-sorting.bind="false"
                                 enable-filter.bind="true"
                                 enable-server-side-filter.bind="false"
-                                display-columns.bind="['selection','to','from','message','organization','category','attachments']">
+                                display-columns.bind="['status','date','message','to','organization']">
                             </notification-acks-table-grid>
                         </div>
                     </div>
