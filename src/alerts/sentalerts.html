@@ -1,7 +1,9 @@
 <template>
 	<require from="../components/alerts-actions-bar"></require>
 	<require from="../components/notifications-table-grid"></require>
+	<require from="../components/notification-acks-table-grid"></require>
 	<require from="../components/clear-filter-button"></require>
+    <require from="../lib/loading-mask/loading-mask"></require>
 
 	<section id="membersTable" class="members-table notifications-table">
 		
@@ -18,7 +20,7 @@
 		
 		<div class="members-table-content" id="membersTableContent">	
 			<notifications-table-grid 
-				grid-id.bind="membersGrid"
+				grid-id.bind="notificationsGrid"
 				grid-options.bind="gridOptions" 
 				grid-ready-func.bind="onGridReady"
 				grid-filter-func.bind="onFilterChanged"
@@ -32,9 +34,10 @@
 				display-columns.bind="['selection','to','from','message','organization','category','attachments']"></notifications-table-grid>
 		</div>
 		</aside>
-        <aside class="blg-right-panel">
-        <div>
-            <div show.bind="!!(selectedNotification) && !!(selectedNotificationAcks)" class="requestDetailContainer">
+        <aside class="blg-right-panel" style="width: 640px;padding: 12px;right: 0px;top: 80px;">
+        <div style="height:100%;">
+          <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
+            <div show.bind="!!(selectedNotification) && !!(selectedNotificationAcks)" class="requestDetailContainer" style="height:100%;">
                 <div class="request-details-content">
                     <table>
                         <tbody>
@@ -57,22 +60,49 @@
                         </tbody>
                     </table>
                 </div>
-                <div>
-                    <ul >
-                    <li  repeat.for="ack of selectedNotificationAcks" >
-                        <div>Recipient: ${ack.recipientName}</div>
-                        <div>Status: ${ack.ackStatus}</div>
-                        <div>Reply: ${ack.ackMessage}</div>
-                        <div>Reply date: ${ack.formattedAckDate}</div>
-                    </li>
-                    </ul>
-                    
+                <div show.bind="selectedNotificationAcks.length > 1">
+                    <div class="members-table-content" style="top:140px;">
+                        <div class="members-table-info-bar" style="top:0px;">
+                            <div role="status" id="example_info" class="members-table-info">
+                                <input placeholder="Filter..." type="text" class="pull-right" input.delegate="onQuickFilterChanged($event)"/>
+                                <select class="pull-right" style="margin-right:6px;" change.delegate="onMessageStatusFilterChange($event)">
+                                    <option value.bind="'ALL'">- All -</option>
+                                    <option value.bind="'UNREAD'">${'alerts.notifications.ackStatus.UNREAD' | t}</option>
+                                    <option value.bind="'READ'">${'alerts.notifications.ackStatus.READ' | t}</option>
+                                    <option value.bind="'REPLY_MESSAGE'">${'alerts.notifications.ackStatus.REPLY_MESSAGE' | t}</option>
+                                    <option value.bind="'ACCEPTED'">${'alerts.notifications.ackStatus.ACCEPTED' | t}</option>
+                                    <option value.bind="'DECLINED'">${'alerts.notifications.ackStatus.DECLINED' | t}</option>
+                                </select>
+                            </div>
+                        </div>		
+                        <div class="members-table-content" style="top:46px;">
+                            <notification-acks-table-grid 
+                                grid-id.bind="notificationAcksGrid"
+                                grid-options.bind="gridOptionsAcks" 
+                                grid-ready-func.bind="onAcksGridReady"
+                                pagination-page-size.bind="pageSize"
+                                enable-sorting.bind="true"
+                                enable-server-side-sorting.bind="false"
+                                enable-filter.bind="true"
+                                enable-server-side-filter.bind="false"
+                                display-columns.bind="['selection','to','from','message','organization','category','attachments']">
+                            </notification-acks-table-grid>
+                        </div>
+                    </div>
+                </div>
+                <div show.bind="selectedNotificationAcks.length <= 1" >
+                     <div style="border:solid 1px;padding:15px;">
+                        <div>Recipient: ${selectedNotificationAcks[0].recipientName}</div>
+                        <div>Status: ${selectedNotificationAcks[0].ackStatus}</div>
+                        <div>Reply: ${selectedNotificationAcks[0].ackMessage}</div>
+                        <div>Reply date: ${selectedNotificationAcks[0].formattedAckDate}</div>
+                    </div>                    
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')"><i class="ico-cancel-circle2"></i>&nbsp; Decline</button>
                     <button  type="submit" class="btn btn-success btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
                 </div>
-            </div>
+          </loading>
         </div>
         </aside>
 

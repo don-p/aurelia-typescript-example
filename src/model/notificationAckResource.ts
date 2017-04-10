@@ -10,7 +10,7 @@ export class NotificationAckResource {
   notificationId: string;
   ackParty: any;
   acknowledgementDate: Date;
-  connectStatus: string;
+  ackStatus: string;
   notificationCategory: any;
   notificationStatus: any;
   senderReference: any;
@@ -50,6 +50,15 @@ export class NotificationAckResource {
       return this.ackParty.communityName;
     }
   }
+
+  get organizationName(): string {
+    if(this.ackParty.memberEntityType === 'PHYSICAL_PERSON') {
+      return this.ackParty.physicalPersonProfile.organization.organizationName;     
+    } else {
+      return '';
+    }
+  }
+
   get readCount(): Number {
     return !!(this.notificationStatus.ackStatusSummary.READ)?this.notificationStatus.ackStatusSummary.READ:0;
   }
@@ -81,6 +90,11 @@ export class NotificationAckResource {
   get categoryAndMessage(): string {
     
     return this.notificationCategory.categoryName + ': ' + this.message;
+  }
+
+  get ackStatusName(): string {
+    let i18n = Container.instance.get(I18N);
+  return i18n.tr('alerts.notifications.ackStatus.' + this.ackStatus);
   }
 
   get senderFullName() {

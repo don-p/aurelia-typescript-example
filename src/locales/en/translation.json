@@ -223,7 +223,19 @@
             "organization": "Organization",
             "attachments":"Attachments",
             "sentDate": "Sent",
-            "dateFormat": "MMM DD HH:mm"
+            "date": "Date",
+            "dateFormat": "MMM DD HH:mm",
+            "status": "Status",
+            "reply": "Reply",
+            "recipient": "Recipient",
+            "ackStatus": {
+                "REPLY_MESSAGE": "Replied",
+                "UNREAD": "Unread",
+                "READ": "Read",
+                "ACCEPTED": "Accepted",
+                "DECLINED": "Declined",
+                "SCHEDULED": "Scheduled"
+            }
         }
     },
 
