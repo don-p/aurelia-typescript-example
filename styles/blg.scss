@@ -903,7 +903,16 @@ header .navbar-nav {
 .notifications-table {
   margin: 75px 15px 10px 0px;
   left: 15px;
-  min-width: 1410px;
+  min-width: 720px;
+  width: 720px;
+}
+
+.notifications-table-right {
+  margin: 75px 15px 10px 0px;
+  right: 15px;
+  left: 745px;
+  min-width: 665px;
+  width: 665px;
 }
 
 

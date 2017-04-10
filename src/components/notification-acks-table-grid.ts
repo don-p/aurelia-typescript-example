@@ -37,7 +37,7 @@ export class NotificationAcksTableGridCustomElement {
     context: any;
     logger: Logger;
 
-    messageStatusFilter: string;
+    messageStatusFilter: string = 'ALL';
 
     
 
@@ -192,10 +192,19 @@ export class NotificationAcksTableGridCustomElement {
     event.api.gridOptionsWrapper.gridOptions.isExternalFilterPresent = function(){    
       console.log('EXFL');
     this.toString();
-    return event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter !== 'ALL';
+    return !!(event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter) &&
+     (event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter !== 'ALL');
     }
     event.api.gridOptionsWrapper.gridOptions.doesExternalFilterPass = function(node) {
       return(node.data.ackStatus === me.messageStatusFilter);
+    }
+    let statusCol = event.api.columnController.getColumn('ackStatusName', event.api.columnController.gridColumns);
+    let statusColDef = statusCol.colDef;
+    statusColDef.getQuickFilterText = function(params) {
+      return null;
+    };
+    event.api.gridOptionsWrapper.gridOptions.getStatusQuickFilterText = function(params) {
+      return null;
     }
 
 
@@ -204,6 +213,9 @@ export class NotificationAcksTableGridCustomElement {
     scope.gridReadyFunc.call(this, event);
   }
 
+  getStatusQuickFilterText(params) {
+    return null;
+  }
 
   getMessageQuickFilterText(params) {
     this.logger.debug("===== getMessageQuickFilterText ===== " + params);
