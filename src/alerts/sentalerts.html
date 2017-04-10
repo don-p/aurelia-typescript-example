@@ -7,8 +7,8 @@
 
 	<section id="membersTable" class="members-table notifications-table">
 		
-		<div class="members-table-header" id="membersTableHeader">Sent Notifications</div>
-		<aside class="blg-left-panel" style="top:0px;width:720px;">
+		<div class="members-table-header" id="membersTableHeader">Sent Alerts</div>
+		<aside class="blg-left-panel" style="top:0px;width:100%;left:0px;">
 		<alerts-actions-bar></alerts-actions-bar>
 
 		<div class="members-table-info-bar">
@@ -31,11 +31,14 @@
 				enable-server-side-sorting.bind="false"
 				enable-filter.bind="true"
 				enable-server-side-filter.bind="false"
-				display-columns.bind="['selection','to','from','message','organization','category','attachments']"></notifications-table-grid>
+				display-columns.bind="['selection','status','date','to','message','organization','category','attachments']"></notifications-table-grid>
 		</div>
 		</aside>
-        <aside class="blg-right-panel" style="width: 640px;padding: 12px;right: 0px;top: 80px;">
-        <div style="height:100%;">
+	</section>
+    <section class="members-table notifications-table-right">
+		<div class="members-table-header" id="membersTableHeader">Alert Detail</div>
+        <aside class="blg-right-panel" style="right: 0px;top: 80px;">
+        <div class="members-table-content" style="height:100%;top:40px;padding:24px;position:relative;">
           <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
             <div show.bind="!!(selectedNotification) && !!(selectedNotificationAcks)" class="requestDetailContainer" style="height:100%;">
                 <div class="request-details-content">
@@ -43,7 +46,7 @@
                         <tbody>
                             <tr>
                                 <td class="table-label">To:</td>
-                                <td class="table-text">${selectedNotification.senderFullName}</td>
+                                <td class="table-text">${selectedNotification.recipientFullName}</td>
                             </tr>
                             <tr>
                                 <td class="table-label">Send date:</td>
@@ -85,15 +88,14 @@
                                 enable-server-side-sorting.bind="false"
                                 enable-filter.bind="true"
                                 enable-server-side-filter.bind="false"
-                                display-columns.bind="['selection','to','from','message','organization','category','attachments']">
+                                display-columns.bind="['status','date','message','to','organization']">
                             </notification-acks-table-grid>
                         </div>
                     </div>
                 </div>
                 <div show.bind="selectedNotificationAcks.length <= 1" >
                      <div style="border:solid 1px;padding:15px;">
-                        <div>Recipient: ${selectedNotificationAcks[0].recipientName}</div>
-                        <div>Status: ${selectedNotificationAcks[0].ackStatus}</div>
+                        <div>Status: ${selectedNotificationAcks[0].ackStatusName}</div>
                         <div>Reply: ${selectedNotificationAcks[0].ackMessage}</div>
                         <div>Reply date: ${selectedNotificationAcks[0].formattedAckDate}</div>
                     </div>                    
@@ -102,6 +104,7 @@
                     <button class="btn btn-danger btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')"><i class="ico-cancel-circle2"></i>&nbsp; Decline</button>
                     <button  type="submit" class="btn btn-success btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
                 </div>
+            </div>
           </loading>
         </div>
         </aside>

@@ -78,6 +78,17 @@ export class NotificationResource {
     let i18n = Container.instance.get(I18N);
     return i18n.tr('global.memberFullName', {firstName: this.senderReference.physicalPersonProfile.firstName, lastName: this.senderReference.physicalPersonProfile.lastName});
   }
+
+  get recipientFullName() {
+    let i18n = Container.instance.get(I18N);
+    let recRef = this.receiverReference;
+    if(recRef.receiverType === "COMMUNITY") {
+      return recRef.communityReceiver.communityName;
+    } else {
+      return i18n.tr('global.memberFullName', {firstName: recRef.memberReceiver.physicalPersonProfile.firstName, lastName: recRef.memberReceiver.physicalPersonProfile.lastName});
+    }
+  }
+  
   // get hasCoordinatorRole(): boolean {
   //       return this.entitlementRole === 'COORDINATOR';
   // }
