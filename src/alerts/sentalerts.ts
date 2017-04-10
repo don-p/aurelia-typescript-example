@@ -21,11 +21,14 @@ export class SentAlerts {
 
   @bindable pageSize;
   gridOptions: GridOptions;
+  gridOptionsAcks: GridOptions;
   grid: any;
 
   @bindable selectedNotification: NotificationResource;
   selectedNotifications: Array<NotificationResource>;
   selectedNotificationAcks: Array<NotificationAckResource>;
+  notificationAcksPromise: Promise<any>;
+  messageStatusFilter: string;
 
   ps: any; // SCROLL
 
@@ -43,8 +46,17 @@ export class SentAlerts {
     this.gridOptions.getRowNodeId = function(item) {
       return item.notificationId?item.notificationId.toString():null;
     };
-
     this.gridOptions.rowModelType = 'normal';
+
+    this.gridOptionsAcks = <GridOptions>{};
+    this.gridOptionsAcks.getRowNodeId = function(item) {
+      return item.acknowledgementId?item.acknowledgementId.toString():null;
+    };
+    this.gridOptionsAcks.rowModelType = 'normal';
+    // this.gridOptionsAcks.isExternalFilterPresent = function() {
+    //   return me.messageStatusFilter != 'ALL';
+    // }
+    // this.gridOptionsAcks.isExternalFilterPresent = function(){return true};
 
     this.evt.subscribe('notificationSelected', payload => {
       me.onNotificationSelected(payload);
@@ -102,7 +114,7 @@ export class SentAlerts {
     let selectedNotification = payload.notification;
     this.selectedNotification = selectedNotification;
     let me = this;
-    this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000).then(function(data:any){
+    this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000).then(function(data:any){
       me.showSelectedNotification(data.responseCollection);
     });;
     // get the notification details.
@@ -116,6 +128,31 @@ export class SentAlerts {
 
   showSelectedNotification(notificationAcks) {
     this.selectedNotificationAcks = notificationAcks;
+    this.gridOptionsAcks.api.setRowData(notificationAcks);
+  }
+
+  onAcksGridReady(event, scope) {
+    let grid:any = this;
+    grid.context.onQuickFilterChanged = function(event) {
+        this.gridOptionsAcks.api.setQuickFilter(event.target.value);
+    }
+
+    event.api.sizeColumnsToFit();
+  }
+
+  onMessageStatusFilterChange(event) {
+    this.messageStatusFilter = event.target.value;
+    this.evt.publish('notificationAcksFilterChanged', {messageStatusFilter: this.messageStatusFilter});
+    // this.gridOptionsAcks.api.onFilterChanged();
+  }
+
+  isExternalFilterPresent() {
+    // if messageStatus is not ALL, then we are filtering
+    return this.messageStatusFilter != 'ALL';
+  }
+
+  doesExternalFilterPass(node) {
+    return(node.data.ackStatus === this.messageStatusFilter);
   }
 
   get isGridFiltered() {

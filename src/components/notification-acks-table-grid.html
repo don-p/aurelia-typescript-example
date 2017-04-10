@@ -1,0 +1,32 @@
+<template>
+
+    <ag-grid-aurelia #membersGrid ref="gridEl" style="height: 100%;" class="ag-blg"
+                                grid-options.bind="gridOptions"
+                                context.bind="$this"
+                                enable-col-resize
+                                row-height.bind=30
+                                header-height.bind=40
+                                suppress-menu-hide
+                                sorting-order.bind="['desc','asc']"
+                                pagination-page-size.bind="paginationPageSize"
+                                max-pages-in-cache.bind=0
+                                enable-sorting.bind="enableSorting"
+                                enable-server-side-sorting.bind="enableServerSideSorting"
+                                enable-filter.bind="enableFilter"
+                                enable-server-side-filter.bind="enableServerSideFilter"
+                                suppress-row-click-selection.bind="true"
+                                row-selection="multiple"
+                                grid-ready.call="onGridReady($event, $this)"
+                                filter-changed.call="gridFilterFunc($event)"
+                                suppress-menu-filter-panel.bind="true"
+                                debug>
+        <ag-grid-column if.bind="showColumn('category')" header-name="${'alerts.notifications.date' | t}" field="formattedAckDate" width.bind="150" suppress-filter.bind="true"></ag-grid-column>
+        <!--<ag-grid-column if.bind="showColumn('category')" header-name="${'alerts.notifications.category' | t}" field="notificationCategory.categoryName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
+        <!--<ag-grid-column if.bind="showColumn('message')" header-name="${'alerts.notifications.message' | t}" field="message" hide.bind="true" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
+        <ag-grid-column if.bind="showColumn('organization')" width.bind="120" header-name="${'alerts.notifications.status' | t}" field="ackStatusName" suppress-sorting.bind="true" suppress-filter.bind="true"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('from')" header-name="${'alerts.notifications.recipient' | t}" field="recipientName"  suppress-filter.bind="true"></ag-grid-column>
+        <!--<ag-grid-column if.bind="showColumn('from')" header-name="${'alerts.notifications.from' | t}" field="senderReference.physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
+        <ag-grid-column if.bind="showColumn('organization')" header-name="${'alerts.notifications.organization' | t}" field="organizationName"  suppress-filter.bind="true"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('organization')" width.bind="120" header-name="${'alerts.notifications.reply' | t}" field="ackMessage" suppress-menu.bind="true" suppress-sorting.bind="true" suppress-filter.bind="true"></ag-grid-column>
+    </ag-grid-aurelia>       
+</template>

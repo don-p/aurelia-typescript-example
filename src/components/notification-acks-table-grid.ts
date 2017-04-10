@@ -8,12 +8,13 @@ import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 
 @inject(Session, EventAggregator, I18N, Utils, LogManager) 
-@viewResources('./notifications-table-grid')
-@customElement('notifications-table-grid')
+@viewResources('./notification-acks-table-grid')
+@customElement('notification-acks-table-grid')
 @containerless
-export class NotificationsTableGridCustomElement {  
+export class NotificationAcksTableGridCustomElement {  
 
     @bindable gridOptions: GridOptions = <GridOptions>{};
+    // @bindable gridOptionsAcks: GridOptions = <GridOptions>{};
     gridColumns: Array<any>;
     grid: any;
     @bindable gridId:String;
@@ -21,6 +22,8 @@ export class NotificationsTableGridCustomElement {
     @bindable gridFilterFunc: Function;
     @bindable gridSelectionChangedFunc: Function;
     @bindable rowSelectionChangedFunc: Function;
+    @bindable isExternalFilterPresent: Function;
+    @bindable doesExternalFilterPass: Function;
     @bindable paginationPageSize: Number;
     @bindable enableFilter: boolean;
     @bindable enableServerSideFilter: boolean;
@@ -34,15 +37,33 @@ export class NotificationsTableGridCustomElement {
     context: any;
     logger: Logger;
 
+    messageStatusFilter: string;
+
     
 
   constructor(private session: Session, private evt: EventAggregator, private i18n: I18N, private utils: Utils){
     this.gridOptions = <GridOptions>{};
     this.logger = LogManager.getLogger(this.constructor.name);
 
+    this.gridReadyFunc = function(){};
     this.gridSelectionChangedFunc = function(){};
     this.rowSelectionChangedFunc = function(){};
     this.gridFilterFunc = function(){};
+
+    // this.isExternalFilterPresent = function(){
+    //   console.log("ext filter");
+    //   return false;
+    // };
+    // this.isExternalFilterPresent = function() {
+    //   return true;
+    // }
+    let me = this;
+    this.evt.subscribe('notificationAcksFilterChanged', payload => {
+      me.messageStatusFilter = payload.messageStatusFilter;
+      me.gridOptions.api.onFilterChanged();
+    });
+    
+    this.doesExternalFilterPass = function(){};
     this.dataFlowerFunc = this.doesDataFlower;
     // this.gridOptions['doesDataFlower'] = function(){
     //   return true;
@@ -94,7 +115,6 @@ export class NotificationsTableGridCustomElement {
 
     this.gridOptions.fullWidthCellRenderer = this.DetailPanelCellRenderer;
 
-    let me = this;
     this.fullWidthCellRenderer = function (params) {
       //  this.toString();
       let eGui = me.fullWidthCellRenderer.prototype.init(params);
@@ -128,6 +148,12 @@ export class NotificationsTableGridCustomElement {
 
   }
 
+  exFl(): boolean {
+    console.log('EXFL');
+    this.toString();
+    return this.context.messageStatusFilter !== 'ALL';
+    
+  }
   bind(bindingContext, overrideBindingContext) {
     this.context = bindingContext;
     // this.gridOptions.onViewportChanged = function() {
@@ -138,6 +164,9 @@ export class NotificationsTableGridCustomElement {
     //     if(!this.api) return;
     //     this.api.sizeColumnsToFit();
     // };
+    this.isExternalFilterPresent = function() {
+      return true;
+    }
 
     this.logger.debug("BInd");
   }
@@ -151,6 +180,8 @@ export class NotificationsTableGridCustomElement {
   }
 
   onGridReady(event, scope) {
+    let me = this;
+
     this.logger.debug("=== onGridReady ===");
     event.api.gridOptionsWrapper.gridOptions.onViewportChanged = function() {
       event.api && event.api.sizeColumnsToFit();
@@ -158,11 +189,21 @@ export class NotificationsTableGridCustomElement {
     event.api.gridOptionsWrapper.gridOptions.onGridSizeChanged = function(){
       event.api && event.api.sizeColumnsToFit();
     };
+    event.api.gridOptionsWrapper.gridOptions.isExternalFilterPresent = function(){    
+      console.log('EXFL');
+    this.toString();
+    return event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter !== 'ALL';
+    }
+    event.api.gridOptionsWrapper.gridOptions.doesExternalFilterPass = function(node) {
+      return(node.data.ackStatus === me.messageStatusFilter);
+    }
+
 
     // scope.gridOptions.doesDataFlower = scope.dataFlowerFunc;
 
     scope.gridReadyFunc.call(this, event);
   }
+
 
   getMessageQuickFilterText(params) {
     this.logger.debug("===== getMessageQuickFilterText ===== " + params);

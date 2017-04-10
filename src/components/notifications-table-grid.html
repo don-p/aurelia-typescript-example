@@ -1,6 +1,6 @@
 <template>
 
-    <ag-grid-aurelia #membersGrid ref="gridEl" show.bind="!(showSelectedCommunitiesGrid)" style="height: 100%;" class="ag-blg"
+    <ag-grid-aurelia #membersGrid ref="gridEl" style="height: 100%;" class="ag-blg"
                                 grid-options.bind="gridOptions"
                                 context.bind="$this"
                                 enable-col-resize
@@ -68,7 +68,7 @@
                 </span>
             </ag-cell-template>
         </ag-grid-column>
-        <ag-grid-column header-class="ag-notification-group-child-header" hide.bind="true" width.bind="0" get-quick-filter-text.bind="getMessageQuickFilterText(params)" cell-class="ag-notification-group-child  ag-notification-group-message" if.bind="showColumn('organization')" header-name="group" field="message" suppress-sorting.bind="true" suppress-filter.bind="true">
+        <ag-grid-column header-class="ag-notification-group-child-header" hide.bind="true" width.bind="0" get-quick-filter-text.call="getMessageQuickFilterText" cell-class="ag-notification-group-child  ag-notification-group-message" if.bind="showColumn('organization')" header-name="group" field="message" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
                 <span  style="display: block;">
                     ${params.data.message}
