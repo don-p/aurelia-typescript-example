@@ -223,6 +223,7 @@
             "organization": "Organization",
             "attachments":"Attachments",
             "sentDate": "Sent",
+            "receivedDate": "Received",
             "date": "Date",
             "dateFormat": "MMM DD HH:mm",
             "status": "Status",
