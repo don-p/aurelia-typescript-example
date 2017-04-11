@@ -56,10 +56,6 @@ export class SentAlerts {
       return item.acknowledgementId?item.acknowledgementId.toString():null;
     };
     this.gridOptionsAcks.rowModelType = 'normal';
-    // this.gridOptionsAcks.isExternalFilterPresent = function() {
-    //   return me.messageStatusFilter != 'ALL';
-    // }
-    // this.gridOptionsAcks.isExternalFilterPresent = function(){return true};
 
     this.evt.subscribe('notificationSelected', payload => {
       me.onNotificationSelected(payload);
@@ -87,17 +83,8 @@ export class SentAlerts {
 
   onGridReady(event, scope) {
     let grid:any = this;
-    // grid.context.onQuickFilterChanged = function(event) {
-    //     this.gridOptions.api.setQuickFilter(event.target.value);
-    // }
 
-    grid.context.utils.setNotificationsGridMemoryDataSource(
-      grid.context.gridOptions, 
-      grid.context.alertsService, 
-      grid.context.alertsService.getNotifications, 
-      {startIndex: 0, pageSize: grid.context.pageSize, memberId: grid.context.session.auth.member.memberId, direction: 'SENT'},
-      false
-    );
+    grid.context.getSentAlerts();
     event.api.sizeColumnsToFit();
   }
 
@@ -108,7 +95,6 @@ export class SentAlerts {
   onNotificationsMessageStatusFilterChange(event) {
     this.notificationsMessageStatusFilter = event.target.value;
     this.evt.publish('notificationsFilterChanged', {messageStatusFilter: this.notificationsMessageStatusFilter});
-    // this.gridOptionsAcks.api.onFilterChanged();
   }
 
   onFilterChanged = function(event, scope) {
@@ -127,10 +113,10 @@ export class SentAlerts {
     let selectedNotification = payload.notification;
     this.selectedNotification = selectedNotification;
     let me = this;
+    // get the notification details.
     this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000).then(function(data:any){
       me.showSelectedNotification(data.responseCollection);
-    });;
-    // get the notification details.
+    });
 
   }
 
@@ -146,9 +132,6 @@ export class SentAlerts {
 
   onAcksGridReady(event, scope) {
     let grid:any = this;
-    // grid.context.onQuickFilterChanged = function(event) {
-    //     this.gridOptionsAcks.api.setQuickFilter(event.target.value);
-    // }
 
     event.api.sizeColumnsToFit();
   }
@@ -160,7 +143,6 @@ export class SentAlerts {
   onNotificationAcksMessageStatusFilterChange(event) {
     this.notificationAcksMessageStatusFilter = event.target.value;
     this.evt.publish('notificationAcksFilterChanged', {messageStatusFilter: this.notificationAcksMessageStatusFilter});
-    // this.gridOptionsAcks.api.onFilterChanged();
   }
 
   isNotificationsExternalFilterPresent() {
@@ -177,7 +159,13 @@ export class SentAlerts {
   }
 
   getSentAlerts() {
-    //getReceivedNotifications();
+    this.utils.setNotificationsGridMemoryDataSource(
+      this.gridOptions, 
+      this.alertsService, 
+      this.alertsService.getNotifications, 
+      {startIndex: 0, pageSize: this.pageSize, memberId: this.session.auth['member'].memberId, direction: 'SENT'},
+      false
+    );
   }
 
 }

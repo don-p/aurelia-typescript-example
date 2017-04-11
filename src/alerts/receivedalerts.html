@@ -1,6 +1,90 @@
 <template>
+	<require from="../components/alerts-actions-bar"></require>
+	<require from="../components/notifications-table-grid"></require>
+	<require from="../components/notification-acks-table-grid"></require>
+	<require from="../components/clear-filter-button"></require>
+    <require from="../lib/loading-mask/loading-mask"></require>
 
-<div>
-    This is Alerts.
-</div>
+	<section id="membersTable" class="members-table notifications-table">
+		
+		<div class="members-table-header" id="membersTableHeader">Received Alerts</div>
+		<aside class="blg-left-panel" style="top:0px;width:100%;left:0px;">
+		<alerts-actions-bar></alerts-actions-bar>
+
+		<div class="members-table-info-bar">
+			<div role="status" id="example_info" class="members-table-info">
+                <input placeholder="Filter..." class="pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
+                <select class="pull-right" style="margin-right:6px;" change.delegate="onNotificationsMessageStatusFilterChange($event)">
+                    <option value.bind="'ALL'">- All -</option>
+                    <option value.bind="'INFO'">INFO</option>
+                    <option value.bind="'BOLO'">BOLO</option>
+                    <option value.bind="'LOCATION'">LOCATION</option>
+                    <option value.bind="'MISSING PERSON'">MISSING PERSON</option>
+                </select>
+ 			</div>
+		</div>		
+		
+		<div class="members-table-content" id="membersTableContent">	
+			<notifications-table-grid 
+				grid-id.bind="notificationsGrid"
+				grid-options.bind="gridOptions" 
+				grid-ready-func.bind="onGridReady"
+				grid-filter-func.bind="onFilterChanged"
+				grid-selection-changed-func.bind="onSelectionChanged"
+				row-selection-changed-func.bind="onRowclick"
+				pagination-page-size.bind="pageSize"
+				enable-sorting.bind="true"
+				enable-server-side-sorting.bind="false"
+				enable-filter.bind="true"
+				enable-server-side-filter.bind="false"
+				display-columns.bind="['selection','receivedDate','from','message','organization','category','attachments']"></notifications-table-grid>
+		</div>
+		</aside>
+	</section>
+    <section class="members-table notifications-table-right">
+		<div class="members-table-header" id="membersTableHeader">Alert Detail</div>
+        <aside class="blg-right-panel" style="right: 0px;top: 80px;">
+        <div class="members-table-content" style="height:100%;top:40px;padding:24px;position:relative;">
+          <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
+            <div show.bind="!!(selectedNotification) && !!(selectedNotificationAck)" class="requestDetailContainer" style="height:100%;">
+                <div class="request-details-content">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="table-label">To:</td>
+                                <td class="table-text">${selectedNotification.recipientFullName}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Received date:</td>
+                                <td class="table-text">${selectedNotification.formattedSentDate}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Alert type:</td>
+                                <td class="table-text">${selectedNotification.notificationCategory.categoryName}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Message:</td>
+                                <td class="table-text">${selectedNotification.message}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div show.bind="!!(selectedNotificationAck)" >
+                     <div style="border:solid 1px;padding:15px;">
+                        <div>Status: ${selectedNotificationAck.ackStatusName}</div>
+                        <div>Reply: ${selectedNotificationAck.ackMessage}</div>
+                        <div>Reply date: ${selectedNotificationAck.formattedAckDate}</div>
+                    </div>                    
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger btn-sm" click.trigger="acceptNotification([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')"><i class="ico-cancel-circle2"></i>&nbsp; Decline</button>
+                    <button  class="btn btn-success btn-sm" click.trigger="acceptNotification([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
+                    <button  type="submit" class="btn btn-default btn-sm" click.trigger="replyNotification([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Reply</button>
+                </div>
+            </div>
+          </loading>
+        </div>
+        </aside>
+
+	</section>
 </template>

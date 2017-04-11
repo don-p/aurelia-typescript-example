@@ -33,7 +33,20 @@ export class Alerts {
   configureRouter(config, router) {
     config.map([
       { 
-        route: '', redirect: 'sentalerts', nav: false
+        route: '', redirect: 'receivedalerts', nav: false
+      },
+      { 
+        route: 'receivedalerts', name: 'alerts/receivedalerts', moduleId: './receivedalerts', 
+        nav: true, title: this.i18n.tr('router.nav.receivedAlerts'), 
+        settings:{
+        //   detailView: 'connections-detail',
+          memberActions: [
+            // AlertsActionsBarCustomElement.DELETE,
+            AlertsActionsBarCustomElement.ACCEPT, 
+            AlertsActionsBarCustomElement.REJECT, 
+            AlertsActionsBarCustomElement.REPLY
+          ]
+        }
       },
       { 
         route: 'sentalerts', name: 'alerts/sentalerts', moduleId: './sentalerts', 
@@ -41,24 +54,12 @@ export class Alerts {
         settings:{
         //   detailView: 'community-detail', 
           memberActions: [
-            AlertsActionsBarCustomElement.DELETE, 
-            AlertsActionsBarCustomElement.RESEND
+            // AlertsActionsBarCustomElement.DELETE, 
+            // AlertsActionsBarCustomElement.RESEND
           ]
         }
-      },
-      { 
-        route: 'receivedalerts', name: 'alerts/receivedalerts', moduleId: './receivedalerts', 
-        nav: true, title: this.i18n.tr('router.nav.receivedAlerts'), 
-        // settings:{
-        //   detailView: 'connections-detail',
-          memberActions: [
-            AlertsActionsBarCustomElement.ACCEPT, 
-            AlertsActionsBarCustomElement.REJECT, 
-            AlertsActionsBarCustomElement.REPLY, 
-            AlertsActionsBarCustomElement.DELETE
-          ]
-        // }
-      }/*,
+      }
+      /*,
       { 
         route: 'discover', name: 'community/discover', moduleId: './discover', 
         nav: true, title: this.i18n.tr('router.nav.discover'), 
