@@ -12,6 +12,7 @@ import {NotificationAckResource} from '../model/notificationAckResource';
 import {DataService} from './dataService';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
+import * as moment from 'moment';
 
 @inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService, LogManager)
 export class AlertsService {  
@@ -56,9 +57,12 @@ export class AlertsService {
         let direction:string = args.direction;
 
         const http =  this.getHttpClient();
-        var me = this;
-        var response = http.fetch('v1/members/' + memberId + 
-            '/notifications?direction=' + direction + '&include_status=true&start_index=' + startIndex + '&page_size=' + pageSize, 
+        let me = this;
+        let dateFormat = 'YYYY-MM-DD';
+        let date = (moment as any).default().subtract(30, 'days').hour(0).minute(0).second(0).format(dateFormat);
+        let response = http.fetch('v1/members/' + memberId + 
+            '/notifications?direction=' + direction + '&include_status=true&start_index=' + 
+            startIndex + '&page_size=' + pageSize + '&cut_time=' + date + '&date_format=' + dateFormat, 
             {
                 method: 'GET'
             }
@@ -103,8 +107,8 @@ export class AlertsService {
         // let direction:string = args.direction;
 
         const http =  this.getHttpClient();
-        var me = this;
-        var response = http.fetch('v2/members/' + memberId + 
+        let me = this;
+        let response = http.fetch('v2/members/' + memberId + 
             '/notifications/' + notificationId + '/acks?start_index=' + startIndex + '&page_size=' + pageSize, 
             {
                 method: 'GET'

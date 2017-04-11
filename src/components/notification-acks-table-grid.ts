@@ -45,10 +45,11 @@ export class NotificationAcksTableGridCustomElement {
     this.gridOptions = <GridOptions>{};
     this.logger = LogManager.getLogger(this.constructor.name);
 
-    this.gridReadyFunc = function(){};
+    // this.gridReadyFunc = function(){};
     this.gridSelectionChangedFunc = function(){};
     this.rowSelectionChangedFunc = function(){};
     this.gridFilterFunc = function(){};
+    this.doesExternalFilterPass = function(){};
 
     // this.isExternalFilterPresent = function(){
     //   console.log("ext filter");
@@ -63,7 +64,6 @@ export class NotificationAcksTableGridCustomElement {
       me.gridOptions.api.onFilterChanged();
     });
     
-    this.doesExternalFilterPass = function(){};
     this.dataFlowerFunc = this.doesDataFlower;
     // this.gridOptions['doesDataFlower'] = function(){
     //   return true;
@@ -148,12 +148,6 @@ export class NotificationAcksTableGridCustomElement {
 
   }
 
-  exFl(): boolean {
-    console.log('EXFL');
-    this.toString();
-    return this.context.messageStatusFilter !== 'ALL';
-    
-  }
   bind(bindingContext, overrideBindingContext) {
     this.context = bindingContext;
     // this.gridOptions.onViewportChanged = function() {
@@ -191,9 +185,8 @@ export class NotificationAcksTableGridCustomElement {
     };
     event.api.gridOptionsWrapper.gridOptions.isExternalFilterPresent = function(){    
       console.log('EXFL');
-    this.toString();
-    return !!(event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter) &&
-     (event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter !== 'ALL');
+      return !!(event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter) &&
+      (event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter !== 'ALL');
     }
     event.api.gridOptionsWrapper.gridOptions.doesExternalFilterPass = function(node) {
       return(node.data.ackStatus === me.messageStatusFilter);
@@ -206,16 +199,14 @@ export class NotificationAcksTableGridCustomElement {
     event.api.gridOptionsWrapper.gridOptions.getStatusQuickFilterText = function(params) {
       return null;
     }
-
-
     // scope.gridOptions.doesDataFlower = scope.dataFlowerFunc;
 
     scope.gridReadyFunc.call(this, event);
   }
 
-  getStatusQuickFilterText(params) {
-    return null;
-  }
+  // getStatusQuickFilterText(params) {
+  //   return null;
+  // }
 
   getMessageQuickFilterText(params) {
     this.logger.debug("===== getMessageQuickFilterText ===== " + params);

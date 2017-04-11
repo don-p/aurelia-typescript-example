@@ -13,8 +13,14 @@
 
 		<div class="members-table-info-bar">
 			<div role="status" id="example_info" class="members-table-info">
-                <input placeholder="Filter..." type="text" input.delegate="onQuickFilterChanged($event)"/>
-                <clear-filter-button  grid-options.bind="gridOptions"></clear-filter-button>
+                <input placeholder="Filter..." class="pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
+                <select class="pull-right" style="margin-right:6px;" change.delegate="onNotificationsMessageStatusFilterChange($event)">
+                    <option value.bind="'ALL'">- All -</option>
+                    <option value.bind="'INFO'">INFO</option>
+                    <option value.bind="'BOLO'">BOLO</option>
+                    <option value.bind="'LOCATION'">LOCATION</option>
+                </select>
+                <!--<clear-filter-button  grid-options.bind="gridOptions"></clear-filter-button>-->
 			</div>
 		</div>		
 		
@@ -67,8 +73,8 @@
                     <div class="members-table-content" style="top:140px;">
                         <div class="members-table-info-bar" style="top:0px;">
                             <div role="status" id="example_info" class="members-table-info">
-                                <input placeholder="Filter..." type="text" class="pull-right" input.delegate="onQuickFilterChanged($event)"/>
-                                <select class="pull-right" style="margin-right:6px;" change.delegate="onMessageStatusFilterChange($event)">
+                                <input placeholder="Filter..." type="text" class="pull-right" input.delegate="onNotificationAcksQuickFilterChanged($event)"/>
+                                <select class="pull-right" style="margin-right:6px;" change.delegate="onNotificationAcksMessageStatusFilterChange($event)">
                                     <option value.bind="'ALL'">- All -</option>
                                     <option value.bind="'UNREAD'">${'alerts.notifications.ackStatus.UNREAD' | t}</option>
                                     <option value.bind="'READ'">${'alerts.notifications.ackStatus.READ' | t}</option>
