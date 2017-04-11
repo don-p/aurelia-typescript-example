@@ -110,7 +110,7 @@ export class ReceivedAlerts {
       // set the message to read if currently unread.
       let notification = data.responseCollection[0];
       if(notification.ackStatus === 'UNREAD') {
-        me.alertsService.setNotificationAckStatus(me.session.auth['member'].memberId, selectedNotification.notificationId, 'READ')
+        me.setNotificationStatus(selectedNotification, 'READ')
         .then(result => {
             me.showSelectedNotification(result);
         });
@@ -156,6 +156,16 @@ export class ReceivedAlerts {
 
   get isGridFiltered() {
     return (this.gridOptions && this.gridOptions.api && this.gridOptions.api.isAnyFilterPresent()) ;
+  }
+
+  setNotificationStatus(notification, status): Promise<any> {
+    let me = this;
+    let notificationAcksPromise = this.alertsService.setNotificationAckStatus(this.session.auth['member'].memberId, 
+    notification.notificationId, 
+    status).then(function(data:any){
+      me.selectedNotificationAck = data;
+    });
+    return notificationAcksPromise;
   }
 
   getReceivedAlerts() {
