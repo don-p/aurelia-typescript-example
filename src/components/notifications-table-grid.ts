@@ -32,6 +32,9 @@ export class NotificationsTableGridCustomElement {
     DetailPanelCellRenderer: any;
     dataFlowerFunc: Function;
     context: any;
+
+    messageStatusFilter: string = 'ALL';
+
     logger: Logger;
 
     
@@ -39,6 +42,8 @@ export class NotificationsTableGridCustomElement {
   constructor(private session: Session, private evt: EventAggregator, private i18n: I18N, private utils: Utils){
     this.gridOptions = <GridOptions>{};
     this.logger = LogManager.getLogger(this.constructor.name);
+
+    let me = this;
 
     this.gridSelectionChangedFunc = function(){};
     this.rowSelectionChangedFunc = function(){};
@@ -48,6 +53,11 @@ export class NotificationsTableGridCustomElement {
     //   return true;
     // };
     // this.gridOptions.getNodeChildDetails = this.getNodeChildDetails;
+    this.evt.subscribe('notificationsFilterChanged', payload => {
+      me.messageStatusFilter = payload.messageStatusFilter;
+      me.gridOptions.api.onFilterChanged();
+    });
+    
     this.DetailPanelCellRenderer = function() {};
     this.DetailPanelCellRenderer.prototype.init = function(params) {
         // trick to convert string of html into dom object
@@ -94,7 +104,6 @@ export class NotificationsTableGridCustomElement {
 
     this.gridOptions.fullWidthCellRenderer = this.DetailPanelCellRenderer;
 
-    let me = this;
     this.fullWidthCellRenderer = function (params) {
       //  this.toString();
       let eGui = me.fullWidthCellRenderer.prototype.init(params);
@@ -152,12 +161,22 @@ export class NotificationsTableGridCustomElement {
 
   onGridReady(event, scope) {
     this.logger.debug("=== onGridReady ===");
+    let me = this;
+    
     event.api.gridOptionsWrapper.gridOptions.onViewportChanged = function() {
       event.api && event.api.sizeColumnsToFit();
     };
     event.api.gridOptionsWrapper.gridOptions.onGridSizeChanged = function(){
       event.api && event.api.sizeColumnsToFit();
     };
+    event.api.gridOptionsWrapper.gridOptions.isExternalFilterPresent = function(){    
+      console.log('EXFL');
+      return !!(event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter) &&
+      (event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter !== 'ALL');
+    }
+    event.api.gridOptionsWrapper.gridOptions.doesExternalFilterPass = function(node) {
+      return(node.data.notificationCategory.categoryName === me.messageStatusFilter);
+    }
 
     // scope.gridOptions.doesDataFlower = scope.dataFlowerFunc;
 
@@ -173,11 +192,11 @@ export class NotificationsTableGridCustomElement {
      return rowNode.level === 1;
   }
 
-    getRowHeight(params) {
-        var rowIsNestedRow = params.node.canFlower;
-        // return 100 when nested row, otherwise return 25
-        return rowIsNestedRow ? 50 : 30;
-    }
+  getRowHeight(params) {
+      var rowIsNestedRow = params.node.canFlower;
+      // return 100 when nested row, otherwise return 25
+      return rowIsNestedRow ? 50 : 30;
+  }
 
 
   doesDataFlower(dataItem) {

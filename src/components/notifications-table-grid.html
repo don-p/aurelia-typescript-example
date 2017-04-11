@@ -33,6 +33,13 @@
             suppress-filter.bind="true" suppress-resize.bind="true" 
             suppress-movable.bind="true" suppress-menu.bind="true" 
             pinned.bind="true" header-class.bind="ag-gridCheckboxHeader"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('attachments')" width.bind="56" header-name="" field="attachmentCount" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span class="member-status-icon" style="display: block;">
+                   <i show.bind="params.data.attachmentCount > 0" class="fa fa-paperclip" aria-hidden="true" title="Attachments"></i>
+                </span>
+            </ag-cell-template>
+        </ag-grid-column>
         <ag-grid-column if.bind="showColumn('date')" header-name="${'alerts.notifications.sentDate' | t}" field="formattedSentDate" width.bind="150" suppress-filter.bind="true"></ag-grid-column>
         <!--<ag-grid-column if.bind="showColumn('category')" header-name="${'alerts.notifications.category' | t}" field="notificationCategory.categoryName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
         <!--<ag-grid-column if.bind="showColumn('message')" header-name="${'alerts.notifications.message' | t}" field="message" hide.bind="true" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
@@ -44,26 +51,19 @@
                 <span style="text-align: center;display: block;">${params.data.readCount} | ${params.data.unreadCount}</span>
             </ag-cell-template>
         </ag-grid-column>
-        <ag-grid-column if.bind="showColumn('status')" width.bind="120" header-name="A | D" suppress-menu.bind="true" suppress-sorting.bind="true" suppress-filter.bind="true">
+        <ag-grid-column if.bind="showColumn('status')" header-tooltip="Accepted | Rejected" width.bind="120" header-name="A | R" suppress-menu.bind="true" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
                 <span style="text-align: center;display: block;">${params.data.acceptedCount} | ${params.data.declinedCount}</span>
             </ag-cell-template>
         </ag-grid-column>
-        <ag-grid-column if.bind="showColumn('status')" width.bind="80" header-name="Replies" suppress-sorting.bind="true" suppress-filter.bind="true">
+        <ag-grid-column if.bind="showColumn('status')" header-tooltip="Replies" width.bind="80" header-name="Replies" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
                 <span style="text-align: center;display: block;">${params.data.repliedCount}</span>
             </ag-cell-template>
         </ag-grid-column>
-        <ag-grid-column if.bind="showColumn('attachments')" width.bind="56" header-name="" field="attachmentCount" suppress-sorting.bind="true" suppress-filter.bind="true">
-            <ag-cell-template>
-                <span class="member-status-icon" style="float: right;margin-right: 24px;text-align: center;display: block;">
-                   <i show.bind="params.data.attachmentCount > 0" class="fa fa-paperclip" aria-hidden="true" title="Attachments"></i>
-                </span>
-            </ag-cell-template>
-        </ag-grid-column>
         <ag-grid-column if.bind="showColumn('category')" header-class="ag-notification-group-child-header" hide.bind="true" width.bind="0" get-quick-filter-text.bind="getMessageQuickFilterText(params)" cell-class="ag-notification-group-child ag-notification-group-category" if.bind="showColumn('organization')" header-name="group" field="notificationCategory.categoryName" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
-                <span  style="display: block;">
+                <span  style="margin-left:27px;display: block;">
                     ${params.data.notificationCategory.categoryName}
                 </span>
             </ag-cell-template>
