@@ -62,7 +62,7 @@
                                 <td class="table-label">Alert type:</td>
                                 <td class="table-text">${selectedNotification.notificationCategory.categoryName}</td>
                             </tr>
-                            <tr>
+                            <tr  show.bind="selectedNotificationAcks.length > 1">
                                 <td class="table-label">Message:</td>
                                 <td class="table-text">${selectedNotification.message}</td>
                             </tr>
@@ -94,17 +94,25 @@
                                 enable-server-side-sorting.bind="false"
                                 enable-filter.bind="true"
                                 enable-server-side-filter.bind="false"
-                                display-columns.bind="['status','sentDate','message','to','organization']">
+                                display-columns.bind="['attachments','status','sentDate','message','to','organization']">
                             </notification-acks-table-grid>
                         </div>
                     </div>
                 </div>
                 <div show.bind="selectedNotificationAcks.length <= 1" >
-                     <div style="border:solid 1px;padding:15px;">
+                     <div style="border:solid 1px;border-radius:6px;padding:15px;">
+                        <div>${selectedNotification.message}</div>
+                        <br>
                         <div>Status: ${selectedNotificationAcks[0].ackStatusName}</div>
                         <div>Reply: ${selectedNotificationAcks[0].ackMessage}</div>
                         <div>Reply date: ${selectedNotificationAcks[0].formattedAckDate}</div>
-                    </div>                    
+                        <div show.bind="!!(selectedNotification.attachments) && selectedNotification.attachments.length >= 1">
+                            <hr>
+                            <ul>
+                                <li repeat.for="att of selectedNotification.attachments"><i class="fa fa-file-image-o" aria-hidden="true"></i> <a href="" >${att.payloadName}</a></li>
+                            </ul> 
+                        </div>                  
+                   </div> 
                 </div>
             </div>
           </loading>

@@ -20,6 +20,13 @@
                                 filter-changed.call="gridFilterFunc($event)"
                                 suppress-menu-filter-panel.bind="true"
                                 debug>
+        <ag-grid-column if.bind="showColumn('attachments')" width.bind="56" header-name="" field="attachmentCount" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span class="member-status-icon" style="display: block;">
+                   <i show.bind="params.data.attachmentCount > 0" class="fa fa-paperclip" aria-hidden="true" title="Attachments"></i>
+                </span>
+            </ag-cell-template>
+        </ag-grid-column>
         <ag-grid-column if.bind="showColumn('date')" header-name="${'alerts.notifications.date' | t}" field="formattedAckDate" width.bind="150" suppress-filter.bind="true"></ag-grid-column>
         <!--<ag-grid-column if.bind="showColumn('category')" header-name="${'alerts.notifications.category' | t}" field="notificationCategory.categoryName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
         <!--<ag-grid-column if.bind="showColumn('message')" header-name="${'alerts.notifications.message' | t}" field="message" hide.bind="true" filter.bind="getTextSearchFilter()"></ag-grid-column>-->

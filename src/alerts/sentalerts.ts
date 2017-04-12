@@ -58,7 +58,7 @@ export class SentAlerts {
     this.gridOptionsAcks.rowModelType = 'normal';
 
     this.evt.subscribe('notificationSelected', payload => {
-      me.onNotificationSelected(payload);
+      if(payload.type === 'SENT') me.onNotificationSelected(payload);
      });
     this.evt.subscribe('notificationsSelected', payload => {
       me.selectedNotifications = payload.selectedNotifications;
@@ -106,7 +106,7 @@ export class SentAlerts {
   };
 
   onRowclick = function(event) {
-    event.context.evt.publish('notificationSelected', {notification: event.data});
+    event.context.evt.publish('notificationSelected', {notification: event.data, type: 'SENT'});
   };
 
   onNotificationSelected(payload) {

@@ -50,7 +50,7 @@ export class ReceivedAlerts {
     this.gridOptions.rowModelType = 'normal';
 
     this.evt.subscribe('notificationSelected', payload => {
-      me.onNotificationSelected(payload);
+      if(payload.type === 'RECEIVED') me.onNotificationSelected(payload);
      });
     this.evt.subscribe('notificationsSelected', payload => {
       me.selectedNotifications = payload.selectedNotifications;
@@ -98,7 +98,7 @@ export class ReceivedAlerts {
   };
 
   onRowclick = function(event) {
-    event.context.evt.publish('notificationSelected', {notification: event.data});
+    event.context.evt.publish('notificationSelected', {notification: event.data, type: 'RECEIVED'});
   };
 
   onNotificationSelected(payload) {
@@ -110,12 +110,13 @@ export class ReceivedAlerts {
       // set the message to read if currently unread.
       let notification = data.responseCollection[0];
       if(notification.ackStatus === 'UNREAD') {
-        me.setNotificationStatus(selectedNotification, 'READ')
+       return  me.setNotificationStatus(selectedNotification, 'READ')
         .then(result => {
             me.showSelectedNotification(result);
         });
       } else {
         me.showSelectedNotification(notification);
+        return Promise.resolve('Notification read.');
       }
     });
 
