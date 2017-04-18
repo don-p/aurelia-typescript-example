@@ -58,8 +58,9 @@ export class AlertsService {
 
         const http =  this.getHttpClient();
         let me = this;
-        let dateFormat = 'YYYY-MM-DD';
-        let date = (moment as any).default().subtract(30, 'days').hour(0).minute(0).second(0).format(dateFormat);
+        let jsDateFormat = 'YYYY-MM-DD';
+        let dateFormat = 'yyyy-MM-dd';
+        let date = (moment as any).default().subtract(30, 'days').hour(0).minute(0).second(0).format(jsDateFormat);
         let response = http.fetch('v1/members/' + memberId + 
             '/notifications?direction=' + direction + '&include_status=true&start_index=' + 
             startIndex + '&page_size=' + pageSize + '&cut_time=' + date + '&date_format=' + dateFormat, 
