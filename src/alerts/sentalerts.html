@@ -108,7 +108,7 @@
                         <br>
                         <div>Status: ${selectedNotificationAcks[0].ackStatusName}</div>
                         <div>Date: ${selectedNotificationAcks[0].formattedAckDate}</div>
-                        <div show.bind="!!(selectedNotificationAcks[0].ackMessage) && selectedNotificationAcks[0].ackMessage.length >= 1">Reply: ${selectedNotificationAck.ackMessage}</div>
+                        <div show.bind="!!(selectedNotificationAcks[0].ackMessage) && selectedNotificationAcks[0].ackMessage.length >= 1">Reply: ${selectedNotificationAcks[0].ackMessage}</div>
                         <div show.bind="!!(selectedNotification.attachments) && selectedNotification.attachments.length >= 1">
                             <hr>
                             <ul>

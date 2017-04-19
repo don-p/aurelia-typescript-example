@@ -173,83 +173,39 @@ export class ReceivedAlerts {
     return notificationAcksPromise;
   }
 
-  getReceivedAlerts() {
-    this.utils.setNotificationsGridMemoryDataSource(
-      this.gridOptions, 
-      this.alertsService, 
-      this.alertsService.getNotifications, 
-      {startIndex: 0, pageSize: this.pageSize, memberId: this.session.auth['member'].memberId, direction: 'RECEIVED'},
-      false
-    );
-  }
 
-  setNotificationReply(notification): Promise<any> {
+  setNotificationReply(notification) {
     let me = this;
 
-    let title = '';
+    let ackModel:any = {};
 
     const vRules = ValidationRules
-      .ensure((community: any) => community.communityName)
-      .displayName(this.i18n.tr('community.communities.communityName'))
-      .required()
-      .then()
-      .minLength(3)
-      .maxLength(120)
-//      .then()
-      .ensure((community: any) => community.communityDescription)
-      .displayName(this.i18n.tr('community.communities.communityDesc'))
+      .ensure((ack: any) => ackModel.message)
+      .displayName(this.i18n.tr('alerts.notifications.message'))
       .required()
       .then()
       .maxLength(120)
-      // .on(community)
       .rules;
 
     this.dataService.openResourceEditDialog({modelView:'alerts/alertreply.html', title: this.i18n.tr('alerts.notifications.reply'), 
-      loadingTitle: 'app.loading', item:notification, okText:this.i18n.tr('button.send'), validationRules:vRules})
+      loadingTitle: 'app.loading', item:ackModel, okText:this.i18n.tr('button.send'), validationRules:vRules})
     .then((controller:any) => {
       // let model = controller.settings.model;
       let model = controller.settings;
 
+      controller.ackModel = ackModel;
       controller.viewModel.recipientName = me.selectedNotification.senderFullName;
       
       // Callback function for submitting the dialog.
-      controller.viewModel.submit = (community) => {
+      controller.viewModel.submit = (reply) => {
         me.logger.debug("Edit community submit()");
-        let comm = {
-          communityId: community.communityId, 
-          communityName: community.communityName, 
-          communityDescription: community.communityDescription, 
-          communityType: community.communityType,
-          membershipType: 'DEFINED'
-        };
-        let modelPromise = me.communityService.createCommunity(comm);
+        let ack = controller.ackModel;
+        let modelPromise = 
+          me.alertsService.setNotificationReply(this.session.auth['member'].memberId, notification.notificationId, reply);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
-        .then(response => response.json())
-        .then(data => {
-          me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then((communitiesResult:any) => {
-            if(community === null || typeof community.communityId !== 'string') {
-              // select the new community
-              me.selectCommunity(data);
-            }
-            // re-select the selected communities
-            if(me.selectedCommunities.length > 0) {
-              let temp = [];
-              for(community of communitiesResult) {
-                let found = me.selectedCommunities.find(function(item: any) {
-                  return item.communityId == community.communityId;
-                })
-                
-                if(!!(found)) {
-                  temp.push(community);
-                  // let index = me.selectedCommunities.indexOf(found);
-                  // me.selectedCommunities[index] = community;
-                }
-              }
-              me.selectedCommunities = temp;
-            }
-
-          });
+        .then(function(data:any) {
+          me.selectedNotificationAck = data;
           // Close dialog on success.
           controller.ok();
         }, error => {
@@ -271,6 +227,15 @@ export class ReceivedAlerts {
     });
   }
   
+  getReceivedAlerts() {
+    this.utils.setNotificationsGridMemoryDataSource(
+      this.gridOptions, 
+      this.alertsService, 
+      this.alertsService.getNotifications, 
+      {startIndex: 0, pageSize: this.pageSize, memberId: this.session.auth['member'].memberId, direction: 'RECEIVED'},
+      false
+    );
+  }
 
 }
 
