@@ -14,8 +14,8 @@
 
 		<div class="members-table-info-bar">
 			<div role="status" id="example_info" class="members-table-info">
-                <input placeholder="Filter..." class="pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
-                <select class="pull-right" style="margin-right:6px;" change.delegate="onNotificationsMessageStatusFilterChange($event)">
+                <input placeholder="Filter..." class="alert-filter pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
+                <select class="form-control select select-default-blg alert-types pull-right" change.delegate="onNotificationsMessageStatusFilterChange($event)">
                     <option value.bind="'ALL'">- All -</option>
                     <option repeat.for="category of alertCategories" value.bind="category.categoryName">${category.categoryName}</option>
                     <!--<option value.bind="'INFO'">INFO</option>
