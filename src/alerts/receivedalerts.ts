@@ -173,17 +173,8 @@ export class ReceivedAlerts {
     return notificationAcksPromise;
   }
 
-  getReceivedAlerts() {
-    this.utils.setNotificationsGridMemoryDataSource(
-      this.gridOptions, 
-      this.alertsService, 
-      this.alertsService.getNotifications, 
-      {startIndex: 0, pageSize: this.pageSize, memberId: this.session.auth['member'].memberId, direction: 'RECEIVED'},
-      false
-    );
-  }
 
-  setNotificationReply(notification): Promise<any> {
+  setNotificationReply(notification) {
     let me = this;
 
     let ackModel:any = {};
@@ -213,31 +204,8 @@ export class ReceivedAlerts {
           me.alertsService.setNotificationReply(this.session.auth['member'].memberId, notification.notificationId, reply);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
-        .then(response => response.json())
-        .then(data => {
-          /* me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then((communitiesResult:any) => {
-            if(community === null || typeof community.communityId !== 'string') {
-              // select the new community
-              me.selectCommunity(data);
-            }
-            // re-select the selected communities
-            if(me.selectedCommunities.length > 0) {
-              let temp = [];
-              for(community of communitiesResult) {
-                let found = me.selectedCommunities.find(function(item: any) {
-                  return item.communityId == community.communityId;
-                })
-                
-                if(!!(found)) {
-                  temp.push(community);
-                  // let index = me.selectedCommunities.indexOf(found);
-                  // me.selectedCommunities[index] = community;
-                }
-              }
-              me.selectedCommunities = temp;
-            }
-
-          }); */
+        .then(function(data:any) {
+          me.selectedNotificationAck = data;
           // Close dialog on success.
           controller.ok();
         }, error => {
@@ -259,6 +227,15 @@ export class ReceivedAlerts {
     });
   }
   
+  getReceivedAlerts() {
+    this.utils.setNotificationsGridMemoryDataSource(
+      this.gridOptions, 
+      this.alertsService, 
+      this.alertsService.getNotifications, 
+      {startIndex: 0, pageSize: this.pageSize, memberId: this.session.auth['member'].memberId, direction: 'RECEIVED'},
+      false
+    );
+  }
 
 }
 
