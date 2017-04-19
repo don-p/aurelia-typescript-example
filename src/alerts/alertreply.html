@@ -20,12 +20,12 @@
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell column-label">
-                    <span class="wizard-content-label blg-form-required">${'community.communities.alert.message' | t}:</span>
+                    <span class="wizard-content-label blg-form-required">${'alerts.notifications.message' | t}:</span>
                 </div>
                 <div class="div-table-cell">
                     <div class="send-alert-message-text">				  
                         <textarea class="send-alert-textarea" input.delegate="currentStep.isDirty=true"
-                        value.bind="controller.dialogController.alertModel.alertMessage & validate"></textarea>
+                        value.bind="item.message & validate"></textarea>
                     </div>                    
                 </div>
             </div>
@@ -41,14 +41,14 @@
                                 <div class="div-table-cell"> 
                                     <form class="select-file2">
                                         <input type="file" id="inputfile2" class="inputfile2" 
-                                        change.delegate="controller.onAlertAttachmentFile($event, step.model.fileList)" load.delegate="controller.handleFiles($event)" files.bind="controller.dialogController.alertModel.fileList" />
+                                        change.delegate="controller.onAlertAttachmentFile($event, item.fileList)" load.delegate="controller.handleFiles($event)" files.bind="controller.dialogController.alertModel.fileList" />
                                         <label for="inputfile2">
                                             <strong>
                                                 <i class="ico-attachment"></i>
                                             </strong>
-                                            <span if.bind="(!(step.model.files) || step.model.files.length === 0)">${'community.communities.alert.selectFile' | t}&hellip;</span>
-                                            <span if.bind="((step.model.files) && step.model.files.length !== 0)">${step.model.files[0].name}</span>
-                                            <button if.bind="((step.model.files) && step.model.files.length !== 0)" id="btn-remove-attachment" click.delegate="controller.removeAttachment(step.model.files[0])" class="btn btn-xs send-alert-remove-attachment" i18n="[title]button.removeAttachment">
+                                            <span if.bind="(!(item.files) || item.files.length === 0)">${'community.communities.alert.selectFile' | t}&hellip;</span>
+                                            <span if.bind="((item.files) && item.files.length !== 0)">${item.files[0].name}</span>
+                                            <button if.bind="((item.files) && item.files.length !== 0)" id="btn-remove-attachment" click.delegate="controller.removeAttachment(item.files[0])" class="btn btn-xs send-alert-remove-attachment" i18n="[title]button.removeAttachment">
                                                 <i class="ico-cancel-square2"></i>
                                             </button>
                                         </label>

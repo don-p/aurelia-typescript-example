@@ -185,10 +185,9 @@ export class AlertsService {
                 return content;
             })
         });
-        
     }
 
-    async setNotificationReply(memberId, notificationId, ack) {
+    async setNotificationReply(memberId:string, notificationId:string, ack:any) {
         await fetch;
 
         // let notificationId:string = args.memberId;
@@ -197,10 +196,10 @@ export class AlertsService {
         // let direction:string = args.direction;
 
         const http =  this.getHttpClient();
-        let me = this;
 
         let body = {
-            ackStatus: status
+            ackStatus: 'REPLY_MESSAGE',
+            ackMessage: ack.message
         };
 
         let response = http.fetch('v1/members/' + memberId + 
