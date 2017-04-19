@@ -30,6 +30,8 @@ export class ReceivedAlerts {
   notificationsMessageStatusFilter: string;
   notificationAcksMessageStatusFilter: string;
 
+  alertCategories: Array<any>;
+
   ps: any; // SCROLL
 
   logger: Logger;
@@ -41,6 +43,8 @@ export class ReceivedAlerts {
     this.pageSize = 100000;
 
     let me = this;
+
+    this.alertCategories = appConfig.get('alertCategories');
 
     this.gridOptions = <GridOptions>{};
     this.gridOptions['id'] = 'notificationsGrid';
@@ -178,6 +182,95 @@ export class ReceivedAlerts {
       false
     );
   }
+
+  setNotificationReply(notification): Promise<any> {
+    let me = this;
+
+    let title = '';
+
+    const vRules = ValidationRules
+      .ensure((community: any) => community.communityName)
+      .displayName(this.i18n.tr('community.communities.communityName'))
+      .required()
+      .then()
+      .minLength(3)
+      .maxLength(120)
+//      .then()
+      .ensure((community: any) => community.communityDescription)
+      .displayName(this.i18n.tr('community.communities.communityDesc'))
+      .required()
+      .then()
+      .maxLength(120)
+      // .on(community)
+      .rules;
+
+    this.dataService.openResourceEditDialog({modelView:'alerts/alertreply.html', title: this.i18n.tr('alerts.notifications.reply'), 
+      loadingTitle: 'app.loading', item:notification, okText:this.i18n.tr('button.send'), validationRules:vRules})
+    .then((controller:any) => {
+      // let model = controller.settings.model;
+      let model = controller.settings;
+
+      controller.viewModel.recipientName = me.selectedNotification.senderFullName;
+      
+      // Callback function for submitting the dialog.
+      controller.viewModel.submit = (community) => {
+        me.logger.debug("Edit community submit()");
+        let comm = {
+          communityId: community.communityId, 
+          communityName: community.communityName, 
+          communityDescription: community.communityDescription, 
+          communityType: community.communityType,
+          membershipType: 'DEFINED'
+        };
+        let modelPromise = me.communityService.createCommunity(comm);
+        controller.viewModel.modelPromise = modelPromise;        
+        modelPromise
+        .then(response => response.json())
+        .then(data => {
+          me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then((communitiesResult:any) => {
+            if(community === null || typeof community.communityId !== 'string') {
+              // select the new community
+              me.selectCommunity(data);
+            }
+            // re-select the selected communities
+            if(me.selectedCommunities.length > 0) {
+              let temp = [];
+              for(community of communitiesResult) {
+                let found = me.selectedCommunities.find(function(item: any) {
+                  return item.communityId == community.communityId;
+                })
+                
+                if(!!(found)) {
+                  temp.push(community);
+                  // let index = me.selectedCommunities.indexOf(found);
+                  // me.selectedCommunities[index] = community;
+                }
+              }
+              me.selectedCommunities = temp;
+            }
+
+          });
+          // Close dialog on success.
+          controller.ok();
+        }, error => {
+          me.logger.error("Community create() rejected.");
+          model.errorMessage = "Failed"; 
+        }).catch(error => {
+          me.logger.error("Community create() failed."); 
+          me.logger.error(error); 
+          model.errorMessage = "Failed"; 
+          return Promise.reject(error);
+        })
+      }
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Reset validation error state.
+          this.logger.debug('Cancel');
+        }
+      })
+    });
+  }
+  
 
 }
 

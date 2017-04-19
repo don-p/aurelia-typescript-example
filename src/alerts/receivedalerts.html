@@ -9,17 +9,19 @@
 		
 		<div class="members-table-header" id="membersTableHeader">Received Alerts</div>
 		<aside class="blg-left-panel" style="top:0px;width:100%;left:0px;">
-		<alerts-actions-bar></alerts-actions-bar>
+        <!-- FIXME: Temporarily hiding actions, until DELETE action is available. -->
+		<!--<alerts-actions-bar></alerts-actions-bar>-->
 
 		<div class="members-table-info-bar">
 			<div role="status" id="example_info" class="members-table-info">
                 <input placeholder="Filter..." class="alert-filter pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
                 <select class="form-control select select-default-blg alert-types pull-right" change.delegate="onNotificationsMessageStatusFilterChange($event)">
-                    <option value.bind="'ALL'">All types</option>
-                    <option value.bind="'INFO'">INFO</option>
+                    <option value.bind="'ALL'">- All -</option>
+                    <option repeat.for="category of alertCategories" value.bind="category.categoryName">${category.categoryName}</option>
+                    <!--<option value.bind="'INFO'">INFO</option>
                     <option value.bind="'BOLO'">BOLO</option>
                     <option value.bind="'LOCATION'">LOCATION</option>
-                    <option value.bind="'MISSING PERSON'">MISSING PERSON</option>
+                    <option value.bind="'MISSING PERSON'">MISSING PERSON</option>-->
                 </select>
  			</div>
 		</div>		
@@ -72,8 +74,8 @@
                         <div>${selectedNotification.message}</div>
                         <br>
                         <div>Status: ${selectedNotificationAck.ackStatusName}</div>
-                        <div>Reply: ${selectedNotificationAck.ackMessage}</div>
-                        <div>Reply date: ${selectedNotificationAck.formattedAckDate}</div>
+                        <div>Date: ${selectedNotificationAck.formattedAckDate}</div>
+                        <div show.bind="!!(selectedNotification.ackMessage) && selectedNotification.ackMessage.length >= 1">Reply: ${selectedNotificationAck.ackMessage}</div>
                         <div show.bind="!!(selectedNotification.attachments) && selectedNotification.attachments.length >= 1">
                             <hr>
                             <ul>
@@ -85,7 +87,7 @@
                 <div show.bind="!!(selectedNotificationAck) && (selectedNotificationAck.ackStatus === 'UNREAD' || selectedNotificationAck.ackStatus === 'READ')" class="modal-footer">
                     <button class="btn btn-danger btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'DECLINED')"><i class="ico-cancel-circle2"></i>&nbsp; Decline</button>
                     <button  class="btn btn-success btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
-                    <button  type="submit" class="btn btn-default btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'REPLY_MESSAGE')">Reply</button>
+                    <button  type="submit" class="btn btn-default btn-sm" click.trigger="setNotificationReply(selectedNotificationAck)">Reply</button>
                 </div>
             </div>
           </loading>

@@ -74,7 +74,7 @@
     }
   },
   "dependencies": {
-    "ag-grid": "^9.0.0",
+    "ag-grid": "^9.0.3",
     "ag-grid-aurelia": "^9.0.0",
     "aurelia-auth": "^3.0.2",
     "aurelia-bootstrap-datetimepicker": "^0.3.4",

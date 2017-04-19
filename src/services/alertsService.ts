@@ -188,6 +188,49 @@ export class AlertsService {
         
     }
 
+    async setNotificationReply(memberId, notificationId, ack) {
+        await fetch;
+
+        // let notificationId:string = args.memberId;
+        // let startIndex:number = args.startIndex;
+        // let pageSize:number = args.pageSize;
+        // let direction:string = args.direction;
+
+        const http =  this.getHttpClient();
+        let me = this;
+
+        let body = {
+            ackStatus: status
+        };
+
+        let response = http.fetch('v1/members/' + memberId + 
+            '/notifications/' + notificationId + '/acks', 
+            {
+                method: 'PUT',
+                body: JSON.stringify(body)
+            }
+        );
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                let json = JSON.stringify(data);
+                let content = JSON.parse(json, (k, v) => { 
+                    if(k == 'acknowledgementDate') {
+                        return new Date(Number.parseInt(v));
+                        //FIXME: TEMP - parsing for wrong date format from Response.
+                        // return new Date(v);
+                    }
+                    if ((k === '')  && typeof this == 'object' && v != null && typeof v == 'object') {
+                        return new NotificationAckResource(v);
+                    } 
+                    return v;                
+                });
+                return content;
+            })
+        });
+        
+    }
+
     async sendNotification(alertModel:any):Promise<HttpResponseMessage> {
         await fetch;
 
