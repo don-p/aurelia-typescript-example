@@ -31,6 +31,8 @@ export class SentAlerts {
   notificationsMessageStatusFilter: string;
   notificationAcksMessageStatusFilter: string;
 
+  alertCategories: Array<any>;
+
   ps: any; // SCROLL
 
   logger: Logger;
@@ -42,6 +44,8 @@ export class SentAlerts {
     this.pageSize = 100000;
 
     let me = this;
+
+    this.alertCategories = appConfig.get('alertCategories');
 
     this.gridOptions = <GridOptions>{};
     this.gridOptions['id'] = 'notificationsGrid';

@@ -29,6 +29,8 @@ export class NotificationsTableGridCustomElement {
     @bindable displayColumns: Array<String> = [];
     // @bindable dataFlowerFunc: Function;
     @bindable fullWidthCellRenderer;
+    // @bindable isFullWidthCell: Function;
+
     DetailPanelCellRenderer: any;
     dataFlowerFunc: Function;
     context: any;
@@ -49,10 +51,10 @@ export class NotificationsTableGridCustomElement {
     this.rowSelectionChangedFunc = function(){};
     this.gridFilterFunc = function(){};
     this.dataFlowerFunc = this.doesDataFlower;
-    // this.gridOptions['doesDataFlower'] = function(){
-    //   return true;
-    // };
-    // this.gridOptions.getNodeChildDetails = this.getNodeChildDetails;
+    this.gridOptions['doesDataFlower'] = function(){
+      return true;
+    };
+    this.gridOptions.getNodeChildDetails = this.getNodeChildDetails;
     this.evt.subscribe('notificationsFilterChanged', payload => {
       me.messageStatusFilter = payload.messageStatusFilter;
       me.gridOptions.api.onFilterChanged();
@@ -100,8 +102,6 @@ export class NotificationsTableGridCustomElement {
       return this.eGui;
     };
 
-
-
     this.gridOptions.fullWidthCellRenderer = this.DetailPanelCellRenderer;
 
     this.fullWidthCellRenderer = function (params) {
@@ -119,17 +119,18 @@ export class NotificationsTableGridCustomElement {
     };
     this.fullWidthCellRenderer.prototype.getTemplate = function(params) {
         // the flower row shares the same data as the parent row
-        var data = params.node.data;
+        var data = params.node.parent.data;
 
-        var template = '<div></div>';
-            // '<div class="full-width-panel">' +
-            // '  <div class="full-width-summary">' +
-            // '    <label>' + data.category + ':&nbsp;</label><span>'+data.message+'</span>'+
-            // '  </div>' +
-            // '</div>';
+        var template = //'<div></div>';
+            '<div class="full-width-panel full-width-notification-message">' +
+            '  <div class="full-width-summary">' +
+            '    <label>' + data.notificationCategory.categoryName + ':&nbsp;</label><span>'+data.message+'</span>'+
+            '  </div>' +
+            '</div>';
 
         return template;
     };
+    // this.gridOptions.fullWidthCellRenderer = this.fullWidthCellRenderer;
 
     // this.fullWidthCellRenderer.prototype.getGui = function() {
     //   return this.eGui;
@@ -175,8 +176,12 @@ export class NotificationsTableGridCustomElement {
       (event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter !== 'ALL');
     }
     event.api.gridOptionsWrapper.gridOptions.doesExternalFilterPass = function(node) {
-      return(node.data.notificationCategory.categoryName === me.messageStatusFilter);
+      return(node.parent.data.notificationCategory.categoryName === me.messageStatusFilter);
     }
+
+    event.api.gridOptionsWrapper.gridOptions.doesDataFlower = scope.dataFlowerFunc;
+
+    event.api.gridOptionsWrapper.gridOptions.isFullWidthCell = scope.isFullWidthCell;
 
     // scope.gridOptions.doesDataFlower = scope.dataFlowerFunc;
 
@@ -206,13 +211,13 @@ export class NotificationsTableGridCustomElement {
   getNodeChildDetails(record) {
     if(record.sentDate) {
       return {
-        // group: true,
+        group: true,
         key: record.notificationId,
           // the key is used by the default group cellRenderer
         expanded: true,
           // provide ag-Grid with the children of this group
-          //children: [record.message],
-        children: [{'notificationId': record.notificationId, 'category': record.notificationCategory.categoryName, 'message': record.message, 'attachments': record.attachmentCount}]
+        //  children: [{'notificationId': record.notificationId, 'categoryName': record.notificationCategory.categoryName, 'message': record.message}]
+         children: [{'notificationId': record.notificationId}]
       };
     } else {
       return null;

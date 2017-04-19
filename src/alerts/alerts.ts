@@ -33,10 +33,10 @@ export class Alerts {
   configureRouter(config, router) {
     config.map([
       { 
-        route: '', redirect: 'receivedalerts', nav: false
+        route: '', redirect: 'received', nav: false
       },
       { 
-        route: 'receivedalerts', name: 'alerts/receivedalerts', moduleId: './receivedalerts', 
+        route: 'received', name: 'alerts/received', moduleId: './receivedalerts', 
         nav: true, title: this.i18n.tr('router.nav.receivedAlerts'), 
         settings:{
         //   detailView: 'connections-detail',
@@ -49,7 +49,7 @@ export class Alerts {
         }
       },
       { 
-        route: 'sentalerts', name: 'alerts/sentalerts', moduleId: './sentalerts', 
+        route: 'sent', name: 'alerts/sent', moduleId: './sentalerts', 
         nav: true, title: this.i18n.tr('router.nav.sentAlerts'), 
         settings:{
         //   detailView: 'community-detail', 

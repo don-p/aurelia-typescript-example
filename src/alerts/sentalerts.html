@@ -9,16 +9,19 @@
 		
 		<div class="members-table-header" id="membersTableHeader">Sent Alerts</div>
 		<aside class="blg-left-panel" style="top:0px;width:100%;left:0px;">
-		<alerts-actions-bar></alerts-actions-bar>
+
+        <!-- FIXME: Temporarily hiding actions, until DELETE action is available. -->
+		<!--<alerts-actions-bar></alerts-actions-bar>-->
 
 		<div class="members-table-info-bar">
 			<div role="status" id="example_info" class="members-table-info">
                 <input placeholder="Filter..." class="pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
                 <select class="pull-right" style="margin-right:6px;" change.delegate="onNotificationsMessageStatusFilterChange($event)">
                     <option value.bind="'ALL'">- All -</option>
-                    <option value.bind="'INFO'">INFO</option>
+                    <option repeat.for="category of alertCategories" value.bind="category.categoryName">${category.categoryName}</option>
+                    <!--<option value.bind="'INFO'">INFO</option>
                     <option value.bind="'BOLO'">BOLO</option>
-                    <option value.bind="'LOCATION'">LOCATION</option>
+                    <option value.bind="'LOCATION'">LOCATION</option>-->
                 </select>
                 <!--<clear-filter-button  grid-options.bind="gridOptions"></clear-filter-button>-->
 			</div>
@@ -104,8 +107,8 @@
                         <div>${selectedNotification.message}</div>
                         <br>
                         <div>Status: ${selectedNotificationAcks[0].ackStatusName}</div>
-                        <div>Reply: ${selectedNotificationAcks[0].ackMessage}</div>
-                        <div>Reply date: ${selectedNotificationAcks[0].formattedAckDate}</div>
+                        <div>Date: ${selectedNotificationAcks[0].formattedAckDate}</div>
+                        <div show.bind="!!(selectedNotificationAcks[0].ackMessage) && selectedNotificationAcks[0].ackMessage.length >= 1">Reply: ${selectedNotificationAck.ackMessage}</div>
                         <div show.bind="!!(selectedNotification.attachments) && selectedNotification.attachments.length >= 1">
                             <hr>
                             <ul>
