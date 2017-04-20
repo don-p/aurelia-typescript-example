@@ -308,6 +308,7 @@
         "showAll": "Show all",
         "showSelected": "Show selected",
         "success": "Success",
-        "failed": "Failed"
+        "failed": "Failed",
+        "all": "All"
     }
 }
