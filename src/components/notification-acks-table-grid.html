@@ -22,8 +22,8 @@
                                 debug>
         <ag-grid-column if.bind="showColumn('attachments')" width.bind="56" header-name="" field="attachmentCount" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
-                <span class="member-status-icon" style="display: block;">
-                   <i show.bind="params.data.attachmentCount > 0" class="fa fa-paperclip" aria-hidden="true" title="Attachments"></i>
+                <span>
+                   <i show.bind="params.data.attachmentCount > 0" class="ico-attachment" aria-hidden="true" title="Attachments"></i>
                 </span>
             </ag-cell-template>
         </ag-grid-column>

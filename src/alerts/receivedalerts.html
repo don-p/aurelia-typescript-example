@@ -8,15 +8,16 @@
 	<section id="membersTable" class="members-table notifications-table">
 		
 		<div class="members-table-header" id="membersTableHeader">Received Alerts</div>
-		<aside class="blg-left-panel" style="top:0px;width:100%;left:0px;">
+		<aside class="alerts-list-panel">
+
         <!-- FIXME: Temporarily hiding actions, until DELETE action is available. -->
 		<!--<alerts-actions-bar></alerts-actions-bar>-->
-
+        
 		<div class="members-table-info-bar">
 			<div role="status" id="example_info" class="members-table-info">
                 <input placeholder="Filter..." class="alert-filter pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
                 <select class="form-control select select-default-blg alert-types pull-right" change.delegate="onNotificationsMessageStatusFilterChange($event)">
-                    <option value.bind="'ALL'">- All -</option>
+                    <option value.bind="'ALL'">All types</option>
                     <option repeat.for="category of alertCategories" value.bind="category.categoryName">${category.categoryName}</option>
                     <!--<option value.bind="'INFO'">INFO</option>
                     <option value.bind="'BOLO'">BOLO</option>
@@ -87,7 +88,7 @@
                 <div show.bind="!!(selectedNotificationAck) && (selectedNotificationAck.ackStatus === 'UNREAD' || selectedNotificationAck.ackStatus === 'READ')" class="modal-footer">
                     <button class="btn btn-danger btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'DECLINED')"><i class="ico-cancel-circle2"></i>&nbsp; Decline</button>
                     <button  class="btn btn-success btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
-                    <button  type="submit" class="btn btn-default btn-sm" click.trigger="setNotificationReply(selectedNotificationAck)">Reply</button>
+                    <button  type="submit" class="btn btn-default btn-sm" click.trigger="setNotificationReply(selectedNotificationAck)"><i class="ico-reply"></i>&nbsp;Reply</button>
                 </div>
             </div>
           </loading>

@@ -1665,7 +1665,6 @@ li.complete .map-check {
 }
 
 .inputfile2 + label {
-  max-width: 80%;
   font-size: 14px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1700,7 +1699,7 @@ li.complete .map-check {
 }
 
 .inputfile2 + label span {
-  width: 400px;
+  min-width: 130px;
   min-height: 2em;    
   display: inline-block;
   text-overflow: ellipsis;
@@ -2187,7 +2186,8 @@ abp-datetime-picker .input-group-addon {
   border: 1px solid $blg-blue;
   border-radius: 6px;
   height: 30px;
-  padding: 0px 5px;  
+  padding: 0px 5px;
+  width: 200px;  
 }
 
 .notifications-table .members-table-info-bar {
