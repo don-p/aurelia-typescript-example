@@ -179,12 +179,13 @@ export class ReceivedAlerts {
 
     let ackModel:any = {};
 
+    const maxMessageLength = 2000;
     const vRules = ValidationRules
       .ensure((ack: any) => ackModel.message)
       .displayName(this.i18n.tr('alerts.notifications.message'))
       .required()
       .then()
-      .maxLength(120)
+      .maxLength(maxMessageLength)
       .rules;
 
     this.dataService.openResourceEditDialog({modelView:'alerts/alertreply.html', title: this.i18n.tr('alerts.notifications.reply'), 
@@ -193,6 +194,7 @@ export class ReceivedAlerts {
       // let model = controller.settings.model;
       let model = controller.settings;
 
+      controller.viewModel.maxMessageLength = maxMessageLength;
       controller.ackModel = ackModel;
       controller.viewModel.recipientName = me.selectedNotification.senderFullName;
       

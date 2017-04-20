@@ -105,19 +105,7 @@
                     </div>
                 </div>
                 <div show.bind="selectedNotificationAcks.length <= 1" >
-                     <div style="border:solid 1px;border-radius:6px;padding:15px;">
-                        <div>${selectedNotification.message}</div>
-                        <br>
-                        <div>Status: ${selectedNotificationAcks[0].ackStatusName}</div>
-                        <div>Date: ${selectedNotificationAcks[0].formattedAckDate}</div>
-                        <div show.bind="!!(selectedNotificationAcks[0].ackMessage) && selectedNotificationAcks[0].ackMessage.length >= 1">Reply: ${selectedNotificationAcks[0].ackMessage}</div>
-                        <div show.bind="!!(selectedNotification.attachments) && selectedNotification.attachments.length >= 1">
-                            <hr>
-                            <ul>
-                                <li repeat.for="att of selectedNotification.attachments"><i class="fa fa-file-image-o" aria-hidden="true"></i> <a href="" >${att.payloadName}</a></li>
-                            </ul> 
-                        </div>                  
-                   </div> 
+                    <compose view="../components/notificationMessageDetail.html" containerless></compose>
                 </div>
             </div>
           </loading>

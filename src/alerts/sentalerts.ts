@@ -27,6 +27,7 @@ export class SentAlerts {
   @bindable selectedNotification: NotificationResource;
   selectedNotifications: Array<NotificationResource>;
   selectedNotificationAcks: Array<NotificationAckResource>;
+  selectedNotificationAck: NotificationAckResource;
   notificationAcksPromise: Promise<any>;
   notificationsMessageStatusFilter: string;
   notificationAcksMessageStatusFilter: string;
@@ -131,6 +132,11 @@ export class SentAlerts {
 
   showSelectedNotification(notificationAcks) {
     this.selectedNotificationAcks = notificationAcks;
+    if(this.selectedNotificationAcks.length == 1) {
+      this.selectedNotificationAck = this.selectedNotificationAcks[0];
+    } else {
+      this.selectedNotificationAck = null;
+    }
     this.gridOptionsAcks.api.setRowData(notificationAcks);
   }
 
