@@ -1,13 +1,13 @@
 <template>
     <div class="members-table-buttons-bar">
-        <button id="btn-members-make-call" if.bind="hasAction(REPLY)" click.delegate="makeCallCommunityMembers(selectedMembers)" class="btn btn-success btn-xs-square" i18n="[title]button.reply" disabled.bind="(!selectedNotifications) || (selectedNotifications.length === 0)">
-            <i class="ico-phone2"></i>
+        <button id="btn-members-make-call" if.bind="hasAction(REPLY)" click.delegate="makeCallCommunityMembers(selectedMembers)" class="btn btn-primary btn-xs-square" i18n="[title]button.reply" disabled.bind="(!selectedNotifications) || (selectedNotifications.length === 0)">
+            <i class="ico-reply"></i>
         </button>
-        <button id="btn-members-send-alert" if.bind="hasAction(ACCEPT)" click.delegate="sendAlertCommunityMembers(selectedMembers, [])" class="btn btn-primary btn-xs-square" i18n="[title]button.accept" disabled.bind="(!selectedNotifications) || (selectedNotifications.length === 0)">
-            <i class="ico-bullhorn"></i>
+        <button id="btn-members-send-alert" if.bind="hasAction(ACCEPT)" click.delegate="sendAlertCommunityMembers(selectedMembers, [])" class="btn btn-success btn-xs-square" i18n="[title]button.accept" disabled.bind="(!selectedNotifications) || (selectedNotifications.length === 0)">
+            <i class="ico-checkmark-circle"></i>
         </button>
-        <button id="btn-members-start-conversation" if.bind="hasAction(REJECT)" class="btn btn-info btn-xs-square" i18n="[title]button.reject" disabled.bind="(!selectedNotifications) || (selectedNotifications.length === 0)">
-            <i class="ico-bubble-plus"></i>
+        <button id="btn-members-start-conversation" if.bind="hasAction(REJECT)" class="btn btn-danger btn-xs-square" i18n="[title]button.reject" disabled.bind="(!selectedNotifications) || (selectedNotifications.length === 0)">
+            <i class="ico-cancel-circle2"></i>
         </button>
 
         <span class="dummy-btn"></span>
