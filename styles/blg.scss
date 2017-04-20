@@ -2179,7 +2179,6 @@ abp-datetime-picker .input-group-addon {
 .alert-types {
   position: relative;
   bottom: 2px;
-  right: 5px;
   margin-right: 10px;
 }
 
@@ -2192,5 +2191,12 @@ abp-datetime-picker .input-group-addon {
 }
 
 .notifications-table .members-table-info-bar {
-  padding: 5px 6px !important;  
+  padding: 5px 10px !important;  
+}
+
+.alert-type-select-label {
+  display: table-cell;
+  vertical-align: middle;
+  padding-right: 5px;
+  font-size: 15px;  
 }
