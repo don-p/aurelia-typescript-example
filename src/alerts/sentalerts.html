@@ -17,12 +17,13 @@
 			<div role="status" id="example_info" class="members-table-info">
                 <input placeholder="Filter..." class="alert-filter pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
                 <select class="form-control select select-default-blg alert-types pull-right" change.delegate="onNotificationsMessageStatusFilterChange($event)">
-                    <option value.bind="'ALL'">All types</option>
+                    <option value.bind="'ALL'">${'global.all' | t}</option>
                     <option repeat.for="category of alertCategories" value.bind="category.categoryName">${category.categoryName}</option>
                     <!--<option value.bind="'INFO'">INFO</option>
                     <option value.bind="'BOLO'">BOLO</option>
                     <option value.bind="'LOCATION'">LOCATION</option>-->
                 </select>
+                <span class="wizard-content-label pull-right" style="margin-right: 10px;" i18n='[prepend]community.communities.alert.alertType'>:</span> 			</div>
                 <!--<clear-filter-button  grid-options.bind="gridOptions"></clear-filter-button>-->
 			</div>
 		</div>		
@@ -78,13 +79,14 @@
                             <div role="status" id="example_info" class="members-table-info">
                                 <input placeholder="Filter..." type="text" class="alert-filter pull-right" input.delegate="onNotificationAcksQuickFilterChanged($event)"/>
                                 <select class="form-control select select-default-blg alert-types pull-right" change.delegate="onNotificationAcksMessageStatusFilterChange($event)">
-                                    <option value.bind="'ALL'">All statuses</option>
+                                    <option value.bind="'ALL'">${'global.all' | t}</option>
                                     <option value.bind="'UNREAD'">${'alerts.notifications.ackStatus.UNREAD' | t}</option>
                                     <option value.bind="'READ'">${'alerts.notifications.ackStatus.READ' | t}</option>
                                     <option value.bind="'REPLY_MESSAGE'">${'alerts.notifications.ackStatus.REPLY_MESSAGE' | t}</option>
                                     <option value.bind="'ACCEPTED'">${'alerts.notifications.ackStatus.ACCEPTED' | t}</option>
                                     <option value.bind="'DECLINED'">${'alerts.notifications.ackStatus.DECLINED' | t}</option>
                                 </select>
+                                <span class="wizard-content-label pull-right" style="margin-right: 10px;" i18n='[prepend]alerts.notifications.status'>:</span>
                             </div>
                         </div>		
                         <div class="members-table-content" style="top:46px;">
