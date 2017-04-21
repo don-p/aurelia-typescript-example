@@ -228,6 +228,7 @@
             "dateFormat": "MMM DD HH:mm",
             "status": "Status",
             "reply": "Reply",
+            "replyMessage": "Reply Message",
             "recipient": "Recipient",
             "ackStatus": {
                 "REPLY_MESSAGE": "Replied",
@@ -266,6 +267,7 @@
     "button": {
         "ok": "OK",
         "cancel": "Cancel",
+        "close": "Close",
         "delete": "Delete",
         "previous": "Previous",
         "next": "Next",
