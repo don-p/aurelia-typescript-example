@@ -439,6 +439,23 @@ export class DataService {
         });
     }
 
+    async openTemplateDialog(title:string, okText:string, showCancel: boolean, modelView: string): Promise<DialogController> {
+        return this.dialogService.openAndYieldController({ 
+            viewModel: Prompt, 
+            view: 'model/model.html', 
+            modelView: modelView,
+            title: title, 
+            message: null,
+            modelPromise: null,
+            loadingTitle: null,
+            item: null, 
+            rules: null,
+            okText: okText,
+            showCancel: showCancel,
+            isSubmitDisabled: false
+        });
+    }
+
     async getCallServiceConfig() {
         await fetch;
         const http =  this.getHttpClient();

@@ -4,10 +4,11 @@ import {Session} from '../services/session';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {Utils} from '../services/util';
+import {DataService} from '../services/dataService';
 import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 
-@inject(Session, EventAggregator, I18N, Utils, LogManager) 
+@inject(Session, EventAggregator, I18N, Utils, DataService, LogManager) 
 @viewResources('./notification-acks-table-grid')
 @customElement('notification-acks-table-grid')
 @containerless
@@ -41,7 +42,7 @@ export class NotificationAcksTableGridCustomElement {
 
     
 
-  constructor(private session: Session, private evt: EventAggregator, private i18n: I18N, private utils: Utils){
+  constructor(private session: Session, private evt: EventAggregator, private i18n: I18N, private utils: Utils, private dataService: DataService){
     this.gridOptions = <GridOptions>{};
     this.logger = LogManager.getLogger(this.constructor.name);
 
@@ -199,6 +200,19 @@ export class NotificationAcksTableGridCustomElement {
     event.api.gridOptionsWrapper.gridOptions.getStatusQuickFilterText = function(params) {
       return null;
     }
+
+    event.api.gridOptionsWrapper.gridOptions.getRowStyle = function(params) {
+      if (params.data.ackStatus === 'REPLY_MESSAGE') {
+          return {'cursor': 'pointer'}
+      }
+      return null;
+    }
+    event.api.gridOptionsWrapper.gridOptions.onRowClicked = function(event) {
+      if(event.data.ackStatus === 'REPLY_MESSAGE') {
+        console.debug("node: " + event);
+        event.context.showAckReply(event.data);
+      }
+    }
     // scope.gridOptions.doesDataFlower = scope.dataFlowerFunc;
 
     scope.gridReadyFunc.call(this, event);
@@ -246,6 +260,29 @@ export class NotificationAcksTableGridCustomElement {
 
   private getTextSearchFilter(): any {
     return TextSearchFilter;
+  }
+
+  showAckReply(ack) {
+    this.dataService.openTemplateDialog(this.i18n.tr('alerts.notifications.replyMessage'), this.i18n.tr('button.close'), false, 'components/notificationMessageDetail.html')
+    .then((controller:any) => {
+      // let model = controller.settings.model;
+      let model = controller.settings;
+      let selectedNotification = {message: ack.ackMessage, attachments: ack.ackAttachmentIds};
+      controller.viewModel.selectedNotification = selectedNotification;
+      controller.viewModel.selectedNotificationAck = ack;
+      
+      // Callback function for submitting the dialog.
+      controller.viewModel.submit = (reply) => {
+        controller.ok();
+      }
+      controller.result.then((response) => {
+        if (response.wasCancelled) {
+          // Reset validation error state.
+          this.logger.debug('Cancel');
+        }
+      })
+    });
+
   }
 
   private showColumn(column: String): boolean {

@@ -135,7 +135,7 @@ export class AlertsService {
                         }, {});
                         return status;
                     }
-                    if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
+                    if ((k !== '')  && (typeof this == 'object') && (v != null) && (!(v.payloadId)) && (typeof v == 'object') && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
                         return new NotificationAckResource(v);
                     } 
                     return v;                

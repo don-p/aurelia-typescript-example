@@ -1,5 +1,5 @@
 <template>
-    <div style="border:solid 1px;border-radius:6px;padding:15px;">
+    <div style="border:solid 1px;border-radius:6px;padding:15px;margin-left: 15px;margin-right: 15px;">
         <div>${selectedNotification.message}</div>
         <br>
         <div>Status: ${selectedNotificationAck.ackStatusName}</div>
@@ -8,7 +8,7 @@
         <div show.bind="!!(selectedNotification.attachments) && selectedNotification.attachments.length >= 1">
             <hr>
             <ul>
-                <li repeat.for="att of selectedNotification.attachments">
+                <li repeat.for="att of selectedNotification.attachments" style="list-style-type: none;">
                     <div show.bind="att.payloadDataType.indexOf('image') < 0"><i class="fa fa-file-image-o" aria-hidden="true"></i> <a href="" >${att.payloadName}</a></div>
                     <div show.bind="att.payloadDataType.indexOf('image') >= 0"><img src="../../images/gc_logo.png"></div>
                 </li>
