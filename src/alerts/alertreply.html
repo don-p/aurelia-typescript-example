@@ -40,7 +40,7 @@
                                 <div class="div-table-cell"> 
                                     <form class="select-file2">
                                         <input type="file" id="inputfile2" class="inputfile2" 
-                                        change.delegate="controller.onAlertAttachmentFile($event, item.fileList)" load.delegate="controller.handleFiles($event)" files.bind="controller.dialogController.alertModel.fileList" />
+                                        change.delegate="onReplyAttachmentFile($event, item.fileList)" load.delegate="controller.handleFiles($event)" files.bind="item.fileList" />
                                         <label for="inputfile2">
                                             <strong>
                                                 <i class="ico-attachment"></i>
