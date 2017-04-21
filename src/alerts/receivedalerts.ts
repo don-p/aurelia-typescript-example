@@ -198,6 +198,11 @@ export class ReceivedAlerts {
       controller.ackModel = ackModel;
       controller.viewModel.recipientName = me.selectedNotification.senderFullName;
       
+      controller.viewModel.onReplyAttachmentFile = function(event, fileList) {
+        let fileArray = Array.from(fileList);
+        controller.viewModel.item.files = fileArray;
+      };
+
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (reply) => {
         me.logger.debug("Edit community submit()");
