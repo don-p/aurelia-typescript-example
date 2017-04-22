@@ -7,6 +7,7 @@ export class NotificationAckResource {
   
   message: string;
   ackAttachmentIds: Array<any>;
+  attachmentCount: Number;
   notificationId: string;
   ackParty: any;
   acknowledgementDate: Date;
@@ -38,9 +39,9 @@ export class NotificationAckResource {
 
   }
 
-  get attachmentCount(): Number {
-    return this.ackAttachmentIds.length;
-  }
+  // get attachmentCount(): Number {
+  //   return this.ackAttachmentIds.length;
+  // }
 
   get recipientName(): string {
     let i18n = Container.instance.get(I18N);

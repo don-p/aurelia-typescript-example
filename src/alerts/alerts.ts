@@ -42,9 +42,6 @@ export class Alerts {
         //   detailView: 'connections-detail',
           memberActions: [
             // AlertsActionsBarCustomElement.DELETE,
-            AlertsActionsBarCustomElement.ACCEPT, 
-            AlertsActionsBarCustomElement.REJECT, 
-            AlertsActionsBarCustomElement.REPLY
           ]
         }
       },

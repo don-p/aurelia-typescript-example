@@ -58,12 +58,10 @@ export class AlertsService {
 
         const http =  this.getHttpClient();
         let me = this;
-        let jsDateFormat = 'YYYY-MM-DD';
-        let dateFormat = 'yyyy-MM-dd';
-        let date = (moment as any).default().subtract(30, 'days').hour(0).minute(0).second(0).format(jsDateFormat);
-        let response = http.fetch('v1/members/' + memberId + 
+        let date = (moment as any).default().subtract(30, 'days').hour(0).minute(0).second(0).milliseconds();
+        let response = http.fetch('v2/members/' + memberId + 
             '/notifications?direction=' + direction + '&include_status=true&start_index=' + 
-            startIndex + '&page_size=' + pageSize + '&cut_time=' + date + '&date_format=' + dateFormat, 
+            startIndex + '&page_size=' + pageSize + '&from_date=' + date, 
             {
                 method: 'GET'
             }
@@ -74,7 +72,7 @@ export class AlertsService {
                 let json = JSON.stringify(data);
                 let content = JSON.parse(json, (k, v) => { 
                     if(k == 'sentDate') {
-                        return new Date(Number.parseInt(v));
+                        return new Date(v);
                     }
                     if(k == 'ackStatusSummary') {
                         let status = {};
@@ -97,7 +95,7 @@ export class AlertsService {
     }
 
     /**
-     * Get list of alerts for logged-in user.
+     * Get an individual notification + acks.
      */
     async getNotification(memberId:string, notificationId:string, startIndex:number, pageSize:number): Promise<Response> {
         await fetch;
@@ -110,7 +108,7 @@ export class AlertsService {
         const http =  this.getHttpClient();
         let me = this;
         let response = http.fetch('v2/members/' + memberId + 
-            '/notifications/' + notificationId + '/acks?start_index=' + startIndex + '&page_size=' + pageSize, 
+            '/notifications/' + notificationId, 
             {
                 method: 'GET'
             }
@@ -118,12 +116,45 @@ export class AlertsService {
         return response
         .then(response => {return response.json()
             .then(data => {
+                // data is the notification.
                 let json = JSON.stringify(data);
+                let notificationContent = JSON.parse(json, (k, v) => { 
+                    if(k == 'sentDate') {
+                        return new Date(v);
+                    }
+                    if(k == 'ackStatusSummary') {
+                        let status = {};
+                        status = v.reduce(function(acc, curVal, curIndex) {
+                            let key = curVal.ackStatus;
+                            let val = curVal.count;
+                            acc[key] = val;
+                            return acc;
+                        }, {});
+                        return status;
+                    }
+                    if ((k == '')  && (typeof this == 'object') && (v != null) && (typeof v == 'object') && (!(v['payloadId'])) && (!(v['ackStatus'])) ) {
+                        return new NotificationResource(v);
+                    } 
+                    return v;                
+                });
+                
+                // Get the associated acks.
+                let acksResponse = http.fetch('v2/members/' + memberId + 
+                    '/notifications/' + notificationId + '/acks?start_index=' + startIndex + '&page_size=' + pageSize, 
+                    {
+                        method: 'GET'
+                    }
+                );
+                return acksResponse
+                .then(res => {return res.json()
+                    .then(acksData => {
+
+                let json = JSON.stringify(acksData);
                 let content = JSON.parse(json, (k, v) => { 
                     if(k == 'acknowledgementDate') {
-                        return new Date(Number.parseInt(v));
+                        // return new Date(Number.parseInt(v));
                         //FIXME: TEMP - parsing for wrong date format from Response.
-                        // return new Date(v);
+                        return new Date(v);
                     }
                     if(k == 'ackStatusSummary') {
                         let status = {};
@@ -140,7 +171,12 @@ export class AlertsService {
                     } 
                     return v;                
                 });
-                return content;
+                notificationContent.acks = content.responseCollection;
+                return notificationContent;
+
+                })
+            });
+
             })
         });
     }
@@ -215,9 +251,9 @@ export class AlertsService {
                 let json = JSON.stringify(data);
                 let content = JSON.parse(json, (k, v) => { 
                     if(k == 'acknowledgementDate') {
-                        return new Date(Number.parseInt(v));
+                        // return new Date(Number.parseInt(v));
                         //FIXME: TEMP - parsing for wrong date format from Response.
-                        // return new Date(v);
+                        return new Date(v);
                     }
                     if ((k === '')  && typeof this == 'object' && v != null && typeof v == 'object') {
                         return new NotificationAckResource(v);

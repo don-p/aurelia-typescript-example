@@ -107,14 +107,13 @@ export class ReceivedAlerts {
 
   onNotificationSelected(payload) {
     let selectedNotification = payload.notification;
-    this.selectedNotification = selectedNotification;
     let me = this;
     // get the notification details.
     this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000).then(function(data:any){
       // set the message to read if currently unread.
-      let notification = data.responseCollection[0];
+      let notification = data;
       if(notification.ackStatus === 'UNREAD') {
-       return  me.setNotificationStatus(selectedNotification, 'READ')
+       return  me.setNotificationStatus(notification, 'READ')
         .then(result => {
             me.showSelectedNotification(result);
         });
@@ -131,8 +130,8 @@ export class ReceivedAlerts {
     this.evt.publish('notificationsSelected', {selectedNotifications: scope.api.getSelectedRows(), notificationType: 'RECEIVED'});
   }
 
-  showSelectedNotification(notificationAck) {
-    this.selectedNotificationAck = notificationAck;
+  showSelectedNotification(notification) {
+    this.selectedNotification = notification;
   }
 
   onAcksGridReady(event, scope) {
