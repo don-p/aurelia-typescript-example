@@ -1,11 +1,13 @@
 import {computedFrom, Container, inject} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
+import {NotificationAckResource} from './notificationAckResource';
 import * as moment from 'moment';
 
 @inject(I18N)
 export class NotificationResource {
   
   message: string;
+  attachmentCount: Number;
   attachments: Array<any>;
   notificationId: string;
   connectId: string;
@@ -15,6 +17,8 @@ export class NotificationResource {
   senderReference: any;
   receiverReference: any;
   sentDate: Date;
+  acks: Array<NotificationAckResource>;
+
   static dateFormat: string = Container.instance.get(I18N).tr('alerts.notifications.dateFormat');
 
   constructor(notification?:any) {
@@ -32,14 +36,13 @@ export class NotificationResource {
       } else {
         this.message = '';
         this.notificationId = '';
-        this.attachments = null;
       }
 
   }
 
-  get attachmentCount(): Number {
-    return this.attachments.length;
-  }
+  // get attachmentCount(): Number {
+  //   return this.attachments.length;
+  // }
 
   get readCount(): Number {
     return !!(this.notificationStatus.ackStatusSummary.READ)?this.notificationStatus.ackStatusSummary.READ:0;
@@ -86,6 +89,30 @@ export class NotificationResource {
       return recRef.communityReceiver.communityName;
     } else {
       return i18n.tr('global.memberFullName', {firstName: recRef.memberReceiver.physicalPersonProfile.firstName, lastName: recRef.memberReceiver.physicalPersonProfile.lastName});
+    }
+  }
+
+  get ackStatusName(): string {
+    if(this.acks.length === 1) {
+      return this.acks[0].ackStatusName;
+    } else {
+      return null;
+    }
+  }
+
+  get ackStatusDate(): string {
+    if(this.acks.length === 1) {
+      return this.acks[0].formattedAckDate;
+    } else {
+      return null;
+    }
+  }
+
+  get notAttachmentCount() {
+    if(!!(this.attachments)) {
+      return this.attachments.length;
+    } else {
+      return this.attachmentCount;
     }
   }
   
