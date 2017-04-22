@@ -74,7 +74,7 @@
                 <div show.bind="!!(selectedNotification)" >
                     <compose view="../components/notificationMessageDetail.html" containerless></compose>
                 </div>
-                <div show.bind="!!(selectedNotification) && (selectedNotificationAck.ackStatus === 'UNREAD' || selectedNotificationAck.ackStatus === 'READ')" class="modal-footer">
+                <div show.bind="!!(selectedNotification) && (selectedNotification.ackStatus === 'UNREAD' || selectedNotification.ackStatus === 'READ')" class="modal-footer">
                     <button class="btn btn-danger btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'DECLINED')"><i class="ico-blocked"></i>&nbsp; Decline</button>
                     <button  class="btn btn-success btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
                     <button  type="submit" class="btn btn-default btn-sm" click.trigger="setNotificationReply(selectedNotificationAck)"><i class="ico-reply"></i>&nbsp; Reply</button>

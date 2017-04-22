@@ -92,6 +92,14 @@ export class NotificationResource {
     }
   }
 
+  get ackStatus(): string {
+    if(this.acks.length === 1) {
+      return this.acks[0].ackStatus;
+    } else {
+      return null;
+    }
+  }
+
   get ackStatusName(): string {
     if(this.acks.length === 1) {
       return this.acks[0].ackStatusName;
