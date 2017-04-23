@@ -911,6 +911,15 @@ header .navbar-nav {
   left: 15px;
 }
 
+.members-table.alerts-table {
+  min-width: 0px;
+}
+
+.alerts-table {
+  margin: 75px 710px 10px 0px;
+  left: 15px;
+}
+
 .notifications-table {
   margin: 75px 15px 10px 0px;
   left: 15px;
@@ -968,7 +977,8 @@ header .navbar-nav {
 .message-board .message-board-header,
 .members-table .members-table-header,
 .results-table .results-table-header,
-.received-table .received-table-header {
+.received-table .received-table-header,
+.alert-details-header {
   background-color: $blg-blue;
   color: $blg-white;
   text-align: center;
@@ -1018,6 +1028,7 @@ header .navbar-nav {
   background-color: $blg-white;
   box-shadow: 0px 1px 5px lightgrey;
   z-index: 999;
+  height: 50px;
 }
 
 .members-table .members-table-info-bar,
@@ -1930,7 +1941,7 @@ span.recipientsListItem:not(:last-child)::after {
   position: relative;
   top: 5px;
   left: 3px;
-  color: #2980b9;
+  color: $blg-blue;
   cursor: pointer;
 }
 
@@ -2103,7 +2114,7 @@ span.recipientsListItem:not(:last-child)::after {
 }
 
 .request-details-content {
-  padding: 15px;
+  padding: 15px 15px 5px 15px;
   font-size: 15px;
 }
 
@@ -2155,8 +2166,8 @@ abp-datetime-picker .input-group-addon {
 }
 
 .timepicker-picker a.btn:hover {
-  background-color: #eee;
-  color: #666;
+  background-color: $blg-grey-lighter;
+  color: $gray-light;
 }
 
 .member-connected {
@@ -2199,4 +2210,94 @@ abp-datetime-picker .input-group-addon {
   vertical-align: middle;
   padding-right: 5px;
   font-size: 15px;  
+}
+
+.alert-details-panel {
+    position: absolute;
+    width: 680px;
+    right: 15px;
+    top: 115px;
+    background: transparent;
+    border-radius: 3px;
+    min-height: 565px;
+    bottom: 0;  
+}
+
+.alert-details-panel .alert-details-received-content {
+    padding: 15px 9px 0 9px;
+    position: absolute;
+    top: 40px;
+    bottom: 59px;
+    left: 0px;
+    right: 0px;
+    border-bottom: 0px;
+    border-right: 2px solid $blg-grey-light;
+    border-top: 0px;
+    border-left: 2px solid $blg-grey-light;
+    border-radius: 0px;
+    background-color: $blg-white;
+    z-index: 0;
+}
+
+.alert-details-panel .alert-details-sent-content {
+    padding: 15px 9px 0 9px;
+    position: absolute;
+    top: 40px;
+    bottom: 15px;
+    left: 0px;
+    right: 0px;
+    border-bottom: 2px solid $blg-grey-light;
+    border-right: 2px solid $blg-grey-light;
+    border-top: 0px;
+    border-left: 2px solid $blg-grey-light;
+    border-radius: 0 0 6px 6px;
+    background-color: $blg-white;
+    z-index: 0;
+}
+
+.alert-details-panel .alert-details-received-content .alert-details-content-scroll,
+.alert-details-panel .alert-details-sent-content .alert-details-content-scroll {
+    min-height: 287px;
+    position: absolute;
+    top: 0;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    overflow-y: scroll;
+    width: auto;
+}
+
+.alert-details-panel .alert-details-bottom-bar {
+    position: absolute;
+    height: 45px;
+    bottom: 14px;
+    left: 0px;
+    right: 0px;
+    border-bottom: 2px solid $blg-grey-light;
+    border-right: 2px solid $blg-grey-light;
+    border-top: 1px solid $blg-grey-lighter;
+    border-left: 2px solid $blg-grey-light;
+    border-radius: 0 0 6px 6px;
+    background-color: $blg-white;
+}
+
+.alert-message-text {
+    border: 1px solid $blg-blue;
+    border-radius: 6px;
+    padding: 5px 10px;
+    margin-left: 45px;
+    margin-right: 15px;
+    background-color: $blg-grey-lightest;
+    font-size: 15px;      
+}
+
+.alert-details-bottom-buttons {
+    padding: 5px 20px 0px 0px;
+    text-align: right;  
+}
+
+.alert-details-bottom-buttons button {
+  min-width: 100px;
+  margin-left: 10px;
+  font-size: 14px;  
 }

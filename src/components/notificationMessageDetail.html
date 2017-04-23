@@ -1,18 +1,37 @@
 <template>
-    <div style="border:solid 1px;border-radius:6px;padding:15px;margin-left: 15px;margin-right: 15px;">
+    <div class="alert-message-text">
         <div>${selectedNotification.message}</div>
-        <br>
-        <div>Status: ${selectedNotification.ackStatusName}</div>
-        <div>Date: ${selectedNotification.ackStatusDate}</div>
-        <div show.bind="!!(selectedNotification.ackMessage) && selectedNotification.ackMessage.length >= 1">Reply: ${selectedNotificationAck.ackMessage}</div>
-        <div show.bind="selectedNotification.notAttachmentCount >= 1">
-            <hr>
-            <ul>
-                <li repeat.for="att of selectedNotification.attachments" style="list-style-type: none;">
-                    <div show.bind="att.payloadDataType.indexOf('image') < 0"><i class="fa fa-file-image-o" aria-hidden="true"></i> <a href="" >${att.payloadName}</a></div>
-                    <div show.bind="att.payloadDataType.indexOf('image') >= 0"><img src="../../images/gc_logo.png"></div>
-                </li>
-            </ul> 
-        </div>                  
-    </div> 
+    </div>         
+    <div class="request-details-content">
+        <table>
+            <tbody>
+                <tr>
+                    <td class="table-label">Status:</td>
+                    <td class="table-text">${selectedNotification.ackStatusName}</td>
+                </tr>
+                <tr>
+                    <td class="table-label">Date:</td>
+                    <td class="table-text">${selectedNotification.ackStatusDate}</td>
+                </tr>
+                <tr show.bind="!!(selectedNotification.ackMessage) && selectedNotification.ackMessage.length >= 1">
+                    <td class="table-label">Reply:</td>
+                    <td class="table-text"></td>
+                </tr>                
+            </tbody>
+        </table>
+    </div>
+
+    <div show.bind="!!(selectedNotification.ackMessage) && selectedNotification.ackMessage.length >= 1" class="alert-message-text">
+        <div>${selectedNotificationAck.ackMessage}</div>
+    </div>    
+
+    <div show.bind="selectedNotification.notAttachmentCount >= 1">
+        <hr>
+        <ul>
+            <li repeat.for="att of selectedNotification.attachments" style="list-style-type: none;">
+                <div show.bind="att.payloadDataType.indexOf('image') < 0"><i class="fa fa-file-image-o" aria-hidden="true"></i> <a href="" >${att.payloadName}</a></div>
+                <div show.bind="att.payloadDataType.indexOf('image') >= 0"><img src="../../images/gc_logo.png"></div>
+            </li>
+        </ul> 
+    </div>                  
 </template>
