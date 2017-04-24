@@ -106,7 +106,10 @@ export class ReceivedAlerts {
   };
 
   onRowclick = function(event) {
-    event.context.evt.publish('notificationSelected', {notification: event.data, type: 'RECEIVED'});
+    // if selection changed
+    if(!!(event.data) && (!(this.selectedNotification) || (!!(this.selectedNotification) && !(event.data.notificationId === this.selectedNotification.notificationId)))) {
+      event.context.evt.publish('notificationSelected', {notification: event.data, type: 'RECEIVED'});
+    }
   };
 
   onNotificationSelected(payload) {
