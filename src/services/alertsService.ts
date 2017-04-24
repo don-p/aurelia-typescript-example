@@ -100,11 +100,6 @@ export class AlertsService {
     async getNotification(memberId:string, notificationId:string, startIndex:number, pageSize:number): Promise<Response> {
         await fetch;
 
-        // let notificationId:string = args.memberId;
-        // let startIndex:number = args.startIndex;
-        // let pageSize:number = args.pageSize;
-        // let direction:string = args.direction;
-
         const http =  this.getHttpClient();
         let me = this;
         let response = http.fetch('v2/members/' + memberId + 

@@ -13,7 +13,7 @@
                     <td class="table-label">Date:</td>
                     <td class="table-text">${selectedNotification.ackStatusDate}</td>
                 </tr>
-                <tr show.bind="!!(selectedNotification.ackMessage) && selectedNotification.ackMessage.length >= 1">
+                <tr show.bind="!!(selectedNotificationAck.ackMessage) && selectedNotificationAck.ackMessage.length >= 1">
                     <td class="table-label">Reply:</td>
                     <td class="table-text"></td>
                 </tr>                
@@ -21,7 +21,7 @@
         </table>
     </div>
 
-    <div show.bind="!!(selectedNotification.ackMessage) && selectedNotification.ackMessage.length >= 1" class="alert-message-text">
+    <div show.bind="!!(selectedNotificationAck.ackMessage) && selectedNotificationAck.ackMessage.length >= 1" class="alert-message-text">
         <div>${selectedNotificationAck.ackMessage}</div>
     </div>    
 

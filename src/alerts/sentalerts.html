@@ -50,7 +50,7 @@
         <aside class="blg-notifications-right-panel">
         <div class="members-table-content" style="height:100%;top:40px;padding:24px;position:relative;">
           <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
-            <div show.bind="!!(selectedNotification) && !!(selectedNotificationAcks)" class="requestDetailContainer" style="height:100%;">
+            <div show.bind="!!(selectedNotification) && !!(selectedNotification.acks)" class="requestDetailContainer" style="height:100%;">
                 <div class="request-details-content">
                     <table>
                         <tbody>
@@ -66,14 +66,14 @@
                                 <td class="table-label">Alert type:</td>
                                 <td class="table-text">${selectedNotification.notificationCategory.categoryName}</td>
                             </tr>
-                            <tr  show.bind="selectedNotificationAcks.length > 1">
+                            <tr  show.bind="selectedNotification.acks.length > 1">
                                 <td class="table-label">Message:</td>
                                 <td class="table-text">${selectedNotification.message}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div show.bind="selectedNotificationAcks.length > 1">
+                <div show.bind="selectedNotification.acks.length > 1">
                     <div class="members-table-content" style="top:140px;">
                         <div class="members-table-info-bar" style="top:0px;">
                             <div role="status" id="example_info" class="members-table-info">
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                 </div>
-                <div show.bind="selectedNotificationAcks.length <= 1" >
+                <div show.bind="selectedNotification.acks.length <= 1" >
                     <compose view="../components/notificationMessageDetail.html" containerless></compose>
                 </div>
             </div>
