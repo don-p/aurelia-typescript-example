@@ -80,6 +80,10 @@ export class ReceivedAlerts {
   onGridReady(event, scope) {
     let grid:any = this;
 
+    event.api.gridOptionsWrapper.gridOptions.onRowClicked = function(event) {
+      scope.context.onRowclick(event);
+    }
+
     grid.context.getReceivedAlerts();
     event.api.sizeColumnsToFit();
   }
@@ -106,24 +110,41 @@ export class ReceivedAlerts {
   };
 
   onNotificationSelected(payload) {
+
     let selectedNotification = payload.notification;
     let me = this;
-    // get the notification details.
-    this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
-    this.notificationAcksPromise.then(function(data:any){
-      // set the message to read if currently unread.
-      let notification = data;
-      if(notification.ackStatus === 'UNREAD') {
-       return  me.setNotificationStatus(notification, 'READ')
-        .then(result => {
-            me.showSelectedNotification(result);
-        });
-      } else {
-        me.showSelectedNotification(notification);
-        return Promise.resolve('Notification read.');
-      }
-    });
 
+    // set the message to read if currently unread.
+    if(selectedNotification.ackStatus === 'UNREAD') {
+      me.logger.debug("Got UNREAD message.")
+      return  me.setNotificationStatus(selectedNotification, 'READ')
+      .then(result => {
+        // get the notification details.
+        this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
+        this.notificationAcksPromise.then(function(data:any){
+          let notification = data;
+          let memberId = me.session.auth['member'].memberId;
+          let ack = notification.acks.find(function(ackItem) {
+            return memberId === ackItem.ackParty.memberId;
+          });
+          me.selectedNotificationAck = ack;
+          me.showSelectedNotification(notification);
+        });
+      });
+    } else {
+      me.logger.debug("Got READ message.")
+      // get the notification details.
+      this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
+      this.notificationAcksPromise.then(function(data:any){
+        let notification = data;
+        let memberId = me.session.auth['member'].memberId;
+        let ack = notification.acks.find(function(ackItem) {
+          return memberId === ackItem.ackParty.memberId;
+        });
+        me.selectedNotificationAck = ack;
+        me.showSelectedNotification(notification);
+      });
+    }
   }
 
   notificationSelectionChanged(scope) {
@@ -168,7 +189,7 @@ export class ReceivedAlerts {
     let notificationAcksPromise = this.alertsService.setNotificationAckStatus(this.session.auth['member'].memberId, 
     notification.notificationId, 
     status).then(function(data:any){
-      me.selectedNotificationAck = data;
+      return data;
     });
     return notificationAcksPromise;
   }
