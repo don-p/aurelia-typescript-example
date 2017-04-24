@@ -95,7 +95,7 @@ export class NotificationAckResource {
 
   get ackStatusName(): string {
     let i18n = Container.instance.get(I18N);
-  return i18n.tr('alerts.notifications.ackStatus.' + this.ackStatus);
+    return i18n.tr('alerts.notifications.ackStatus.' + this.ackStatus);
   }
 
   get senderFullName() {

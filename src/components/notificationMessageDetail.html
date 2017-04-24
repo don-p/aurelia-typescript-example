@@ -1,5 +1,5 @@
 <template>
-    <div class="alert-message-text">
+    <div show.bind="!!(selectedNotification) && !!(selectedNotification.message)" class="alert-message-text">
         <div>${selectedNotification.message}</div>
     </div>         
     <div class="request-details-content">
@@ -11,7 +11,7 @@
                 </tr>
                 <tr>
                     <td class="table-label">Date:</td>
-                    <td class="table-text">${selectedNotification.ackStatusDate}</td>
+                    <td class="table-text">${selectedNotificationAck.formattedAckDate}</td>
                 </tr>
                 <tr show.bind="!!(selectedNotificationAck.ackMessage) && selectedNotificationAck.ackMessage.length >= 1">
                     <td class="table-label">Reply:</td>

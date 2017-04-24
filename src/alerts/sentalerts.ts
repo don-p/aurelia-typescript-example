@@ -89,6 +89,10 @@ export class SentAlerts {
   onGridReady(event, scope) {
     let grid:any = this;
 
+    event.api.gridOptionsWrapper.gridOptions.onRowClicked = function(event) {
+      scope.context.onRowclick(event);
+    }
+
     grid.context.getSentAlerts();
     event.api.sizeColumnsToFit();
   }
@@ -111,7 +115,9 @@ export class SentAlerts {
   };
 
   onRowclick = function(event) {
-    event.context.evt.publish('notificationSelected', {notification: event.data, type: 'SENT'});
+    if(!!(event.data) && (!(this.selectedNotification) || (!!(this.selectedNotification) && !(event.data.notificationId === this.selectedNotification.notificationId)))) {
+      event.context.evt.publish('notificationSelected', {notification: event.data, type: 'SENT'});
+    }
   };
 
   onNotificationSelected(payload) {

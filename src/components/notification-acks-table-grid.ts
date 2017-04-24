@@ -7,6 +7,8 @@ import {Utils} from '../services/util';
 import {DataService} from '../services/dataService';
 import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
+import {NotificationResource} from '../model/notificationResource';
+import {NotificationAckResource} from '../model/notificationAckResource';
 
 @inject(Session, EventAggregator, I18N, Utils, DataService, LogManager) 
 @viewResources('./notification-acks-table-grid')
@@ -267,9 +269,13 @@ export class NotificationAcksTableGridCustomElement {
     .then((controller:any) => {
       // let model = controller.settings.model;
       let model = controller.settings;
-      let selectedNotification = {message: ack.ackMessage, attachments: ack.ackAttachmentIds};
-      controller.viewModel.selectedNotification = selectedNotification;
-      controller.viewModel.selectedNotificationAck = ack;
+      let selectedNotification = 
+      new NotificationAckResource({
+        ackMessage: ack.ackMessage, 
+        ackStatus: ack.ackStatus, 
+        acknowledgementDate: ack.acknowledgementDate
+      });
+      controller.viewModel.selectedNotificationAck = selectedNotification;
       
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (reply) => {
