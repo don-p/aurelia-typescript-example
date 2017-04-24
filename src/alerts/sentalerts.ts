@@ -119,8 +119,12 @@ export class SentAlerts {
     this.selectedNotification = selectedNotification;
     let me = this;
     // get the notification details.
-    this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000).then(function(data:any){
-      me.showSelectedNotification(data.responseCollection);
+    this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
+    this.notificationAcksPromise.then(function(data:any){
+      // set the message to read if currently unread.
+      let notification = data;
+      me.showSelectedNotification(notification);
+      return Promise.resolve('Notification read.');
     });
 
   }
@@ -130,14 +134,14 @@ export class SentAlerts {
     this.evt.publish('notificationsSelected', {selectedNotifications: scope.api.getSelectedRows(), notificationType: 'SENT'});
   }
 
-  showSelectedNotification(notificationAcks) {
-    this.selectedNotificationAcks = notificationAcks;
-    if(this.selectedNotificationAcks.length == 1) {
-      this.selectedNotificationAck = this.selectedNotificationAcks[0];
+  showSelectedNotification(notification) {
+    this.selectedNotification = notification;
+    if(!!(this.selectedNotification.acks) && this.selectedNotification.acks.length == 1) {
+      this.selectedNotificationAck = this.selectedNotification.acks[0];
     } else {
       this.selectedNotificationAck = null;
+      this.gridOptionsAcks.api.setRowData(notification.acks);
     }
-    this.gridOptionsAcks.api.setRowData(notificationAcks);
   }
 
   onAcksGridReady(event, scope) {

@@ -109,7 +109,8 @@ export class ReceivedAlerts {
     let selectedNotification = payload.notification;
     let me = this;
     // get the notification details.
-    this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000).then(function(data:any){
+    this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
+    this.notificationAcksPromise.then(function(data:any){
       // set the message to read if currently unread.
       let notification = data;
       if(notification.ackStatus === 'UNREAD') {

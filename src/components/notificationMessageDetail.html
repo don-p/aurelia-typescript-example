@@ -4,7 +4,7 @@
         <br>
         <div>Status: ${selectedNotification.ackStatusName}</div>
         <div>Date: ${selectedNotification.ackStatusDate}</div>
-        <div show.bind="!!(selectedNotification.ackMessage) && selectedNotification.ackMessage.length >= 1">Reply: ${selectedNotificationAck.ackMessage}</div>
+        <div show.bind="!!(selectedNotificationAck.ackMessage) && selectedNotificationAck.ackMessage.length >= 1">Reply: ${selectedNotificationAck.ackMessage}</div>
         <div show.bind="selectedNotification.notAttachmentCount >= 1">
             <hr>
             <ul>

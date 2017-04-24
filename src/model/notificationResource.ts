@@ -1,9 +1,10 @@
 import {computedFrom, Container, inject} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import {NotificationAckResource} from './notificationAckResource';
+import {Session} from '../services/session';
 import * as moment from 'moment';
 
-@inject(I18N)
+@inject(Session, I18N)
 export class NotificationResource {
   
   message: string;
@@ -45,26 +46,31 @@ export class NotificationResource {
   // }
 
   get readCount(): Number {
-    return !!(this.notificationStatus.ackStatusSummary.READ)?this.notificationStatus.ackStatusSummary.READ:0;
+    return 0;
+    // return !!(this.notificationStatus.ackStatusSummary.READ)?this.notificationStatus.ackStatusSummary.READ:0;
   }
 
   get unreadCount(): Number {
-    let unread = !!(this.notificationStatus.ackStatusSummary.UNREAD)?this.notificationStatus.ackStatusSummary.UNREAD:0;;
-    let proc = !!(this.notificationStatus.ackStatusSummary.PROCESSING)?this.notificationStatus.ackStatusSummary.PROCESSING:0;;
-    let sched = !!(this.notificationStatus.ackStatusSummary.SCHEDULED)?this.notificationStatus.ackStatusSummary.SCHEDULED:0;;
-    return unread + proc + sched;
+    return 0;
+    // let unread = !!(this.notificationStatus.ackStatusSummary.UNREAD)?this.notificationStatus.ackStatusSummary.UNREAD:0;;
+    // let proc = !!(this.notificationStatus.ackStatusSummary.PROCESSING)?this.notificationStatus.ackStatusSummary.PROCESSING:0;;
+    // let sched = !!(this.notificationStatus.ackStatusSummary.SCHEDULED)?this.notificationStatus.ackStatusSummary.SCHEDULED:0;;
+    // return unread + proc + sched;
   }
 
   get acceptedCount(): Number {
-    return !!(this.notificationStatus.ackStatusSummary.ACCEPTED)?this.notificationStatus.ackStatusSummary.ACCEPTED:0;
+    return 0;
+    // return !!(this.notificationStatus.ackStatusSummary.ACCEPTED)?this.notificationStatus.ackStatusSummary.ACCEPTED:0;
   }
 
   get declinedCount(): Number {
-    return !!(this.notificationStatus.ackStatusSummary.DECLINED)?this.notificationStatus.ackStatusSummary.DECLINED:0;
+    return 0;
+    // return !!(this.notificationStatus.ackStatusSummary.DECLINED)?this.notificationStatus.ackStatusSummary.DECLINED:0;
   }
 
   get repliedCount(): Number {
-    return !!(this.notificationStatus.ackStatusSummary.REPLY_MESSAGE)?this.notificationStatus.ackStatusSummary.REPLY_MESSAGE:0;
+    return 0;
+    // return !!(this.notificationStatus.ackStatusSummary.REPLY_MESSAGE)?this.notificationStatus.ackStatusSummary.REPLY_MESSAGE:0;
   }
 
   get formattedSentDate(): string {
@@ -93,27 +99,45 @@ export class NotificationResource {
   }
 
   get ackStatus(): string {
-    if(this.acks.length === 1) {
+    if(!!(this.acks) && this.acks.length === 1) {
       return this.acks[0].ackStatus;
-    } else {
-      return null;
+    } else if(!!(this.acks)) {
+      let session:any = Container.instance.get(Session);
+      let memberId = session.auth.member.memberId;
+      let ack = this.acks.find(function(ackItem) {
+        return memberId === ackItem.ackParty.memberId;
+      });
+      return ack.ackStatus;
     }
+    return null;
   }
 
   get ackStatusName(): string {
-    if(this.acks.length === 1) {
+    if(!!(this.acks) && this.acks.length === 1) {
       return this.acks[0].ackStatusName;
-    } else {
-      return null;
+    } else if(!!(this.acks)) {
+      let session:any = Container.instance.get(Session);
+      let memberId = session.auth.member.memberId;
+      let ack = this.acks.find(function(ackItem) {
+        return memberId === ackItem.ackParty.memberId;
+      });
+      return ack.ackStatusName;
     }
+    return null;
   }
 
   get ackStatusDate(): string {
-    if(this.acks.length === 1) {
+    if(!!(this.acks) && this.acks.length === 1) {
       return this.acks[0].formattedAckDate;
-    } else {
-      return null;
+    } else if(!!(this.acks)) {
+      let session:any = Container.instance.get(Session);
+      let memberId = session.auth.member.memberId;
+      let ack = this.acks.find(function(ackItem) {
+        return memberId === ackItem.ackParty.memberId;
+      });
+      return ack.formattedAckDate;
     }
+    return null;
   }
 
   get notAttachmentCount() {
