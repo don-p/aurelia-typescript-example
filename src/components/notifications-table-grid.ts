@@ -185,7 +185,7 @@ export class NotificationsTableGridCustomElement {
 
     // scope.gridOptions.doesDataFlower = scope.dataFlowerFunc;
 
-    scope.gridReadyFunc.call(this, event);
+    scope.gridReadyFunc.call(this, event, scope);
   }
 
   getMessageQuickFilterText(params) {

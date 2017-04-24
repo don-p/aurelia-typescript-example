@@ -46,31 +46,26 @@ export class NotificationResource {
   // }
 
   get readCount(): Number {
-    return 0;
-    // return !!(this.notificationStatus.ackStatusSummary.READ)?this.notificationStatus.ackStatusSummary.READ:0;
+    return !!(this.notificationStatus.ackStatusSummary.READ)?this.notificationStatus.ackStatusSummary.READ:0;
   }
 
   get unreadCount(): Number {
-    return 0;
-    // let unread = !!(this.notificationStatus.ackStatusSummary.UNREAD)?this.notificationStatus.ackStatusSummary.UNREAD:0;;
-    // let proc = !!(this.notificationStatus.ackStatusSummary.PROCESSING)?this.notificationStatus.ackStatusSummary.PROCESSING:0;;
-    // let sched = !!(this.notificationStatus.ackStatusSummary.SCHEDULED)?this.notificationStatus.ackStatusSummary.SCHEDULED:0;;
-    // return unread + proc + sched;
+    let unread = !!(this.notificationStatus.ackStatusSummary.UNREAD)?this.notificationStatus.ackStatusSummary.UNREAD:0;;
+    let proc = !!(this.notificationStatus.ackStatusSummary.PROCESSING)?this.notificationStatus.ackStatusSummary.PROCESSING:0;;
+    let sched = !!(this.notificationStatus.ackStatusSummary.SCHEDULED)?this.notificationStatus.ackStatusSummary.SCHEDULED:0;;
+    return unread + proc + sched;
   }
 
   get acceptedCount(): Number {
-    return 0;
-    // return !!(this.notificationStatus.ackStatusSummary.ACCEPTED)?this.notificationStatus.ackStatusSummary.ACCEPTED:0;
+    return !!(this.notificationStatus.ackStatusSummary.ACCEPTED)?this.notificationStatus.ackStatusSummary.ACCEPTED:0;
   }
 
   get declinedCount(): Number {
-    return 0;
-    // return !!(this.notificationStatus.ackStatusSummary.DECLINED)?this.notificationStatus.ackStatusSummary.DECLINED:0;
+    return !!(this.notificationStatus.ackStatusSummary.DECLINED)?this.notificationStatus.ackStatusSummary.DECLINED:0;
   }
 
   get repliedCount(): Number {
-    return 0;
-    // return !!(this.notificationStatus.ackStatusSummary.REPLY_MESSAGE)?this.notificationStatus.ackStatusSummary.REPLY_MESSAGE:0;
+    return !!(this.notificationStatus.ackStatusSummary.REPLY_MESSAGE)?this.notificationStatus.ackStatusSummary.REPLY_MESSAGE:0;
   }
 
   get formattedSentDate(): string {
@@ -99,6 +94,7 @@ export class NotificationResource {
   }
 
   get ackStatus(): string {
+    // Return status based on ack status
     if(!!(this.acks) && this.acks.length === 1) {
       return this.acks[0].ackStatus;
     } else if(!!(this.acks)) {
@@ -108,6 +104,12 @@ export class NotificationResource {
         return memberId === ackItem.ackParty.memberId;
       });
       return ack.ackStatus;
+    } else {
+    // Return status based on notification status
+      let statusArray = Object.keys(this.notificationStatus.ackStatusSummary);
+      if(statusArray.length === 1) {
+        return statusArray[0];
+      }
     }
     return null;
   }
