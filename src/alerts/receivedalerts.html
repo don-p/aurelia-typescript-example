@@ -5,24 +5,18 @@
 	<require from="../components/clear-filter-button"></require>
     <require from="../lib/loading-mask/loading-mask"></require>
 
-	<section id="membersTable" class="members-table notifications-table">
+	<section id="membersTable" class="members-table alerts-table">
 		
 		<div class="members-table-header" id="membersTableHeader">Received Alerts</div>
-		<aside class="alerts-list-panel">
-
-        <!-- FIXME: Temporarily hiding actions, until DELETE action is available. -->
+		
 		<alerts-actions-bar></alerts-actions-bar>
-        
+		
 		<div class="members-table-info-bar">
 			<div role="status" id="example_info" class="members-table-info">
                 <input placeholder="Filter..." class="alert-filter pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
                 <select class="form-control select select-default-blg alert-types pull-right" change.delegate="onNotificationsMessageStatusFilterChange($event)">
                     <option value.bind="'ALL'">${'global.all' | t}</option>
                     <option repeat.for="category of alertCategories" value.bind="category.categoryName">${category.categoryName}</option>
-                    <!--<option value.bind="'INFO'">INFO</option>
-                    <option value.bind="'BOLO'">BOLO</option>
-                    <option value.bind="'LOCATION'">LOCATION</option>
-                    <option value.bind="'MISSING PERSON'">MISSING PERSON</option>-->
                 </select>
                 <span class="alert-type-select-label pull-right" i18n='[prepend]community.communities.alert.alertType'>:</span>
  			</div>
@@ -43,46 +37,53 @@
 				enable-server-side-filter.bind="false"
 				display-columns.bind="['selection','receivedDate','from','message','organization','category','attachments']"></notifications-table-grid>
 		</div>
-		</aside>
-	</section>
-    <section class="members-table notifications-table-right">
-		<div class="members-table-header" id="membersTableHeader">Alert Detail</div>
-        <aside class="blg-notifications-right-panel" >
-        <div class="members-table-content" style="height:100%;top:40px;padding:24px;position:relative;">
-          <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
-            <div show.bind="!!(selectedNotification)" class="requestDetailContainer" style="height:100%;">
-                <div class="request-details-content">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="table-label">From:</td>
-                                <td class="table-text">${selectedNotification.senderFullName}</td>
-                            </tr>
-                            <tr>
-                                <td class="table-label">Received:</td>
-                                <td class="table-text">${selectedNotification.formattedSentDate}</td>
-                            </tr>
-                            <tr>
-                                <td class="table-label">Alert type:</td>
-                                <td class="table-text">${selectedNotification.notificationCategory.categoryName}</td>
-                            </tr>
-                            <tr>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div show.bind="!!(selectedNotification)" >
-                    <compose view="../components/notificationMessageDetail.html" containerless></compose>
-                </div>
-                <div show.bind="!!(selectedNotification) && (selectedNotification.ackStatus === 'UNREAD' || selectedNotification.ackStatus === 'READ')" class="modal-footer">
-                    <button class="btn btn-danger btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'DECLINED')"><i class="ico-blocked"></i>&nbsp; Decline</button>
-                    <button  class="btn btn-success btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
-                    <button  type="submit" class="btn btn-default btn-sm" click.trigger="setNotificationReply(selectedNotificationAck)"><i class="ico-reply"></i>&nbsp; Reply</button>
-                </div>
-            </div>
-          </loading>
-        </div>
-        </aside>
 
 	</section>
+
+    <aside class="alert-details-panel">
+        <div class="alert-details-header">Alert Detail</div>
+        <div class="alert-details-received-content">
+            <div class="alert-details-content-scroll">
+
+                <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
+                    <div show.bind="!!(selectedNotification)" class="requestDetailContainer" style="height:100%;">
+                        <div class="request-details-content">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-label">From:</td>
+                                        <td class="table-text">${selectedNotification.senderFullName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">Received:</td>
+                                        <td class="table-text">${selectedNotification.formattedSentDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">Alert type:</td>
+                                        <td class="table-text">${selectedNotification.notificationCategory.categoryName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">Message:</td>
+                                        <td class="table-text"></td>                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div show.bind="!!(selectedNotification)" >
+                            <compose view="../components/notificationMessageDetail.html" containerless></compose>
+                        </div>
+                    </div>
+                </loading>
+
+            </div>
+        </div>
+        <div class="alert-details-bottom-bar">
+            <div show.bind="!!(selectedNotification) && (selectedNotification.ackStatus === 'UNREAD' || selectedNotification.ackStatus === 'READ')" class="alert-details-bottom-buttons">
+                <button class="btn btn-danger btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'DECLINED')"><i class="ico-blocked"></i>&nbsp; Decline</button>
+                <button  class="btn btn-success btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
+                <button  type="submit" class="btn btn-default btn-sm" click.trigger="setNotificationReply(selectedNotificationAck)"><i class="ico-reply"></i>&nbsp; Reply</button>
+            </div>            
+        </div>
+    </aside>
+   
 </template>
