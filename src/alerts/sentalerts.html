@@ -73,6 +73,15 @@
                     </table>
                 </div>
                 <div show.bind="selectedNotification.acks.length > 1">
+                    <div show.bind="selectedNotification.acks[0].notAttachmentCount >= 1">
+                        <hr>
+                        <ul>
+                            <li repeat.for="att of selectedNotification.attachments" style="list-style-type: none;">
+                                <div show.bind="att.payloadDataType.indexOf('image') < 0"><i class="fa fa-file-image-o" aria-hidden="true"></i> <a href="" >${att.payloadName}</a></div>
+                                <div show.bind="att.payloadDataType.indexOf('image') >= 0"><img src.bind="att.downloadLink"></div>
+                            </li>
+                        </ul> 
+                    </div>                  
                     <div class="members-table-content" style="top:140px;">
                         <div class="members-table-info-bar" style="top:0px;">
                             <div role="status" id="example_info" class="members-table-info">

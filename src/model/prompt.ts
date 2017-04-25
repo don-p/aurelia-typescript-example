@@ -29,7 +29,7 @@ export class Prompt {
     this.okText = this.controller.settings.okText;
     this.showCancel = this.controller.settings.showCancel;
     this.isSubmitDisabled = this.controller.settings.isSubmitDisabled && this.controller.settings.isSubmitDisabled === true?
-      this.controller.settings.isSubmitDisabled:false;
+    this.controller.settings.isSubmitDisabled:false;
     this.item = this.controller.settings.item;
     this.errorMessage = null;
 
