@@ -974,6 +974,13 @@ header .navbar-nav {
   border-bottom-left-radius: 6px;
   background-color: $blg-white;
 }
+
+.alert-details-table-content {
+  position: absolute;
+  width: 100%;
+  height: 300%;
+}
+
 .message-board .message-board-header,
 .members-table .members-table-header,
 .results-table .results-table-header,
@@ -1045,6 +1052,12 @@ header .navbar-nav {
   border-radius: 0px;
   background-color: $blg-white;
   z-index: 998;
+  font-size: 14px;
+}
+
+.alert-details-filter-bar {
+  padding: 25px 15px 5px 15px;
+  background-color: $blg-white;
   font-size: 14px;
 }
 
@@ -2282,7 +2295,7 @@ abp-datetime-picker .input-group-addon {
 }
 
 .alert-message-text {
-    border: 1px solid $blg-blue;
+    border: 1px solid $blg-grey-light-more;
     border-radius: 6px;
     padding: 5px 10px;
     margin-left: 45px;
@@ -2300,4 +2313,18 @@ abp-datetime-picker .input-group-addon {
   min-width: 100px;
   margin-left: 10px;
   font-size: 14px;  
+}
+
+.alert-reply-message-text {
+  height: 187px;
+  padding: 3px 5px;
+  border: 1px solid $blg-blue-light;
+  border-radius: 5px;
+  min-width: 600px;
+}
+
+.alert-reply-div-table {
+    display: table;
+    width: 100%;
+    padding: 0px 15px 0px 15px;
 }
