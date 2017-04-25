@@ -38,7 +38,7 @@
         <ag-grid-column if.bind="showColumn('message')" width.bind="30" header-name="" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
                 <span>
-                   <i show.bind="params.data.ackStatus === 'UNREAD'" class="fa fa-circle" style="color: #2980b9;" aria-hidden="true" title="Read"></i>
+                   <i show.bind="params.data.ackStatus === 'UNREAD'" class="fa fa-circle unread-alert" aria-hidden="true" title="Unread"></i>
                 </span>
             </ag-cell-template>
         </ag-grid-column>

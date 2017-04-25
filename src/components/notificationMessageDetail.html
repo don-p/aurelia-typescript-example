@@ -2,7 +2,7 @@
     <div show.bind="!!(selectedNotification) && !!(selectedNotification.message)" class="alert-message-text">
         <div>${selectedNotification.message}</div>
     </div>         
-    <div class="request-details-content">
+    <div class="status-details-content">
         <table>
             <tbody>
                 <tr>
@@ -21,7 +21,7 @@
         </table>
     </div>
 
-    <div show.bind="!!(selectedNotificationAck.ackMessage) && selectedNotificationAck.ackMessage.length >= 1" class="alert-message-text">
+    <div show.bind="!!(selectedNotificationAck.ackMessage) && selectedNotificationAck.ackMessage.length >= 1" class="reply-message-text">
         <div>${selectedNotificationAck.ackMessage}</div>
         <div show.bind="selectedNotificationAck.ackAttachments.length >= 1">
             <hr>
