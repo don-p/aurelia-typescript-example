@@ -140,10 +140,26 @@ export class ReceivedAlerts {
       this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
       this.notificationAcksPromise.then(function(data:any){
         let notification = data;
+        // let notification = data.notification;
+        // let resultArray = [];
+        // notification.acks = resultArray;
+
+        // data.response.forEach(response => {response.json()
+        //     .then(responseAck => {
+        //         let js = JSON.stringify(responseAck);
+        //         let ack:Array<NotificationAckResource> = me.alertsService.parseNotificationAcks('{"responseCollection":[' + js + ']}');
+        //         resultArray.push(ack[0]);
+        //         return ack[0];
+        //     });
+        // });
+
+        
+        me.logger.debug(">> not acks: " + (notification.acks && notification.acks.length));
         let memberId = me.session.auth['member'].memberId;
         let ack = notification.acks.find(function(ackItem) {
           return memberId === ackItem.ackParty.memberId;
         });
+        me.logger.debug(">> not matched ack: " + ack);
         me.selectedNotificationAck = ack;
         me.showSelectedNotification(notification);
       });
