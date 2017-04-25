@@ -130,7 +130,6 @@ export class SentAlerts {
       // set the message to read if currently unread.
       let notification = data;
       me.showSelectedNotification(notification);
-      return Promise.resolve('Notification read.');
     });
 
   }
