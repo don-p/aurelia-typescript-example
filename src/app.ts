@@ -16,6 +16,7 @@ import{RedirectWithParams} from './lib/RedirectWithParams';
 export class App {
   session: Session;
   logger: Logger;
+  configPromise: Promise<any>;
 
   constructor(Session, private fetchConfig: FetchConfig, private i18n: I18N, 
     private evt: EventAggregator, private authService: AuthService, 
@@ -27,22 +28,25 @@ export class App {
     // Subscribe to authentication events.  Bootstrap other services.
     this.evt.subscribe('authenticated', auth => {
       // Get server config data and merge server config with local.
-      me.dataService.getCallServiceConfig()
-      .then(response => response.json())
-      .then((data) => {
-        // Merge configs.
-        me.appConfig.merge({server: data});
-      }).catch(error => {
-        me.logger.debug('getCallServiceConfig() returned error: ' + error);
-      })
-
+      let callConfigPromise: Promise<Response> = me.dataService.getCallServiceConfig();
+      callConfigPromise.then(function(response) {
+        return response.json()
+        .then((data) => {
+          // Merge configs.
+          me.appConfig.merge({server: data});
+          me.logger.debug('=== CONFIG callServer ===');
+          return data;
+        }).catch(error => {
+          me.logger.debug('getCallServiceConfig() returned error: ' + error);
+        })
+      });
       // Get alert categories/types.
-      me.dataService.getAlertCategories(0,  10000)
-      .then(response => {return response.json()
+      let alertCatPromise: Promise<Response> =me.dataService.getAlertCategories(0,  10000);
+      alertCatPromise.then(response => {return response.json()
         .then(data => {
           let categories = data.responseCollection;
           // Get alert notification template set.
-          me.organizationService.getOrganizationNotificationTemplates(
+          return me.organizationService.getOrganizationNotificationTemplates(
             me.session.auth['organization'].organizationId, null
           )
           .then(response => response.json())
@@ -55,6 +59,8 @@ export class App {
               category['categoryTemplates'] = data[templateCategoryId].responseCollection;
             });
             me.appConfig.set('alertCategories', categories);
+            me.logger.debug('=== CONFIG appConfig ===');
+            return data;
             //me.appConfig.set('alertTemplates', data);
           });
         }).catch(error => {
@@ -68,6 +74,13 @@ export class App {
         //throw error;
         return Promise.reject(error);
       });
+
+      me.configPromise = Promise.all([callConfigPromise, callConfigPromise /*, alertCatPromise*/]);
+      me.session['configured'] = me.configPromise;
+      me.configPromise.then(function(result) {
+        me.logger.debug('=== CONFIGURED ===');
+        return true;
+      })
       
     });    
     
@@ -142,6 +155,7 @@ export class App {
       }
       return route;
     });
+    config.addAuthorizeStep(ConfigurationStep);
     config.addAuthorizeStep(AuthenticationStep);
     config.addAuthorizeStep(AuthorizeRolesStep);        
     config.map([
@@ -304,3 +318,20 @@ export class AuthorizeRolesStep {
     return next.cancel();
   }
 }
+
+@inject(Session)
+export class ConfigurationStep {
+  constructor(private session: Session) {
+    this.session.toString();
+  }
+  run(navigationInstruction: NavigationInstruction, next: Next): Promise<any> {  
+    // Check if app is configured yet.
+    let configured = this.session['configured'];
+    return configured.then(function(result){
+      console.debug("[ROUTER] === CONFIGURED ===");
+      return next();
+    });
+      
+  }
+}
+

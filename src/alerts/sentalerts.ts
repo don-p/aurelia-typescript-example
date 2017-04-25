@@ -32,8 +32,6 @@ export class SentAlerts {
   notificationsMessageStatusFilter: string;
   notificationAcksMessageStatusFilter: string;
 
-  alertCategories: Array<any>;
-
   ps: any; // SCROLL
 
   logger: Logger;
@@ -46,7 +44,7 @@ export class SentAlerts {
 
     let me = this;
 
-    this.alertCategories = appConfig.get('alertCategories');
+    // this.alertCategories = appConfig.get('alertCategories');
 
     this.gridOptions = <GridOptions>{};
     this.gridOptions['id'] = 'notificationsGrid';
@@ -84,6 +82,10 @@ export class SentAlerts {
     // let promise =  this.getOrganizationsPage(0, 500);
 
     // return promise;
+  }
+
+  get alertCategories(): Array<any> {
+    return this.appConfig.get('alertCategories');
   }
 
   onGridReady(event, scope) {
