@@ -30,8 +30,6 @@ export class ReceivedAlerts {
   notificationsMessageStatusFilter: string;
   notificationAcksMessageStatusFilter: string;
 
-  alertCategories: Array<any>;
-
   ps: any; // SCROLL
 
   logger: Logger;
@@ -44,7 +42,7 @@ export class ReceivedAlerts {
 
     let me = this;
 
-    this.alertCategories = appConfig.get('alertCategories');
+    // this.alertCategories = appConfig.get('alertCategories');
 
     this.gridOptions = <GridOptions>{};
     this.gridOptions['id'] = 'notificationsGrid';
@@ -64,17 +62,22 @@ export class ReceivedAlerts {
     
   }
 
-  bind(bindingContext: Object, overrideContext: Object) {
+  bind(bindingContext: any, overrideContext: Object) {
     this.logger.debug("SentAlerts | bind()");
-  }
+   }
 
   activate() {
+    this.logger.debug("SentAlerts | activate()");
     // Wait for required view data before routing, by returning a Promise from activate().
 
     // Get list of organizations the logged-in user has rights to.
     // let promise =  this.getOrganizationsPage(0, 500);
 
     // return promise;
+  }
+
+  get alertCategories(): Array<any> {
+    return this.appConfig.get('alertCategories');
   }
 
   onGridReady(event, scope) {

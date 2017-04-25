@@ -35,7 +35,7 @@
             suppress-filter.bind="true" suppress-resize.bind="true" 
             suppress-movable.bind="true" suppress-menu.bind="true" 
             pinned.bind="true" header-class.bind="ag-gridCheckboxHeader"></ag-grid-column>-->
-        <ag-grid-column if.bind="showColumn('message')" width.bind="30" header-name="" suppress-sorting.bind="true" suppress-filter.bind="true">
+        <ag-grid-column if.bind="showColumn('from')" width.bind="30" header-name="" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
                 <span>
                    <i show.bind="params.data.ackStatus === 'UNREAD'" class="fa fa-circle" style="color: #2980b9;" aria-hidden="true" title="Read"></i>
