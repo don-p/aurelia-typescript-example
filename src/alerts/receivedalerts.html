@@ -40,11 +40,11 @@
 	</section>
 
     <aside class="alert-details-panel">
+        <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
         <div class="alert-details-header">Alert Detail</div>
         <div class="alert-details-received-content">
             <div class="alert-details-content-scroll">
 
-                <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
                     <div show.bind="!!(selectedNotification)" class="requestDetailContainer" style="height:100%;">
                         <div class="request-details-content">
                             <table>
@@ -72,17 +72,17 @@
                             <compose view="../components/notificationMessageDetail.html" containerless></compose>
                         </div>
                     </div>
-                </loading>
 
             </div>
         </div>
         <div class="alert-details-bottom-bar">
             <div show.bind="!!(selectedNotification) && (selectedNotification.ackStatus === 'UNREAD' || selectedNotification.ackStatus === 'READ')" class="alert-details-bottom-buttons">
-                <button class="btn btn-danger btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'DECLINED')"><i class="ico-blocked"></i>&nbsp; Decline</button>
-                <button  class="btn btn-success btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
-                <button  type="submit" class="btn btn-default btn-sm" click.trigger="setNotificationReply(selectedNotificationAck)"><i class="ico-reply"></i>&nbsp; Reply</button>
+                <button class="btn btn-danger btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'DECLINED')"><i class="ico-blocked"></i>&nbsp; ${'button.reject' | t}</button>
+                <button  class="btn btn-success btn-sm" click.trigger="setNotificationStatus(selectedNotificationAck, 'ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; ${'button.accept' | t}</button>
+                <button  type="submit" class="btn btn-default btn-sm" click.trigger="setNotificationReply(selectedNotificationAck)"><i class="ico-reply"></i>&nbsp; ${'button.reply' | t}</button>
             </div>            
         </div>
+    </loading>
     </aside>
    
 </template>

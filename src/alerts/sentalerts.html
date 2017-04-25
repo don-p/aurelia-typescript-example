@@ -40,14 +40,11 @@
 	</section>
 
     <aside class="alert-details-panel">
+    <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
         <div class="alert-details-header">Alert Detail</div>
-
-      
         <div class="alert-details-sent-content">
             <div class="alert-details-content-scroll">
 
-
-                <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
                     <div show.bind="!!(selectedNotification) && !!(selectedNotification.acks)" class="requestDetailContainer" style="height:100%;">
                         <div class="request-details-content">
                             <table>
@@ -118,12 +115,9 @@
                             </notification-acks-table-grid>
                         </div>
                     </div>
-                </loading>
-
             </div>
         </div>
-
-
+    </loading>
     </aside>
    
 </template>
