@@ -2233,14 +2233,14 @@ abp-datetime-picker .input-group-addon {
     background: transparent;
     border-radius: 3px;
     min-height: 565px;
-    bottom: 0;  
+    bottom: 14px;  
 }
 
 .alert-details-panel .alert-details-received-content {
     padding: 15px 9px 0 9px;
     position: absolute;
     top: 40px;
-    bottom: 59px;
+    bottom: 45px;
     left: 0px;
     right: 0px;
     border-bottom: 0px;
@@ -2256,7 +2256,7 @@ abp-datetime-picker .input-group-addon {
     padding: 15px 9px 0 9px;
     position: absolute;
     top: 40px;
-    bottom: 15px;
+    bottom: 0px;
     left: 0px;
     right: 0px;
     border-bottom: 2px solid $blg-grey-light;
@@ -2283,7 +2283,7 @@ abp-datetime-picker .input-group-addon {
 .alert-details-panel .alert-details-bottom-bar {
     position: absolute;
     height: 45px;
-    bottom: 14px;
+    bottom: 0px;
     left: 0px;
     right: 0px;
     border-bottom: 2px solid $blg-grey-light;
