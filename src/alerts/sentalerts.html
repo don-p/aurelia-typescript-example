@@ -5,26 +5,20 @@
 	<require from="../components/clear-filter-button"></require>
     <require from="../lib/loading-mask/loading-mask"></require>
 
-	<section id="membersTable" class="members-table notifications-table">
+	<section id="membersTable" class="members-table alerts-table">
 		
 		<div class="members-table-header" id="membersTableHeader">Sent Alerts</div>
-		<aside class="alerts-list-panel">
-
-        <!-- FIXME: Temporarily hiding actions, until DELETE action is available. -->
+		
 		<alerts-actions-bar></alerts-actions-bar>
-
+		
 		<div class="members-table-info-bar">
 			<div role="status" id="example_info" class="members-table-info">
                 <input placeholder="Filter..." class="alert-filter pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
                 <select class="form-control select select-default-blg alert-types pull-right" change.delegate="onNotificationsMessageStatusFilterChange($event)">
                     <option value.bind="'ALL'">${'global.all' | t}</option>
                     <option repeat.for="category of alertCategories" value.bind="category.categoryName">${category.categoryName}</option>
-                    <!--<option value.bind="'INFO'">INFO</option>
-                    <option value.bind="'BOLO'">BOLO</option>
-                    <option value.bind="'LOCATION'">LOCATION</option>-->
                 </select>
                 <span class="alert-type-select-label pull-right" i18n='[prepend]community.communities.alert.alertType'>:</span>
-                <!--<clear-filter-button  grid-options.bind="gridOptions"></clear-filter-button>-->
 			</div>
 		</div>		
 		
@@ -42,8 +36,127 @@
 				enable-server-side-filter.bind="false"
 				display-columns.bind="['selection','status','sentDate','to','message','organization','category','attachments']"></notifications-table-grid>
 		</div>
+
+	</section>
+
+    <aside class="alert-details-panel">
+        <div class="alert-details-header">Alert Detail</div>
+
+      
+        <div class="alert-details-sent-content">
+            <div class="alert-details-content-scroll">
+
+
+                <loading id="sentalerts-loading" promise.bind="'notificationAcksPromise'" message-key.bind="'app.loading'">
+                    <div show.bind="!!(selectedNotification) && !!(selectedNotification.acks)" class="requestDetailContainer" style="height:100%;">
+                        <div class="request-details-content">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-label">To:</td>
+                                        <td class="table-text">${selectedNotification.recipientFullName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">Send date:</td>
+                                        <td class="table-text">${selectedNotification.formattedSentDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">Alert type:</td>
+                                        <td class="table-text">${selectedNotification.notificationCategory.categoryName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">Message:</td>
+                                        <td class="table-text"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div show.bind="selectedNotification.acks.length > 1" class="alert-message-text">
+                            <div>${selectedNotification.message}</div>
+                        </div>
+
+                        <div show.bind="selectedNotification.acks.length <= 1" >
+                            <compose view="../components/notificationMessageDetail.html" containerless></compose>
+                        </div>
+
+                        <div show.bind="selectedNotification.acks.length > 1" class="alert-details-filter-bar">
+                            <div role="status" id="example_info" class="members-table-info">
+                                <input placeholder="Filter..." type="text" class="alert-filter pull-right" input.delegate="onNotificationAcksQuickFilterChanged($event)"/>
+                                <select class="form-control select select-default-blg alert-types pull-right" change.delegate="onNotificationAcksMessageStatusFilterChange($event)">
+                                    <option value.bind="'ALL'">${'global.all' | t}</option>
+                                    <option value.bind="'UNREAD'">${'alerts.notifications.ackStatus.UNREAD' | t}</option>
+                                    <option value.bind="'READ'">${'alerts.notifications.ackStatus.READ' | t}</option>
+                                    <option value.bind="'REPLY_MESSAGE'">${'alerts.notifications.ackStatus.REPLY_MESSAGE' | t}</option>
+                                    <option value.bind="'ACCEPTED'">${'alerts.notifications.ackStatus.ACCEPTED' | t}</option>
+                                    <option value.bind="'DECLINED'">${'alerts.notifications.ackStatus.DECLINED' | t}</option>
+                                </select>
+                                <span class="alert-type-select-label pull-right" i18n='[prepend]alerts.notifications.status'>:</span>
+                            </div>
+                        </div>		
+
+                        <div show.bind="selectedNotification.acks.length > 1" class="alert-details-table-content">
+                            <notification-acks-table-grid
+                                grid-id.bind="notificationAcksGrid"
+                                grid-options.bind="gridOptionsAcks" 
+                                grid-ready-func.bind="onAcksGridReady"
+                                pagination-page-size.bind="pageSize"
+                                enable-sorting.bind="true"
+                                enable-server-side-sorting.bind="false"
+                                enable-filter.bind="true"
+                                enable-server-side-filter.bind="false"
+                                display-columns.bind="['attachments','status','date','to','organization']">
+                            </notification-acks-table-grid>
+                        </div>
+                    </div>
+                </loading>
+
+            </div>
+        </div>
+
+
+    </aside>
+
+
+
+<!--
+	<section id="membersTable" class="members-table notifications-table">
+		
+		<div class="members-table-header" id="membersTableHeader">Sent Alerts</div>
+		<aside class="alerts-list-panel">
+
+		<alerts-actions-bar></alerts-actions-bar>
+
+		<div class="members-table-info-bar">
+			<div role="status" id="example_info" class="members-table-info">
+                <input placeholder="Filter..." class="alert-filter pull-right" type="text" input.delegate="onNotificationsQuickFilterChanged($event)"/>
+                <select class="form-control select select-default-blg alert-types pull-right" change.delegate="onNotificationsMessageStatusFilterChange($event)">
+                    <option value.bind="'ALL'">${'global.all' | t}</option>
+                    <option repeat.for="category of alertCategories" value.bind="category.categoryName">${category.categoryName}</option>
+                </select>
+                <span class="alert-type-select-label pull-right" i18n='[prepend]community.communities.alert.alertType'>:</span>
+			</div>
+		</div>		
+		
+		<div class="members-table-content" id="membersTableContent">	
+			<notifications-table-grid 
+				grid-id.bind="notificationsGrid"
+				grid-options.bind="gridOptions" 
+				grid-ready-func.bind="onGridReady"
+				grid-filter-func.bind="onFilterChanged"
+				grid-selection-changed-func.bind="onSelectionChanged"
+				row-selection-changed-func.bind="onRowclick"
+				pagination-page-size.bind="pageSize"
+				enable-sorting.bind="true"
+				enable-server-side-sorting.bind="false"
+				enable-filter.bind="true"
+				enable-server-side-filter.bind="false"
+				display-columns.bind="['selection','status','sentDate','to','message','organization','category','attachments']"></notifications-table-grid>
+		</div>
 		</aside>
 	</section>
+
+
     <section class="members-table notifications-table-right">
 		<div class="members-table-header" id="membersTableHeader">Alert Detail</div>
         <aside class="blg-notifications-right-panel">
@@ -121,4 +234,5 @@
         </aside>
 
 	</section>
+-->    
 </template>
