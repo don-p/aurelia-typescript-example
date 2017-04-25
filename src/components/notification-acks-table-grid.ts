@@ -269,12 +269,7 @@ export class NotificationAcksTableGridCustomElement {
     .then((controller:any) => {
       // let model = controller.settings.model;
       let model = controller.settings;
-      let selectedNotification = 
-      new NotificationAckResource({
-        ackMessage: ack.ackMessage, 
-        ackStatus: ack.ackStatus, 
-        acknowledgementDate: ack.acknowledgementDate
-      });
+      let selectedNotification = ack;
       controller.viewModel.selectedNotificationAck = selectedNotification;
       
       // Callback function for submitting the dialog.

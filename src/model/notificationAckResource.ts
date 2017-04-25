@@ -8,6 +8,7 @@ export class NotificationAckResource {
   message: string;
   ackAttachmentIds: Array<any>;
   attachmentCount: Number;
+  attachments: Array<any>;
   notificationId: string;
   ackParty: any;
   acknowledgementDate: Date;

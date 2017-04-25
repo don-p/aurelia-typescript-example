@@ -46,7 +46,11 @@
         <ag-grid-column if.bind="showColumn('receivedDate')" header-name="${'alerts.notifications.receivedDate' | t}" field="formattedSentDate" width.bind="150" suppress-filter.bind="true"></ag-grid-column>
         <!--<ag-grid-column if.bind="showColumn('category')" header-name="${'alerts.notifications.category' | t}" field="notificationCategory.categoryName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
         <!--<ag-grid-column if.bind="showColumn('message')" header-name="${'alerts.notifications.message' | t}" field="message" hide.bind="true" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
-        <ag-grid-column if.bind="showColumn('to')" header-name="${'alerts.notifications.to' | t}" field="recipientFullName" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('to')" header-name="${'alerts.notifications.to' | t}" field="recipientFullName" filter.bind="getTextSearchFilter()">
+            <ag-cell-template>
+                <span class="members-count">${params.data.recipientFullName} <span show.bind="!!(params.data.receiverReference.communityReceiver)">(<i class='ico-users'></i> ${params.data.receiverReference.communityReceiver.totalReceiversCount})</span></span>
+            </ag-cell-template>
+        </ag-grid-column>
         <ag-grid-column if.bind="showColumn('from')" header-name="${'alerts.notifications.from' | t}" field="senderFullName" filter.bind="getTextSearchFilter()"></ag-grid-column>
         <!--<ag-grid-column if.bind="showColumn('from')" header-name="${'alerts.notifications.from' | t}" field="senderReference.physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
         <ag-grid-column if.bind="showColumn('organization')" header-name="${'alerts.notifications.organization' | t}" field="senderReference.physicalPersonProfile.organization.organizationName" filter.bind="getTextSearchFilter()"></ag-grid-column>
