@@ -2371,7 +2371,7 @@ abp-datetime-picker .input-group-addon {
   white-space: normal;
   color:  mix($blg-blue, white, 85%);
   line-height: 20px;
-  left: 230px;
+  left: 130px;
   position: absolute;
   top: 5px;
   font-size: 13px;
@@ -2395,19 +2395,20 @@ LABEL.INFO {
 }
 
 LABEL.HIGH,
-LABEL.URGE {
+LABEL.URGENT {
   color: $blg-red-light;
   border: 1px solid mix($blg-red-light, white, 65%);   
 }
 
-LABEL.LOCA,
+LABEL.LOCATION,
 LABEL.BOLO,
-LABEL.MISS {
+LABEL.MISSING,
+LABEL.INFO_DEBUG {
   color: $blg-wet-asphalt-lighter;
   border: 1px solid mix($blg-wet-asphalt-lighter, white, 65%);
 }
 
-LABEL.MODE {
+LABEL.MODERATE {
   color: $sun-flower;
   border: 1px solid mix($sun-flower, white, 65%);   
 }
