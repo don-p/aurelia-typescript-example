@@ -1184,6 +1184,14 @@ table.blg-dataTable.display tbody td {
   cursor: no-drop;
 }
 
+.ag-header-cell-left {
+  text-align: left;
+}
+
+.ag-header-cell-center {
+  text-align: center;
+}
+
 .members-table-content .ag-header-cell,
 .send-alert-members-table .ag-header-cell {
   text-align: left !important;
