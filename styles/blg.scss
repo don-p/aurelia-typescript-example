@@ -2376,19 +2376,17 @@ abp-datetime-picker .input-group-addon {
 }
 
 .full-width-summary SPAN {
-  white-space: normal;
   color:  mix($blg-blue, white, 95%);
-  line-height: 20px;
-  left: 165px;
-  position: absolute;
+  position: relative;
   top: 7px;
   font-size: 13px;
 }
 
 .full-width-summary LABEL {
-  position: absolute;
-  top: 16px;
-  left: 60px;
+  position: relative;
+  top: 6px;
+  margin-left: 60px;
+  margin-right: 30px;
 }
 
 .alert-label {
@@ -2452,6 +2450,10 @@ LABEL.LOW {
   background: -o-linear-gradient(top, $blg-grey-lighter-more, $blg-white);
 }
 
-.alerts-table-content  .ag-blg .ag-cell-no-focus {
+.alerts-table-content .ag-blg .ag-cell-no-focus {
     border-top: 1px solid #cdcdcd !important;
+}
+
+.alerts-table-content .ag-blg .ag-cell-not-inline-editing {
+    padding: 5px 3px 3px 3px !important;
 }
