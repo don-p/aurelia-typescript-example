@@ -2383,23 +2383,21 @@ abp-datetime-picker .input-group-addon {
   left: 25px;
 }
 
+.alert-label {
+  width: 80px;
+  text-align: center;
+  font-size: 12px;    
+}
+
 LABEL.INFO {
   color: $blg-blue;
   border: 1px solid mix($blg-blue, white, 65%);  
-  padding: 2px 5px;
-  width: 185px;
-  text-align: center;
-  font-size: 12px;
 }
 
 LABEL.HIGH,
 LABEL.URGE {
   color: $blg-red-light;
   border: 1px solid mix($blg-red-light, white, 65%);   
-  padding: 2px 5px;
-  width: 185px;
-  text-align: center;
-  font-size: 12px;  
 }
 
 LABEL.LOCA,
@@ -2407,28 +2405,16 @@ LABEL.BOLO,
 LABEL.MISS {
   color: $blg-wet-asphalt-lighter;
   border: 1px solid mix($blg-wet-asphalt-lighter, white, 65%);
-  padding: 2px 5px;
-  width: 185px;
-  text-align: center;
-  font-size: 12px;  
 }
 
 LABEL.MODE {
   color: $sun-flower;
   border: 1px solid mix($sun-flower, white, 65%);   
-  padding: 2px 5px;
-  width: 185px;
-  text-align: center;
-  font-size: 12px;
 }
 
 LABEL.LOW {
   color: $blg-green;
   border: 1px solid mix($blg-green, white, 65%);   
-  padding: 2px 5px;
-  width: 185px;
-  text-align: center;
-  font-size: 12px;
 }
 
 .ag-row-level-0.ag-row-focus {
