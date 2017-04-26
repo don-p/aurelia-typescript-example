@@ -135,6 +135,8 @@ export class ReceivedAlerts {
           });
           me.selectedNotificationAck = ack;
           me.showSelectedNotification(notification);
+          // Update "READ" status in list.
+          selectedNotification.notificationStatus.ackStatusSummary = {READ: 1};
         });
       });
     } else {
