@@ -996,7 +996,7 @@ header .navbar-nav {
 .alert-details-table-content {
   position: absolute;
   width: 100%;
-  height: 300%;
+  height: 10000%;
 }
 
 .message-board .message-board-header,
@@ -2369,14 +2369,82 @@ abp-datetime-picker .input-group-addon {
 
 .full-width-summary SPAN {
   white-space: normal;
-  color: $blg-blue;
+  color:  mix($blg-blue, white, 85%);
   line-height: 20px;
-  left: 150px;
+  left: 230px;
   position: absolute;
-  top: 4px;
+  top: 5px;
+  font-size: 13px;
 }
 
 .full-width-summary LABEL {
   position: absolute;
-  top: 4px;
+  top: 14px;
+  left: 25px;
+}
+
+LABEL.INFO {
+  color: $blg-blue;
+  border: 1px solid mix($blg-blue, white, 65%);  
+  padding: 2px 5px;
+  width: 185px;
+  text-align: center;
+  font-size: 12px;
+}
+
+LABEL.HIGH,
+LABEL.URGE {
+  color: $blg-red-light;
+  border: 1px solid mix($blg-red-light, white, 65%);   
+  padding: 2px 5px;
+  width: 185px;
+  text-align: center;
+  font-size: 12px;  
+}
+
+LABEL.LOCA,
+LABEL.BOLO,
+LABEL.MISS {
+  color: $blg-wet-asphalt-lighter;
+  border: 1px solid mix($blg-wet-asphalt-lighter, white, 65%);
+  padding: 2px 5px;
+  width: 185px;
+  text-align: center;
+  font-size: 12px;  
+}
+
+LABEL.MODE {
+  color: $sun-flower;
+  border: 1px solid mix($sun-flower, white, 65%);   
+  padding: 2px 5px;
+  width: 185px;
+  text-align: center;
+  font-size: 12px;
+}
+
+LABEL.LOW {
+  color: $blg-green;
+  border: 1px solid mix($blg-green, white, 65%);   
+  padding: 2px 5px;
+  width: 185px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.ag-row-level-0.ag-row-focus {
+  background-color: $blg-grey-light-more !important;
+}
+
+.attachments-list {
+  list-style-type: none;
+  position: relative;
+  left: -10px;  
+}
+
+.image-container {
+  width: 600px;
+}
+
+.image-container IMG {
+  max-width: 600px;
 }

@@ -124,7 +124,7 @@ export class NotificationsTableGridCustomElement {
         var template = //'<div></div>';
             '<div class="full-width-panel full-width-notification-message">' +
             '  <div class="full-width-summary">' +
-            '    <label>' + data.notificationCategory.categoryName + ':&nbsp;</label><span>'+data.message+'</span>'+
+            '    <label class="' + data.notificationCategory.categoryName.substring(0,4) + '">' + data.notificationCategory.categoryName + '</label><span>'+data.message+'</span>'+
             '  </div>' +
             '</div>';
 

@@ -79,10 +79,10 @@
 
                         <div show.bind="(selectedNotification.acks.length > 1) && (selectedNotification.notAttachmentCount >= 1)">
                             <hr>
-                            <ul>
-                                <li repeat.for="att of selectedNotification.attachments" style="list-style-type: none;">
+                            <ul class="attachments-list">
+                                <li repeat.for="att of selectedNotification.attachments">
                                     <div show.bind="att.payloadDataType.indexOf('image') < 0"><i class="fa fa-file-image-o" aria-hidden="true"></i> <a href.bind="att.downloadLink" >${att.payloadName}</a></div>
-                                    <div show.bind="att.payloadDataType.indexOf('image') >= 0"><img src.bind="att.downloadLink"></div>
+                                    <div show.bind="att.payloadDataType.indexOf('image') >= 0" class="image-container"><img src.bind="att.downloadLink"></div>
                                 </li>
                             </ul> 
                         </div>                  
