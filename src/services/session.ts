@@ -1,5 +1,6 @@
 export class Session {  
     auth: Object;
+    configured: Promise<any>;
  
     constructor(){
         this.auth = {};

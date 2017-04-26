@@ -327,11 +327,14 @@ export class ConfigurationStep {
   run(navigationInstruction: NavigationInstruction, next: Next): Promise<any> {  
     // Check if app is configured yet.
     let configured = this.session['configured'];
-    return configured.then(function(result){
-      console.debug("[ROUTER] === CONFIGURED ===");
+    if(!!(configured)) {
+      return configured.then(function(result){
+        console.debug("[ROUTER] === CONFIGURED ===");
+        return next();
+      });
+    } else {
       return next();
-    });
-      
+    }
   }
 }
 

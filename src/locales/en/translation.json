@@ -235,7 +235,7 @@
                 "UNREAD": "Unread",
                 "READ": "Read",
                 "ACCEPTED": "Accepted",
-                "DECLINED": "Declined",
+                "DECLINED": "Rejected",
                 "SCHEDULED": "Scheduled"
             }
         }
