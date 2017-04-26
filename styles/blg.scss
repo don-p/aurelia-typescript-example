@@ -2369,18 +2369,18 @@ abp-datetime-picker .input-group-addon {
 
 .full-width-summary SPAN {
   white-space: normal;
-  color:  mix($blg-blue, white, 85%);
+  color:  mix($blg-blue, white, 95%);
   line-height: 20px;
-  left: 130px;
+  left: 165px;
   position: absolute;
-  top: 5px;
+  top: 7px;
   font-size: 13px;
 }
 
 .full-width-summary LABEL {
   position: absolute;
-  top: 14px;
-  left: 25px;
+  top: 16px;
+  left: 60px;
 }
 
 .alert-label {
@@ -2418,10 +2418,6 @@ LABEL.LOW {
   border: 1px solid mix($blg-green, white, 65%);   
 }
 
-.ag-row-level-0.ag-row-focus {
-  background-color: $blg-grey-light-more !important;
-}
-
 .attachments-list {
   list-style-type: none;
   position: relative;
@@ -2434,4 +2430,20 @@ LABEL.LOW {
 
 .image-container IMG {
   max-width: 600px;
+}
+
+.alerts-table-content .ag-row-even {
+  background-color: $blg-grey-lighter-more !important;
+}
+
+.alerts-table-content .ag-row-odd {
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($blg-white), to($blg-grey-lighter-more));
+  background: -webkit-linear-gradient(top, $blg-grey-lighter-more, $blg-white);
+  background: -moz-linear-gradient(top, $blg-grey-lighter-more, $blg-white);
+  background: -ms-linear-gradient(top, $blg-grey-lighter-more, $blg-white);
+  background: -o-linear-gradient(top, $blg-grey-lighter-more, $blg-white);
+}
+
+.alerts-table-content  .ag-blg .ag-cell-no-focus {
+    border-top: 1px solid #cdcdcd !important;
 }
