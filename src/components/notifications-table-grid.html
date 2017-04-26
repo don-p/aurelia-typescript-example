@@ -35,14 +35,14 @@
             suppress-filter.bind="true" suppress-resize.bind="true" 
             suppress-movable.bind="true" suppress-menu.bind="true" 
             pinned.bind="true" header-class.bind="ag-gridCheckboxHeader"></ag-grid-column>-->
-        <ag-grid-column if.bind="showColumn('from')" width.bind="30" header-name="" suppress-sorting.bind="true" suppress-filter.bind="true">
+        <ag-grid-column if.bind="showColumn('from')" min-width.bind="30" max-width.bind="30" width.bind="30" header-name="" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
                 <span>
                    <i show.bind="params.data.ackStatus === 'UNREAD'" class="fa fa-circle unread-alert" aria-hidden="true" title="Unread"></i>
                 </span>
             </ag-cell-template>
         </ag-grid-column>
-        <ag-grid-column if.bind="showColumn('attachments')" width.bind="30" header-name="" field="attachmentCount" suppress-sorting.bind="true" suppress-filter.bind="true">
+        <ag-grid-column if.bind="showColumn('attachments')" min-width.bind="30" max-width.bind="30" width.bind="30" header-name="" field="attachmentCount" suppress-sorting.bind="true" suppress-filter.bind="true">
             <ag-cell-template>
                 <span>
                    <i show.bind="params.data.attachmentCount > 0" class="ico-attachment" aria-hidden="true" title="Attachments"></i>
