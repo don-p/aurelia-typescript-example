@@ -124,16 +124,17 @@ export class SentAlerts {
 
   onNotificationSelected(payload) {
     let selectedNotification = payload.notification;
-    this.selectedNotification = selectedNotification;
-    let me = this;
-    // get the notification details.
-    this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
-    this.notificationAcksPromise.then(function(data:any){
-      // set the message to read if currently unread.
-      let notification = data;
-      me.showSelectedNotification(notification);
-    });
-
+    if((!(this.selectedNotification) || (!!(this.selectedNotification) && !(selectedNotification.notificationId === this.selectedNotification.notificationId)))) {
+      this.selectedNotification = selectedNotification;
+      let me = this;
+      // get the notification details.
+      this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
+      this.notificationAcksPromise.then(function(data:any){
+        // set the message to read if currently unread.
+        let notification = data;
+        me.showSelectedNotification(notification);
+      });
+    }
   }
 
   notificationSelectionChanged(scope) {
