@@ -213,6 +213,10 @@ export class ReceivedAlerts {
     this.notificationAcksPromise = this.alertsService.setNotificationAckStatus(this.session.auth['member'].memberId, 
     notification.notificationId, 
     status).then(function(data:any){
+      let ack = me.selectedNotificationAck;
+      if(!!(ack) && !(ack.ackStatus === data.ackStatus)) {
+        Object.assign(ack, data);
+      }
       return data;
     });
     return this.notificationAcksPromise;
