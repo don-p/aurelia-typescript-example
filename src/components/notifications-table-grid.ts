@@ -121,7 +121,7 @@ export class NotificationsTableGridCustomElement {
         // the flower row shares the same data as the parent row
         var data = params.node.parent.data;
         let memberId = params.context.context.session.auth.member.memberId;
-        let isReceived:boolean = !!(data.senderReference) && (memberId !== data.senderReference.memberId);
+        let isReceived:boolean = params.context.context.constructor.name === 'ReceivedAlerts';
         let spacer = isReceived?'<span style="min-width: 30px;width: 30px;display: inline-block;"></span>':'';
         var template = //'<div></div>';
             '<div class="full-width-panel full-width-notification-message">' +
