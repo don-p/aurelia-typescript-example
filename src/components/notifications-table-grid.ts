@@ -120,10 +120,13 @@ export class NotificationsTableGridCustomElement {
     this.fullWidthCellRenderer.prototype.getTemplate = function(params) {
         // the flower row shares the same data as the parent row
         var data = params.node.parent.data;
-
+        let memberId = params.context.context.session.auth.member.memberId;
+        let isReceived:boolean = !!(data.senderReference) && (memberId !== data.senderReference.memberId);
+        let spacer = isReceived?'<span style="min-width: 30px;width: 30px;display: inline-block;"></span>':'';
         var template = //'<div></div>';
             '<div class="full-width-panel full-width-notification-message">' +
             '  <div class="full-width-summary">' +
+            spacer +
             '    <label class="alert-label ' + data.notificationCategory.categoryName.split(" ")[0] + '">' + data.notificationCategory.categoryName.split(" ")[0] + '</label><span>'+data.message+'</span>'+
             '  </div>' +
             '</div>';
