@@ -2154,6 +2154,12 @@ span.recipientsListItem:not(:last-child)::after {
 }
 
 .status-details-content {
+  padding: 15px 15px 5px 15px;
+  font-size: 15px;
+  width: 585px;  
+}
+
+.requestDetailContainer .status-details-content {
   padding: 15px 15px 5px 115px;
   font-size: 15px;  
 }
@@ -2328,6 +2334,16 @@ abp-datetime-picker .input-group-addon {
     margin-left: 45px;
     margin-right: 15px;
     background-color: $blg-grey-lightest;
+    font-size: 15px;
+}
+
+.requestDetailContainer .reply-message-text {
+    border-radius: 6px;
+    padding: 5px 10px;
+    margin-left: 170px;
+    margin-right: 15px;
+    background-color: $blg-blue;
+    color: $blg-white;
     font-size: 15px;      
 }
 
@@ -2335,10 +2351,11 @@ abp-datetime-picker .input-group-addon {
     border: 1px solid $blg-grey-light-more;
     border-radius: 6px;
     padding: 5px 10px;
-    margin-left: 170px;
+    margin-left: 65px;
     margin-right: 15px;
     background-color: $blg-grey-lightest;
-    font-size: 15px;      
+    font-size: 15px;
+    max-width: 500px;           
 }
 
 .alert-details-bottom-buttons {
@@ -2415,9 +2432,8 @@ LABEL.INFO_DEBUG {
 }
 
 LABEL.MODERATE {
-  color: $sun-flower;
-  background-color: #aba282;
-  border: 1px solid mix($sun-flower, white, 65%);   
+  color: mix($sun-flower, red, 90%);
+  border: 1px solid mix($sun-flower, red, 90%);   
 }
 
 LABEL.LOW {
