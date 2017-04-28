@@ -30,7 +30,11 @@
         <ag-grid-column if.bind="showColumn('date')" header-class="ag-header-cell-left" width.bind="120" header-name="${'alerts.notifications.date' | t}" field="formattedAckDate" width.bind="150" suppress-filter.bind="true"></ag-grid-column>
         <!--<ag-grid-column if.bind="showColumn('category')" header-name="${'alerts.notifications.category' | t}" field="notificationCategory.categoryName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
         <!--<ag-grid-column if.bind="showColumn('message')" header-name="${'alerts.notifications.message' | t}" field="message" hide.bind="true" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
-        <ag-grid-column if.bind="showColumn('status')" header-class="ag-header-cell-left" width.bind="80" header-name="${'alerts.notifications.status' | t}" field="ackStatusName" get-quick-filter-text.bind="getStatusQuickFilterText" suppress-sorting.bind="true" suppress-filter.bind="true"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('status')" header-class="ag-header-cell-left" width.bind="100" header-name="${'alerts.notifications.status' | t}" field="ackStatusName" get-quick-filter-text.bind="getStatusQuickFilterText" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span>${params.data.ackStatusName}</span> <i show.bind="params.data.ackStatus === 'REPLY_MESSAGE'" class="ico-new-tab"></i>
+            </ag-cell-template>
+        </ag-grid-column>
         <ag-grid-column if.bind="showColumn('to')" header-class="ag-header-cell-left" header-name="${'alerts.notifications.recipient' | t}" field="recipientName"  suppress-filter.bind="true"></ag-grid-column>
         <!--<ag-grid-column if.bind="showColumn('from')" header-name="${'alerts.notifications.from' | t}" field="senderReference.physicalPersonProfile.lastName" filter.bind="getTextSearchFilter()"></ag-grid-column>-->
         <ag-grid-column if.bind="showColumn('organization')" header-class="ag-header-cell-left" header-name="${'alerts.notifications.organization' | t}" field="organizationName"  suppress-filter.bind="true"></ag-grid-column>
