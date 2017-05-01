@@ -462,6 +462,9 @@ export class DataService {
             okText: okText,
             showCancel: showCancel,
             isSubmitDisabled: false
+        }).then(function(result: any){ 
+            result.controller.viewModel = result.controller.controller.viewModel;
+            return Promise.resolve(result.controller);
         });
     }
 

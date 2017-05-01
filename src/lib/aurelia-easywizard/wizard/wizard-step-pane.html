@@ -1,7 +1,7 @@
 <template>
   <div if.bind="isActive" class="step-pane active">
-    <ai-dialog-body id="model-dialog-body">
+    <ux-dialog-body id="model-dialog-body">
     <compose view-model="${wizardStepView}" model.bind="{controller: controller, currentStep: currentStep}" view.bind="currentStepView"></compose>
-    </ai-dialog-body>
+    </ux-dialog-body>
  </div>  
 </template>
