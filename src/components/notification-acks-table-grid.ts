@@ -276,12 +276,12 @@ export class NotificationAcksTableGridCustomElement {
       controller.viewModel.submit = (reply) => {
         controller.ok();
       }
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Reset validation error state.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Reset validation error state.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
 
   }
