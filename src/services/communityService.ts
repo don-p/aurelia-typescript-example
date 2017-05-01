@@ -5,7 +5,7 @@ import {HttpClient as Http, HttpResponseMessage} from 'aurelia-http-client';
 import {Session} from './session';
 import {FetchConfig} from 'aurelia-auth';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
+import {DialogService, DialogController} from 'aurelia-dialog';
 import {Model} from '../model/model';
 import {MemberResource} from '../model/memberResource';
 import {DataService} from './dataService';

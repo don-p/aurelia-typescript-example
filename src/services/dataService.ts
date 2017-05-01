@@ -6,7 +6,7 @@ import {AureliaConfiguration} from "aurelia-configuration";
 import {Session} from './session';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {FetchConfig, AuthService} from 'aurelia-auth';
-import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
+import {DialogService, DialogController, DialogCloseResult, DialogOpenResult, DialogCancelResult} from 'aurelia-dialog';
 import {Model} from '../model/model';
 import {WizardController} from '../lib/aurelia-easywizard/controller/wizard-controller';
 // import {HttpConfig} from '../lib/auth/auth-http-config';
@@ -382,8 +382,8 @@ export class DataService {
      * 
      * Returns a Promise upon opening the dialog.
      */
-    async openResourceEditDialog(settings: any): Promise<DialogController> {
-        return this.dialogService.openAndYieldController({
+    async openResourceEditDialog(settings: any): Promise<DialogCloseResult> {
+        return this.dialogService.open({
             viewModel: Model, 
             view: 'model/model.html', 
             modelView: settings.modelView,
@@ -397,6 +397,9 @@ export class DataService {
             showErrors: settings.showErrors,
             showCancel: true,
             isSubmitDisabled: false
+        }).then(function(result: any){ 
+            result.controller.viewModel = result.controller.controller.viewModel;
+            return Promise.resolve(result.controller);
         })
     }
 
@@ -408,9 +411,9 @@ export class DataService {
      * 
      * Returns a Promise upon opening the dialog.
      */
-    async openWizardDialog(title: string, steps:Array<any>, item: any, validationRules: any): Promise<DialogController> {
+    async openWizardDialog(title: string, steps:Array<any>, item: any, validationRules: any): Promise<DialogCloseResult> {
         // let wizardCtrl = new Wizard([{name:'step1'}]);
-        return this.dialogService.openAndYieldController({
+        return this.dialogService.open({
             viewModel: WizardController, 
             view: 'model/wizardModel.html', 
             title: title, 
@@ -419,11 +422,14 @@ export class DataService {
             rules: validationRules,
             showCancel: true,
             isSubmitDisabled: false
-        })
+        }).then(function(result: any){ 
+            result.controller.viewModel = result.controller.controller.viewModel;
+            return Promise.resolve(result.controller);
+        });
     }
 
-    async openPromptDialog(question:string, message:string, item: any, okText:string, showCancel: boolean, validationRules: any, modelPromise: string, loadingTitle: string): Promise<DialogController> {
-        return this.dialogService.openAndYieldController({ 
+    async openPromptDialog(question:string, message:string, item: any, okText:string, showCancel: boolean, validationRules: any, modelPromise: string, loadingTitle: string): Promise<DialogCloseResult> {
+        return this.dialogService.open({ 
             viewModel: Prompt, 
             view: 'model/model.html', 
             modelView: 'model/prompt.html',
@@ -436,11 +442,14 @@ export class DataService {
             okText: okText,
             showCancel: showCancel,
             isSubmitDisabled: false
+        }).then(function(result: any){ 
+            result.controller.viewModel = result.controller.controller.viewModel;
+            return Promise.resolve(result.controller);
         });
     }
 
-    async openTemplateDialog(title:string, okText:string, showCancel: boolean, modelView: string): Promise<DialogController> {
-        return this.dialogService.openAndYieldController({ 
+    async openTemplateDialog(title:string, okText:string, showCancel: boolean, modelView: string): Promise<DialogCloseResult> {
+        return this.dialogService.open({ 
             viewModel: Prompt, 
             view: 'model/model.html', 
             modelView: modelView,

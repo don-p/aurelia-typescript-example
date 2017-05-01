@@ -205,7 +205,7 @@ export class OrganizationDetail {
             me.gridOptions.api.refreshVirtualPageCache();
             me.gridOptions.api.refreshView();
             
-            return {currentStep:viewModel, res:data};
+            return Promise.resolve({currentStep:viewModel, res:data});
           });
           }, error => {
             step.errorMessage = "Failed"; 
@@ -257,12 +257,12 @@ export class OrganizationDetail {
         controller.ok();
       };
 
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
   }
 

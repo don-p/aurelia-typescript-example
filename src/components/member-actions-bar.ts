@@ -169,12 +169,12 @@ export class MemberActionsBarCustomElement {
             return Promise.reject(error);
           })
       };
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
   }
 
@@ -461,12 +461,12 @@ export class MemberActionsBarCustomElement {
       controller.ok();
       };
 
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
   }
 
@@ -653,13 +653,13 @@ export class MemberActionsBarCustomElement {
           }) 
       };
 
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          // controller.viewModel.gridOptions.api.destroy();
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     // controller.viewModel.gridOptions.api.destroy();
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
     
   }
@@ -717,12 +717,12 @@ export class MemberActionsBarCustomElement {
             return Promise.reject(error);
           })
       };
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
   }
 
@@ -793,12 +793,12 @@ export class MemberActionsBarCustomElement {
             return Promise.reject(error);
           })
       };
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
   }
 
@@ -864,12 +864,12 @@ export class MemberActionsBarCustomElement {
             return Promise.reject(error);
           })
       };
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
   }
 

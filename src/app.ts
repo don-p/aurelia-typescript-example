@@ -11,8 +11,10 @@ import {DataService} from './services/dataService';
 import {OrganizationService} from './services/organizationService';
 import {Utils} from './services/util';
 import{RedirectWithParams} from './lib/RedirectWithParams';
+import {DialogService, DialogController, DialogCloseResult, DialogOpenResult, DialogCancelResult} from 'aurelia-dialog';
 
-@inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, OrganizationService, AureliaConfiguration, Router, Utils, LogManager)
+@inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, OrganizationService, 
+  AureliaConfiguration, Router, DialogService, Utils, LogManager)
 export class App {
   session: Session;
   logger: Logger;
@@ -21,7 +23,7 @@ export class App {
   constructor(Session, private fetchConfig: FetchConfig, private i18n: I18N, 
     private evt: EventAggregator, private authService: AuthService, 
     private dataService: DataService, private organizationService: OrganizationService, 
-    private appConfig:AureliaConfiguration, private router:Router) {
+    private appConfig:AureliaConfiguration, private router:Router, private dialogService: DialogService) {
 
     this.session = Session;
     let me = this;
@@ -240,6 +242,12 @@ export class App {
     ]);
 
     this.router = router;
+
+    // Subscribe to route-change event, to close dialogs:
+    this.evt.subscribe('router:navigation:processing', function(event, args) {
+      me.logger.debug('== ROUTER EVENT: processing ==');
+      me.dialogService.closeAll();
+    });
   }
 
 //

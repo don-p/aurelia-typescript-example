@@ -1,13 +1,13 @@
 <template>
 <require from="../lib/loading-mask/loading-mask"></require>
 
-  <ai-dialog id="model-dialog" class="blg-dialog">
+  <ux-dialog id="model-dialog" class="blg-dialog">
     <loading id="cmty-loading" promise.bind="'modelPromise'" message-key.bind="loadingTitle">                
     <div class="modal-header">
         <h4 class="modal-title">${title}</h4>
     </div>
-                <form id="model-form" submit.delegate="!!(submit)?submit(item):controller.ok(item)">
-    <ai-dialog-body id="model-dialog-body">
+    <form id="model-form">
+    <ux-dialog-body id="model-dialog-body">
         <section>
             <div if.bind="showErrors && !!showErrors" class="row errorMessage">
                 <div class="col-xs-12">
@@ -19,20 +19,20 @@
                 </div>
             </div>	
             <div class="row textMessage">
-                <compose view="${modelView}" containerless></compose>
+                <compose view="${modelView}" contuxnerless></compose>
               </div>
       </section>
-    </ai-dialog-body>
+    </ux-dialog-body>
 
     <div class="modal-footer">
       <button class="btn btn-default-blg" if.bind="showCancel && !!showCancel" click.trigger="controller.cancel()">Cancel</button>
       <button id="model-submit-button" type="submit" form="model-form" class="btn btn-info" 
-        disabled.bind="!((isDirty) && (!hasValidationErrors))">${okText}</button>
+        disabled.bind="!((isDirty) && (!hasValidationErrors))" click.delegate="!!(submit)?submit(item):controller.ok(item)">${okText}</button>
     </div>
-               </form>
+    </form>
     <!--
     <div>errors: ${vController.errors} hasErrors: ${hasValidationErrors} count: ${vController.errors.length} model.errorMessage:${model.errorMessage} isDirty:${isDirty}</div>
     <div>error: ${vControlerJSON}</div>
     -->
-</ai-dialog>
+</ux-dialog>
 </template>

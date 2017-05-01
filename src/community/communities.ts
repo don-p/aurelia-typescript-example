@@ -401,12 +401,12 @@ export class Communities {
             return Promise.reject(error);
           });
       }
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
   }
 
@@ -512,12 +512,12 @@ export class Communities {
           return Promise.reject(error);
         })
       }
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Reset validation error state.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Reset validation error state.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
   }
 
