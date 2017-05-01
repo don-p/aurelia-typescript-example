@@ -274,12 +274,12 @@ export class ReceivedAlerts {
           return Promise.reject(error);
         })
       }
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Reset validation error state.
-          this.logger.debug('Cancel');
-        }
-      })
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Reset validation error state.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
     });
   }
   

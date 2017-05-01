@@ -5,7 +5,7 @@ import {HttpClient as Http, HttpResponseMessage} from 'aurelia-http-client';
 import {Session} from './session';
 import {FetchConfig} from 'aurelia-auth';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {DialogService, DialogController, DialogResult} from 'aurelia-dialog';
+import {DialogService, DialogController} from 'aurelia-dialog';
 import {Model} from '../model/model';
 import {NotificationResource} from '../model/notificationResource';
 import {NotificationAckResource} from '../model/notificationAckResource';
@@ -97,7 +97,7 @@ export class AlertsService {
     /**
      * Get an individual notification + acks.
      */
-    async getNotification(memberId:string, notificationId:string, startIndex:number, pageSize:number): Promise<Response> {
+    async getNotification(memberId:string, notificationId:string, startIndex:number, pageSize:number): Promise<any> {
         await fetch;
 
         // Multiple Promises to be resolved here.

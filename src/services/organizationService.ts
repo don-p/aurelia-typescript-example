@@ -62,7 +62,6 @@ export class OrganizationService {
                 return content;
             })
         });
-
     }
 
     async getMemberOrgs(startIndex: number, pageSize:number): Promise<Response> {
@@ -74,7 +73,6 @@ export class OrganizationService {
             }
         );
         return response;
-
     }
 
 

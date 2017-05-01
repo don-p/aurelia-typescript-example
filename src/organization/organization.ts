@@ -112,12 +112,12 @@ export class Organization {
 
   getOrganizationsPage(startIndex: number, pageSize: number): Promise<Response> {
     var me = this;
-    var orgPromise = this.organizationService.getMemberOrgs(startIndex,  pageSize);
-    this.orgPromise = orgPromise;
-    return orgPromise
+    this.orgPromise = this.organizationService.getMemberOrgs(startIndex,  pageSize);
+    return this.orgPromise
     .then(response => {return response.json()
       .then(data => {
         me.organizations = data.responseCollection;
+        return Promise.resolve(data.responseCollection);
         // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
       }).catch(error => {
         me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
@@ -130,6 +130,8 @@ export class Organization {
       //throw error;
       return Promise.reject(error);
     });
+
+    // return this.orgPromise
   }  
 
 }
