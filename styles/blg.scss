@@ -2355,7 +2355,9 @@ abp-datetime-picker .input-group-addon {
     margin-right: 15px;
     background-color: $blg-grey-lightest;
     font-size: 15px;
-    max-width: 500px;           
+    max-width: 700px;
+    max-height: 250px;
+    overflow-y: scroll;           
 }
 
 .alert-details-bottom-buttons {
