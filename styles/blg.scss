@@ -2472,7 +2472,11 @@ LABEL.LOW {
 }
 
 .alerts-table-content .ag-blg .ag-cell-no-focus {
-    border-top: 1px solid #cdcdcd !important;
+    border-top: 1px solid $blg-grey-light-more !important;
+}
+
+.ag-blg .ag-cell-focus {
+  border-top: 1px solid $blg-grey-light-more !important;
 }
 
 .alerts-table-content .ag-blg .ag-cell-not-inline-editing {
