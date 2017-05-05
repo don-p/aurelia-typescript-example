@@ -101,13 +101,41 @@ let config = generateConfig(
     // Proxy config for the webpack devServer to use our special API proxying scheme.
     devServer: {
       proxy: {
+        // '/blgws/*': {
+        //     target: 'wss://scig-dev.bluelinegrid.com',
+        //     pathRewrite: {'^/blgws' : ''},
+        //     secure: true,
+        //     changeOrigin: true,
+        //     ws: true,
+        // },
+        // '/blgapi/**': {
+        //   target: 'https://scig-dev.bluelinegrid.com',
+        //   pathRewrite: {'^/blgapi' : ''},
+        //   secure: true,
+        //   changeOrigin: true,
+        //   logLevel: 'info'
+        // }
+        // '/blgapi/**': {
+        //   target: 'http://scig-dev.bluelinegrid.com',
+        //   pathRewrite: {'^/blgapi' : ''},
+        //   secure: false,
+        //   changeOrigin: true,
+        //   logLevel: 'info'
+        // }
         '/blgapi/**': {
-          target: 'https://scig-dev.bluelinegrid.com',
+          target: 'http://54.165.234.148:7080',
           pathRewrite: {'^/blgapi' : ''},
-          secure: true,
+          secure: false,
           changeOrigin: true,
           logLevel: 'info'
         }
+        // '/blgapi/**': {
+        //   target: 'http://192.168.119.143:7061',
+        //   pathRewrite: {'^/blgapi' : ''},
+        //   secure: false,
+        //   changeOrigin: true,
+        //   logLevel: 'info'
+        // }
       }
     },    
     output: {
@@ -163,7 +191,8 @@ let config = generateConfig(
   resolve: {
       alias: {
           // Force all modules to use the same jquery version.
-          'jquery': path.join(__dirname, 'node_modules/jquery/src/jquery')
+          'jquery': path.join(__dirname, 'node_modules/jquery/src/jquery'),
+          'stompjs': path.join(__dirname, 'node_modules/stompjs/lib/stomp.js')
       }
   }
    },

@@ -12,9 +12,10 @@ import {OrganizationService} from './services/organizationService';
 import {Utils} from './services/util';
 import{RedirectWithParams} from './lib/RedirectWithParams';
 import {DialogService, DialogController, DialogCloseResult, DialogOpenResult, DialogCancelResult} from 'aurelia-dialog';
+import {WebSocketService} from './services/wsService';
 
 @inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, OrganizationService, 
-  AureliaConfiguration, Router, DialogService, Utils, LogManager)
+  AureliaConfiguration, Router, DialogService, WebSocketService, Utils, LogManager)
 export class App {
   session: Session;
   logger: Logger;
@@ -23,7 +24,7 @@ export class App {
   constructor(Session, private fetchConfig: FetchConfig, private i18n: I18N, 
     private evt: EventAggregator, private authService: AuthService, 
     private dataService: DataService, private organizationService: OrganizationService, 
-    private appConfig:AureliaConfiguration, private router:Router, private dialogService: DialogService) {
+    private appConfig:AureliaConfiguration, private router:Router, private dialogService: DialogService, private wsService: WebSocketService) {
 
     this.session = Session;
     let me = this;
@@ -42,6 +43,10 @@ export class App {
           me.logger.debug('getCallServiceConfig() returned error: ' + error);
         })
       });
+      // Open a new WebSocket connection.
+      let stompClient = wsService.openWsConnection();
+
+
       // Get alert categories/types.
       let alertCatPromise: Promise<Response> =me.dataService.getAlertCategories(0,  10000);
       alertCatPromise.then(response => {return response.json()
@@ -238,6 +243,15 @@ export class App {
       // },
       // { 
       //   route: 'child-router', name: 'child-router', moduleId: './child-router', nav: true, title: 'Child Router' 
+      },
+      { 
+        route: 'cases',   
+        name: 'cases',  
+        moduleId: './cases/cases',  
+        nav: true,      
+        settings: {auth: true, roles: ['admin']},
+        className: 'ico-users',   
+        title: this.i18n.tr('router.nav.cases') 
       }
     ]);
 
