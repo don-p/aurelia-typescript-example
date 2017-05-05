@@ -102,11 +102,12 @@ let config = generateConfig(
     devServer: {
       proxy: {
         '/blgws/*': {
-            target: 'wss://scig-dev.bluelinegrid.com',
+            target: 'ws://10.79.12.34:7080',
             pathRewrite: {'^/blgws' : ''},
-            secure: true,
+            secure: false,
             changeOrigin: true,
             ws: true,
+            logLevel: 'debug'
         },
         '/blgapi/**': {
           target: 'https://scig-dev.bluelinegrid.com',
