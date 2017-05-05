@@ -7,7 +7,8 @@
             <ul>
                 <li repeat.for="row of router.navigation" show.bind="row.settings.roles.indexOf(session.getRole()) != -1" class="${row.isActive || router.currentInstruction.config.title === row.title? 'active' : ''}">
                     <a data-toggle="collapse" data-target="#skeleton-navigation-navbar-collapse.in" href.bind="row.href">
-                        <i class="${row.config.className}"></i>${row.title}<!--span class="badge">15</span-->
+                        <i class="${row.config.className}"></i>${row.title}
+                        <span show.bind="row.config.route === 'alerts'" class="badge badge-green">15</span><!--span class="badge">15</span-->
                     </a>
                 </li>
             </ul>
