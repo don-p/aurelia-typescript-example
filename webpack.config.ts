@@ -101,20 +101,20 @@ let config = generateConfig(
     // Proxy config for the webpack devServer to use our special API proxying scheme.
     devServer: {
       proxy: {
-        // '/blgws/*': {
-        //     target: 'wss://scig-dev.bluelinegrid.com',
-        //     pathRewrite: {'^/blgws' : ''},
-        //     secure: true,
-        //     changeOrigin: true,
-        //     ws: true,
-        // },
-        // '/blgapi/**': {
-        //   target: 'https://scig-dev.bluelinegrid.com',
-        //   pathRewrite: {'^/blgapi' : ''},
-        //   secure: true,
-        //   changeOrigin: true,
-        //   logLevel: 'info'
-        // }
+        '/blgws/*': {
+            target: 'wss://scig-dev.bluelinegrid.com',
+            pathRewrite: {'^/blgws' : ''},
+            secure: true,
+            changeOrigin: true,
+            ws: true,
+        },
+        '/blgapi/**': {
+          target: 'https://scig-dev.bluelinegrid.com',
+          pathRewrite: {'^/blgapi' : ''},
+          secure: true,
+          changeOrigin: true,
+          logLevel: 'info'
+        }
         // '/blgapi/**': {
         //   target: 'http://scig-dev.bluelinegrid.com',
         //   pathRewrite: {'^/blgapi' : ''},
@@ -122,13 +122,13 @@ let config = generateConfig(
         //   changeOrigin: true,
         //   logLevel: 'info'
         // }
-        '/blgapi/**': {
-          target: 'http://54.165.234.148:7080',
-          pathRewrite: {'^/blgapi' : ''},
-          secure: false,
-          changeOrigin: true,
-          logLevel: 'info'
-        }
+        // '/blgapi/**': {
+        //   target: 'http://54.165.234.148:7080',
+        //   pathRewrite: {'^/blgapi' : ''},
+        //   secure: false,
+        //   changeOrigin: true,
+        //   logLevel: 'info'
+        // }
         // '/blgapi/**': {
         //   target: 'http://192.168.119.143:7061',
         //   pathRewrite: {'^/blgapi' : ''},
