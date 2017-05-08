@@ -44,9 +44,8 @@ export class App {
         })
       });
       // Open a new WebSocket connection.
-      let stompClient = wsService.openWsConnection();
-
-
+      this.session.startWsConnection();
+      
       // Get alert categories/types.
       let alertCatPromise: Promise<Response> =me.dataService.getAlertCategories(0,  10000);
       alertCatPromise.then(response => {return response.json()
@@ -87,6 +86,13 @@ export class App {
       me.configPromise.then(function(result) {
         me.logger.debug('=== CONFIGURED ===');
         return true;
+      })
+
+      // Subscribe to alerts.
+      me.evt.subscribe('NOTIFICATION_RECEIVED', function(message) {
+        console.debug(' || Got notification: ' + message);
+        // Play alert sound.
+        me.wsService.playSound(me.wsService.alertSound);
       })
       
     });    

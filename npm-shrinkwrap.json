@@ -530,9 +530,9 @@
       "resolved": "https://registry.npmjs.org/aurelia-fetch-client/-/aurelia-fetch-client-1.1.2.tgz"
     },
     "aurelia-framework": {
-      "version": "1.1.1",
-      "from": "aurelia-framework@1.1.1",
-      "resolved": "https://registry.npmjs.org/aurelia-framework/-/aurelia-framework-1.1.1.tgz"
+      "version": "1.1.2",
+      "from": "aurelia-framework@1.1.2",
+      "resolved": "https://registry.npmjs.org/aurelia-framework/-/aurelia-framework-1.1.2.tgz"
     },
     "aurelia-history": {
       "version": "1.0.0",

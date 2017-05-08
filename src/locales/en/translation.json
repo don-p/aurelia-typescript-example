@@ -17,7 +17,8 @@
             "tracker":"Tracker",
             "conversations":"Conversations",
             "receivedAlerts": "Received",
-            "sentAlerts": "Sent"
+            "sentAlerts": "Sent",
+            "cases": "Cases"
         }
     },
     
