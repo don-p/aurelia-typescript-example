@@ -6,7 +6,8 @@
         "api": {
             "clientId": "YmxfY29tbWFuZF9j",
             "clientSecret": "ZW50ZXI6MzI3MmU2ZTctYTY2ZC0xMDMyLTg2YzktNmFiMzQ0M2M2MDJk",
-            "serverUrl": "blgapi/"
+            "serverUrl": "blgapi/",
+            "wsProtocol": "ws"
         },
         "logLevel": "debug"
     },
@@ -14,7 +15,8 @@
         "api": {
             "clientId": "YmxfY29tbWFuZF9j",
             "clientSecret": "ZW50ZXI6MzI3MmU2ZTctYTY2ZC0xMDMyLTg2YzktNmFiMzQ0M2M2MDJk",
-            "serverUrl": "blgapi/"
+            "serverUrl": "blgapi/",
+            "wsProtocol": "wss"
         },
         "logLevel": "debug"
     },
@@ -22,7 +24,8 @@
         "api": {
             "clientId": "YmxfY29tbWFuZF9j",
             "clientSecret": "ZW50ZXI6MzI3MmU2ZTctYTY2ZC0xMDMyLTg2YzktNmFiMzQ0M2M2MDJk",
-            "serverUrl": "blgapi/"
+            "serverUrl": "blgapi/",
+            "wsProtocol": "wss"
         },
         "logLevel": "error"
     }

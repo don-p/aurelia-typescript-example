@@ -1,11 +1,13 @@
 import {inject, LogManager} from 'aurelia-framework';
 import {AureliaConfiguration} from 'aurelia-configuration';
 import * as Stomp from 'webstomp-client';
-import * as StompJs from 'stompjs';
-import * as SockJS from 'sockjs-client';
 import {ConnectionHeaders} from 'webstomp-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {Logger} from 'aurelia-logging';
+
+// Global env variables.
+declare var LOCAL: boolean;
+declare var ENV: string;
 
 @inject(AureliaConfiguration, EventAggregator, LogManager)
 export class WebSocketService {  
@@ -14,10 +16,13 @@ export class WebSocketService {
     audioContext: any;
     alertSound: any;
     alertSoundFilename: string = 'beep30_3x.mp3';
+    wsProtocol: string;
 
     // Service object for application utilities.
     constructor(private appConfig: AureliaConfiguration, private evt: EventAggregator){
         this.logger = LogManager.getLogger(this.constructor.name);
+
+        this.wsProtocol = LOCAL?'ws':'wss';
 
         let context;
 
@@ -49,11 +54,11 @@ export class WebSocketService {
     openWsConnection(token): Promise<any> {
 
         let me = this;
+
         let promise = new Promise((resolve, reject) => {
             // let wsUrl = 'https://scig-dev.bluelinegrid.com/' /*+ this.appConfig.get('api.serverUrl')*/ + 'subscriptions?token=';
             // let wsUrl = 'http://192.168.119.143:7061/' /*+ this.appConfig.get('api.serverUrl')*/ + 'subscriptions?token=';
-            let wsUrl = 'ws://' + window.location.host + '/blgws' /*+ this.appConfig.get('api.serverUrl')*/ + '/websocket?token=';
-            // let wsUrl = 'wss://scig-dev.bluelinegrid.com/' /*+ this.appConfig.get('api.serverUrl')*/ + 'websocket?token=';
+            let wsUrl = this.wsProtocol + '://' + window.location.host + '/blgws/websocket?token=';
             // let wsUrl = 'ws://' + window.location.host + '/blgws';
             // let wsUrl = 'ws://' + window.location.host + '/blgws';
             // let token = me.session.auth['access_token'];

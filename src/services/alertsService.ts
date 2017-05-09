@@ -23,10 +23,13 @@ export class AlertsService {
     clientId: string;
     clientSecret: string;
     logger: Logger;
+    pageSize: number; // In-memory rowModel pageSize.
 
     constructor(private httpClient: HttpClient, private httpBase: Http, 
         private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
         private fetchConfig: FetchConfig, private dataService:DataService){
+
+        this.pageSize = 100000;
 
         this.logger = LogManager.getLogger(this.constructor.name);
     }
@@ -398,6 +401,23 @@ export class AlertsService {
         //     }
         // );
         // return response;
+    }
+
+    getNotificationsCounts(args): Promise<any> {
+        let statusObj;
+        
+        let notPromise = this.getNotifications(args);
+        return notPromise.then((data:any) => {
+            statusObj = data.responseCollection.reduce(function(ac, cur, index) { 
+                var keys = Object.keys(cur.notificationStatus.ackStatusSummary); 
+                keys.forEach(function(key) {
+                console.debug('Row ' + index + '  ' + ac[key]);
+                !!(ac[key])?(ac[key] += !!(cur.notificationStatus.ackStatusSummary[key])?cur.notificationStatus.ackStatusSummary[key]:0):ac[key] = cur.notificationStatus.ackStatusSummary[key];
+                }); 
+                return ac
+            }, {});
+            return statusObj;
+        });
     }
 
 }

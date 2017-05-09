@@ -1,14 +1,14 @@
-import {inject, autoinject, LogManager} from 'aurelia-framework';
+import {inject, LogManager} from 'aurelia-framework';
 import {WebSocketService} from './wsService';
 import {Logger} from 'aurelia-logging';
 
-// @autoinject
 @inject(WebSocketService, LogManager)
 export class Session {  
     auth: Object;
     configured: Promise<any>;
     wsConnection: any;
     wsSubscriptions: Array<Function>;
+    notificationStatus: any = {};
 
     logger: Logger;
  
@@ -51,5 +51,9 @@ export class Session {
         for(sub of this.wsSubscriptions) {
             sub.unsubscribe();
         }
+    }
+
+    get unreadAlertCount() {
+        return this.notificationStatus.UNREAD;
     }
 }
