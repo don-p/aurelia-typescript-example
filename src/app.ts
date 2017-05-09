@@ -113,7 +113,7 @@ export class App {
     });    
     this.logger = LogManager.getLogger(this.constructor.name);
 
-    console.log("env LOCAL: " + LOCAL);
+    // console.log("env LOCAL: " + LOCAL);
   }
 
   created() {
