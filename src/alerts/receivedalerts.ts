@@ -16,7 +16,7 @@ import {MemberActionsBarCustomElement} from '../components/member-actions-bar';
 import {NotificationResource} from '../model/notificationResource';
 import {NotificationAckResource} from '../model/notificationAckResource';
 
-@inject(Session, DataService, AlertsService, OrganizationService, I18N, EventAggregator, AureliaConfiguration, Utils, MemberActionsBarCustomElement, LogManager)
+@inject(Session, DataService, AlertsService, OrganizationService, I18N, EventAggregator, AureliaConfiguration, Utils, Router, MemberActionsBarCustomElement, LogManager)
 export class ReceivedAlerts {
 
   @bindable pageSize;
@@ -36,7 +36,7 @@ export class ReceivedAlerts {
 
   constructor(private session: Session, private dataService: DataService, private alertsService: AlertsService, 
     private organizationService: OrganizationService, private i18n: I18N, private evt: EventAggregator, 
-    private appConfig: AureliaConfiguration, private utils: Utils) {
+    private appConfig: AureliaConfiguration, private utils: Utils, private router: Router) {
 
     this.pageSize = 100000;
 
@@ -57,6 +57,15 @@ export class ReceivedAlerts {
     this.evt.subscribe('notificationsSelected', payload => {
       me.selectedNotifications = payload.selectedNotifications;
     });
+    // Subscribe to new alerts.
+    me.evt.subscribe('NOTIFICATION_RECEIVED', function(message) {
+       me.logger.debug(' || New notification');
+      // Refresh the alerts list.
+      if(me.router.currentInstruction && me.router.currentInstruction.config.route !== '' && me.router.currentInstruction.config.name === 'alerts/received') {
+        me.getReceivedAlerts();
+      }
+    });
+    
 
     this.logger = LogManager.getLogger(this.constructor.name);
     

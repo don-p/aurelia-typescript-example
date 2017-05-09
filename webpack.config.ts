@@ -34,6 +34,13 @@ let argv = Object.keys(args.cooked).map(function(key) {
  return args.cooked[key]}
 );
 const LOCAL = argv.indexOf('webpack-dev-server') >= 0;
+new webpack.DefinePlugin({
+  'ENV': process.env.ENV,
+  'LOCAL': LOCAL
+})
+
+
+console.log('===== LOCAL ?: ' + LOCAL + ' =====');
 
 // basic configuration:
 const title = 'GridCommand';
@@ -90,6 +97,8 @@ const coreBundles = {
 
 // Use CSS source mapping only for DEV/QA.
 let sourcemap = ENV === 'production'?'':'?sourceMap';
+// Websocket secure or non-secure protocol?
+let wsProtocol = ENV === 'development' ? 'ws':'wss';
 // The base/common config.
 let config = generateConfig(
   {
@@ -102,9 +111,9 @@ let config = generateConfig(
     devServer: {
       proxy: {
         '/blgws/*': {
-            target: 'ws://10.79.12.34:7080',
+            target: 'wss://scig-dev.bluelinegrid.com',
             pathRewrite: {'^/blgws' : ''},
-            secure: false,
+            secure: true,
             changeOrigin: true,
             ws: true,
             logLevel: 'debug'
@@ -226,7 +235,8 @@ let config = generateConfig(
   copyFiles({patterns: 
     [
       {context: './src/config', from: '**/**.json', to: 'config'},
-  {context: './src/locales', from: '**/**.json', to: 'locales'},
+      {context: './src/locales', from: '**/**.json', to: 'locales'},
+      {context: './src/sounds', from: '**/**.*', to: 'sounds'},
       {from: './favicon.ico', to: 'favicon.ico' }
     ]
   }),

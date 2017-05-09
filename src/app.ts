@@ -8,14 +8,16 @@ import {I18N} from 'aurelia-i18n';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {AuthService} from 'aurelia-auth';
 import {DataService} from './services/dataService';
+import {AlertsService} from './services/alertsService';
 import {OrganizationService} from './services/organizationService';
 import {Utils} from './services/util';
 import{RedirectWithParams} from './lib/RedirectWithParams';
 import {DialogService, DialogController, DialogCloseResult, DialogOpenResult, DialogCancelResult} from 'aurelia-dialog';
 import {WebSocketService} from './services/wsService';
+import {HtmlWebpackPlugin} from 'html-webpack-plugin';
 
 @inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, OrganizationService, 
-  AureliaConfiguration, Router, DialogService, WebSocketService, Utils, LogManager)
+  AureliaConfiguration, Router, DialogService, AlertsService, WebSocketService, Utils, LogManager)
 export class App {
   session: Session;
   logger: Logger;
@@ -24,7 +26,8 @@ export class App {
   constructor(Session, private fetchConfig: FetchConfig, private i18n: I18N, 
     private evt: EventAggregator, private authService: AuthService, 
     private dataService: DataService, private organizationService: OrganizationService, 
-    private appConfig:AureliaConfiguration, private router:Router, private dialogService: DialogService, private wsService: WebSocketService) {
+    private appConfig:AureliaConfiguration, private router:Router, 
+    private dialogService: DialogService, private alertsService: AlertsService, private wsService: WebSocketService) {
 
     this.session = Session;
     let me = this;
@@ -88,12 +91,19 @@ export class App {
         return true;
       })
 
-      // Subscribe to alerts.
+      // Subscribe to new alerts.
       me.evt.subscribe('NOTIFICATION_RECEIVED', function(message) {
-        console.debug(' || Got notification: ' + message);
+        me.logger.debug(' || New notification');
         // Play alert sound.
         me.wsService.playSound(me.wsService.alertSound);
-      })
+        me.logger.debug(' || Received new notification');
+        // Refresh the alerts count.
+        me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})
+        .then(function(result) {
+          let statusObj = result;
+          me.session.notificationStatus = statusObj;
+        });
+      });
       
     });    
     
