@@ -112,6 +112,8 @@ export class App {
        this.handleResponseError(payload);
     });    
     this.logger = LogManager.getLogger(this.constructor.name);
+
+    console.log("env LOCAL: " + LOCAL);
   }
 
   created() {
