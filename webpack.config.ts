@@ -33,10 +33,10 @@ let args = JSON.parse(process.env.npm_config_argv);
 let argv = Object.keys(args.cooked).map(function(key) {
  return args.cooked[key]}
 );
-const LOCAL = argv.indexOf('webpack-dev-server') >= 0;
+const LOCAL = argv.indexOf('webpack-dev-server') >= 0?true:false;
 new webpack.DefinePlugin({
   'ENV': process.env.ENV,
-  'LOCAL': LOCAL
+  'LOCAL': LOCAL?true:false
 })
 
 
