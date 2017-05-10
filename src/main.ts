@@ -6,7 +6,7 @@ import {ConsoleAppender} from "aurelia-logging-console";
 // we want font-awesome to load as soon as possible to show the fa-spinner
  // Vendor CSS libs:
 import 'font-awesome/css/font-awesome.css';
-import 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
+// import 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
 import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css';
 // Application CSS + Bootstrap:
 import '../styles/style.scss';
@@ -75,6 +75,7 @@ export async function configure(aurelia: Aurelia) {
       // Use config to set auth Url.
       let configInstance = aurelia.container.get(AureliaConfiguration);
       let baseUrl = window.location.protocol + '//' + window.location.host + '/';
+      // let baseUrl = '';
       let apiServerUrl = baseUrl + configInstance.get('api.serverUrl'); 
       authConfig.config.baseUrl = apiServerUrl;
       baseConfig.configure(authConfig.config);
@@ -127,8 +128,8 @@ export async function configure(aurelia: Aurelia) {
         // Use config to set logging level.
         let configInstance = aurelia.container.get(AureliaConfiguration);
         let logLevel = configInstance.get('logLevel');
-        LogManager.setLevel(LogManager.logLevel[logLevel]);
         LogManager.addAppender(new ConsoleAppender());
+        LogManager.setLevel(LogManager.logLevel.debug);
         // Merge server config with local.
         /*
         dataInstance.getCallServiceConfig()
