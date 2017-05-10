@@ -99,17 +99,14 @@ export class App {
         me.audioService.playSound(me.audioService.alertSound);
         me.logger.debug(' || Received new notification');
         // Refresh the alerts count.
-        me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})
-        .then(function(result) {
-          let statusObj = result;
-          me.session.notificationStatus = statusObj;
-        });
+        let statusObj = me.alertsService.parseNotificationAckStatusSummary(message.statistics.received);
+        me.session.notificationStatus = statusObj;
       });
 
       // Get current unread alert count.
       let alertCountPromise = me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})
       .then(function(result) {
-        let statusObj = result;
+        let statusObj = me.alertsService.parseNotificationAckStatusSummary(result.received);
         me.session.notificationStatus = statusObj;
       });
       
@@ -120,8 +117,6 @@ export class App {
        this.handleResponseError(payload);
     });    
     this.logger = LogManager.getLogger(this.constructor.name);
-
-    // console.log("env LOCAL: " + LOCAL);
   }
 
   created() {

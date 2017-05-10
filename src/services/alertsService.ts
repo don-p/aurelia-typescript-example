@@ -78,13 +78,7 @@ export class AlertsService {
                         return new Date(v);
                     }
                     if(k == 'ackStatusSummary') {
-                        let status = {};
-                        status = v.reduce(function(acc, curVal, curIndex) {
-                            let key = curVal.ackStatus;
-                            let val = curVal.count;
-                            acc[key] = val;
-                            return acc;
-                        }, {});
+                        let status = me.parseNotificationAckStatusSummary(v);
                         return status;
                     }
                     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
@@ -205,13 +199,7 @@ export class AlertsService {
                 return new Date(v);
             }
             if(k == 'ackStatusSummary') {
-                let status = {};
-                status = v.reduce(function(acc, curVal, curIndex) {
-                    let key = curVal.ackStatus;
-                    let val = curVal.count;
-                    acc[key] = val;
-                    return acc;
-                }, {});
+                let status = this.parseNotificationAckStatusSummary(v);
                 return status;
             }
             if ((k == '')  && (typeof this == 'object') && (v != null) && (typeof v == 'object') && (!(v['payloadId'])) && (!(v['ackStatus'])) ) {
@@ -230,13 +218,7 @@ export class AlertsService {
                 return new Date(v);
             }
             if(k == 'ackStatusSummary') {
-                let status = {};
-                status = v.reduce(function(acc, curVal, curIndex) {
-                    let key = curVal.ackStatus;
-                    let val = curVal.count;
-                    acc[key] = val;
-                    return acc;
-                }, {});
+                let status = this.parseNotificationAckStatusSummary(v);
                 return status;
             }
             if ((k !== '')  && (typeof this == 'object') && (v != null) && (!(v.payloadId)) && (typeof v == 'object') && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
@@ -245,6 +227,18 @@ export class AlertsService {
             return v;
         })
         return response.responseCollection;      
+    }
+
+    parseNotificationAckStatusSummary(statusObj: Array<any>) {
+        let status = {};
+        status = statusObj.reduce(function(acc, curVal, curIndex) {
+            let key = curVal.ackStatus;
+            let val = curVal.count;
+            acc[key] = val;
+            return acc;
+        }, {});
+
+        return status;
     }
 
     async setNotificationAckStatus(memberId, notificationId, status) {
@@ -404,11 +398,10 @@ export class AlertsService {
     }
 
     getNotificationsCounts(args): Promise<any> {
-/*        
+        
         const http =  this.getHttpClient();
         let me = this;
-        let response = http.fetch('v1/members/' + args.memberId + 
-            '/notifications/statistics', 
+        let response = http.fetch('v1/members/' + args.memberId + '/notification-statistics', 
             {
                 method: 'GET'
             }
@@ -416,23 +409,10 @@ export class AlertsService {
         response.catch(function(error) {
             me.logger.debug('Error getting notification count statistics: ' + error);
         })
-        return response;
-*/
-
-
-        let statusObj;
-        
-        let notPromise = this.getNotifications(args);
-        return notPromise.then((data:any) => {
-            statusObj = data.responseCollection.reduce(function(ac, cur, index) { 
-                var keys = Object.keys(cur.notificationStatus.ackStatusSummary); 
-                keys.forEach(function(key) {
-                console.debug('Row ' + index + '  ' + ac[key]);
-                !!(ac[key])?(ac[key] += !!(cur.notificationStatus.ackStatusSummary[key])?cur.notificationStatus.ackStatusSummary[key]:0):ac[key] = cur.notificationStatus.ackStatusSummary[key];
-                }); 
-                return ac
-            }, {});
-            return statusObj;
+        return response.then(response => {return response.json()
+            .then(function(data) {
+                return data;
+            });
         });
     }
 
