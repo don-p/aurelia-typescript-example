@@ -14,10 +14,10 @@ import {Utils} from './services/util';
 import{RedirectWithParams} from './lib/RedirectWithParams';
 import {DialogService, DialogController, DialogCloseResult, DialogOpenResult, DialogCancelResult} from 'aurelia-dialog';
 import {WebSocketService} from './services/wsService';
-import {HtmlWebpackPlugin} from 'html-webpack-plugin';
+import {AudioService} from './services/audioService';
 
 @inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, OrganizationService, 
-  AureliaConfiguration, Router, DialogService, AlertsService, WebSocketService, Utils, LogManager)
+  AureliaConfiguration, Router, DialogService, AlertsService, WebSocketService, AudioService, Utils, LogManager)
 export class App {
   session: Session;
   logger: Logger;
@@ -27,7 +27,8 @@ export class App {
     private evt: EventAggregator, private authService: AuthService, 
     private dataService: DataService, private organizationService: OrganizationService, 
     private appConfig:AureliaConfiguration, private router:Router, 
-    private dialogService: DialogService, private alertsService: AlertsService, private wsService: WebSocketService) {
+    private dialogService: DialogService, private alertsService: AlertsService, 
+    private wsService: WebSocketService, private audioService: AudioService) {
 
     this.session = Session;
     let me = this;
@@ -95,7 +96,7 @@ export class App {
       me.evt.subscribe('NOTIFICATION_RECEIVED', function(message) {
         me.logger.debug(' || New notification');
         // Play alert sound.
-        me.wsService.playSound(me.wsService.alertSound);
+        me.audioService.playSound(me.audioService.alertSound);
         me.logger.debug(' || Received new notification');
         // Refresh the alerts count.
         me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})

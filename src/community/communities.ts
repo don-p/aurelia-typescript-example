@@ -9,7 +9,7 @@ import {CommunityService} from '../services/communityService';
 import {Community} from './community';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
-import * as Ps from 'perfect-scrollbar';
+// import * as Ps from 'perfect-scrollbar';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 import {CommunityResource} from '../model/communityResource';
 import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
@@ -19,7 +19,7 @@ import {MemberActionsBarCustomElement} from '../components/member-actions-bar';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, DataService, CommunityService, EventAggregator, Ps, I18N, 
+@inject(Session, DataService, CommunityService, EventAggregator, I18N, 
   AureliaConfiguration, Utils, Parent.of(Community), MemberActionsBarCustomElement, Validator, NewInstance.of(ValidationController), LogManager)
 export class Communities {
   communities: Array<Object>;
@@ -42,12 +42,11 @@ export class Communities {
   logger: Logger;
 
   constructor(private session: Session, private dataService: DataService, 
-    private communityService: CommunityService, private evt: EventAggregator, Ps, 
+    private communityService: CommunityService, private evt: EventAggregator, 
     private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private parent: Community, private memberActions: MemberActionsBarCustomElement, private validator:Validator) {
 
     // var Ps = require('perfect-scrollbar');
 
-    this.ps = Ps;
     this.communities = [];
     this.communities['responseCollection'] = [];
     this.pageSizeList = 500;

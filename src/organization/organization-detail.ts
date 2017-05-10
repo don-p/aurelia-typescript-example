@@ -7,12 +7,12 @@ import {DataService} from '../services/dataService';
 import {OrganizationService} from '../services/organizationService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
-import * as Ps from 'perfect-scrollbar'; // SCROLL
+// import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 import {Utils} from '../services/util';
 
-@inject(Session, DataService, OrganizationService, EventAggregator, Ps, I18N, Utils, LogManager) // SCROLL
+@inject(Session, DataService, OrganizationService, EventAggregator, I18N, Utils, LogManager) // SCROLL
 export class OrganizationDetail {
   member: Object;
 
@@ -33,7 +33,7 @@ export class OrganizationDetail {
   logger: Logger;
   
   constructor(private session: Session, private dataService: DataService, private organizationService: OrganizationService,  
-    private evt: EventAggregator, Ps, private i18n: I18N, private utils: Utils) {
+    private evt: EventAggregator, private i18n: I18N, private utils: Utils) {
 
     // this.ps = Ps; // SCROLL
 
