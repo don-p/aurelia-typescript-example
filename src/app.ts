@@ -105,6 +105,13 @@ export class App {
           me.session.notificationStatus = statusObj;
         });
       });
+
+      // Get current unread alert count.
+      let alertCountPromise = me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})
+      .then(function(result) {
+        let statusObj = result;
+        me.session.notificationStatus = statusObj;
+      });
       
     });    
     
