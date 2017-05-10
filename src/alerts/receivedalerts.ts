@@ -234,14 +234,11 @@ export class ReceivedAlerts {
         // Update current unread alert count.
         let alertCountPromise = me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})
         .then(function(result) {
-          let statusObj = result;
+          let statusObj = me.alertsService.parseNotificationAckStatusSummary(result.received);
           me.session.notificationStatus = statusObj;
         });
       }
-      
-    })
-    
-    ;
+    });
     return this.notificationAcksPromise;
   }
 
