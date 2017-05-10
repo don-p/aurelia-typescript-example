@@ -47,7 +47,7 @@ export class Organization {
     private organizationService: OrganizationService, 
     private evt: EventAggregator, private i18n: I18N) {
 
-    this.organizations['responseCollection'] = [];
+    // this.organizations['responseCollection'] = [];
     this.pageSize = 500;
     this.selectedItem = null;
     this.logger = LogManager.getLogger(this.constructor.name);
@@ -70,10 +70,11 @@ export class Organization {
   attached() {
     this.logger.debug("Community | attached()");
     
-    // Custom scrollbar:
-    var container = document.getElementById('community-list');
-    this.ps.initialize(container);
-    this.ps.update(container);
+    // // Custom scrollbar:
+    // var container = document.getElementById('community-list');
+    // this.ps.initialize(container);
+    // this.ps.update(container);
+    
     let me = this;
     this.getOrganizationsPage(0, this.pageSize).then(function(){
       me.selectDefaultOrganization();

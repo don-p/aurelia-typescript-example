@@ -226,6 +226,14 @@ export class ReceivedAlerts {
       if(!!(ack) && !(ack.ackStatus === data.ackStatus)) {
         Object.assign(ack, data);
       }
+      if(data.ackStatus === 'READ') {
+        // Update current unread alert count.
+        let alertCountPromise = me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})
+        .then(function(result) {
+          let statusObj = result;
+          me.session.notificationStatus = statusObj;
+        });
+      }
       return data;
     });
     return this.notificationAcksPromise;
