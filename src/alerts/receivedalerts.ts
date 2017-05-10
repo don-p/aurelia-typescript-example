@@ -52,8 +52,10 @@ export class ReceivedAlerts {
     this.gridOptions.rowModelType = 'normal';
 
     this.evt.subscribe('notificationSelected', payload => {
-      if(payload.type === 'RECEIVED') me.onNotificationSelected(payload);
-     });
+      if(payload.type === 'RECEIVED') {
+        me.onNotificationSelected(payload);
+      }
+    });
     this.evt.subscribe('notificationsSelected', payload => {
       me.selectedNotifications = payload.selectedNotifications;
     });
@@ -226,7 +228,9 @@ export class ReceivedAlerts {
       if(!!(ack) && !(ack.ackStatus === data.ackStatus)) {
         Object.assign(ack, data);
       }
-      if(data.ackStatus === 'READ') {
+      return data;
+    }).then(function(status) {
+      if(status.ackStatus === 'READ') {
         // Update current unread alert count.
         let alertCountPromise = me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})
         .then(function(result) {
@@ -234,8 +238,10 @@ export class ReceivedAlerts {
           me.session.notificationStatus = statusObj;
         });
       }
-      return data;
-    });
+      
+    })
+    
+    ;
     return this.notificationAcksPromise;
   }
 
