@@ -34,11 +34,6 @@ let argv = Object.keys(args.cooked).map(function(key) {
  return args.cooked[key]}
 );
 const LOCAL = argv.indexOf('webpack-dev-server') >= 0?true:false;
-new webpack.DefinePlugin({
-  'ENV': process.env.ENV,
-  'LOCAL': LOCAL?true:false
-})
-
 
 console.log('===== LOCAL ?: ' + LOCAL + ' =====');
 
@@ -162,6 +157,15 @@ let config = generateConfig(
             flags: 'ig'
           }
         },
+        {
+          test: /wsService.ts$/,
+          loader: 'string-replace-loader',
+          query: {
+            search: "'%LOCAL_ENVIRONMENT%'",
+            replace: LOCAL,
+            flags: 'ig'
+          }
+        },
         // Stylus loader.
         {
           test: /\.styl$/, loader: ExtractTextPlugin.extract(['css-loader'+sourcemap, 'stylus-loader?resolve url'])
@@ -198,13 +202,13 @@ let config = generateConfig(
       Tether: 'tether'
     })
     ],    
-  resolve: {
-      alias: {
-          // Force all modules to use the same jquery version.
-          'jquery': path.join(__dirname, 'node_modules/jquery/src/jquery'),
-          'stompjs': path.join(__dirname, 'node_modules/stompjs/lib/stomp.js')
-      }
-  }
+    resolve: {
+        alias: {
+            // Force all modules to use the same jquery version.
+            'jquery': path.join(__dirname, 'node_modules/jquery/src/jquery'),
+            'stompjs': path.join(__dirname, 'node_modules/stompjs/lib/stomp.js')
+        }
+    }
    },
 
   /**

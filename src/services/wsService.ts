@@ -5,10 +5,6 @@ import {ConnectionHeaders} from 'webstomp-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {Logger} from 'aurelia-logging';
 
-// Global env variables.
-declare var LOCAL: boolean;
-declare var ENV: string;
-
 @inject(AureliaConfiguration, EventAggregator, LogManager)
 export class WebSocketService {  
 
@@ -23,7 +19,7 @@ export class WebSocketService {
         this.logger = LogManager.getLogger(this.constructor.name);
 
         this.wsProtocol = 'wss';
-        if(LOCAL) {
+        if('%LOCAL_ENVIRONMENT%') {
             this.wsProtocol = 'ws';
         }
         let context;
