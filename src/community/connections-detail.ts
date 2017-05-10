@@ -9,13 +9,13 @@ import {Session} from '../services/session';
 import {CommunityService} from '../services/communityService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
-import * as Ps from 'perfect-scrollbar'; // SCROLL
+// import * as Ps from 'perfect-scrollbar'; // SCROLL
 import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {Utils} from '../services/util';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 
 @inject(Session, CommunityService, EventAggregator, 
-  Ps, I18N, AureliaConfiguration, Utils, LogManager) // SCROLL
+  I18N, AureliaConfiguration, Utils, LogManager) // SCROLL
 export class ConnectionsDetail {
 
   isSelectedMembers: boolean;
@@ -30,7 +30,7 @@ export class ConnectionsDetail {
   logger: Logger;
   
   constructor(private session: Session, private communityService: CommunityService,
-    private evt: EventAggregator, Ps, private i18n: I18N, private appConfig: AureliaConfiguration, 
+    private evt: EventAggregator, private i18n: I18N, private appConfig: AureliaConfiguration, 
     private utils: Utils) {
 
     // this.ps = Ps; // SCROLL

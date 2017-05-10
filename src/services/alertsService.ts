@@ -404,6 +404,22 @@ export class AlertsService {
     }
 
     getNotificationsCounts(args): Promise<any> {
+/*        
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/members/' + args.memberId + 
+            '/notifications/statistics', 
+            {
+                method: 'GET'
+            }
+        );
+        response.catch(function(error) {
+            me.logger.debug('Error getting notification count statistics: ' + error);
+        })
+        return response;
+*/
+
+
         let statusObj;
         
         let notPromise = this.getNotifications(args);
