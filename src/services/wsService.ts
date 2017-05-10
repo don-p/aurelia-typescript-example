@@ -22,8 +22,10 @@ export class WebSocketService {
     constructor(private appConfig: AureliaConfiguration, private evt: EventAggregator){
         this.logger = LogManager.getLogger(this.constructor.name);
 
-        this.wsProtocol = LOCAL?'ws':'wss';
-
+        this.wsProtocol = 'wss';
+        if(LOCAL) {
+            this.wsProtocol = 'ws';
+        }
         let context;
 
         try {
