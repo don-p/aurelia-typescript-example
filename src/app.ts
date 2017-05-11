@@ -48,7 +48,7 @@ export class App {
         })
       });
       // Open a new WebSocket connection.
-      this.session.startWsConnection();
+      me.wsService.openWsConnection(me.session);
       
       // Get alert categories/types.
       let alertCatPromise: Promise<Response> =me.dataService.getAlertCategories(0,  10000);

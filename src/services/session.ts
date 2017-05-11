@@ -6,8 +6,6 @@ import {Logger} from 'aurelia-logging';
 export class Session {  
     auth: Object;
     configured: Promise<any>;
-    wsConnection: any;
-    wsSubscriptions: Array<Function>;
     notificationStatus: any = {};
 
     logger: Logger;
@@ -22,35 +20,6 @@ export class Session {
         // FIXME: temp hard-coded role.
         return 'admin';
         // FIXME: temp hard-coded role.
-    }
-
-    startWsConnection() {
-        let me = this;
-        let stompClientPromise = this.wsService.openWsConnection(me.auth['access_token']);
-        stompClientPromise.then(function(connectResult) {
-            let stompClient = connectResult.client;
-            me.addSubscriptions(stompClient);
-            this.wsConnection = stompClient;
-        }).catch(function(error) {
-            me.logger.debug("Error connecting to Stomp: " + error);
-        });
-    }
-
-    addSubscriptions(stompClient) {
-        let me = this;
-        let alertSub = stompClient.subscribe('/exchange/member.notification.alert/' + me.auth['member'].memberId, function(message) {
-            me.wsService.handleWsMessage(message);
-            me.logger.debug("Got WS alert message: " + message.body);
-        });
-        me.wsSubscriptions.push(alertSub);
-        me.logger.debug("Added sub: " + alertSub);
-    }
-
-    removeSubscriptions() {
-        let sub:any;
-        for(sub of this.wsSubscriptions) {
-            sub.unsubscribe();
-        }
     }
 
     get unreadAlertCount() {
