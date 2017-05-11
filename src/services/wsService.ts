@@ -46,27 +46,30 @@ export class WebSocketService {
             stompClient.connect('user', 'pwd', function (frame) {
                 me.logger.debug("connected to Stomp");
                 ws.onclose = function(event) {
-                 me.logger.error("websocket connection closed: " + event);
-                 if(event.type === 'close') {
-                     // Start to re-try ws connection.
-                     let retryCount = 0;
-                     let workerId = setInterval(function(ws) {
-                         if(retryCount >= 5) {
-                             me.logger.info("websocket re-connection max attempts exceeded");
-                             clearInterval(workerId);
-                             me.removeSubscriptions();
-                             me.wsConnection.disconnect();
-                         }
-                         retryCount++;
-                         me.openWsConnection(session).then(function(result) {
-                              me.logger.info("websocket re-connected");
-                            clearInterval(workerId);
-                         }).catch(function(error) {
-                            // Keep trying.
-                            me.logger.info("websocket re-connection failed, trying again");
-                         });
-                     }, wsHeartbeatInterval);
-                 }
+                    me.logger.error("websocket connection closed: " + event);
+                    if(event.type === 'close') {
+                        // Clean up connection,.
+                        me.removeSubscriptions();
+                        me.wsConnection.disconnect();
+                        // Start to re-try ws connection.
+                        let retryCount = 0;
+                        let workerId = setInterval(function(ws) {
+                            if(retryCount >= 5) {
+                                me.logger.info("websocket re-connection max attempts exceeded");
+                                clearInterval(workerId);
+                                me.removeSubscriptions();
+                                me.wsConnection.disconnect();
+                            }
+                            retryCount++;
+                            me.openWsConnection(session).then(function(result) {
+                                me.logger.info("websocket re-connected");
+                                clearInterval(workerId);
+                            }).catch(function(error) {
+                                // Keep trying.
+                                me.logger.info("websocket re-connection failed, trying again");
+                            });
+                        }, wsHeartbeatInterval);
+                    }
                /*    
                     socket_connected = false;
                     stompClient.disconnect();

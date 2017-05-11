@@ -8,6 +8,7 @@ export class AudioService {
     logger: Logger;
     audioContext: any;
     alertSound: any;
+    alertSoundAudio: HTMLAudioElement;
     alertSoundFilename: string = 'beep30_3x.mp3';
     wsProtocol: string;
 
@@ -22,6 +23,7 @@ export class AudioService {
             context = new AudioContext();
             this.audioContext = context;
             this.loadSound('./sounds/' + this.alertSoundFilename);
+            this.loadSoundCompat('./sounds/' + this.alertSoundFilename);
 /*
             let bufferLoader = new BufferLoader(
                 context,
@@ -48,6 +50,15 @@ export class AudioService {
         source.connect(this.audioContext.destination);       // connect the source to the context's destination (the speakers)
         source.start(0);                           // play the source now
                                                 // note: on older systems, may have to use deprecated noteOn(time);
+    }
+
+    playSoundCompat(audio: HTMLAudioElement) {
+        audio.play();
+    }
+
+    loadSoundCompat(url) {
+        let audio = new Audio(url);
+        this.alertSoundAudio = audio;
     }
 
     loadSound(url) {

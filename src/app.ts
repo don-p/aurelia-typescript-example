@@ -96,7 +96,8 @@ export class App {
       me.evt.subscribe('NOTIFICATION_RECEIVED', function(message) {
         me.logger.debug(' || New notification');
         // Play alert sound.
-        me.audioService.playSound(me.audioService.alertSound);
+        // me.audioService.playSound(me.audioService.alertSound);
+        me.audioService.playSoundCompat(me.audioService.alertSoundAudio);
         me.logger.debug(' || Received new notification');
         // Refresh the alerts count.
         let statusObj = me.alertsService.parseNotificationAckStatusSummary(message.statistics.received);
