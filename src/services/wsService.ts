@@ -10,6 +10,8 @@ export class WebSocketService {
 
     logger: Logger;
     wsProtocol: string;
+    wsConnection: any;
+    wsSubscriptions: Array<Function> = [];
 
     // Service object for application utilities.
     constructor(private appConfig: AureliaConfiguration, private evt: EventAggregator){
@@ -21,15 +23,19 @@ export class WebSocketService {
         }
     }
 
-    openWsConnection(token): Promise<any> {
+    createWebSocket(wsUrl: string): WebSocket {
+        return new WebSocket(wsUrl);
+    }
+
+    openWsConnection(session): Promise<any> {
 
         let me = this;
 
         let wsHeartbeatInterval = this.appConfig.get('api.wsHeartbeatInterval');
         let promise = new Promise((resolve, reject) => {
             let wsUrl = this.wsProtocol + '://' + window.location.host + '/blgws/websocket?token=';
-            let url = wsUrl + token;
-            let ws = new WebSocket(url);
+            let url = wsUrl + session.auth['access_token'];
+            let ws = me.createWebSocket(url);
             let options:any = {heartbeat: {incoming: wsHeartbeatInterval, outgoing: wsHeartbeatInterval}};
             let stompClient:any = Stomp.over(ws, options);
             // Override StompClient debugging to use our Logger.
@@ -39,7 +45,43 @@ export class WebSocketService {
             
             stompClient.connect('user', 'pwd', function (frame) {
                 me.logger.debug("connected to Stomp");
+                ws.onclose = function(event) {
+                 me.logger.error("websocket connection closed: " + e);
+                 if(event.type === 'close') {
+                     // Start to re-try ws connection.
+                     let retryCount = 0;
+                     let workerId = setInterval(function(ws) {
+                         if(retryCount >= 5) {
+                             clearInterval(workerId);
+
+                         }
+                         retryCount++;
+                         me.openWsConnection(session.auth['access_token']).then(function(result) {
+                            clearInterval(workerId);
+                         }).catch(function(error) {
+
+                         });
+                     }, wsHeartbeatInterval);
+                 }
+               /*    
+                    socket_connected = false;
+                    stompClient.disconnect();
+                    if (reconnect_attempts < max_reconnect_attempts && application_state != "0" && network_state != "false") {
+                        callbackonMessage("RECONNECTING: " + reconnect_attempts);
+                        setTimeout(function() {
+                            stomp_connect();
+                        }, reconnect_attempt_timeout);
+                    } else {
+                        reconnect_attempts = 0;
+                        callbackonClose("CONNECTION CLOSED!");
+                    }
+                */
+                }
+
+
                 if(frame['headers'].session) {
+                    me.addSubscriptions(stompClient, session);
+                    me.wsConnection = stompClient;
                     resolve({frame: frame, client: stompClient});
                 }
              }, function(error) {
@@ -50,6 +92,27 @@ export class WebSocketService {
         return promise;
     }
 
+    addSubscriptions(stompClient, session) {
+        let me = this;
+        let alertSub = stompClient.subscribe('/exchange/member.notification.alert/' + session.auth['member'].memberId, function(message) {
+            me.handleWsMessage(message);
+            me.logger.debug("Got WS alert message: " + message.body);
+        });
+        me.wsSubscriptions.push(alertSub);
+        me.logger.debug("Added sub: " + alertSub);
+    }
+
+    removeSubscriptions() {
+        let sub:any;
+        for(sub of this.wsSubscriptions) {
+            sub.unsubscribe();
+        }
+    }
+    
+
+    /**
+     * WebSocket message routing/delegation.
+     */
     handleWsMessage(frame) {
         let body = JSON.parse(frame.body);
         let eventType = body.actionType;
