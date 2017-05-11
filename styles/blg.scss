@@ -274,7 +274,7 @@ header nav ul li a {
     color: $brand-secondary;
     font-size: 18px;
     font-weight: 600;    
-    padding: 14px 35px 14px 25px;
+    padding: 14px 5px 14px 25px;
 	text-decoration: none !important;
 	transition: .25s;
 }
@@ -467,7 +467,7 @@ header .navbar-nav {
 }
 
 .blg-left-panel .blg-organization-content {
-  padding: 12px 10px 0px 0px;
+  padding: 0px;
   position: absolute;
   top: 38px;
   bottom: 15px;
@@ -1637,7 +1637,7 @@ li.complete .map-check {
 }
 
 .organization-panel-list {
-  width: 447px;  
+  width: 433px;  
 }
 
 .blg-organization-content ul {
@@ -2481,4 +2481,9 @@ LABEL.LOW {
 
 .alerts-table-content .ag-blg .ag-cell-not-inline-editing {
     padding: 5px 3px 3px 3px !important;
+}
+
+.nav-counter {
+  min-width: 50px;
+  float: right;
 }
