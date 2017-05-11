@@ -120,27 +120,6 @@ let config = generateConfig(
           changeOrigin: true,
           logLevel: 'info'
         }
-        // '/blgapi/**': {
-        //   target: 'http://scig-dev.bluelinegrid.com',
-        //   pathRewrite: {'^/blgapi' : ''},
-        //   secure: false,
-        //   changeOrigin: true,
-        //   logLevel: 'info'
-        // }
-        // '/blgapi/**': {
-        //   target: 'http://54.165.234.148:7080',
-        //   pathRewrite: {'^/blgapi' : ''},
-        //   secure: false,
-        //   changeOrigin: true,
-        //   logLevel: 'info'
-        // }
-        // '/blgapi/**': {
-        //   target: 'http://192.168.119.143:7061',
-        //   pathRewrite: {'^/blgapi' : ''},
-        //   secure: false,
-        //   changeOrigin: true,
-        //   logLevel: 'info'
-        // }
       }
     },    
     output: {

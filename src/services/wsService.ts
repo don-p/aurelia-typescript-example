@@ -25,14 +25,16 @@ export class WebSocketService {
 
         let me = this;
 
+        let wsHeartbeatInterval = this.appConfig.get('api.wsHeartbeatInterval');
         let promise = new Promise((resolve, reject) => {
             let wsUrl = this.wsProtocol + '://' + window.location.host + '/blgws/websocket?token=';
             let url = wsUrl + token;
             let ws = new WebSocket(url);
-            let stompClient:any = Stomp.over(ws);
+            let options:any = {heartbeat: {incoming: wsHeartbeatInterval, outgoing: wsHeartbeatInterval}};
+            let stompClient:any = Stomp.over(ws, options);
             // Override StompClient debugging to use our Logger.
             stompClient.debug = function(str) {
-                 me.logger.debug(str);
+                 me.logger.info(str);
             };
             
             stompClient.connect('user', 'pwd', function (frame) {
@@ -52,7 +54,7 @@ export class WebSocketService {
         let body = JSON.parse(frame.body);
         let eventType = body.actionType;
         this.logger.debug(" || Received WS message: " + eventType);
-        this.evt.publish(eventType, body.notification);
+        this.evt.publish(eventType, body);
     }
 
 }
