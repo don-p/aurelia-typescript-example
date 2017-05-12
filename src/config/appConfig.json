@@ -8,7 +8,7 @@
             "clientSecret": "ZW50ZXI6MzI3MmU2ZTctYTY2ZC0xMDMyLTg2YzktNmFiMzQ0M2M2MDJk",
             "serverUrl": "blgapi/",
             "wsProtocol": "ws",
-            "wsHeartbeatInterval": 45000
+            "wsHeartbeatInterval": 5000
         },
         "logLevel": "debug"
     },

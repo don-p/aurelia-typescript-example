@@ -5,6 +5,8 @@ import {ConnectionHeaders} from 'webstomp-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {Logger} from 'aurelia-logging';
 
+const WS_CONNECTION_MAX_RETRIES: number = 5;
+
 @inject(AureliaConfiguration, EventAggregator, LogManager)
 export class WebSocketService {  
 
@@ -45,6 +47,8 @@ export class WebSocketService {
             
             stompClient.connect('user', 'pwd', function (frame) {
                 me.logger.debug("connected to Stomp");
+
+                // Handle unexpected closing of websocket connection.
                 ws.onclose = function(event) {
                     me.logger.error("websocket connection closed: " + event);
                     if(event.type === 'close') {
@@ -54,38 +58,26 @@ export class WebSocketService {
                         // Start to re-try ws connection.
                         let retryCount = 0;
                         let workerId = setInterval(function(ws) {
-                            if(retryCount >= 5) {
+                            if(retryCount >= WS_CONNECTION_MAX_RETRIES) {
                                 me.logger.info("websocket re-connection max attempts exceeded");
+                                // Stop trying.
                                 clearInterval(workerId);
-                                me.removeSubscriptions();
-                                me.wsConnection.disconnect();
+                            } else {
+                                retryCount++;
+                                me.openWsConnection(session).then(function(result) {
+                                    me.logger.info("websocket re-connected");
+                                    // Re-connected, so done.
+                                    clearInterval(workerId);
+                                }).catch(function(error) {
+                                    // Keep trying.
+                                    me.logger.info("websocket re-connection failed, trying again");
+                                });
                             }
-                            retryCount++;
-                            me.openWsConnection(session).then(function(result) {
-                                me.logger.info("websocket re-connected");
-                                clearInterval(workerId);
-                            }).catch(function(error) {
-                                // Keep trying.
-                                me.logger.info("websocket re-connection failed, trying again");
-                            });
                         }, wsHeartbeatInterval);
                     }
-               /*    
-                    socket_connected = false;
-                    stompClient.disconnect();
-                    if (reconnect_attempts < max_reconnect_attempts && application_state != "0" && network_state != "false") {
-                        callbackonMessage("RECONNECTING: " + reconnect_attempts);
-                        setTimeout(function() {
-                            stomp_connect();
-                        }, reconnect_attempt_timeout);
-                    } else {
-                        reconnect_attempts = 0;
-                        callbackonClose("CONNECTION CLOSED!");
-                    }
-                */
                 }
 
-
+                // After a successful websocket/STOMP connection, add default subscriptions.
                 if(frame['headers'].session) {
                     me.addSubscriptions(stompClient, session);
                     me.wsConnection = stompClient;
