@@ -124,9 +124,8 @@ export class App {
     this.logger.debug('App created');
     // Check for existing cookie/localStorage authentication.
     let auth = this.authService['auth'].storage.get('auth');
-    if(typeof auth === 'string') {
+    if(typeof auth === 'string' && this.authService.isAuthenticated()) {
       auth = JSON.parse(auth);
-      auth['access_token'] = this.authService['auth'].getToken();
       this.session.auth = auth;
       this.session.auth['isLoggedIn'] = true;
       // Send event for successful authentication.
