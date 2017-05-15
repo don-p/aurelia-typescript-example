@@ -9,7 +9,8 @@ export class AudioService {
     audioContext: any;
     alertSound: any;
     alertSoundAudio: HTMLAudioElement;
-    alertSoundFilename: string = 'beep30_3x.mp3';
+    // alertSoundFilename: string = 'beep30_3x.mp3';
+    alertSoundFilename: string = 'GC_Alert-t-1.mp3';
     wsProtocol: string;
 
     // Service object for application utilities.
