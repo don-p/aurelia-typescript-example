@@ -25,7 +25,6 @@ import * as generateCoverage from '@easy-webpack/config-test-coverage-istanbul';
 
 const ENV: 'development' | 'production' | 'qa' = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() || (process.env.NODE_ENV = 'development');
 console.log('========== BUILDING FOR ENV - ' +  process.env.NODE_ENV + ' ==========');
-
 const webpack = require('webpack');
 
 //Determine if running locally in webpack-dev-server.
@@ -33,9 +32,11 @@ let args = JSON.parse(process.env.npm_config_argv);
 let argv = Object.keys(args.cooked).map(function(key) {
  return args.cooked[key]}
 );
-const LOCAL = argv.indexOf('webpack-dev-server') >= 0?true:false;
+const LOCAL: true | false = argv.indexOf('webpack-dev-server') >= 0?true:false;
+const STATIC_SERVER = argv.indexOf('STATIC') >= 0?true:false;
 
 console.log('===== LOCAL ?: ' + LOCAL + ' =====');
+console.log('===== STATIC_SERVER ?: ' + STATIC_SERVER + ' =====');
 
 // basic configuration:
 const title = 'GridCommand';
@@ -120,7 +121,8 @@ let config = generateConfig(
           changeOrigin: true,
           logLevel: 'info'
         }
-      }
+      },
+      hot: false
     },    
     output: {
       path: outDir,
@@ -153,11 +155,11 @@ let config = generateConfig(
         {
           test: /\.(scss|css)$/i, exclude: [srcDir+'/libs/'], loader: ExtractCustomCSS.extract(['css-loader'+sourcemap,'sass-loader'+sourcemap])
         },
-{
-   test: /favicon.ico$/,
-   exclude: /node_modules/,
-   loader:'file-loader?name=[name].[hash].[ext]&context=.'
-}      
+        {
+          test: /favicon.ico$/,
+          exclude: /node_modules/,
+          loader:'file-loader?name=[name].[hash].[ext]&context=.'
+        }      
       ]
     },
     plugins: [
@@ -172,14 +174,14 @@ let config = generateConfig(
         },
       }),
       ExtractCustomCSS,
-    new ContextReplacementPlugin(/moment[\/\\]locale$/, /en|fr/),
-    new ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      'window.jQuery': 'jquery',
-      'window.Tether': 'tether',
-      Tether: 'tether'
-    })
+      new ContextReplacementPlugin(/moment[\/\\]locale$/, /en|fr/),
+      new ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        'window.jQuery': 'jquery',
+        'window.Tether': 'tether',
+        Tether: 'tether'
+      })
     ],    
     resolve: {
         alias: {
@@ -229,5 +231,6 @@ let config = generateConfig(
   ENV === 'production' ?
     uglify({debug: false, mangle: { except: ['cb', '__webpack_require__'] }}) : {}
 );
-
+config.metadata.static = STATIC_SERVER;
+console.error("config meta: " + config.metadata.static);
 module.exports = stripMetadata(config);

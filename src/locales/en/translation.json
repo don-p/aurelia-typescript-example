@@ -239,7 +239,8 @@
                 "DECLINED": "Rejected",
                 "SCHEDULED": "Scheduled"
             }
-        }
+        },
+        "unreadCountTooltip": "{{unreadAlertCount}} unread alerts"
     },
 
     "grid": {
