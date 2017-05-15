@@ -270,11 +270,11 @@ header::after {
 }
 
 header nav ul li a {
-    display: block;
+    display: inline-block;
     color: $brand-secondary;
     font-size: 18px;
     font-weight: 600;    
-    padding: 14px 35px 14px 25px;
+    padding: 14px 25px;
 	text-decoration: none !important;
 	transition: .25s;
 }
@@ -467,7 +467,7 @@ header .navbar-nav {
 }
 
 .blg-left-panel .blg-organization-content {
-  padding: 12px 10px 0px 0px;
+  padding: 0px;
   position: absolute;
   top: 38px;
   bottom: 15px;
@@ -1149,7 +1149,7 @@ table.blg-dataTable.display tbody td {
 
 .list-item .checkbox input[type="checkbox"] {
     margin-left: -23px;
-    cursor: pointer;
+    cursor: default;
 }
 
 .list-item .checkbox input[type="checkbox"]:disabled {
@@ -1210,6 +1210,10 @@ div.ag-header-cell-center {
   cursor: pointer;
 }
 
+.ag-selection-checkbox img {
+  cursor: default;  
+}
+
 .ag-blg .ag-header-cell-menu-button {
   margin-top: 5px !important;
   float: left;  
@@ -1218,8 +1222,6 @@ div.ag-header-cell-center {
 .ag-header-cell.ag-notification-group-child-header {
   display: none;
   width: 0px;
-
-  /*visibility: hidden;*/
 }
 
 div.ag-group-cell.ag-notification-group-child, div.ag-notification-group-child {
@@ -1637,7 +1639,7 @@ li.complete .map-check {
 }
 
 .organization-panel-list {
-  width: 447px;  
+  width: 433px;  
 }
 
 .blg-organization-content ul {
@@ -2344,7 +2346,9 @@ abp-datetime-picker .input-group-addon {
     margin-right: 15px;
     background-color: $blg-blue;
     color: $blg-white;
-    font-size: 15px;      
+    font-size: 15px;
+    overflow: hidden;
+    max-height: none;         
 }
 
 .reply-message-text {
@@ -2355,7 +2359,9 @@ abp-datetime-picker .input-group-addon {
     margin-right: 15px;
     background-color: $blg-grey-lightest;
     font-size: 15px;
-    max-width: 500px;           
+    max-width: 700px;
+    max-height: 250px;
+    overflow-y: scroll;           
 }
 
 .alert-details-bottom-buttons {
@@ -2404,6 +2410,7 @@ abp-datetime-picker .input-group-addon {
   top: 6px;
   margin-left: 30px;
   margin-right: 30px;
+  cursor: pointer;
 }
 
 .alert-label {
@@ -2468,9 +2475,23 @@ LABEL.LOW {
 }
 
 .alerts-table-content .ag-blg .ag-cell-no-focus {
-    border-top: 1px solid #cdcdcd !important;
+    border-top: 1px solid $blg-grey-light-more !important;
+}
+
+.ag-blg .ag-cell-focus {
+  border-top: 1px solid $blg-grey-light-more !important;
 }
 
 .alerts-table-content .ag-blg .ag-cell-not-inline-editing {
     padding: 5px 3px 3px 3px !important;
+}
+
+.alerts-table-content .ag-body-container,
+.alerts-table-content .ag-full-width-container {
+  cursor: pointer;
+}
+
+.nav-counter {
+  min-width: 50px;
+  float: right;
 }
