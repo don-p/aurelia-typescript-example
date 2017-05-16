@@ -1,0 +1,93 @@
+<template>
+<require from="../lib/loading-mask/loading-mask"></require>
+
+      <div id="communities-tab" class="blg-tab-section tab-content">
+        <div class="blg-inner-content tab-pane active" id="communities">
+
+          
+          <loading id="communities-loading" promise.bind="'cmtysPromise'" message-key.bind="'app.loading'">
+
+          <div class="conv-buttons-bar">
+            <button id="btn-communities-create-community" click.delegate="createCommunity()" class="btn btn-info btn-xs-square" i18n='[title]button.createCommunity'>
+              <i class="ico-users-plus"></i>
+            </button>
+          </div>
+
+          <!--div class="conv-form-group">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" i18n='[placeholder]community.search'>
+              <span class="input-group-btn">
+                <button type="submit" class="btn"><span class="ico-search"></span></button>
+              </span>												
+            </div>
+          </div-->
+
+          <div class="community-list-info-bar">
+            
+            <div class="checkbox checkbox-info">
+              <input id="checkbox-community-all" type="checkbox" checked.bind="selectAll" change.delegate="selectAllCommunities($event.target.checked)" class="styled styled-info" value="">
+              <label></label>
+            </div>
+            
+            <div class="community-list-info pull-right">${communities.length} items total</div>
+          </div>
+
+        <!--div class="blg-inner-content tab-pane active" id="communities"-->
+
+
+          <!-- communities list elements -->
+
+            <div class="blg-community-content">
+              <div id="community-list" class="community-list">
+                <ul>
+                  <div class="panel-group communities-panel-list list1" id="accordion_communities">
+                    <div id="cmty-${community.communityId}" repeat.for="community of communities" class='list-item'>
+                      
+                      <div class="checkbox checkbox-info">
+                          <input id="checkbox-community-${$index}" type="checkbox" class="styled styled-info" 
+                            change.delegate="onCommunitySelectionChanged(community)" model.bind="community" checked.bind="selectedCommunities">
+                          <label></label>
+                      </div>
+                      
+                      <div class='panel panel-default'>
+                        <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
+                          role='tab'>
+                          <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
+                            <h4 class='panel-title' click.delegate="selectCommunity(community)">
+                              <span class="community-name">${community.communityName}</span>
+                              <span class="members-count">(<i class='ico-users'></i> ${community.memberCount})</span>
+                              <span class='community-buttons'>
+                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                  click.delegate="deleteCommunity(community, $event)" i18n='[title]button.deleteCase'>
+                                  <i class="ico-bin float-right"></i>
+                                </a>
+                                <!-- TODO: Removing controls for transfer of community ownership
+                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                  click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.transferOwnership'>
+                                  <i class="ico-circle-right6 float-right"></i>
+                                </a>                                -->
+                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
+                                  click.delegate="editCommunity(community, $event)" i18n='[title]button.editCase'>
+                                  <i class="ico-pencil7 float-right"></i>
+                                </a>
+                              </span>
+                              <div class="community-description" >${(community.communityDescription !==null) ? community.communityDescription:'&nbsp;'}</div>                               
+                            </h4>
+                          </a>
+                        </div>
+                        <div id='collapse${$index}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading${$index}'></div>
+                      </div>
+                    </div>
+                  </div>
+                </ul>
+              </div>
+            </div>
+
+            <!--<div class="paging-line-bottom"></div>-->
+
+        <!--/div-->
+        </loading>
+       
+        </div>
+      </div>
+</template>
