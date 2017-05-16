@@ -286,28 +286,50 @@ export class AlertsService {
     async setNotificationReply(memberId:string, notificationId:string, ack:any) {
         await fetch;
 
+        let me = this;
+
         // let notificationId:string = args.memberId;
         // let startIndex:number = args.startIndex;
         // let pageSize:number = args.pageSize;
         // let direction:string = args.direction;
 
-        const http =  this.getHttpClient();
+        // const http =  this.getHttpClient();
 
         let body = {
             ackStatus: 'REPLY_MESSAGE',
             ackMessage: ack.message
         };
 
-        let response = http.fetch('v1/members/' + memberId + 
-            '/notifications/' + notificationId + '/acks', 
-            {
-                method: 'PUT',
-                body: JSON.stringify(body)
+        var form = new FormData();
+        form.append('acknowledgement', JSON.stringify(body));
+        let files = ack.files;
+        if(files) {
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                form.append('file', file);
+
             }
-        );
+        }
+
+        const http =  this.httpBase;
+        let response = http.createRequest('v2/members/' + memberId + '/notifications/' + notificationId + '/acks')
+        // .asPut()
+        .asPost()
+        .withContent(form)
+        .withHeader('Authorization', 'Bearer '+ this.session.auth['access_token'])
+        .send();
+
+        // let response = http.fetch('v1/members/' + memberId + 
+        //     '/notifications/' + notificationId + '/acks', 
+        //     {
+        //         method: 'PUT',
+        //         body: JSON.stringify(body)
+        //     }
+        // );
         return response
-        .then(response => {return response.json()
-            .then(data => {
+        // .then(response => {return response.json()
+        //  .then(response => {return response
+           .then(data => {
                 let json = JSON.stringify(data);
                 let content = JSON.parse(json, (k, v) => { 
                     if(k == 'acknowledgementDate') {
@@ -321,7 +343,9 @@ export class AlertsService {
                     return v;                
                 });
                 return content;
-            })
+            // })
+        }).catch(function(error){
+            me.logger.error("Ack update failed: " + error);
         });
         
     }
