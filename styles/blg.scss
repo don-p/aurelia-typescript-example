@@ -2495,3 +2495,8 @@ LABEL.LOW {
   min-width: 50px;
   float: right;
 }
+
+.requestDetailContainer .reply-message-text a {
+  color: $blg-white;
+  margin-left: 5px;
+}
