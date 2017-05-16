@@ -15,7 +15,7 @@ import * as QueryString from 'query-string';
 import * as moment from 'moment';
 
 @inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService, LogManager)
-export class AlertsService {  
+export class CaseService {  
 
     // Service object for retreiving application data from REST services.
     

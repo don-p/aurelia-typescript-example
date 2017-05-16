@@ -1,0 +1,13 @@
+<template>
+
+  <div class="blg-fixed-wrapper">
+
+    <aside class.bind="router.currentInstruction.config.route == 'connections'?'blg-right-panel':'blg-left-panel'">
+       <compose view-model="./cases-list"></compose>
+    </aside>
+    <!-- switch detail view based on settings associated with master view. -->
+    <compose view-model="./cases-detail" containerless></compose>
+
+</div>
+
+</template>

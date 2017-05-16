@@ -242,6 +242,11 @@
         },
         "unreadCountTooltip": "{{unreadAlertCount}} unread alerts"
     },
+    "cases": {
+        "caseDetail": "Case {{caseRefId}}",
+        "tasks": "Tasks"
+    },
+
 
     "grid": {
         "filter": "Filter..."
@@ -295,7 +300,9 @@
         "reply": "Reply",
         "accept": "Accept",
         "reject": "Reject",
-        "resend": "Re-send"
+        "resend": "Re-send",
+        "editCase":"Update case",
+        "deleteCase": "Delete case"
     },
 
     "global": {
