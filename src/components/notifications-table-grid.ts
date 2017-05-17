@@ -27,12 +27,8 @@ export class NotificationsTableGridCustomElement {
     @bindable enableSorting: boolean;
     @bindable enableServerSideSorting: boolean;
     @bindable displayColumns: Array<String> = [];
-    // @bindable dataFlowerFunc: Function;
     @bindable fullWidthCellRenderer;
-    // @bindable isFullWidthCell: Function;
 
-    DetailPanelCellRenderer: any;
-    dataFlowerFunc: Function;
     context: any;
 
     messageStatusFilter: string = 'ALL';
@@ -50,60 +46,13 @@ export class NotificationsTableGridCustomElement {
     this.gridSelectionChangedFunc = function(){};
     this.rowSelectionChangedFunc = function(){};
     this.gridFilterFunc = function(){};
-    this.dataFlowerFunc = this.doesDataFlower;
-    this.gridOptions['doesDataFlower'] = function(){
-      return true;
-    };
-    this.gridOptions.getNodeChildDetails = this.getNodeChildDetails;
     this.evt.subscribe('notificationsFilterChanged', payload => {
-      me.messageStatusFilter = payload.messageStatusFilter;
-      me.gridOptions.api.onFilterChanged();
+      if(!!(me.gridOptions.api)) {
+        me.messageStatusFilter = payload.messageStatusFilter;
+        me.gridOptions.api.onFilterChanged();
+      }
     });
     
-    this.DetailPanelCellRenderer = function() {};
-    this.DetailPanelCellRenderer.prototype.init = function(params) {
-        // trick to convert string of html into dom object
-        var eTemp = document.createElement('div');
-        eTemp.innerHTML = this.getTemplate(params);
-        this.eGui = eTemp.firstElementChild;
-
-        this.setupDetailGrid(params.data);
-        // this.consumeMouseWheelOnDetailGrid();
-        // this.addSeachFeature();
-        // this.addButtonListeners();
-    };
-    this.DetailPanelCellRenderer.prototype.setupDetailGrid = function(callRecords) {
-
-      this.detailGridOptions = {
-          enableSorting: true,
-          enableFilter: true,
-          enableColResize: true,
-          rowData: callRecords,
-          onGridReady: function(params) {
-              setTimeout( function() { params.api.sizeColumnsToFit(); }, 0);
-          }
-      };
-
-    };
-    this.DetailPanelCellRenderer.prototype.getTemplate = function(params) {
-
-      var message = params.data.message;
-
-      var template =
-          '<div class="full-width-panel">' +
-          '  <div class="full-width-details">' +
-          '    <div class="full-width-detail"><b>Message: </b>'+message+'</div>' +
-          '  </div>'+
-          '</div>';
-
-      return template;
-    };
-    this.DetailPanelCellRenderer.prototype.getGui = function() {
-      return this.eGui;
-    };
-
-    this.gridOptions.fullWidthCellRenderer = this.DetailPanelCellRenderer;
-
     this.fullWidthCellRenderer = function (params) {
       me.logger.debug('>>>>>>> fullWidthRenderer');
       let eGui = me.fullWidthCellRenderer.prototype.init(params);
@@ -119,10 +68,11 @@ export class NotificationsTableGridCustomElement {
     };
     this.fullWidthCellRenderer.prototype.getTemplate = function(params) {
         // the flower row shares the same data as the parent row
-        var data = params.node.parent.data;
+        // var data = params.node.parent.data;
+        let data = params.node.data;
         let memberId = params.context.context.session.auth.member.memberId;
         let isReceived:boolean = params.context.context.constructor.name === 'ReceivedAlerts';
-        let spacer = isReceived?'<span style="min-width: 30px;width: 30px;display: inline-block;"></span>':'';
+        let spacer = isReceived?'<span style="min-width: 26px;width: 26px;display: inline-block;"></span>':'';
         var template = //'<div></div>';
             '<div class="full-width-panel full-width-notification-message">' +
             '  <div class="full-width-summary">' +
@@ -133,12 +83,8 @@ export class NotificationsTableGridCustomElement {
 
         return template;
     };
-    // this.gridOptions.fullWidthCellRenderer = this.fullWidthCellRenderer;
 
-    // this.fullWidthCellRenderer.prototype.getGui = function() {
-    //   return this.eGui;
-    // };
-
+    this.gridOptions.fullWidthCellRenderer = this.fullWidthCellRenderer;
   }
 
   bind(bindingContext, overrideBindingContext) {
@@ -179,14 +125,24 @@ export class NotificationsTableGridCustomElement {
       (event.api.gridOptionsWrapper.gridOptions.context.messageStatusFilter !== 'ALL');
     }
     event.api.gridOptionsWrapper.gridOptions.doesExternalFilterPass = function(node) {
-      return(node.parent.data.notificationCategory.categoryName === me.messageStatusFilter);
+      return(node.data.notificationCategory.categoryName === me.messageStatusFilter);
     }
 
-    event.api.gridOptionsWrapper.gridOptions.doesDataFlower = scope.dataFlowerFunc;
+    event.api.gridOptionsWrapper.gridOptions.doesDataFlower = function(){ return true;};
 
-    event.api.gridOptionsWrapper.gridOptions.isFullWidthCell = scope.isFullWidthCell;
+    event.api.gridOptionsWrapper.gridOptions.isFullWidthCell = function(rowNode) {
+        return rowNode.flower;
+    };
 
-    // scope.gridOptions.doesDataFlower = scope.dataFlowerFunc;
+    event.api.gridOptionsWrapper.gridOptions.groupDefaultExpanded = 99999;
+
+    // Force the filter indexing to use the data from the hidden 'message' column.
+    let attachmentCol = event.api.columnController.getColumn('attachmentCount', event.api.columnController.gridColumns);
+    let attachmentColDef = attachmentCol.colDef;
+    attachmentColDef.getQuickFilterText = function(params) {
+      return '_' + params.data.message;
+    };
+    
 
     scope.gridReadyFunc.call(this, event, scope);
   }
@@ -196,36 +152,13 @@ export class NotificationsTableGridCustomElement {
     return !!(params)?params.data.notificationCategory.categoryName + '_' + params.data.message:'';
   }
 
-  isFullWidthCell(rowNode) {
-     return rowNode.level === 1;
-  }
 
   getRowHeight(params) {
-      var rowIsNestedRow = params.node.canFlower;
-      // return 100 when nested row, otherwise return 25
+      var rowIsNestedRow = params.node.flower;
       return rowIsNestedRow ? 50 : 30;
   }
 
 
-  doesDataFlower(dataItem) {
-    return true;
-  }
-
-  getNodeChildDetails(record) {
-    if(record.sentDate) {
-      return {
-        group: true,
-        key: record.notificationId,
-          // the key is used by the default group cellRenderer
-        expanded: true,
-          // provide ag-Grid with the children of this group
-        //  children: [{'notificationId': record.notificationId, 'categoryName': record.notificationCategory.categoryName, 'message': record.message}]
-         children: [{'notificationId': record.notificationId}]
-      };
-    } else {
-      return null;
-    }
-  }
 
   private getTextSearchFilter(): any {
     return TextSearchFilter;
