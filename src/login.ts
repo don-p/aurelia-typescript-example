@@ -134,7 +134,7 @@ export class Login {
           // Send event for successful authentication.
           me.evt.publish('authenticated', auth);      
           // me.router.navigateToRoute('/#', { replace: true });
-          me.router.navigateToRoute('organization');
+          // me.router.navigateToRoute('organization');
         }
       } else {
         throw "Login(): Authentication failed."
@@ -160,7 +160,7 @@ async loginConfirm(token): Promise<void> {
       me.evt.publish('authenticated', data);      
       // Successfully validated confirmation code.
       // me.router.navigateToRoute('community');
-      me.router.navigateToRoute('organization');
+      //me.router.navigateToRoute('organization');
     })
     .catch(error => {
       er = error;
@@ -173,7 +173,7 @@ async loginConfirm(token): Promise<void> {
         } else {
       // DEBUG
           // me.router.navigateToRoute('community');
-          me.router.navigateToRoute('organization');
+          me.router.navigateToRoute('/');
     // DEBUG
         }
       })
