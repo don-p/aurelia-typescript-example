@@ -2398,17 +2398,17 @@ abp-datetime-picker .input-group-addon {
   margin-left: 3px;  
 }
 
-.full-width-summary SPAN {
+.full-width-summary span {
   color:  mix($blg-blue, white, 95%);
   position: relative;
   top: 7px;
   font-size: 13px;
 }
 
-.full-width-summary LABEL {
+.full-width-summary label {
   position: relative;
   top: 6px;
-  margin-left: 30px;
+  margin-left: 34px;
   margin-right: 30px;
   cursor: pointer;
 }
@@ -2419,31 +2419,31 @@ abp-datetime-picker .input-group-addon {
   font-size: 12px;    
 }
 
-LABEL.INFO {
+label.INFO {
   color: $blg-blue;
   border: 1px solid mix($blg-blue, white, 65%);  
 }
 
-LABEL.HIGH,
-LABEL.URGENT {
+label.HIGH,
+label.URGENT {
   color: $blg-red-light;
   border: 1px solid mix($blg-red-light, white, 65%);   
 }
 
-LABEL.LOCATION,
-LABEL.BOLO,
-LABEL.MISSING,
-LABEL.INFO_DEBUG {
+label.LOCATION,
+label.BOLO,
+label.MISSING,
+label.INFO_DEBUG {
   color: $blg-wet-asphalt-lighter;
   border: 1px solid mix($blg-wet-asphalt-lighter, white, 65%);
 }
 
-LABEL.MODERATE {
+label.MODERATE {
   color: mix($sun-flower, red, 90%);
   border: 1px solid mix($sun-flower, red, 90%);   
 }
 
-LABEL.LOW {
+label.LOW {
   color: $blg-green;
   border: 1px solid mix($blg-green, white, 65%);   
 }
