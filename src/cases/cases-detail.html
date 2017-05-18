@@ -1,6 +1,7 @@
 <template>
 <require from="../lib/loading-mask/loading-mask"></require>
 <aside class="blg-right-panel" style="min-width: 900px;">
+<loading id="sentalerts-loading" promise.bind="'casePromise'" message-key.bind="'app.loading'">
       
     <ul class="nav nav-tabs nav-append-content">
         <li class.bind="requestType == 'PENDING'?'active':''">
@@ -22,6 +23,10 @@
                                     <table>
                                         <tbody>
                                             <tr>
+                                                <td class="table-label">External Reference:</td>
+                                                <td class="table-text">${selectedCase.externalReference}</td>                                        
+                                            </tr>
+                                            <tr>
                                                 <td class="table-label">Case:</td>
                                                 <td class="table-text">${selectedCase.title}</td>
                                             </tr>
@@ -30,8 +35,12 @@
                                                 <td class="table-text">${selectedCase.description}</td>
                                             </tr>
                                             <tr>
-                                                <td class="table-label">External Reference:</td>
-                                                <td class="table-text">${selectedCase.externalReference}</td>                                        
+                                                <td class="table-label">Type:</td>
+                                                <td class="table-text">${selectedCase.type.typeName}</td>                                        
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label">Priority:</td>
+                                                <td class="table-text">${selectedCase.priority.priorityName}</td>                                        
                                             </tr>
                                         </tbody>
                                     </table>
@@ -48,6 +57,7 @@
             </div>
         </div>					
     </div>
+</loading>
 </aside>
 
 </template>

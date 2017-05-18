@@ -3,6 +3,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {Logger} from 'aurelia-logging';
 import {json} from 'aurelia-fetch-client';
 import {Router, NavigationInstruction} from 'aurelia-router';
+import {Session} from '../services/session';
 import {AureliaConfiguration} from 'aurelia-configuration';
 import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from 'ag-grid/main';
 import {I18N} from 'aurelia-i18n';
@@ -13,7 +14,7 @@ import {CaseService} from '../services/caseService';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(I18N, AureliaConfiguration, Utils, CaseService, EventAggregator, NewInstance.of(ValidationController), LogManager)
+@inject(Session, I18N, AureliaConfiguration, Utils, CaseService, EventAggregator, NewInstance.of(ValidationController), LogManager)
 export class CasesDetail {
 
   sentRequestsGrid: any;
@@ -21,7 +22,7 @@ export class CasesDetail {
   gridOptionsSent: GridOptions;
   gridOptionsReceived: GridOptions;
   connections: Array<any>;
-  connectionsPromise: Promise<Response>;
+  casePromise: Promise<Response>;
   requestType: string;
   selectedCase: any;
 
@@ -30,7 +31,7 @@ export class CasesDetail {
 
   logger: Logger;
 
-  constructor(private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
+  constructor(private session: Session, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
     private caseService:CaseService, private evt: EventAggregator, private vController:ValidationController) {
 
     this['id'] = new Date().getTime();
@@ -44,9 +45,8 @@ export class CasesDetail {
 
     this.evt.subscribe('caseSelected', payload => {
       if((!me.selectedCase || me.selectedCase === null) || (me.selectedCase.caseId !== payload.case.caseId)) {
-        me.selectedCase = payload.case;
-
-        // me.utils.setCommunityMembersGridDataSource('communityMembers', me.gridOptions, me.pageSize, me.communityService, null, false);
+        // me.selectedCase = payload.case;
+        me.onCaseSelected(payload);
      }
     });
     
@@ -66,6 +66,22 @@ export class CasesDetail {
   activate(params, navigationInstruction) {
     // this.selectOrganization(this.parent.organizations[0]);
   }
+
+  onCaseSelected(payload) {
+
+    let selectedCase = payload.case;
+    let me = this;
+
+    // get the case details.
+    this.casePromise = this.caseService.getCase(selectedCase.caseId, 0, 1000);
+    this.casePromise.then(function(data:any){
+      let _case = data;
+      
+      me.selectedCase = _case;
+    });
+
+  }
+  
 
 /*
   editConnectionRequest(connections: Array<any>, status:string, event:string) {

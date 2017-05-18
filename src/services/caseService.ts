@@ -25,6 +25,64 @@ export class CaseService {
     logger: Logger;
     pageSize: number; // In-memory rowModel pageSize.
 
+    // MOCK DATA
+    casesArray: Array<any> = [
+                    {
+                        "caseId": "001",
+                        "description": "Desc 1",
+                        "externalReference": "Ref 1",
+                        "title": "Case 1",
+                        "dueDate": 0,
+                        "lastExportDate": 0,
+                        "attachmentsCount": 0,
+                        "type": {
+                            "typeId": "t1",
+                            "typeName": "Type A"
+                        },
+                        "priority": 
+                            {
+                                "priorityId": "p1",
+                                "priorityName": "Urgent"
+                            }
+                    },
+                    {
+                        "caseId": "002",
+                        "description": "Description 2",
+                        "externalReference": "Ref 2",
+                        "title": "Case 2",
+                        "dueDate": 0,
+                        "lastExportDate": 0,
+                        "attachmentsCount": 0,
+                        "type": {
+                            "typeId": "t2",
+                            "typeName": "Type B"
+                        },
+                        "priority": 
+                            {
+                                "priorityId": "p3",
+                                "priorityName": "Normal"
+                            }
+                    },
+                    {
+                        "caseId": "003",
+                        "description": "Case Desc 3",
+                        "externalReference": "Ref 3",
+                        "title": "Case number 3",
+                        "dueDate": 0,
+                        "lastExportDate": 0,
+                        "attachmentsCount": 1,
+                        "type": {
+                            "typeId": "t3",
+                            "typeName": "Type C"
+                        },
+                        "priority": 
+                            {
+                                "priorityId": "p2",
+                                "priorityName": "High"
+                            }
+                    }
+                ];
+
     constructor(private httpClient: HttpClient, private httpBase: Http, 
         private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
         private fetchConfig: FetchConfig, private dataService:DataService){
@@ -63,24 +121,193 @@ export class CaseService {
         {
             let result = {
                 "pageSize": 0,
+                "responseCollection": me.casesArray,
+                "startPosition": 0,
+                "totalCount": 3
+            };
+            return JSON.parse(JSON.stringify(result));
+            // return response.json()
+            // .then(data => {
+            //     // let json = JSON.stringify(data);
+            //     // let content = JSON.parse(json, (k, v) => { 
+            //     //     if(k == 'sentDate') {
+            //     //         return new Date(v);
+            //     //     }
+            //     //     if(k == 'ackStatusSummary') {
+            //     //         let status = me.parseNotificationAckStatusSummary(v);
+            //     //         return status;
+            //     //     }
+            //     //     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
+            //     //         return new NotificationResource(v);
+            //     //     } 
+            //     //     return v;                
+            //     // });
+            //     // return content;
+            //     return data;
+            // })
+        });
+    }
+
+    /**
+     * Get an individual case.
+     */
+    async getCase(caseId:string, startIndex:number, pageSize:number): Promise<any> {
+        await fetch;
+
+        // Multiple Promises to be resolved here.
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/cases/' + caseId, 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => 
+        {
+            let result = me.casesArray.find(function(item) {
+                return item.caseId === caseId;
+            });
+            return JSON.parse(JSON.stringify(result));
+        });
+
+/*
+        // First, get the Notificaiton object.
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                // data is the notification.
+                let json = JSON.stringify(data);
+                let notificationContent = me.parseNotification(json);
+                
+                // Second, get the associated Acknowledgement object array.
+                let acksResponse = http.fetch('v2/members/' + memberId + 
+                    '/notifications/' + notificationId + '/acks?start_index=' + startIndex + '&page_size=' + pageSize, 
+                    {
+                        method: 'GET'
+                    }
+                );
+                return acksResponse
+                .then(res => {return res.json()
+                    .then(acksData => {
+                        // Third, for each Acknowledgement in list, get the Acknowledgement Detail in order to access attachments.
+                        let json = JSON.stringify(acksData);
+                        let acks:Array<NotificationAckResource> = me.parseNotificationAcks(json);
+                        notificationContent.acks = acks;
+                        let promiseArray = [];
+                        // 3A. - Fetch the list of Acknowledgement Details.
+                        acks.forEach(function(ack:any) {
+                            let acksDetailResponse = http.fetch('v2/members/' + memberId + 
+                                '/notifications/' + notificationId + '/acks/' + ack.acknowledgementId, 
+                                {
+                                    method: 'GET'
+                                }
+                            );
+                            // acksDetailResponse.then(res => {return res.json()
+                            //     .then(acksData => {
+                            //         let json = JSON.stringify(acksData);
+                            //         let acks:Array<NotificationAckResource> = me.parseNotificationAcks('{"responseCollection":[' + json + ']}');
+                            //         return acks[0];                         
+                            //     })
+                            // });                                
+                                
+                            //     function(data) {
+                            //     return {ack: ack, ackDetail: data};
+                            // });
+                            promiseArray.push(acksDetailResponse);
+
+                        });
+                        // 3B. - Wait for array of Acknowledgement Detail Promises to be fulfilled.
+                        let acksPromise = Promise.all(promiseArray);
+                        return acksPromise.then(function(result) {
+                            let resultArray = [];
+                            notificationContent.acks = resultArray;
+                            // Create array of toJson() Promises.
+                            let jsonMap = result.map(function(item) {
+                                return item.json();
+                            })
+                            // 3C. - Wait for async JSON transform on Acknowledgement Detail responses.
+                            return Promise.all(jsonMap);
+
+                            // result.forEach(response => {response.json()
+                            //     .then(responseAck => {
+                            //         let js = JSON.stringify(responseAck);
+                            //         let ack:Array<NotificationAckResource> = me.parseNotificationAcks('{"responseCollection":[' + js + ']}');
+                            //         resultArray.push(ack[0]);
+                            //         return ack[0];
+                            //     });
+                            // });
+
+                            // notificationContent.acks = resultArray;
+                            // // return result;
+                            // return {notification: notificationContent, response: result};
+                        }).then(function(pArray) {
+                            // 3D. - Parse Acknowledgement Detail responses into model objects.
+                            let acks = [];
+                            pArray.forEach(function(ack) {
+                                let a = new NotificationAckResource(ack);
+                                acks.push(a);
+                            })
+                            notificationContent.acks = acks;
+                            return notificationContent;
+                        });
+                        // return notificationContent;
+
+                    })
+                });
+            })
+        });
+
+*/
+    }
+
+    /**
+     * Get list of cases for logged-in user.
+     */
+    async getTasks(args:any): Promise<any> {
+        await fetch;
+
+        let memberId:string = args.memberId;
+        let startIndex:number = args.startIndex;
+        let pageSize:number = args.pageSize;
+        let direction:string = 'RECEIVED';
+
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/cases?start_index=' + startIndex + '&page_size=' + pageSize, 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => 
+        {
+            let result = {
+                "pageSize": 0,
                 "responseCollection": [
                     {
                     "caseId": "001",
                     "description": "Desc 1",
                     "externalReference": "Ref 1",
-                    "title": "Case 1"
+                    "title": "Case 1",
+                    "type": "Type A",
+                    "priority": "Urgent"
                     },
                     {
                     "caseId": "002",
                     "description": "Description 2",
                     "externalReference": "Ref 2",
-                    "title": "Case 2"
+                    "title": "Case 2",
+                    "type": "Type B",
+                    "priority": "Normal"
                     },
                     {
                     "caseId": "003",
                     "description": "Case Desc 3",
                     "externalReference": "Ref 3",
-                    "title": "Case number 3"
+                    "title": "Case number 3",
+                    "type": "Type C",
+                    "priority": "High"
                     }
                 ],
                 "startPosition": 0,
@@ -112,7 +339,7 @@ export class CaseService {
     /**
      * Get an individual case.
      */
-    async getCase(memberId:string, notificationId:string, startIndex:number, pageSize:number): Promise<any> {
+    async getTask(memberId:string, caseId:string, startIndex:number, pageSize:number): Promise<any> {
         await fetch;
 
         // Multiple Promises to be resolved here.
@@ -209,10 +436,6 @@ export class CaseService {
                 });
             })
         });
-    }
-
-    getTasks(): Array<any> {
-        return null;
     }
 
     getTask(): any {
