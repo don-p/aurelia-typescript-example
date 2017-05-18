@@ -12,7 +12,7 @@ export class WebSocketService {
 
     logger: Logger;
     wsProtocol: string;
-    wsConnection: any;
+    wsConnection: Stomp.Client;
     wsSubscriptions: Array<Function> = [];
 
     // Service object for application utilities.
@@ -54,7 +54,7 @@ export class WebSocketService {
                     if(event.type === 'close') {
                         // Clean up connection,.
                         me.removeSubscriptions();
-                        me.wsConnection.disconnect();
+                        me.wsConnection.disconnect(function(){});
                         // Start to re-try ws connection.
                         let retryCount = 0;
                         let workerId = setInterval(function(ws) {

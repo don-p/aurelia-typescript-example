@@ -301,7 +301,10 @@ export class App {
       me.authService['auth'].storage.remove(me.authService['tokenName']);
       me.authService['auth'].storage.remove('auth');
       if(data && data!==null) {
-        me.router.navigateToRoute('login');
+        me.wsService.removeSubscriptions();
+        me.wsService.wsConnection.disconnect(function(){
+          me.router.navigateToRoute('login');
+        });
       } else {
         throw "Logout(): Authentication failed."
       }
