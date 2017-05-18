@@ -345,12 +345,14 @@ export class CaseService {
         // Multiple Promises to be resolved here.
         const http =  this.getHttpClient();
         let me = this;
-        let response = http.fetch('v2/members/' + memberId + 
-            '/notifications/' + notificationId, 
+        let taskId;
+        let response = http.fetch('v2/cases/' + caseId + 
+            '/tasks/' + taskId, 
             {
                 method: 'GET'
             }
         );
+/*
         // First, get the Notificaiton object.
         return response
         .then(response => {return response.json()
@@ -436,10 +438,7 @@ export class CaseService {
                 });
             })
         });
-    }
-
-    getTask(): any {
-        return null;
+*/        
     }
 
     parseNotification(json): NotificationResource {
