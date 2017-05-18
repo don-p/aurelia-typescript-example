@@ -41,7 +41,7 @@
               <div id="community-list" class="community-list">
                 <ul>
                   <div class="panel-group communities-panel-list list1" id="accordion_communities">
-                    <div id="cmty-${community.communityId}" repeat.for="community of communities" class='list-item'>
+                    <div id="cmty-${case.caseId}" repeat.for="case of cases" class='list-item'>
                       
                       <div class="checkbox checkbox-info">
                           <input id="checkbox-community-${$index}" type="checkbox" class="styled styled-info" 
@@ -50,11 +50,11 @@
                       </div>
                       
                       <div class='panel panel-default'>
-                        <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (community.communityId == selectedItem.communityId) ? 'active':''"
+                        <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (case.caseId == selectedItem.caseId) ? 'active':''"
                           role='tab'>
                           <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
-                            <h4 class='panel-title' click.delegate="selectCommunity(community)">
-                              <span class="community-name">${community.communityName}</span>
+                            <h4 class='panel-title' click.delegate="selectCase(case)">
+                              <span class="community-name">${case.title}</span>
                               <span class="members-count">(<i class='ico-users'></i> ${community.memberCount})</span>
                               <span class='community-buttons'>
                                 <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
@@ -71,7 +71,7 @@
                                   <i class="ico-pencil7 float-right"></i>
                                 </a>
                               </span>
-                              <div class="community-description" >${(community.communityDescription !==null) ? community.communityDescription:'&nbsp;'}</div>                               
+                              <div class="community-description" >${(case.description !==null) ? case.description:'&nbsp;'}</div>                               
                             </h4>
                           </a>
                         </div>

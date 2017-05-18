@@ -23,7 +23,7 @@ export class CasesDetail {
   connections: Array<any>;
   connectionsPromise: Promise<Response>;
   requestType: string;
-  selectedRequest: any;
+  selectedCase: any;
 
   router: Router;
   @bindable pageSize;
@@ -41,13 +41,15 @@ export class CasesDetail {
     this.gridOptionsReceived = this.utils.getGridOptions('listConnectionRequests', this.pageSize);
 
     let me = this;
-    this.evt.subscribe('connectionChanged', payload => {
-      if(payload === 'REQUEST_TERMINATED' || 
-        payload === 'REQUEST_ACCEPTED' || 
-        payload === 'REQUEST_DECLINED') {
-        me.showRequests(me.requestType);
-      }
+
+    this.evt.subscribe('caseSelected', payload => {
+      if((!me.selectedCase || me.selectedCase === null) || (me.selectedCase.caseId !== payload.case.caseId)) {
+        me.selectedCase = payload.case;
+
+        // me.utils.setCommunityMembersGridDataSource('communityMembers', me.gridOptions, me.pageSize, me.communityService, null, false);
+     }
     });
+    
 
     this.logger = LogManager.getLogger(this.constructor.name);
     

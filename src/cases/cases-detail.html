@@ -4,7 +4,7 @@
       
     <ul class="nav nav-tabs nav-append-content">
         <li class.bind="requestType == 'PENDING'?'active':''">
-            <a id="tabReceivedRequests"  click.delegate="showRequests('PENDING')">${'cases.caseDetail' | t: {caseRefId: '1234'}}</a>
+            <a id="tabReceivedRequests"  click.delegate="showRequests('PENDING')">${'cases.caseDetail' | t: {caseRefId: selectedCase.caseId}}</a>
         </li>
         <li class.bind="requestType == 'INVITED'?'active':''">
             <a id="tabSentRequests"  click.delegate="showRequests('INVITED')">${'cases.tasks' | t}</a>
@@ -13,7 +13,36 @@
     </ul>
     <div id="requests-tab" class="blg-tab-section tab-content ">
         <div class="blg-inner-content tab-pane active" id="requests">
-            <div show.bind="requestType == 'PENDING'" class="blg-connection-content">
+            <div show.bind="true" class="blg-connection-content">
+                <div class="alert-details-received-content" style="height: 100%;">
+                    <div class="alert-details-content-scroll" style="height: 100%;">
+
+                            <div show.bind="!!(selectedCase)" class="requestDetailContainer" style="height:100%;">
+                                <div class="request-details-content">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="table-label">Case:</td>
+                                                <td class="table-text">${selectedCase.title}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label">Description:</td>
+                                                <td class="table-text">${selectedCase.description}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label">External Reference:</td>
+                                                <td class="table-text">${selectedCase.externalReference}</td>                                        
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div show.bind="!!(selectedNotification)" >
+                                    <compose view="../components/notificationMessageDetail.html" containerless></compose>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
             </div>
             <div show.bind="requestType == 'INVITED'" class="blg-connection-content">
             </div>
