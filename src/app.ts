@@ -89,7 +89,7 @@ export class App {
       me.session['configured'] = me.configPromise;
       me.configPromise.then(function(result) {
         me.logger.debug('=== CONFIGURED ===');
-        me.router.navigateToRoute('/');
+        // me.router.navigateToRoute('');
         return true;
       })
 
