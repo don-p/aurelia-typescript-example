@@ -5,7 +5,6 @@ import {Router, NavigationInstruction} from 'aurelia-router';
 import {AureliaConfiguration} from 'aurelia-configuration';
 import {Session} from '../services/session';
 import {DataService} from '../services/dataService';
-import {CommunityService} from '../services/communityService';
 import {CaseService} from '../services/caseService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
@@ -169,7 +168,7 @@ export class CasesList {
       }
     }, 0);
   }
-
+/*
   selectAllCommunities(selected: boolean) {
     if(selected) {
       this.selectedCommunities = this.communities.slice(0);
@@ -185,125 +184,9 @@ export class CasesList {
       this.selectAll = false;
     }
   }
+*/
 
-  transferOwnershipToCommunityMember(community: any, event: MouseEvent) {
-    event.stopPropagation();
-
-    let message = null;
-    let membersList = [];
-    let me = this;
-
-    let gridOptions = this.utils.getGridOptions('transferOwnership', this.pageSize);
-    gridOptions.rowSelection = 'single';
-    gridOptions.suppressRowClickSelection = false;
-    gridOptions['communityId'] = community.communityId;
-
-    this.dataService.openResourceEditDialog({modelView:'model/communityMembersListModel.html', 
-      title:this.i18n.tr('community.communities.members.transferOwnership.title'), loadingTitle: 'app.loading',
-      item:membersList, okText:this.i18n.tr('button.save'), showErrors:false, validationRules:null})
-    .then((controller:any) => {
-      controller.viewModel.communityId = community['communityId'];
-      controller.viewModel.$isDirty = false;
-      Object.defineProperty(controller.viewModel, 'isDirty', {
-        get: function() {
-          return this.$isDirty;
-        }
-      });
-      
-      // Ensure there is no focused element that could be submitted, since dialog has no focused form elements.
-      let activeElement = <HTMLElement> document.activeElement;
-      activeElement.blur();
-
-      let model = controller.settings;
-      model.isSubmitDisabled = true;
-      gridOptions.onSelectionChanged = function() {
-        let rows = gridOptions.api.getSelectedRows();
-        controller.viewModel.selectedMembers = rows;
-        controller.viewModel.$isDirty = true;
-        controller.viewModel.isSubmitDisabled = rows.length === 0;
-      };
-      gridOptions.getRowNodeId = function(item) {
-        return item.memberId.toString();
-      };
-      let transferOwnershipGrid = new Grid(controller.viewModel.addCmtyMembersGrid, gridOptions); //create a new grid
-      gridOptions['api'].sizeColumnsToFit();
-      me.utils.setCommunityMembersGridDataSource('transferOwnershipGrid', gridOptions, me.pageSize, me.communityService, null, false);
-
-      
-      // controller.isGridFiltered = Object.defineProperty(controller, 'isGridFiltered', {get: function() {
-      //   window.console.debug('--- isGridFiltered ---');
-      //     return controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent();
-      //   }
-      // });
-      controller.viewModel.clearGridFilters = me.utils.clearGridFilters;
-      // controller.viewModel.organizations = me.organizations;
-      // controller.viewModel.communityMembers = me.communityMembers;
-      // controller.viewModel.setOrganizationMembersGridDataSource = me.setOrganizationMembersGridDataSource;
-      controller.viewModel.gridOptions = gridOptions;
-      // let organizationId = me.organizations[0]['organizationId'];
-      // gridOptions['organizationId'] = organizationId;
-
-      // Get list of members in a selected organization.
-      // controller.viewModel.selectOrganization = function(event: any) {
-      //   if(this.selectedOrganization !== event.target.value) {
-      //     this.selectedOrganization = event.target.value;
-      //     gridOptions['organizationId'] = this.selectedOrganization;
-      //     this.setOrganizationMembersGridDataSource(gridOptions, me.pageSizeList, me.organizationService, this.selectedOrganization);
-      //   }
-      // }
-
-
-      // Callback function for submitting the dialog.
-      controller.viewModel.submit = () => {
-        let selection = gridOptions.api.getSelectedRows();
-        let memberId = selection[0].memberId;
-
-        // Call the addMembers service.
-        let modelPromise = this.communityService.transferOwnership(controller.viewModel.communityId, memberId);
-        controller.viewModel.modelPromise = modelPromise;        
-        modelPromise
-        // .then(response => response.json())
-        .then(data => {
-
-            // me.gridOptions.api.refreshVirtualPageCache();
-            // me.gridOptions.api.refreshView();
-            // me.gridOptions.api.deselectAll();
-
-            // // update the community member count.
-            // me.selectedCmty.memberCount = data['totalCount'];
-
-            // Close dialog on success.
-            gridOptions.api.destroy();
-
-            controller.viewModel.showCancel = false;
-            controller.viewModel.okText = 'Done';
-            controller.viewModel.status = 'OK';
-            delete controller.viewModel.submit;
-
-            //controller.ok();
-          }, error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member delete() rejected."); 
-          }).catch(error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member delete() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
-          }) 
-      };
-
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          gridOptions.api.destroy();
-          this.logger.debug('Cancel');
-        }
-      })
-    });
-    
-  }
-
-
+/*
   deleteCommunity(community: any, event: MouseEvent) {
     event.stopPropagation();
 
@@ -421,18 +304,7 @@ export class CasesList {
     this.dataService.openResourceEditDialog({modelView:'model/communityModel.html', title:title, 
       loadingTitle: 'app.loading', item:community, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
-/* TODO      
-      me.validator.validateObject(community).then(function(result) {
-        controller.viewModel.vResults = result;
-      })    
 
-      controller.clearError = () => {
-        let me = this;
-        controller.viewModel.vResults = [];
-        controller.viewModel.vController.validate();
-      };
-
-*/
       // let model = controller.settings.model;
       let model = controller.settings;
       // Callback function for submitting the dialog.
@@ -493,67 +365,7 @@ export class CasesList {
       // })
     });
   }
-
-  makeCallCommunity() {
-    // let maxParticipants = this.appConfig.get('api.serverUrl');
-    let maxParticipants = 2;
-    let message = null;
-    var me = this;
-    let communities = this.selectedCommunities;
-    // let maxParticipants = ;
-
-    if(communities.length === 1) {
-      message = this.i18n.tr('community.communities.call.callConfirmMessageSingle', 
-          {communityName: communities[0]['communityName']});
-    } else if(communities.length >= 1) {
-      message = this.i18n.tr('community.communities.call.callConfirmMessage',
-          {communityCount: communities.length});
-    }
-    const vRules = ValidationRules
-      .ensure('item').maxItems(maxParticipants).withMessage(this.i18n.tr('community.communities.call.callParticipantMaxCountError', {count:maxParticipants}))
-      .rules;
-
-    this.dataService.openPromptDialog(this.i18n.tr('community.communities.call.title'),
-      message,
-      communities, this.i18n.tr('button.call'), true, null, 'modelPromise', '')
-    .then((controller:any) => {
-      let model = controller.settings;
-      // Callback function for submitting the dialog.
-      controller.viewModel.submit = (communityMembers) => {
-        let memberIDs = communityMembers.map(function(value) {
-          return {
-            "participantId": value.memberId,
-            "participantType": "MEMBER"
-          }
-        });
-        // Call the service to start the call.
-        controller.viewModel.modelPromise = this.communityService.startConferenceCall({participantRef:memberIDs})
-        .then(response => response.json())
-        .then(data => {
-            // Update the message for success.
-            controller.viewModel.model.message = this.i18n.tr('community.communities.members.call.callSuccessMessage');
-            controller.viewModel.model.okText = this.i18n.tr('button.ok');
-            controller.viewModel.model.showCancel = false;
-            // Close dialog on success.
-            delete model.submit;
-          }, error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member call() rejected."); 
-          }).catch(error => {
-            model.errorMessage = "Failed"; 
-            me.logger.error("Community member call() failed."); 
-            me.logger.error(error); 
-            return Promise.reject(error);
-          })
-      };
-      controller.result.then((response) => {
-        if (response.wasCancelled) {
-          // Cancel.
-          this.logger.debug('Cancel');
-        }
-      })
-    });
-  }
+*/
 
 }
 
