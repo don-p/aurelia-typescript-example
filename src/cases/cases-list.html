@@ -22,14 +22,8 @@
             </div>
           </div-->
 
-          <div class="community-list-info-bar">
-            
-            <div class="checkbox checkbox-info">
-              <input id="checkbox-community-all" type="checkbox" checked.bind="selectAll" change.delegate="selectAllCommunities($event.target.checked)" class="styled styled-info" value="">
-              <label></label>
-            </div>
-            
-            <div class="community-list-info pull-right">${communities.length} items total</div>
+          <div class="community-list-info-bar">            
+            <div class="community-list-info pull-right">${cases.length} items total</div>
           </div>
 
         <!--div class="blg-inner-content tab-pane active" id="communities"-->
@@ -37,17 +31,11 @@
 
           <!-- communities list elements -->
 
-            <div class="blg-community-content">
-              <div id="community-list" class="community-list">
+            <div class="blg-organization-content blg-cases-content">
+              <div id="community-list" class="organization-list">
                 <ul>
-                  <div class="panel-group communities-panel-list list1" id="accordion_communities">
+                  <div class="panel-group organization-panel-list list1" id="accordion_communities">
                     <div id="cmty-${case.caseId}" repeat.for="case of cases" class='list-item'>
-                      
-                      <div class="checkbox checkbox-info">
-                          <input id="checkbox-community-${$index}" type="checkbox" class="styled styled-info" 
-                            change.delegate="onCommunitySelectionChanged(community)" model.bind="community" checked.bind="selectedCommunities">
-                          <label></label>
-                      </div>
                       
                       <div class='panel panel-default'>
                         <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (case.caseId == selectedItem.caseId) ? 'active':''"
