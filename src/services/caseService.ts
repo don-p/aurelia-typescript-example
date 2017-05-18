@@ -38,63 +38,81 @@ export class CaseService {
         return this.httpClient;
     }
 
-    // getMemberHttpClient() {
-    //     return new HttpClient().configure(x=> {
-    //         x.withReviver((k,v) => {        
-    //             return typeof v === 'object' ? new Person(v) : v;
-    //         });  
-    //     });
-    // }
-
-    // NOtIFICATIONS
+    // CASES
 
     /**
-     * Get list of alerts for logged-in user.
+     * Get list of cases for logged-in user.
      */
-    async getNotifications(args:any): Promise<Response> {
+    async getCases(args:any): Promise<any> {
         await fetch;
 
         let memberId:string = args.memberId;
         let startIndex:number = args.startIndex;
         let pageSize:number = args.pageSize;
-        let direction:string = args.direction;
+        let direction:string = 'RECEIVED';
 
         const http =  this.getHttpClient();
         let me = this;
-        let date = (moment as any).default().subtract(30, 'days').hour(0).minute(0).second(0).toDate().getTime();
-        let response = http.fetch('v2/members/' + memberId + 
-            '/notifications?direction=' + direction + '&include_status=true&start_index=' + 
-            startIndex + '&page_size=' + pageSize + '&from_date=' + date, 
+        let response = http.fetch('v1/cases?start_index=' + startIndex + '&page_size=' + pageSize, 
             {
                 method: 'GET'
             }
         );
         return response
-        .then(response => {return response.json()
-            .then(data => {
-                let json = JSON.stringify(data);
-                let content = JSON.parse(json, (k, v) => { 
-                    if(k == 'sentDate') {
-                        return new Date(v);
+        .then(response => 
+        {
+            let result = {
+                "pageSize": 0,
+                "responseCollection": [
+                    {
+                    "caseId": "001",
+                    "description": "Desc 1",
+                    "externalReference": "Ref 1",
+                    "title": "Case 1"
+                    },
+                    {
+                    "caseId": "002",
+                    "description": "Description 2",
+                    "externalReference": "Ref 2",
+                    "title": "Case 2"
+                    },
+                    {
+                    "caseId": "003",
+                    "description": "Case Desc 3",
+                    "externalReference": "Ref 3",
+                    "title": "Case number 3"
                     }
-                    if(k == 'ackStatusSummary') {
-                        let status = me.parseNotificationAckStatusSummary(v);
-                        return status;
-                    }
-                    if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-                        return new NotificationResource(v);
-                    } 
-                    return v;                
-                });
-                return content;
-            })
+                ],
+                "startPosition": 0,
+                "totalCount": 3
+            };
+            return JSON.parse(JSON.stringify(result));
+            // return response.json()
+            // .then(data => {
+            //     // let json = JSON.stringify(data);
+            //     // let content = JSON.parse(json, (k, v) => { 
+            //     //     if(k == 'sentDate') {
+            //     //         return new Date(v);
+            //     //     }
+            //     //     if(k == 'ackStatusSummary') {
+            //     //         let status = me.parseNotificationAckStatusSummary(v);
+            //     //         return status;
+            //     //     }
+            //     //     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
+            //     //         return new NotificationResource(v);
+            //     //     } 
+            //     //     return v;                
+            //     // });
+            //     // return content;
+            //     return data;
+            // })
         });
     }
 
     /**
-     * Get an individual notification + acks.
+     * Get an individual case.
      */
-    async getNotification(memberId:string, notificationId:string, startIndex:number, pageSize:number): Promise<any> {
+    async getCase(memberId:string, notificationId:string, startIndex:number, pageSize:number): Promise<any> {
         await fetch;
 
         // Multiple Promises to be resolved here.
@@ -191,6 +209,14 @@ export class CaseService {
                 });
             })
         });
+    }
+
+    getTasks(): Array<any> {
+        return null;
+    }
+
+    getTask(): any {
+        return null;
     }
 
     parseNotification(json): NotificationResource {

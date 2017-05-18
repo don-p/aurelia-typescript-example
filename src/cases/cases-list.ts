@@ -6,6 +6,7 @@ import {AureliaConfiguration} from 'aurelia-configuration';
 import {Session} from '../services/session';
 import {DataService} from '../services/dataService';
 import {CommunityService} from '../services/communityService';
+import {CaseService} from '../services/caseService';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 // import * as Ps from 'perfect-scrollbar';
@@ -18,7 +19,7 @@ import {MemberActionsBarCustomElement} from '../components/member-actions-bar';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, DataService, CommunityService, EventAggregator, I18N, 
+@inject(Session, DataService, CaseService, EventAggregator, I18N, 
   AureliaConfiguration, Utils, MemberActionsBarCustomElement, Validator, NewInstance.of(ValidationController), LogManager)
 export class CasesList {
   communities: Array<Object>;
@@ -33,25 +34,27 @@ export class CasesList {
   //parent: any;
   navigationInstruction: NavigationInstruction;
   selectedItem: Object;
-  selectedCommunities: Array<Object>;
+  selectedCases: Array<Object>;
   selectAll: boolean;
+  cases: Array<any>;
+  casesPromise: Promise<Response>;
 
   router: Router;
 
   logger: Logger;
 
   constructor(private session: Session, private dataService: DataService, 
-    private communityService: CommunityService, private evt: EventAggregator, 
+    private caseService: CaseService, private evt: EventAggregator, 
     private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, private memberActions: MemberActionsBarCustomElement, private validator:Validator) {
 
     // var Ps = require('perfect-scrollbar');
 
-    this.communities = [];
-    this.communities['responseCollection'] = [];
+    this.cases = [];
+    this.cases['responseCollection'] = [];
     this.pageSizeList = 500;
     this.pageSize = 200;
     this.selectedItem = null;
-    this.selectedCommunities = [];
+    this.selectedCases = [];
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
@@ -72,10 +75,11 @@ export class CasesList {
     this.ps.update(container);
 */
     let me = this;
-    this.commType = 'TEAM';
-    this.getCommunitiesPage(this.commType, 0, this.pageSizeList).then(function(){
-      me.selectDefaultCommunity();
+    // Get list of organizations the logged-in user has rights to.
+    this.getCases(0, 500).then(function(){
+      me.selectDefaultCase();
     });
+
   }
 /*
   async getMore(topIndex: number, isAtBottom: boolean, isAtTop: boolean): Promise<void> {
@@ -101,72 +105,43 @@ export class CasesList {
     }
   }
 */
-  getCommunitiesPage(communityType: string, startIndex: number, pageSize: number): Promise<Response> {
-    var me = this;
-    var cmtysPromise = this.communityService.getCommunities(communityType, startIndex,  pageSize);
-    this.cmtysPromise = cmtysPromise;
-    return cmtysPromise
-    .then(response => {return response.json()
+  getCases(startIndex: number, pageSize: number): Promise<Response> {
+    let me = this;
+    let casesPromise = this.caseService.getCases({memberId: this.session.auth['member'].memberId, startIndex: startIndex,  pageSize: pageSize});
+    return casesPromise
+    // .then(response => {return response.json()
       .then(data => {
-        me.communities = data.responseCollection;
-        return data.responseCollection;
-        // return Promise.resolve(data.responseCollection);
+        me.cases = data.responseCollection;
+        return data;
         // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
       }).catch(error => {
         me.logger.error('Communities list() failed in response.json(). Error: ' + error); 
         return Promise.reject(error);
       })
-    })
+    // })
     .catch(error => {
       me.logger.error('Communities list() failed in then(response). Error: ' + error); 
       me.logger.error(error); 
       //throw error;
       return Promise.reject(error);
     });
-    // return cmtysPromise;
+  }  
 
-  }
-
-  selectCommunityType(communityType:string, selectedCommunity:Object) {
-    let me = this;
-    if(this.commType !== communityType) {
-      this.commType = communityType;
-    }
-    this.getCommunitiesPage(communityType, 0, this.pageSizeList).then(function(){
-      if(typeof selectedCommunity !== 'object') {
-        me.selectDefaultCommunity();
-        me.selectedCommunities = [];
-      } else {
-        me.scrollToCommunityInList(selectedCommunity);
-      }
-      // me.evt.publish('cmtySelected', {community: selectedCommunity});      
-      me.onCommunitySelectionChanged(null);
-    })
-  }
-
-  selectDefaultCommunity() {
-    if(this.communities && this.communities.length > 0) {
-      this.selectCommunity(this.communities[0]);
+  selectDefaultCase() {
+    if(this.cases && this.cases.length > 0) {
+      this.selectCase(this.cases[0]);
     }
   }
 
-  selectCommunity(community: Object) {
+  selectCase(_case: any) {
     // Find the community object in the collection.
-    let selectedCommunity =  this.communities.find(function(comm: Object){
-      return comm['communityId'] === community['communityId'];
+    let selectedCase =  this.cases.find(function(cs: Object){
+      return cs['caseId'] === _case['caseId'];
     });
     // Select the community item.
-    this.selectedItem = !!selectedCommunity?selectedCommunity:community;
-    // Ensure correct community type view.
-    let type = this.selectedItem['communityType'];
-    if(this.commType !== type) {
-      this.selectCommunityType(type, this.selectedItem);
-    } else {
-      this.scrollToCommunityInList(this.selectedItem);
-      // this.evt.publish('cmtySelected', {community: this.selectedItem});
-    }
+    this.selectedItem = !!selectedCase?selectedCase:_case;
     // TODO: move event to prmoise resolved?
-    this.evt.publish('cmtySelected', {community: this.selectedItem});
+    this.evt.publish('caseSelected', {case: this.selectedItem});
   }
 
   scrollToCommunityInList(community:any) {
