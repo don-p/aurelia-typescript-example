@@ -8,12 +8,12 @@ import {Grid, GridOptions, IGetRowsParams, IDatasource, Column, TextFilter} from
 import {I18N} from 'aurelia-i18n';
 import {ValidationRules, ValidationController, Rules, validateTrigger} from 'aurelia-validation';
 import {Utils} from '../services/util';
-import {CommunityService} from '../services/communityService';
+import {CaseService} from '../services/caseService';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(I18N, AureliaConfiguration, Utils, CommunityService, EventAggregator, NewInstance.of(ValidationController), LogManager)
+@inject(I18N, AureliaConfiguration, Utils, CaseService, EventAggregator, NewInstance.of(ValidationController), LogManager)
 export class CasesDetail {
 
   sentRequestsGrid: any;
@@ -31,7 +31,7 @@ export class CasesDetail {
   logger: Logger;
 
   constructor(private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
-    private communityService:CommunityService, private evt: EventAggregator, private vController:ValidationController) {
+    private caseService:CaseService, private evt: EventAggregator, private vController:ValidationController) {
 
     this['id'] = new Date().getTime();
     this.requestType = 'PENDING';
@@ -67,34 +67,7 @@ export class CasesDetail {
     // this.selectOrganization(this.parent.organizations[0]);
   }
 
-  onReceivedGridReady(event) {
-    this.utils.setMemberConnectionRequestsGridDataSource(this.gridOptionsReceived, this.pageSize, this.communityService, 'PENDING');
-  }
-
-  onSentGridReady(event) {
-    this.utils.setMemberConnectionRequestsGridDataSource(this.gridOptionsSent, this.pageSize, this.communityService, 'INVITED');
-  }
-
-  showRequests(type: string) {
-    this.requestType = type;
-    let me = this;
-    this.selectedRequest = null;
-
-    if(type === 'PENDING') {
-       //me.gridOptionsReceived.api.refreshView();
-       me.utils.setMemberConnectionRequestsGridDataSource(me.gridOptionsReceived, me.pageSize, me.communityService, type);
-    } else if(type === 'INVITED') {
-      //me.gridOptionsSent.api.refreshView();
-      me.utils.setMemberConnectionRequestsGridDataSource(me.gridOptionsSent, me.pageSize, me.communityService, type);
-   }
-
-  }
-
-  onReceivedRequestSelected(event) {
-    let connection = event.data;
-    this.selectedRequest = connection;
-  }
-
+/*
   editConnectionRequest(connections: Array<any>, status:string, event:string) {
     let me = this;
     let memberIds = connections.map(function(connection) {
@@ -107,7 +80,7 @@ export class CasesDetail {
       let totalCount = data['totalCount'];
     });
   }
-
+*/
 
 }
 
