@@ -82,6 +82,23 @@ export class CaseService {
                             }
                     }
                 ];
+    tasksArray: Array<any> = [
+                    {
+                        "taskId": "001",
+                        "description": "Desc 1",
+                        "title": "Task 1"
+                    },
+                    {
+                        "taskId": "002",
+                        "description": "Description 2",
+                        "title": "Task 2",
+                    },
+                    {
+                        "taskId": "003",
+                        "description": "Case Desc 3",
+                        "title": "Task number 3",
+                    }
+                ];
 
     constructor(private httpClient: HttpClient, private httpBase: Http, 
         private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
@@ -168,6 +185,7 @@ export class CaseService {
             let result = me.casesArray.find(function(item) {
                 return item.caseId === caseId;
             });
+            result['tasks'] = me.tasksArray;
             return JSON.parse(JSON.stringify(result));
         });
 
