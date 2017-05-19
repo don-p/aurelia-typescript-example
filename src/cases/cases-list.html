@@ -59,6 +59,16 @@
                                   <i class="ico-pencil7 float-right"></i>
                                 </a>
                               </span>
+                              <span class='community-buttons'>
+                                <a href="javascript:void(0);" 
+                                  click.delegate="deleteCase(case, $event)" i18n='[title]button.deleteCase'>
+                                  <i class="ico-bin float-right"></i>
+                                </a>
+                                <a href="javascript:void(0);" 
+                                  click.delegate="editCase(case, $event)" i18n='[title]button.editCase'>
+                                  <i class="ico-pencil7 float-right"></i>
+                                </a>
+                              </span>
                               <div class="community-description" >${(case.description !==null) ? case.description:'&nbsp;'}</div>                               
                             </h4>
                           </a>

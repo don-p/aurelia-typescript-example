@@ -19,12 +19,12 @@ export class CasesDetail {
 
   sentRequestsGrid: any;
   receivedRequestsGrid: any;
-  gridOptionsSent: GridOptions;
-  gridOptionsReceived: GridOptions;
   connections: Array<any>;
   casePromise: Promise<Response>;
   requestType: string;
   selectedCase: any;
+  selectedTask: any;
+  gridOptions: GridOptions;
 
   router: Router;
   @bindable pageSize;
@@ -38,18 +38,26 @@ export class CasesDetail {
     this.requestType = 'PENDING';
     this.pageSize = 100000;
 
-    this.gridOptionsSent = this.utils.getGridOptions('listConnectionRequests', this.pageSize);
-    this.gridOptionsReceived = this.utils.getGridOptions('listConnectionRequests', this.pageSize);
-
     let me = this;
 
     this.evt.subscribe('caseSelected', payload => {
       if((!me.selectedCase || me.selectedCase === null) || (me.selectedCase.caseId !== payload.case.caseId)) {
-        // me.selectedCase = payload.case;
         me.onCaseSelected(payload);
      }
     });
     
+    this.evt.subscribe('taskSelected', payload => {
+      if((!me.selectedTask || me.selectedTask === null) || (me.selectedTask.taskId !== payload.task.taskId)) {
+        me.onTaskSelected(payload);
+     }
+    });
+    
+    this.gridOptions = <GridOptions>{};
+    this.gridOptions['id'] = 'tasksGrid';
+    this.gridOptions.getRowNodeId = function(item) {
+      return item.taskId?item.taskId.toString():null;
+    };
+    this.gridOptions.rowModelType = 'normal';
 
     this.logger = LogManager.getLogger(this.constructor.name);
     
@@ -67,6 +75,38 @@ export class CasesDetail {
     // this.selectOrganization(this.parent.organizations[0]);
   }
 
+  onGridReady(event, scope) {
+    let grid:any = this;
+
+    event.api.gridOptionsWrapper.gridOptions.onRowClicked = function(event) {
+      event.context.context.onRowclick(event);
+    }
+
+    grid.context.getTasks();
+    event.api.sizeColumnsToFit();
+  }
+
+  onRowclick = function(event) {
+    let scope = event.context;
+
+    if(event.event.target.id === 'edit-task') {
+      scope.editTask(event.data);
+    } else if(event.event.target.id === 'delete-task') {
+      scope.editTask(event.data);
+    } else {
+      if(!!(event.data) && (!(this.selectedTask) || (!!(this.selectedTask) && !(event.data.taskId === this.selectedTask.taskId)))) {
+        event.context.evt.publish('taskSelected', {task: event.data, type: 'SENT'});
+      }
+    }
+  };
+
+  getTasks() {
+    if(!!(this.selectedCase)) {
+      this.gridOptions.api.setRowData(this.selectedCase.tasks);
+    }
+  }
+  
+
   onCaseSelected(payload) {
 
     let selectedCase = payload.case;
@@ -78,7 +118,27 @@ export class CasesDetail {
       let _case = data;
       
       me.selectedCase = _case;
+      me.gridOptions.api.setRowData(me.selectedCase.tasks);
     });
+
+  }
+  
+  onTaskSelected(payload) {
+
+    let selectedTask = payload.task;
+    let me = this;
+
+    // TEMP
+    me.selectedTask = selectedTask;
+
+    // // get the case details.
+    // this.casePromise = this.caseService.getCase(selectedTask.taskId, 0, 1000);
+    // this.casePromise.then(function(data:any){
+    //   let _case = data;
+      
+    //   me.selectedCase = _case;
+    //   me.gridOptions.api.setRowData(me.selectedCase.tasks);
+    // });
 
   }
   
