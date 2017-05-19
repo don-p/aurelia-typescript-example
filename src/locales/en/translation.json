@@ -243,8 +243,17 @@
         "unreadCountTooltip": "{{unreadAlertCount}} unread alerts"
     },
     "cases": {
-        "caseDetail": "Case {{caseRefId}}",
-        "tasks": "Tasks"
+        "caseDetailTab": "Case {{caseRefId}}",
+        "tasksTab": "Task {{taskRefId}}",
+        "tasks": {
+            "id": "ID",
+            "title": "Task",
+            "assignedTo": "Assigned to",
+            "lastActivity": "Last activity",
+            "status": "Status",
+            "actions": "Actions"
+            
+        }
     },
 
 
@@ -302,7 +311,9 @@
         "reject": "Reject",
         "resend": "Re-send",
         "editCase":"Update case",
-        "deleteCase": "Delete case"
+        "deleteCase": "Delete case",
+        "editTask":"Update task",
+        "deleteTask": "Delete task"
     },
 
     "global": {

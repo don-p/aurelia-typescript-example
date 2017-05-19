@@ -1,0 +1,42 @@
+<template>
+
+    <ag-grid-aurelia #membersGrid ref="gridEl" style="height: 100%;" class="ag-blg"
+                                grid-options.bind="gridOptions"
+                                context.bind="$this"
+                                enable-col-resize
+                                row-height.bind=30
+                                header-height.bind=40
+                                suppress-menu-hide
+                                sorting-order.bind="['desc','asc']"
+                                pagination-page-size.bind="paginationPageSize"
+                                max-pages-in-cache.bind=0
+                                enable-sorting.bind="enableSorting"
+                                enable-server-side-sorting.bind="enableServerSideSorting"
+                                enable-filter.bind="enableFilter"
+                                enable-server-side-filter.bind="enableServerSideFilter"
+                                suppress-row-click-selection.bind="true"
+                                row-selection="multiple"
+                                grid-ready.call="onGridReady($event, $this)"
+                                filter-changed.call="gridFilterFunc($event)"
+                                suppress-menu-filter-panel.bind="true"
+                                debug>
+        <ag-grid-column if.bind="showColumn('id')" header-class="ag-header-cell-left" width.bind="60" header-name="${'cases.tasks.id' | t}" field="taskId" suppress-filter.bind="true"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('title')" header-class="ag-header-cell-left" header-name="${'cases.tasks.title' | t}" field="title" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('assignedTo')" header-class="ag-header-cell-left" header-name="${'cases.tasks.assignedTo' | t}" field="assignedTo" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('status')" header-class="ag-header-cell-left" width.bind="100" header-name="${'cases.tasks.status' | t}" field="taskStatus" get-quick-filter-text.bind="getStatusQuickFilterText" suppress-sorting.bind="true" suppress-filter.bind="true"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('attachments')" width.bind="56" header-class="ico-attachment" header-name="" field="taskAttachments" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <span style="margin-left: 6px;">
+                   <i show.bind="params.data.taskAttachments.length > 0" class="ico-attachment" aria-hidden="true" title="Attachments"></i>
+                </span>
+            </ag-cell-template>
+        </ag-grid-column>
+        <ag-grid-column if.bind="showColumn('date')" header-name="${'cases.tasks.lastActivity' | t}" field="lastActivity" tooltip-field="ackMessage" suppress-menu.bind="true" suppress-sorting.bind="true" suppress-filter.bind="true"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('actions')" header-class="ag-header-cell-left" width.bind="100" header-name="" suppress-sorting.bind="true" suppress-filter.bind="true">
+            <ag-cell-template>
+                <i id="edit-task" title="${'button.editTask' | t}" class="ico-pencil7"></i>                 
+                <i id="delete-task" title="${'button.deleteTask' | t}" class="ico-bin"></i>
+            </ag-cell-template>
+        </ag-grid-column>
+    </ag-grid-aurelia>       
+</template>
