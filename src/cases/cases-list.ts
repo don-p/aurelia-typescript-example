@@ -133,14 +133,9 @@ export class CasesList {
   }
 
   selectCase(_case: any) {
-    // Find the community object in the collection.
-    let selectedCase =  this.cases.find(function(cs: Object){
-      return cs['caseId'] === _case['caseId'];
-    });
     // Select the community item.
-    this.selectedItem = !!selectedCase?selectedCase:_case;
-    // TODO: move event to prmoise resolved?
-    this.evt.publish('caseSelected', {case: this.selectedItem});
+    this.evt.publish('caseSelected', {case: _case});
+
   }
 
   scrollToCommunityInList(community:any) {

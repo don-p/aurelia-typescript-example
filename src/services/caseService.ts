@@ -7,7 +7,8 @@ import {FetchConfig} from 'aurelia-auth';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService, DialogController} from 'aurelia-dialog';
 import {Model} from '../model/model';
-import {NotificationResource} from '../model/notificationResource';
+import {CaseResource} from '../model/caseResource';
+import {TaskResource} from '../model/taskResource';
 import {NotificationAckResource} from '../model/notificationAckResource';
 import {DataService} from './dataService';
 import 'bootstrap-sass';
@@ -136,151 +137,115 @@ export class CaseService {
         return response
         .then(response => 
         {
-            let result = {
-                "pageSize": 0,
-                "responseCollection": me.casesArray,
-                "startPosition": 0,
-                "totalCount": 3
-            };
-            return JSON.parse(JSON.stringify(result));
-            // return response.json()
-            // .then(data => {
-            //     // let json = JSON.stringify(data);
-            //     // let content = JSON.parse(json, (k, v) => { 
-            //     //     if(k == 'sentDate') {
-            //     //         return new Date(v);
-            //     //     }
-            //     //     if(k == 'ackStatusSummary') {
-            //     //         let status = me.parseNotificationAckStatusSummary(v);
-            //     //         return status;
-            //     //     }
-            //     //     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-            //     //         return new NotificationResource(v);
-            //     //     } 
-            //     //     return v;                
-            //     // });
-            //     // return content;
-            //     return data;
-            // })
+            // let result = {
+            //     "pageSize": 0,
+            //     "responseCollection": me.casesArray,
+            //     "startPosition": 0,
+            //     "totalCount": 3
+            // };
+            // return JSON.parse(JSON.stringify(result));
+            return response.json()
+            .then(data => {
+                // let json = JSON.stringify(data);
+                // let content = JSON.parse(json, (k, v) => { 
+                //     if(k == 'sentDate') {
+                //         return new Date(v);
+                //     }
+                //     if(k == 'ackStatusSummary') {
+                //         let status = me.parseNotificationAckStatusSummary(v);
+                //         return status;
+                //     }
+                //     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
+                //         return new NotificationResource(v);
+                //     } 
+                //     return v;                
+                // });
+                // return content;
+                return data;
+            })
         });
     }
 
     /**
      * Get an individual case.
      */
-    async getCase(caseId:string, startIndex:number, pageSize:number): Promise<any> {
+    async getCase(caseId:string): Promise<any> {
         await fetch;
 
         // Multiple Promises to be resolved here.
         const http =  this.getHttpClient();
         let me = this;
+        // let response = http.fetch('v1/cases/' + caseId, 
+        //     {
+        //         method: 'GET'
+        //     }
+        // );
+        // return response
+        // .then(response => 
+        // {
+        //     return response.json().then(data => {
+        //         return data;
+        //     });
+
+        // });
+
+
+        // First, get the Case object.
         let response = http.fetch('v1/cases/' + caseId, 
             {
                 method: 'GET'
             }
         );
         return response
-        .then(response => 
-        {
-            let result = me.casesArray.find(function(item) {
-                return item.caseId === caseId;
-            });
-            result['tasks'] = me.tasksArray;
-            return JSON.parse(JSON.stringify(result));
-        });
-
-/*
-        // First, get the Notificaiton object.
-        return response
         .then(response => {return response.json()
             .then(data => {
-                // data is the notification.
+                // data is the case.
                 let json = JSON.stringify(data);
-                let notificationContent = me.parseNotification(json);
+                let caseContent = me.parseCase(json);
                 
-                // Second, get the associated Acknowledgement object array.
-                let acksResponse = http.fetch('v2/members/' + memberId + 
-                    '/notifications/' + notificationId + '/acks?start_index=' + startIndex + '&page_size=' + pageSize, 
+                // Second, get the associated Tasks object array.
+                let tasksResponse = http.fetch('v1/cases/' + caseId + 
+                    '/tasks', 
                     {
                         method: 'GET'
                     }
                 );
-                return acksResponse
+                return tasksResponse
                 .then(res => {return res.json()
-                    .then(acksData => {
-                        // Third, for each Acknowledgement in list, get the Acknowledgement Detail in order to access attachments.
-                        let json = JSON.stringify(acksData);
-                        let acks:Array<NotificationAckResource> = me.parseNotificationAcks(json);
-                        notificationContent.acks = acks;
-                        let promiseArray = [];
-                        // 3A. - Fetch the list of Acknowledgement Details.
-                        acks.forEach(function(ack:any) {
-                            let acksDetailResponse = http.fetch('v2/members/' + memberId + 
-                                '/notifications/' + notificationId + '/acks/' + ack.acknowledgementId, 
-                                {
-                                    method: 'GET'
-                                }
-                            );
-                            // acksDetailResponse.then(res => {return res.json()
-                            //     .then(acksData => {
-                            //         let json = JSON.stringify(acksData);
-                            //         let acks:Array<NotificationAckResource> = me.parseNotificationAcks('{"responseCollection":[' + json + ']}');
-                            //         return acks[0];                         
-                            //     })
-                            // });                                
-                                
-                            //     function(data) {
-                            //     return {ack: ack, ackDetail: data};
-                            // });
-                            promiseArray.push(acksDetailResponse);
-
-                        });
-                        // 3B. - Wait for array of Acknowledgement Detail Promises to be fulfilled.
-                        let acksPromise = Promise.all(promiseArray);
-                        return acksPromise.then(function(result) {
-                            let resultArray = [];
-                            notificationContent.acks = resultArray;
-                            // Create array of toJson() Promises.
-                            let jsonMap = result.map(function(item) {
-                                return item.json();
-                            })
-                            // 3C. - Wait for async JSON transform on Acknowledgement Detail responses.
-                            return Promise.all(jsonMap);
-
-                            // result.forEach(response => {response.json()
-                            //     .then(responseAck => {
-                            //         let js = JSON.stringify(responseAck);
-                            //         let ack:Array<NotificationAckResource> = me.parseNotificationAcks('{"responseCollection":[' + js + ']}');
-                            //         resultArray.push(ack[0]);
-                            //         return ack[0];
-                            //     });
-                            // });
-
-                            // notificationContent.acks = resultArray;
-                            // // return result;
-                            // return {notification: notificationContent, response: result};
-                        }).then(function(pArray) {
-                            // 3D. - Parse Acknowledgement Detail responses into model objects.
-                            let acks = [];
-                            pArray.forEach(function(ack) {
-                                let a = new NotificationAckResource(ack);
-                                acks.push(a);
-                            })
-                            notificationContent.acks = acks;
-                            return notificationContent;
-                        });
-                        // return notificationContent;
-
+                    .then(tasksData => {
+                        caseContent.tasks = tasksData.responseCollection;
+                        return caseContent;
                     })
                 });
             })
         });
 
-*/
+
     }
 
+    parseCase(json): CaseResource {
+        let response = JSON.parse(json, (k, v) => { 
+            if(k == 'dueDate') {
+                return new Date(v);
+            }
+            if(k == 'lastExportDate') {
+                return new Date(v);
+            }
+            // if(k == 'ackStatusSummary') {
+            //     let status = this.parseNotificationAckStatusSummary(v);
+            //     return status;
+            // }
+            if ((k == '')  && (typeof this == 'object') && (v != null) && (typeof v == 'object') && (!(v['payloadId'])) && (!(v['ackStatus'])) ) {
+                return new CaseResource(v);
+            } 
+            return v;                
+        });
+        return response;
+    }
+
+
     /**
-     * Get list of cases for logged-in user.
+     * Get list of tasks for logged-in user.
      */
     async getTasks(args:any): Promise<any> {
         await fetch;
@@ -357,119 +322,63 @@ export class CaseService {
     /**
      * Get an individual case.
      */
-    async getTask(memberId:string, caseId:string, startIndex:number, pageSize:number): Promise<any> {
+    async getTask(caseId:string, taskId:string): Promise<any> {
         await fetch;
 
         // Multiple Promises to be resolved here.
         const http =  this.getHttpClient();
         let me = this;
-        let taskId;
-        let response = http.fetch('v2/cases/' + caseId + 
+        let response = http.fetch('v1/cases/' + caseId + 
             '/tasks/' + taskId, 
             {
                 method: 'GET'
             }
         );
-/*
+
         // First, get the Notificaiton object.
         return response
         .then(response => {return response.json()
             .then(data => {
                 // data is the notification.
                 let json = JSON.stringify(data);
-                let notificationContent = me.parseNotification(json);
-                
-                // Second, get the associated Acknowledgement object array.
-                let acksResponse = http.fetch('v2/members/' + memberId + 
-                    '/notifications/' + notificationId + '/acks?start_index=' + startIndex + '&page_size=' + pageSize, 
-                    {
-                        method: 'GET'
-                    }
-                );
-                return acksResponse
-                .then(res => {return res.json()
-                    .then(acksData => {
-                        // Third, for each Acknowledgement in list, get the Acknowledgement Detail in order to access attachments.
-                        let json = JSON.stringify(acksData);
-                        let acks:Array<NotificationAckResource> = me.parseNotificationAcks(json);
-                        notificationContent.acks = acks;
-                        let promiseArray = [];
-                        // 3A. - Fetch the list of Acknowledgement Details.
-                        acks.forEach(function(ack:any) {
-                            let acksDetailResponse = http.fetch('v2/members/' + memberId + 
-                                '/notifications/' + notificationId + '/acks/' + ack.acknowledgementId, 
-                                {
-                                    method: 'GET'
-                                }
-                            );
-                            // acksDetailResponse.then(res => {return res.json()
-                            //     .then(acksData => {
-                            //         let json = JSON.stringify(acksData);
-                            //         let acks:Array<NotificationAckResource> = me.parseNotificationAcks('{"responseCollection":[' + json + ']}');
-                            //         return acks[0];                         
-                            //     })
-                            // });                                
-                                
-                            //     function(data) {
-                            //     return {ack: ack, ackDetail: data};
-                            // });
-                            promiseArray.push(acksDetailResponse);
-
-                        });
-                        // 3B. - Wait for array of Acknowledgement Detail Promises to be fulfilled.
-                        let acksPromise = Promise.all(promiseArray);
-                        return acksPromise.then(function(result) {
-                            let resultArray = [];
-                            notificationContent.acks = resultArray;
-                            // Create array of toJson() Promises.
-                            let jsonMap = result.map(function(item) {
-                                return item.json();
-                            })
-                            // 3C. - Wait for async JSON transform on Acknowledgement Detail responses.
-                            return Promise.all(jsonMap);
-
-                            // result.forEach(response => {response.json()
-                            //     .then(responseAck => {
-                            //         let js = JSON.stringify(responseAck);
-                            //         let ack:Array<NotificationAckResource> = me.parseNotificationAcks('{"responseCollection":[' + js + ']}');
-                            //         resultArray.push(ack[0]);
-                            //         return ack[0];
-                            //     });
-                            // });
-
-                            // notificationContent.acks = resultArray;
-                            // // return result;
-                            // return {notification: notificationContent, response: result};
-                        }).then(function(pArray) {
-                            // 3D. - Parse Acknowledgement Detail responses into model objects.
-                            let acks = [];
-                            pArray.forEach(function(ack) {
-                                let a = new NotificationAckResource(ack);
-                                acks.push(a);
-                            })
-                            notificationContent.acks = acks;
-                            return notificationContent;
-                        });
-                        // return notificationContent;
-
-                    })
-                });
+                let taskContent = me.parseTask(json);
+                return taskContent;
+                // // Second, get the associated Comments object array.
+                // let commentsResponse = http.fetch('v1/members/' + memberId + 
+                //     '/notifications/' + notificationId + '/acks?start_index=' + startIndex + '&page_size=' + pageSize, 
+                //     {
+                //         method: 'GET'
+                //     }
+                // );
+                // return commentsResponse
+                // .then(res => {return res.json()
+                //     .then(commentsData => {
+                //         taskContent.comments = commentsData.responseCollection;
+                //         return taskContent;
+                //     })
+                // });
             })
         });
-*/        
+   
     }
 
-    parseNotification(json): NotificationResource {
+    parseTask(json): CaseResource {
         let response = JSON.parse(json, (k, v) => { 
-            if(k == 'sentDate') {
+            if(k == 'dueDate') {
                 return new Date(v);
             }
-            if(k == 'ackStatusSummary') {
-                let status = this.parseNotificationAckStatusSummary(v);
-                return status;
+            if(k == 'lastChangeDate') {
+                return new Date(v);
             }
+            if(k == 'createDate') {
+                return new Date(v);
+            }
+            // if(k == 'ackStatusSummary') {
+            //     let status = this.parseNotificationAckStatusSummary(v);
+            //     return status;
+            // }
             if ((k == '')  && (typeof this == 'object') && (v != null) && (typeof v == 'object') && (!(v['payloadId'])) && (!(v['ackStatus'])) ) {
-                return new NotificationResource(v);
+                return new TaskResource(v);
             } 
             return v;                
         });
