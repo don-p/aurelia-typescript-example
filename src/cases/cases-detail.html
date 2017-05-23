@@ -6,35 +6,27 @@
 <loading id="sentalerts-loading" promise.bind="'casePromise'" message-key.bind="'app.loading'">
       
     <ul class="nav nav-tabs nav-append-content">
-        <li class.bind="requestType == 'PENDING'?'active':''">
-            <a id="tabReceivedRequests"  click.delegate="showRequests('PENDING')">${'cases.caseDetailTab' | t: {caseRefId: selectedCase.caseId}}</a>
+        <li class.bind="caseView == 'CASE'?'active':''">
+            <a id="tabReceivedRequests" click.delegate="setView('CASE')">${'cases.caseDetailTab' | t: {caseRefId: selectedCase.caseId}}</a>
         </li>
-        <li class.bind="requestType == 'INVITED'?'active':''">
-            <a id="tabSentRequests"  click.delegate="showRequests('INVITED')">${'cases.tasksTab' | t : {taskRefId: selectedTask.taskId}}</a>
+        <li class.bind="caseView == 'TASK'?'active':''">
+            <a id="tabSentRequests" click.delegate="setView('TASK')">${'cases.tasksTab' | t : {taskRefId: selectedTask.taskId}}</a>
         </li>
 
     </ul>
     <div id="requests-tab" class="blg-tab-section tab-content ">
         <div class="blg-inner-content tab-pane active" id="requests">
-            <div show.bind="true" class="blg-connection-content">
+            <div show.bind="caseView == 'CASE'" class="blg-connection-content">
                 <div class="alert-details-received-content" style="height: 100%;">
-                    <div class="alert-details-content-scroll" style="height: 100%;">
+                    <div class="alert-details-content-scroll" style="display: inline;">
 
                             <div show.bind="!!(selectedCase)" class="requestDetailContainer" >
-                                <div class="request-details-content case-details-content">
+                                <div class="case-details-content">
                                     <table>
                                         <tbody>
                                             <tr>
-                                                <td class="table-label table-label-case-detail">External Reference:</td>
-                                                <td class="table-text">${selectedCase.externalReference}</td>                                        
-                                            </tr>
-                                            <tr>
                                                 <td class="table-label table-label-case-detail">Case:</td>
                                                 <td class="table-text">${selectedCase.title}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Description:</td>
-                                                <td class="table-text">${selectedCase.description}</td>
                                             </tr>
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Type:</td>
@@ -50,11 +42,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Due date:</td>
-                                                <td class="table-text">${selectedCase.priority.priorityName}</td>                                        
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Locale:</td>
-                                                <td class="table-text">${selectedCase.priority.priorityName}</td>                                        
+                                                <td class="table-text">${selectedCase.formattedDueDate}</td>                                        
                                             </tr>
                                         </tbody>
                                     </table>
@@ -63,23 +51,30 @@
                                     <table>
                                         <tbody>
                                             <tr>
-                                                <td class="table-label table-label-case-detail">Budget:</td>
+                                                <td class="table-label table-label-case-detail">External Reference:</td>
                                                 <td class="table-text">${selectedCase.externalReference}</td>                                        
                                             </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Other reference:</td>
-                                                <td class="table-text">${selectedCase.title}</td>
+                                            <tr repeat.for="attr of selectedCase.caseAttributes">
+                                                <td class="table-label table-label-case-detail">${attr.attributeKey}:</td>
+                                                <td class="table-text">${attr.attributeValue}</td>                                        
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <div show.bind="!!(selectedNotification)" >
-                                    <compose view="../components/notificationMessageDetail.html" containerless></compose>
+                                <div class="case-details-content" style="width: 100%;">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">Description:</td>
+                                                <td class="table-text">${selectedCase.description}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <div class="case-tasks-content">
+                            <div class="case-tasks-content" style="display: inline;">
                                 <div>Case tasks:</div>
-                        <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length > 1" class="tasks-table-content">
+                        <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" class="tasks-table-content" style="display: inline;position:static;height:auto;">
                             <tasks-table-grid
                                 grid-id.bind="tasksGrid"
                                 grid-options.bind="gridOptions" 
@@ -90,7 +85,7 @@
                                 enable-filter.bind="true"
                                 enable-server-side-filter.bind="false"
                                 display-columns.bind="['attachments','status','date','id','title', 'assignedTo', 'actions']">
-                            </tasks-acks-table-grid>
+                            </tasks-table-grid>
                         </div>
                                 
                             </div>
@@ -98,7 +93,48 @@
                     </div>
                 </div>
             </div>
-            <div show.bind="requestType == 'INVITED'" class="blg-connection-content">
+            <div show.bind="caseView == 'TASK'" class="blg-connection-content">
+                <div class="alert-details-received-content" style="height: 100%;">
+                    <div class="alert-details-content-scroll" style="display: inline;">
+
+                            <div show.bind="!!(selectedCase)" class="requestDetailContainer" >
+                                <div class="case-details-content">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">Task:</td>
+                                                <td class="table-text">${selectedTask.title}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">Description:</td>
+                                                <td class="table-text">${selectedTask.description}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">Task Role:</td>
+                                                <td class="table-text">${selectedTask.assigmentRole.roleName}</td>                                        
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">Priority:</td>
+                                                <td class="table-text">${selectedTask.assigmentName}</td>                                        
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">Status:</td>
+                                                <td class="table-text">${selectedTask.taskStatus.statusName}</td>                                        
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">Created date:</td>
+                                                <td class="table-text">${selectedTask.formattedCreateDate}</td>                                        
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">Due date:</td>
+                                                <td class="table-text">${selectedTask.formattedDueDate}</td>                                        
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
             </div>
         </div>					
     </div>

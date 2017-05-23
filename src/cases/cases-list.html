@@ -43,22 +43,6 @@
                           <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
                             <h4 class='panel-title' click.delegate="selectCase(case)">
                               <span class="community-name">${case.title}</span>
-                              <span class="members-count">(<i class='ico-users'></i> ${community.memberCount})</span>
-                              <span class='community-buttons'>
-                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                  click.delegate="deleteCommunity(community, $event)" i18n='[title]button.deleteCase'>
-                                  <i class="ico-bin float-right"></i>
-                                </a>
-                                <!-- TODO: Removing controls for transfer of community ownership
-                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                  click.delegate="transferOwnershipToCommunityMember(community, $event)" i18n='[title]button.transferOwnership'>
-                                  <i class="ico-circle-right6 float-right"></i>
-                                </a>                                -->
-                                <a if.bind="(community.communityOwner.memberId===session.auth.member.memberId)" href="javascript:void(0);" 
-                                  click.delegate="editCommunity(community, $event)" i18n='[title]button.editCase'>
-                                  <i class="ico-pencil7 float-right"></i>
-                                </a>
-                              </span>
                               <span class='community-buttons'>
                                 <a href="javascript:void(0);" 
                                   click.delegate="deleteCase(case, $event)" i18n='[title]button.deleteCase'>

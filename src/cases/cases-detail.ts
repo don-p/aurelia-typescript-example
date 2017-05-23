@@ -24,7 +24,9 @@ export class CasesDetail {
   requestType: string;
   selectedCase: any;
   selectedTask: any;
+  taskPromise: Promise<Response>;
   gridOptions: GridOptions;
+  caseView: string;
 
   router: Router;
   @bindable pageSize;
@@ -37,6 +39,8 @@ export class CasesDetail {
     this['id'] = new Date().getTime();
     this.requestType = 'PENDING';
     this.pageSize = 100000;
+
+    this.caseView = 'CASE';
 
     let me = this;
 
@@ -113,7 +117,7 @@ export class CasesDetail {
     let me = this;
 
     // get the case details.
-    this.casePromise = this.caseService.getCase(selectedCase.caseId, 0, 1000);
+    this.casePromise = this.caseService.getCase(selectedCase.caseId);
     this.casePromise.then(function(data:any){
       let _case = data;
       
@@ -128,18 +132,19 @@ export class CasesDetail {
     let selectedTask = payload.task;
     let me = this;
 
-    // TEMP
-    me.selectedTask = selectedTask;
+    this.setView('TASK');
 
-    // // get the case details.
-    // this.casePromise = this.caseService.getCase(selectedTask.taskId, 0, 1000);
-    // this.casePromise.then(function(data:any){
-    //   let _case = data;
+    // get the task details.
+    this.taskPromise = this.caseService.getTask(this.selectedCase.caseId, selectedTask.taskId);
+    this.taskPromise.then(function(data:any){
+      let task = data;
       
-    //   me.selectedCase = _case;
-    //   me.gridOptions.api.setRowData(me.selectedCase.tasks);
-    // });
+      me.selectedTask = task;
+    });
+  }
 
+  setView(view) {
+    this.caseView = view;
   }
   
 
