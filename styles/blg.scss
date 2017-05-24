@@ -498,6 +498,39 @@ header .navbar-nav {
   z-index: 0;
 }
 
+.blg-right-panel .blg-case-content {
+  padding: 10px 5px 0px 5px;
+  position: absolute;
+  top: 39px;
+  bottom: 15px;
+  left: 0px;
+  right: 0px;
+  border-right: 2px solid $blg-grey-light;
+  border-top: 2px solid $blg-grey-light;
+  border-left: 2px solid $blg-grey-light;
+  border-bottom: 2px solid $blg-grey-light;
+  border-radius: 6px;
+  background-color: $blg-white;
+  z-index: 0;
+  overflow-y: scroll;
+}
+
+.blg-right-panel .blg-task-content {
+  padding: 20px 5px 0px 5px;
+  position: absolute;
+  top: 39px;
+  bottom: 15px;
+  left: 0px;
+  right: 0px;
+  border-right: 2px solid $blg-grey-light;
+  border-top: 2px solid $blg-grey-light;
+  border-left: 2px solid $blg-grey-light;
+  border-bottom: 2px solid $blg-grey-light;
+  border-radius: 6px;
+  background-color: $blg-white;
+  z-index: 0;
+}
+
 .blg-left-panel .blg-community-content .blg-address-content,
 .blg-left-panel .blg-organization-content .blg-address-content {
   min-height: 287px;
@@ -2163,7 +2196,8 @@ span.recipientsListItem:not(:last-child)::after {
 }
 
 .table-label-case-detail {
-  width: 180px;
+    width: inherit;
+    white-space: nowrap;
 }
 
 .table-text {
@@ -2177,9 +2211,7 @@ span.recipientsListItem:not(:last-child)::after {
 }
 
 .case-details-content {
-  display: inline-block;
-  /*width: 440px;*/
-  height: 100%;
+  margin: 15px;
 }
 
 .case-details-content-right {
@@ -2540,4 +2572,21 @@ label.LOW {
 .requestDetailContainer .reply-message-text a {
   color: $blg-white;
   margin-left: 5px;
+}
+
+.details-panel {
+  border-radius: 6px;
+  margin: 75px 15px 0px 510px;
+  position: absolute;
+  box-sizing: border-box;
+  min-height: 585px;
+  width: inherit;
+  top: 40px;
+  right: 0;
+  left: 0;
+}
+
+.case-name,
+.case-description {
+  max-width: 364px;
 }

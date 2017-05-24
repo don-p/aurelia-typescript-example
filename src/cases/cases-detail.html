@@ -2,7 +2,7 @@
 <require from="../lib/loading-mask/loading-mask"></require>
 <require from="../components/tasks-table-grid"></require>
 
-<aside class="blg-right-panel" style="min-width: 900px;">
+<aside class="blg-right-panel details-panel">
 <loading id="sentalerts-loading" promise.bind="'casePromise'" message-key.bind="'app.loading'">
       
     <ul class="nav nav-tabs nav-append-content">
@@ -16,8 +16,8 @@
     </ul>
     <div id="requests-tab" class="blg-tab-section tab-content ">
         <div class="blg-inner-content tab-pane active" id="requests">
-            <div show.bind="caseView == 'CASE'" class="blg-connection-content">
-                <div class="alert-details-received-content" style="height: 100%;position: relative;">
+            <div show.bind="caseView == 'CASE'" class="blg-case-content">
+                <div class="alert-details-received-content">
                     <div class="alert-details-content-scroll" style="display: inline;">
 
                             <div show.bind="!!(selectedCase)" class="requestDetailContainer" >
@@ -31,6 +31,10 @@
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Description:</td>
                                                 <td class="table-text">${selectedCase.description}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">External Reference:</td>
+                                                <td class="table-text">${selectedCase.externalReference}</td>                                        
                                             </tr>
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Type:</td>
@@ -54,10 +58,6 @@
                                 <div class="case-details-content-right">
                                     <table>
                                         <tbody>-->
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">External Reference:</td>
-                                                <td class="table-text">${selectedCase.externalReference}</td>                                        
-                                            </tr>
                                             <tr repeat.for="attr of selectedCase.caseAttributes">
                                                 <td class="table-label table-label-case-detail">${attr.attributeKey}:</td>
                                                 <td class="table-text">${attr.attributeValue}</td>                                        
@@ -102,7 +102,7 @@
                             </div>
                 </div>
             </div>
-            <div show.bind="caseView == 'TASK'" class="blg-connection-content">
+            <div show.bind="caseView == 'TASK'" class="blg-task-content">
 <!-- Tasks list content -->
                             <div class="case-tasks-content" style="display: inline;">
                                 <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" style="display: inline;position:static;height:auto;">
