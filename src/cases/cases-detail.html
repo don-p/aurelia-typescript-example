@@ -29,6 +29,10 @@
                                                 <td class="table-text">${selectedCase.title}</td>
                                             </tr>
                                             <tr>
+                                                <td class="table-label table-label-case-detail">Description:</td>
+                                                <td class="table-text">${selectedCase.description}</td>
+                                            </tr>
+                                            <tr>
                                                 <td class="table-label table-label-case-detail">Type:</td>
                                                 <td class="table-text">${selectedCase.type.typeName}</td>                                        
                                             </tr>
@@ -44,12 +48,12 @@
                                                 <td class="table-label table-label-case-detail">Due date:</td>
                                                 <td class="table-text">${selectedCase.formattedDueDate}</td>                                        
                                             </tr>
-                                        </tbody>
+                                        <!--</tbody>
                                     </table>
                                 </div>
                                 <div class="case-details-content-right">
                                     <table>
-                                        <tbody>
+                                        <tbody>-->
                                             <tr>
                                                 <td class="table-label table-label-case-detail">External Reference:</td>
                                                 <td class="table-text">${selectedCase.externalReference}</td>                                        
@@ -58,45 +62,69 @@
                                                 <td class="table-label table-label-case-detail">${attr.attributeKey}:</td>
                                                 <td class="table-text">${attr.attributeValue}</td>                                        
                                             </tr>
-                                        </tbody>
+                                        <!--</tbody>
                                     </table>
                                 </div>
                                 <div class="case-details-content" style="width: 100%;">
                                     <table>
-                                        <tbody>
+                                        <tbody>-->
                                             <tr>
-                                                <td class="table-label table-label-case-detail">Description:</td>
-                                                <td class="table-text">${selectedCase.description}</td>
+                                                <td class="table-label table-label-case-detail">Tasks:</td>
+                                                <td class="table-text"><a href="javascript:void" click.delegate="caseView='TASK'">${selectedCase.tasks.length}</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="table-label table-label-case-detail">Attachments:</td>
+                                                <td class="table-text">${selectedCase.attachmentsCount}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <div class="case-tasks-content" style="display: inline;">
-                                <div>Case tasks:</div>
-                        <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" class="tasks-table-content" style="display: inline;position:static;height:auto;">
-                            <tasks-table-grid
-                                grid-id.bind="tasksGrid"
-                                grid-options.bind="gridOptions" 
-                                grid-ready-func.bind="onGridReady"
-                                pagination-page-size.bind="pageSize"
-                                enable-sorting.bind="true"
-                                enable-server-side-sorting.bind="false"
-                                enable-filter.bind="true"
-                                enable-server-side-filter.bind="false"
-                                display-columns.bind="['attachments','status','date','id','title', 'assignedTo', 'actions']">
-                            </tasks-table-grid>
-                        </div>
-                                
-                            </div>
-
+                            <!--<div class="case-tasks-content" style="display: inline;">
+                                <div>Tasks:</div>
+                                <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" class="tasks-table-content" style="display: inline;position:static;height:auto;">
+                                    <tasks-table-grid
+                                        grid-id.bind="tasksGrid"
+                                        grid-options.bind="gridOptions" 
+                                        grid-ready-func.bind="onGridReady"
+                                        pagination-page-size.bind="pageSize"
+                                        enable-sorting.bind="true"
+                                        enable-server-side-sorting.bind="false"
+                                        enable-filter.bind="true"
+                                        enable-server-side-filter.bind="false"
+                                        display-columns.bind="['attachments','status','date','id','title', 'assignedTo', 'actions']">
+                                    </tasks-table-grid>
+                                </div>
+                            </div>-->
                     </div>
                 </div>
             </div>
             <div show.bind="caseView == 'TASK'" class="blg-connection-content">
-                <div class="alert-details-received-content" style="height: 100%;">
-                    <div class="alert-details-content-scroll" style="display: inline;">
+<!-- Tasks list content -->
+                            <div class="case-tasks-content" style="display: inline;">
+                                <div>Tasks:</div>
+                                <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" class="tasks-table-content" style="display: inline;position:static;height:auto;">
+                                    <tasks-table-grid
+                                        grid-id.bind="tasksGrid"
+                                        grid-options.bind="gridOptions" 
+                                        grid-ready-func.bind="onGridReady"
+                                        pagination-page-size.bind="pageSize"
+                                        enable-sorting.bind="true"
+                                        enable-server-side-sorting.bind="false"
+                                        enable-filter.bind="true"
+                                        enable-server-side-filter.bind="false"
+                                        display-columns.bind="['attachments','status','date','id','title', 'assignedTo', 'actions']">
+                                    </tasks-table-grid>
+                                </div>
+                            </div>
 
+
+
+<!-- Task detail content -->
+
+
+                <!--<div class="alert-details-received-content" style="height: 100%;">
+                    <div class="alert-details-content-scroll" style="display: inline;">
                             <div show.bind="!!(selectedCase)" class="requestDetailContainer" >
                                 <div class="case-details-content">
                                     <table>
@@ -133,6 +161,8 @@
                                     </table>
                                 </div>
                             </div>
+                            <div>Comments:</div>-->
+
                     </div>
                 </div>
             </div>
