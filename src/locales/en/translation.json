@@ -244,15 +244,20 @@
     },
     "cases": {
         "caseDetailTab": "Case {{caseRefId}}",
-        "tasksTab": "Task {{taskRefId}}",
+        "tasksTab": "Tasks",
         "tasks": {
+            "createTask":"Create Task",
+            "editTask":"Update Task",
             "id": "ID",
             "title": "Task",
             "assignedTo": "Assigned to",
             "lastActivity": "Last activity",
             "status": "Status",
-            "actions": "Actions"
-            
+            "actions": "Actions",
+            "assignmentRole": "Assignment Role",
+            "assignmentName": "Assignment Name",
+            "createdDate": "Created Date",
+            "dueDate": "Due Date"
         }
     },
 
@@ -319,6 +324,7 @@
     "global": {
         "memberFullName": "{{firstName}} {{lastName}}",
         "blueLineGridInc":"BlueLine Grid, Inc.",
+        "title": "Title",
         "name": "Name",
         "description": "Description",
         "type": "Type",

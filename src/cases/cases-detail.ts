@@ -10,11 +10,13 @@ import {I18N} from 'aurelia-i18n';
 import {ValidationRules, ValidationController, Rules, validateTrigger} from 'aurelia-validation';
 import {Utils} from '../services/util';
 import {CaseService} from '../services/caseService';
+import {DataService} from '../services/dataService';
+import {TaskResource} from '../model/taskResource';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, I18N, AureliaConfiguration, Utils, CaseService, EventAggregator, NewInstance.of(ValidationController), LogManager)
+@inject(Session, I18N, AureliaConfiguration, Utils, CaseService, DataService, EventAggregator, NewInstance.of(ValidationController), LogManager)
 export class CasesDetail {
 
   sentRequestsGrid: any;
@@ -24,7 +26,6 @@ export class CasesDetail {
   requestType: string;
   selectedCase: any;
   selectedTask: any;
-  taskPromise: Promise<Response>;
   gridOptions: GridOptions;
   caseView: string;
 
@@ -34,7 +35,7 @@ export class CasesDetail {
   logger: Logger;
 
   constructor(private session: Session, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
-    private caseService:CaseService, private evt: EventAggregator, private vController:ValidationController) {
+    private caseService:CaseService, private dataService:DataService, private evt: EventAggregator, private vController:ValidationController) {
 
     this['id'] = new Date().getTime();
     this.requestType = 'PENDING';
@@ -94,9 +95,9 @@ export class CasesDetail {
     let scope = event.context;
 
     if(event.event.target.id === 'edit-task') {
-      scope.editTask(event.data);
+      scope.context.editTask(event.data, event.event);
     } else if(event.event.target.id === 'delete-task') {
-      scope.editTask(event.data);
+      scope.context.deleteTask(event.data, event.event);
     } else {
       if(!!(event.data) && (!(this.selectedTask) || (!!(this.selectedTask) && !(event.data.taskId === this.selectedTask.taskId)))) {
         event.context.evt.publish('taskSelected', {task: event.data, type: 'SENT'});
@@ -115,6 +116,9 @@ export class CasesDetail {
 
     let selectedCase = payload.case;
     let me = this;
+    // Reset the view.
+    this.setView('CASE');
+    me.gridOptions.api.deselectAll();
 
     // get the case details.
     this.casePromise = this.caseService.getCase(selectedCase.caseId);
@@ -135,8 +139,8 @@ export class CasesDetail {
     this.setView('TASK');
 
     // get the task details.
-    this.taskPromise = this.caseService.getTask(this.selectedCase.caseId, selectedTask.taskId);
-    this.taskPromise.then(function(data:any){
+    this.casePromise = this.caseService.getTask(this.selectedCase.caseId, selectedTask.taskId);
+    this.casePromise.then(function(data:any){
       let task = data;
       
       me.selectedTask = task;
@@ -145,6 +149,118 @@ export class CasesDetail {
 
   setView(view) {
     this.caseView = view;
+  }
+  
+  editTask(task: any, event: MouseEvent) {
+    if(!!(event)) event.stopPropagation();
+
+    let me = this;
+    let title = '';
+    if(task === null) {
+      // Create an empty or cloned object model for the edit dialog.
+      task = new TaskResource();
+      title = this.i18n.tr('cases.tasks.createTask');
+    } else {
+      // Clone the object so we do not edit the live/bound model.
+      // get the task details.
+      me.casePromise = me.caseService.getTask(me.selectedCase.caseId, task.taskId);
+      me.casePromise.then(function(data:any){
+        // let task = data;
+        
+        me.selectedTask = data;
+        task = new TaskResource(data);
+        title = me.i18n.tr('cases.tasks.editTask');
+        me.openTaskResourceDialog(task, title, null);
+      });
+      // task = new TaskResource(task);
+      // title = this.i18n.tr('cases.tasks.editTask');
+    }
+    const vRules = ValidationRules
+      .ensure((community: any) => community.communityName)
+      .displayName(this.i18n.tr('community.communities.communityName'))
+      .required()
+      .then()
+      .minLength(3)
+      .maxLength(120)
+//      .then()
+      .ensure((community: any) => community.communityDescription)
+      .displayName(this.i18n.tr('community.communities.communityDesc'))
+      .required()
+      .then()
+      .maxLength(120)
+      // .on(community)
+      .rules;
+
+  }
+
+  openTaskResourceDialog(task: TaskResource, title: string, vRules) {
+
+    let me = this;
+    this.dataService.openResourceEditDialog({modelView:'model/taskModel.html', title:title, 
+      loadingTitle: 'app.loading', item:task, okText:this.i18n.tr('button.save'), validationRules:vRules})
+    .then((controller:any) => {
+      let model = controller.settings;
+      // Callback function for submitting the dialog.
+      controller.viewModel.submit = (community) => {
+        me.logger.debug("Edit community submit()");
+        let comm = {
+          communityId: community.communityId, 
+          communityName: community.communityName, 
+          communityDescription: community.communityDescription, 
+          communityType: community.communityType,
+          membershipType: 'DEFINED'
+        };
+        /*
+        let modelPromise = me.communityService.createCommunity(comm);
+        controller.viewModel.modelPromise = modelPromise;        
+        modelPromise
+        .then(response => response.json())
+        .then(data => {
+          me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then((communitiesResult:any) => {
+            if(community === null || typeof community.communityId !== 'string') {
+              // select the new community
+              me.selectCommunity(data);
+            }
+            // re-select the selected communities
+            if(me.selectedCommunities.length > 0) {
+              let temp = [];
+              for(community of communitiesResult) {
+                let found = me.selectedCommunities.find(function(item: any) {
+                  return item.communityId == community.communityId;
+                })
+                
+                if(!!(found)) {
+                  temp.push(community);
+                  // let index = me.selectedCommunities.indexOf(found);
+                  // me.selectedCommunities[index] = community;
+                }
+              }
+              me.selectedCommunities = temp;
+            }
+
+          });
+          // Close dialog on success.
+          controller.ok();
+        }, error => {
+          me.logger.error("Community create() rejected.");
+          model.errorMessage = "Failed"; 
+        }).catch(error => {
+          me.logger.error("Community create() failed."); 
+          me.logger.error(error); 
+          model.errorMessage = "Failed"; 
+          return Promise.reject(error);
+        })
+        */
+      }
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Reset validation error state.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
+    });
+
+
   }
   
 

@@ -7,8 +7,7 @@ import {Utils} from '../services/util';
 import {DataService} from '../services/dataService';
 import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
-import {NotificationResource} from '../model/notificationResource';
-import {NotificationAckResource} from '../model/notificationAckResource';
+import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
 
 @inject(Session, EventAggregator, I18N, Utils, DataService, LogManager) 
 @viewResources('./tasks-table-grid')
@@ -151,10 +150,6 @@ export class TasksTableGridCustomElement {
     return TextSearchFilter;
   }
 
-  editTask(task) {
-    this.logger.debug("===== editTask ===== " + task);
-
-  }
 
   showAckReply(ack) {
     this.dataService.openTemplateDialog(this.i18n.tr('alerts.notifications.replyMessage'), this.i18n.tr('button.close'), false, 'components/notificationMessageDetail.html')
