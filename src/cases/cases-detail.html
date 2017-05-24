@@ -102,7 +102,6 @@
             <div show.bind="caseView == 'TASK'" class="blg-connection-content">
 <!-- Tasks list content -->
                             <div class="case-tasks-content" style="display: inline;">
-                                <div>Tasks:</div>
                                 <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" class="tasks-table-content" style="display: inline;position:static;height:auto;">
                                     <tasks-table-grid
                                         grid-id.bind="tasksGrid"
