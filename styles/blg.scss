@@ -1419,6 +1419,11 @@ wizard .modal-footer {
   text-overflow: ellipsis;
 }
 
+.case-name {
+  max-width: 355px;
+
+}
+
 .community-description {
   font-size: 12px;
   position: relative;
@@ -2173,8 +2178,8 @@ span.recipientsListItem:not(:last-child)::after {
 
 .case-details-content {
   display: inline-block;
-  width: 440px;
-  /*height: 100%;*/
+  /*width: 440px;*/
+  height: 100%;
 }
 
 .case-details-content-right {
@@ -2338,6 +2343,7 @@ abp-datetime-picker .input-group-addon {
     z-index: 0;
 }
 
+.blg-connection-content .alert-details-received-content .alert-details-content-scroll,
 .alert-details-panel .alert-details-received-content .alert-details-content-scroll,
 .alert-details-panel .alert-details-sent-content .alert-details-content-scroll {
     min-height: 287px;
