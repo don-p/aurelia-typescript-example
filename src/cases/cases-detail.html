@@ -17,7 +17,7 @@
     <div id="requests-tab" class="blg-tab-section tab-content ">
         <div class="blg-inner-content tab-pane active" id="requests">
             <div show.bind="caseView == 'CASE'" class="blg-connection-content">
-                <div class="alert-details-received-content" style="height: 100%;">
+                <div class="alert-details-received-content" style="height: 100%;position: relative;">
                     <div class="alert-details-content-scroll" style="display: inline;">
 
                             <div show.bind="!!(selectedCase)" class="requestDetailContainer" >
@@ -97,6 +97,9 @@
                                 </div>
                             </div>-->
                     </div>
+                            <div class="modal-footer" style="bottom: 0px;position: absolute;width: 100%;">
+                                <button  type="submit" class="btn btn-primary btn-sm" click.trigger="exportCase(selectedCase)"><i class="fa fa-download"></i>&nbsp; Export</button>
+                            </div>
                 </div>
             </div>
             <div show.bind="caseView == 'TASK'" class="blg-connection-content">
