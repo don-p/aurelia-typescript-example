@@ -24,7 +24,7 @@
         <ag-grid-column if.bind="showColumn('title')" header-class="ag-header-cell-left" header-name="${'cases.tasks.title' | t}" field="title" filter.bind="getTextSearchFilter()"></ag-grid-column>
         <ag-grid-column if.bind="showColumn('assignedTo')" header-class="ag-header-cell-left" header-name="${'cases.tasks.assignedTo' | t}" field="assignedTo" filter.bind="getTextSearchFilter()"></ag-grid-column>
         <ag-grid-column if.bind="showColumn('status')" header-class="ag-header-cell-left" width.bind="100" header-name="${'cases.tasks.status' | t}" field="taskStatus.statusName" get-quick-filter-text.bind="getStatusQuickFilterText" suppress-sorting.bind="true" suppress-filter.bind="true"></ag-grid-column>
-        <ag-grid-column if.bind="showColumn('attachments')" width.bind="56" header-class="ico-attachment" header-name="" field="attachmnetCount" suppress-sorting.bind="true" suppress-filter.bind="true">
+        <ag-grid-column if.bind="showColumn('attachments')" width.bind="56" header-class="ico-attachment" header-name="" field="attachmentCount" suppress-sorting.bind="true" suppress-filter.bind="true">
         </ag-grid-column>
         <ag-grid-column if.bind="showColumn('date')" header-name="${'cases.tasks.lastActivity' | t}" field="formattedLastChangeDate" tooltip-field="ackMessage" suppress-menu.bind="true" suppress-sorting.bind="true" suppress-filter.bind="true"></ag-grid-column>
         <ag-grid-column if.bind="showColumn('actions')" header-class="ag-header-cell-left" width.bind="100" header-name="" suppress-sorting.bind="true" suppress-filter.bind="true">

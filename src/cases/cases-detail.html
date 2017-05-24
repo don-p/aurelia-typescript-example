@@ -33,6 +33,10 @@
                                                 <td class="table-text">${selectedCase.description}</td>
                                             </tr>
                                             <tr>
+                                                <td class="table-label table-label-case-detail">External Reference:</td>
+                                                <td class="table-text">${selectedCase.externalReference}</td>                                        
+                                            </tr>
+                                            <tr>
                                                 <td class="table-label table-label-case-detail">Type:</td>
                                                 <td class="table-text">${selectedCase.type.typeName}</td>                                        
                                             </tr>
@@ -54,10 +58,6 @@
                                 <div class="case-details-content-right">
                                     <table>
                                         <tbody>-->
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">External Reference:</td>
-                                                <td class="table-text">${selectedCase.externalReference}</td>                                        
-                                            </tr>
                                             <tr repeat.for="attr of selectedCase.caseAttributes">
                                                 <td class="table-label table-label-case-detail">${attr.attributeKey}:</td>
                                                 <td class="table-text">${attr.attributeValue}</td>                                        
@@ -97,12 +97,15 @@
                                 </div>
                             </div>-->
                     </div>
+                            <div class="modal-footer" style="bottom: 0px;position: absolute;width: 100%;">
+                                <button  type="submit" class="btn btn-primary btn-sm" click.trigger="exportCase(selectedCase)"><i class="fa fa-download"></i>&nbsp; Export</button>
+                            </div>
                 </div>
             </div>
             <div show.bind="caseView == 'TASK'" class="blg-task-content">
 <!-- Tasks list content -->
                             <div class="case-tasks-content" style="display: inline;">
-                                <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" class="tasks-table-content" style="display: inline;position:static;height:auto;">
+                                <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" style="display: inline;position:static;height:auto;">
                                     <tasks-table-grid
                                         grid-id.bind="tasksGrid"
                                         grid-options.bind="gridOptions" 
