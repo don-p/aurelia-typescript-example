@@ -21,12 +21,8 @@ const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(
 @inject(Session, DataService, CaseService, EventAggregator, I18N, 
   AureliaConfiguration, Utils, MemberActionsBarCustomElement, Validator, NewInstance.of(ValidationController), LogManager)
 export class CasesList {
-  communities: Array<Object>;
-  items:Array<Object>;
-  commType: string;
   pageSizeList: number;
   pageSize: number;
-  cmtysPromise: Promise<Response>;
   modelPromise: Promise<void>;
   ps: any;
 
@@ -133,6 +129,13 @@ export class CasesList {
   }
 
   selectCase(_case: any) {
+    // Find the object in the collection.
+    let selectedCase =  this.cases.find(function(cs: Object){
+      return cs['caseId'] === _case['caseId'];
+    });
+    // Select the item.
+    this.selectedItem = !!selectedCase?selectedCase:_case;
+
     // Select the community item.
     this.evt.publish('caseSelected', {case: _case});
 
