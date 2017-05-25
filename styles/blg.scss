@@ -502,14 +502,13 @@ header .navbar-nav {
   padding: 10px 5px 0px 5px;
   position: absolute;
   top: 39px;
-  bottom: 15px;
+  bottom: 65px;
   left: 0px;
   right: 0px;
   border-right: 2px solid $blg-grey-light;
   border-top: 2px solid $blg-grey-light;
   border-left: 2px solid $blg-grey-light;
-  border-bottom: 2px solid $blg-grey-light;
-  border-radius: 6px;
+  border-radius: 6px 6px 0 0;
   background-color: $blg-white;
   z-index: 0;
   overflow-y: scroll;
@@ -2589,4 +2588,27 @@ label.LOW {
 .case-name,
 .case-description {
   max-width: 364px;
+}
+
+.case-details-footer {
+    position: absolute;
+    height: 50px;
+    left: 0px;
+    right: 0px;
+    border-top: 1px solid $blg-grey-light;
+    border-bottom: 2px solid $blg-grey-light;
+    border-right: 2px solid $blg-grey-light;
+    border-left: 2px solid $blg-grey-light;
+    border-radius: 0 0 6px 6px;
+    background-color: $blg-white;
+    padding-top: 8px;
+    padding-right: 15px;
+    bottom: 15px;
+}
+
+.case-details-footer button {
+    min-width: 100px;
+    margin-left: 5px;
+    font-size: 14px;
+    float: right;    
 }
