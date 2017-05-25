@@ -15,9 +15,10 @@ import{RedirectWithParams} from './lib/RedirectWithParams';
 import {DialogService, DialogController, DialogCloseResult, DialogOpenResult, DialogCancelResult} from 'aurelia-dialog';
 import {WebSocketService} from './services/wsService';
 import {AudioService} from './services/audioService';
+import {CaseService} from './services/caseService';
 
 @inject(Session, FetchConfig, I18N, EventAggregator, AuthService, DataService, OrganizationService, 
-  AureliaConfiguration, Router, DialogService, AlertsService, WebSocketService, AudioService, Utils, LogManager)
+  AureliaConfiguration, Router, DialogService, AlertsService, CaseService, WebSocketService, AudioService, Utils, LogManager)
 export class App {
   session: Session;
   logger: Logger;
@@ -27,7 +28,7 @@ export class App {
     private evt: EventAggregator, private authService: AuthService, 
     private dataService: DataService, private organizationService: OrganizationService, 
     private appConfig:AureliaConfiguration, private router:Router, 
-    private dialogService: DialogService, private alertsService: AlertsService, 
+    private dialogService: DialogService, private alertsService: AlertsService, private caseService: CaseService,
     private wsService: WebSocketService, private audioService: AudioService) {
 
     this.session = Session;
@@ -51,8 +52,8 @@ export class App {
       me.wsService.openWsConnection(me.session);
       
       // Get alert categories/types.
-      let alertCatPromise: Promise<Response> =me.dataService.getAlertCategories(0,  10000);
-      alertCatPromise.then(response => {return response.json()
+      let alertCatsPromise: Promise<Response> =me.dataService.getAlertCategories(0,  10000);
+      alertCatsPromise.then(response => {return response.json()
         .then(data => {
           let categories = data.responseCollection;
           // Get alert notification template set.
@@ -84,8 +85,57 @@ export class App {
         //throw error;
         return Promise.reject(error);
       });
+/*
+      // Get Case Management data collections.
+      let caseTypesPromise: Promise<Response> = me.caseService.getCaseTypes(me.session.auth.organization.organizationId);
+      caseTypesPromise.then(function(response) {
+        return response.json()
+        .then((data) => {
+          // Merge configs.
+          me.appConfig.merge({server: data});
+          me.logger.debug('=== CONFIG callServer ===');
+          return data;
+        }).catch(error => {
+          me.logger.debug('getCallServiceConfig() returned error: ' + error);
+        })
+      });
 
-      me.configPromise = Promise.all([callConfigPromise, callConfigPromise /*, alertCatPromise*/]);
+      let casePrioritiesPromise: Promise<Response> = me.caseService.getCasePriorities(me.session.auth.organization.organizationId);
+      casePrioritiesPromise.then(function(response) {
+        return response.json()
+        .then((data) => {
+          // Merge configs.
+          me.appConfig.merge({server: data});
+          me.logger.debug('=== CONFIG callServer ===');
+          return data;
+        }).catch(error => {
+          me.logger.debug('getCallServiceConfig() returned error: ' + error);
+        })
+      });
+
+      let caseTagsPromise: Promise<Response> = me.caseService.getCaseTags(me.session.auth.organization.organizationId);
+      caseTagsPromise.then(function(response) {
+        return response.json()
+        .then((data) => {
+          // Merge configs.
+          me.appConfig.merge({server: data});
+          me.logger.debug('=== CONFIG callServer ===');
+          return data;
+        }).catch(error => {
+          me.logger.debug('getCallServiceConfig() returned error: ' + error);
+        })
+      });
+*/
+      me.configPromise = Promise.all(
+        [
+          callConfigPromise, 
+          callConfigPromise , 
+          alertCatsPromise,
+          // caseTypesPromise,
+          // casePrioritiesPromise,
+          // caseTagsPromise
+        ]
+      );
       me.session['configured'] = me.configPromise;
       me.configPromise.then(function(result) {
         me.logger.debug('=== CONFIGURED ===');
@@ -106,7 +156,7 @@ export class App {
       });
 
       // Get current unread alert count.
-      let alertCountPromise = me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})
+      let alertCountPromise = me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth.member.memberId, direction: 'RECEIVED'})
       .then(function(result) {
         let statusObj = me.alertsService.parseNotificationAckStatusSummary(result.received);
         me.session.notificationStatus = statusObj;
@@ -175,7 +225,7 @@ export class App {
     let me = this;
     config.title = this.i18n.tr('app.title');
     config.mapUnknownRoutes((instruction: NavigationInstruction) => {
-      let user = me.session.auth['member'];
+      let user = me.session.auth.member;
       let route = './community';
       if (user && !!(me.session.getRole())) {
         if (me.session.getRole() === 'admin') {

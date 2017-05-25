@@ -128,7 +128,7 @@ export class SentAlerts {
       this.selectedNotification = selectedNotification;
       let me = this;
       // get the notification details.
-      this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
+      this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth.member.memberId, selectedNotification.notificationId, 0, 1000);
       this.notificationAcksPromise.then(function(data:any){
         // set the message to read if currently unread.
         let notification = data;
@@ -185,7 +185,7 @@ export class SentAlerts {
       this.gridOptions, 
       this.alertsService, 
       this.alertsService.getNotifications, 
-      {startIndex: 0, pageSize: this.pageSize, memberId: this.session.auth['member'].memberId, direction: 'SENT'},
+      {startIndex: 0, pageSize: this.pageSize, memberId: this.session.auth.member.memberId, direction: 'SENT'},
       false
     );
   }

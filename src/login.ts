@@ -5,7 +5,7 @@ import {Router, NavigationInstruction} from 'aurelia-router';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService} from 'aurelia-dialog';
 import {I18N} from 'aurelia-i18n';
-import {Session} from './services/session';
+import {Session, AuthResource} from './services/session';
 import {DataService} from './services/dataService';
 import {Utils} from './services/util';
 import {FetchConfig, AuthService} from 'aurelia-auth';
@@ -121,9 +121,9 @@ export class Login {
     .then((data:any) => {
       me.logger.debug(data);
       if(data && data!==null) {
-        let auth = {};
+        let auth = new AuthResource();
         auth['refresh_token'] = data.refresh_token;
-        auth['member'] = data.member;
+        auth.member = data.member;
         me.session.auth = data;
         me.session.auth['isLoggedIn'] = true;
 

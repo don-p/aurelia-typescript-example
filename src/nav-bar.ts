@@ -19,7 +19,7 @@ export class NavBar {
 
   attached() {
     if(this.router.currentInstruction && this.router.currentInstruction.config.route !== '' && this.router.currentInstruction.config.route !== 'login') {
-      this.avatarUrl = this.session.auth['member'].secureAvatarUrl;
+      this.avatarUrl = this.session.auth.member.secureAvatarUrl;
     }
   }
 
