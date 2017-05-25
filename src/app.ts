@@ -178,11 +178,11 @@ export class App {
     if(typeof auth === 'string' && this.authService.isAuthenticated()) {
       auth = JSON.parse(auth);
       this.session.auth = auth;
-      this.session.auth['isLoggedIn'] = true;
+      this.session.auth.isLoggedIn = true;
       // Send event for successful authentication.
       this.evt.publish('authenticated', auth);
     } else {
-      this.session.auth['isLoggedIn'] = false;      
+      this.session.auth.isLoggedIn = false;      
       // let messageKey = 'error.sessionExpired';
       // setTimeout(function() {
       // this.router.navigate('login'/*, {errorMessage: messageKey}*/);
@@ -203,7 +203,7 @@ export class App {
       case 401:
         this.logger.debug("handler - ResponseError: 401 Unauthorized");
         let messageKey = 'error.badCredentials';
-        if((this.session.auth['access_token'] && !(this.authService.isAuthenticated()))) {
+        if((this.session.auth.access_token && !(this.authService.isAuthenticated()))) {
           messageKey = 'error.sessionExpired';
           this.router.navigateToRoute('login', {errorMessage: messageKey});
         }

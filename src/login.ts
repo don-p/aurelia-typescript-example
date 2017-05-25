@@ -122,10 +122,10 @@ export class Login {
       me.logger.debug(data);
       if(data && data!==null) {
         let auth = new AuthResource();
-        auth['refresh_token'] = data.refresh_token;
+        auth.refresh_token = data.refresh_token;
         auth.member = data.member;
         me.session.auth = data;
-        me.session.auth['isLoggedIn'] = true;
+        me.session.auth.isLoggedIn = true;
 
         me.authService['auth'].storage.set('auth', JSON.stringify(me.session.auth));
         if(data.mfa.isRequired) {

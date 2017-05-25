@@ -574,7 +574,7 @@ export class CaseService {
         // .asPut()
         .asPost()
         .withContent(form)
-        .withHeader('Authorization', 'Bearer '+ this.session.auth['access_token'])
+        .withHeader('Authorization', 'Bearer '+ this.session.auth.access_token)
         .send();
 
         // let response = http.fetch('v1/members/' + memberId + 
@@ -664,7 +664,7 @@ export class CaseService {
         let response = http.createRequest('v1/notifications')
         .asPost()
         .withContent(form)
-        .withHeader('Authorization', 'Bearer '+ this.session.auth['access_token'])
+        .withHeader('Authorization', 'Bearer '+ this.session.auth.access_token)
         .send();
 
         return response;

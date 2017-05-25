@@ -31,5 +31,9 @@ export class AuthResource {
 
     member: any;
     organization: any;
-    
+    access_token: string;
+    refresh_token: string;
+    mfa: any;
+    expires_in: number;
+    isLoggedIn: boolean;
 }

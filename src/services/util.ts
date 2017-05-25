@@ -28,7 +28,7 @@ export class Utils {
     }
 
     isLoggedIn(): boolean {
-        if(this.session && this.session.auth['access_token'] && this.auth.isAuthenticated()) {
+        if(this.session && this.session.auth.access_token && this.auth.isAuthenticated()) {
             return true;
         } 
         return false;
