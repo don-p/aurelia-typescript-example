@@ -362,6 +362,89 @@ export class CaseService {
    
     }
 
+    /**
+     * Getcase-related lookup data.
+     */
+    async getCasePriorities(orgId:string): Promise<any> {
+        await fetch;
+
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/organizations/' + orgId + 
+            '/case-priorities/', 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                return data;
+            })
+        });
+   
+    }
+
+    async getCaseTypes(orgId:string): Promise<any> {
+        await fetch;
+
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/organizations/' + orgId + 
+            '/case-types/', 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                return data;
+            })
+        });
+   
+    }
+
+    async getCaseTags(orgId:string): Promise<any> {
+        await fetch;
+
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/organizations/' + orgId + 
+            '/case-metatags/', 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                return data;
+            })
+        });
+   
+    }
+
+    async getCaseAttributes(orgId:string, typeId: string): Promise<any> {
+        await fetch;
+
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/organizations/' + orgId + 
+            '/case-types/' + typeId + '/attributes', 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                return data;
+            })
+        });
+   
+    }
+
     parseTask(json): CaseResource {
         let response = JSON.parse(json, (k, v) => { 
             if(k == 'dueDate') {

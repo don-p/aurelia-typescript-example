@@ -93,7 +93,7 @@ export class WebSocketService {
 
     addSubscriptions(stompClient, session) {
         let me = this;
-        let alertSub = stompClient.subscribe('/exchange/member.notification.alert/' + session.auth['member'].memberId, function(message) {
+        let alertSub = stompClient.subscribe('/exchange/member.notification.alert/' + session.auth.member.memberId, function(message) {
             me.handleWsMessage(message);
             me.logger.debug("Got WS alert message: " + message.body);
         });

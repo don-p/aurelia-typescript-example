@@ -137,10 +137,10 @@ export class ReceivedAlerts {
       return  me.setNotificationStatus(selectedNotification, 'READ')
       .then(result => {
         // get the notification details.
-        this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
+        this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth.member.memberId, selectedNotification.notificationId, 0, 1000);
         this.notificationAcksPromise.then(function(data:any){
           let notification = data;
-          let memberId = me.session.auth['member'].memberId;
+          let memberId = me.session.auth.member.memberId;
           let ack = notification.acks.find(function(ackItem) {
             return memberId === ackItem.ackParty.memberId;
           });
@@ -153,7 +153,7 @@ export class ReceivedAlerts {
     } else {
       me.logger.debug("Got READ message.")
       // get the notification details.
-      this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth['member'].memberId, selectedNotification.notificationId, 0, 1000);
+      this.notificationAcksPromise = this.alertsService.getNotification(this.session.auth.member.memberId, selectedNotification.notificationId, 0, 1000);
       this.notificationAcksPromise.then(function(data:any){
         let notification = data;
         // let notification = data.notification;
@@ -171,7 +171,7 @@ export class ReceivedAlerts {
 
         
         me.logger.debug(">> not acks: " + (notification.acks && notification.acks.length));
-        let memberId = me.session.auth['member'].memberId;
+        let memberId = me.session.auth.member.memberId;
         let ack = notification.acks.find(function(ackItem) {
           return memberId === ackItem.ackParty.memberId;
         });
@@ -221,7 +221,7 @@ export class ReceivedAlerts {
 
   setNotificationStatus(notification, status): Promise<any> {
     let me = this;
-    this.notificationAcksPromise = this.alertsService.setNotificationAckStatus(this.session.auth['member'].memberId, 
+    this.notificationAcksPromise = this.alertsService.setNotificationAckStatus(this.session.auth.member.memberId, 
     notification.notificationId, 
     status).then(function(data:any){
       let ack = me.selectedNotificationAck;
@@ -232,7 +232,7 @@ export class ReceivedAlerts {
     }).then(function(status) {
       if(status.ackStatus === 'READ') {
         // Update current unread alert count.
-        let alertCountPromise = me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth['member'].memberId, direction: 'RECEIVED'})
+        let alertCountPromise = me.alertsService.getNotificationsCounts({startIndex: 0, pageSize: me.alertsService.pageSize, memberId: me.session.auth.member.memberId, direction: 'RECEIVED'})
         .then(function(result) {
           let statusObj = me.alertsService.parseNotificationAckStatusSummary(result.received);
           me.session.notificationStatus = statusObj;
@@ -277,7 +277,7 @@ export class ReceivedAlerts {
         me.logger.debug("Edit community submit()");
         let ack = controller.ackModel;
         let modelPromise = 
-          me.alertsService.setNotificationReply(this.session.auth['member'].memberId, notification.notificationId, reply);
+          me.alertsService.setNotificationReply(this.session.auth.member.memberId, notification.notificationId, reply);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
         .then(function(data:any) {
@@ -308,7 +308,7 @@ export class ReceivedAlerts {
       this.gridOptions, 
       this.alertsService, 
       this.alertsService.getNotifications, 
-      {startIndex: 0, pageSize: this.pageSize, memberId: this.session.auth['member'].memberId, direction: 'RECEIVED'},
+      {startIndex: 0, pageSize: this.pageSize, memberId: this.session.auth.member.memberId, direction: 'RECEIVED'},
       false
     );
   }

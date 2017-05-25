@@ -112,11 +112,11 @@ export class AlertsActionsBarCustomElement {
       controller.viewModel.submit = (communityMembers:any[]) => {
         // Add logged-in user to the call list, if not in list.
         if(!(communityMembers.find(function(value, index) {
-            return value.memberId == me.session.auth['member'].memberId;
+            return value.memberId == me.session.auth.member.memberId;
           })
         )) {
           communityMembers = communityMembers.slice(0);
-          communityMembers.unshift(me.session.auth['member']);
+          communityMembers.unshift(me.session.auth.member);
         }
         let memberIDs = communityMembers.map(function(value) {
           return {

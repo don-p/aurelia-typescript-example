@@ -106,7 +106,7 @@ export class CasesList {
 */
   getCases(startIndex: number, pageSize: number): Promise<Response> {
     let me = this;
-    let casesPromise = this.caseService.getCases({memberId: this.session.auth['member'].memberId, startIndex: startIndex,  pageSize: pageSize});
+    let casesPromise = this.caseService.getCases({memberId: this.session.auth.member.memberId, startIndex: startIndex,  pageSize: pageSize});
     return casesPromise
     // .then(response => {return response.json()
       .then(data => {

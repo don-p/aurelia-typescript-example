@@ -200,7 +200,7 @@ export class Utils {
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
-            let memberId = me.session.auth['member'].memberId;
+            let memberId = me.session.auth.member.memberId;
 /*
             if(!(gridOptions.selection)) { //showAll
 */
@@ -314,7 +314,7 @@ export class Utils {
             me.logger.debug("..... ..... Filter | " + Object.keys(params.filterModel));
             me.logger.debug("..... ..... Sort | " + params.sortModel.toString());
             this.loading = true;
-            let memberId = me.session.auth['member'].memberId;
+            let memberId = me.session.auth.member.memberId;
             args['params'] = params;
             let membersPromise = callback.call(dataService, args);
             membersPromise//.then(response => response.json())

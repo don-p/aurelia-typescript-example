@@ -4,14 +4,14 @@ import {Logger} from 'aurelia-logging';
 
 @inject(WebSocketService, LogManager)
 export class Session {  
-    auth: Object;
+    auth: AuthResource;
     configured: Promise<any>;
     notificationStatus: any = {};
 
     logger: Logger;
  
     constructor(private wsService: WebSocketService){
-        this.auth = {};
+        this.auth = new AuthResource();
         this.logger = LogManager.getLogger(this.constructor.name);
         this.logger.debug("Session created.");
     }
@@ -25,4 +25,11 @@ export class Session {
     get unreadAlertCount() {
         return this.notificationStatus.UNREAD;
     }
+}
+
+export class AuthResource {
+
+    member: any;
+    organization: any;
+    
 }
