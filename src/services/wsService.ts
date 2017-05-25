@@ -36,7 +36,7 @@ export class WebSocketService {
         let wsHeartbeatInterval = this.appConfig.get('api.wsHeartbeatInterval');
         let promise = new Promise((resolve, reject) => {
             let wsUrl = this.wsProtocol + '://' + window.location.host + '/blgws/websocket?token=';
-            let url = wsUrl + session.auth['access_token'];
+            let url = wsUrl + session.auth.access_token;
             let ws = me.createWebSocket(url);
             let options:any = {heartbeat: {incoming: wsHeartbeatInterval, outgoing: wsHeartbeatInterval}};
             let stompClient:any = Stomp.over(ws, options);

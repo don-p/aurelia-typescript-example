@@ -110,7 +110,7 @@ export class DataService {
             config
             // Add the baseUrl for API server.
             .withBaseUrl(this.apiServerUrl)
-            .withHeader('Authorization', 'Bearer ' + this.session.auth['access_token']);
+            .withHeader('Authorization', 'Bearer ' + this.session.auth.access_token);
         });
 
         this.logger = LogManager.getLogger(this.constructor.name);
@@ -140,7 +140,7 @@ export class DataService {
     }
 
     async waitRefresh(request: Request, response: Response) {
-        let refreshPromise = await this.refreshToken(this.session.auth['refresh_token'], request, response);
+        let refreshPromise = await this.refreshToken(this.session.auth.refresh_token, request, response);
         this.logger.debug('waitrefresh() refreshPromise:' + refreshPromise);
         let result = await refreshPromise;
         this.logger.debug('waitrefresh() result:' + result);
@@ -165,7 +165,7 @@ export class DataService {
 
                 if((response.status === 401 || response.status === 400)) {
                     if(request.url.indexOf('/oauth/token')===-1 &&
-                    me.session.auth['access_token'] && !me.auth.isAuthenticated()) {
+                    me.session.auth.access_token && !me.auth.isAuthenticated()) {
                         me.logger.debug('Received expired access token - response error ' + response.status + ' ' + response.url);
                         // Special case, refresh expired token.
                         // Request and save a new access token, using the refresh token.
@@ -296,8 +296,8 @@ export class DataService {
         }
         me.auth['auth'].setToken(data, true);
         // Save the new access token in the app's existing session.
-        me.session.auth['access_token'] = data['access_token'];
-        me.session.auth['expires_in'] = data['expires_in'];
+        me.session.auth.access_token = data.access_token;
+        me.session.auth.expires_in = data.expires_in;
         me.logger.debug('Access token refreshed.');
     //    } catch(e) {
     //         // Refresh token (session) expired).
@@ -316,7 +316,7 @@ export class DataService {
         // console.debug('Access token refreshed.');
         if(fetchRequest && fetchRequest !== null) { // We need to re-try the original request.
             // Before re-executing the original request, replace the token in the auth header.
-            fetchRequest.headers.set('Authorization', 'Bearer ' + data['access_token']);
+            fetchRequest.headers.set('Authorization', 'Bearer ' + data.access_token);
             this.logger.debug('Access token refreshed -> re-running fetch: ' + fetchRequest.url + '.');
             this.logger.debug('refreshToken - wait for fetch request: ' + fetchRequest);
             var response = await http.fetch(fetchRequest);
@@ -346,7 +346,7 @@ export class DataService {
                     client_secret: this.clientSecret
                 };
         let params = QueryString.stringify(obj, {});
-        let token = this.session.auth['access_token'];
+        let token = this.session.auth.access_token;
         let response = http.fetch('oauth/token/' + token + '?' +params, 
             {
                 method: 'DELETE'
