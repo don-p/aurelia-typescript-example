@@ -16,7 +16,7 @@ import {TaskResource} from '../model/taskResource';
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
 
-@inject(Session, I18N, AureliaConfiguration, Utils, CaseService, DataService, EventAggregator, NewInstance.of(ValidationController), LogManager)
+@inject(Session, I18N, AureliaConfiguration, Utils, CaseService, DataService, EventAggregator, NewInstance.of(ValidationController), Router, LogManager)
 export class CasesDetail {
 
   sentRequestsGrid: any;
@@ -29,13 +29,13 @@ export class CasesDetail {
   gridOptions: GridOptions;
   caseView: string;
 
-  router: Router;
   @bindable pageSize;
 
   logger: Logger;
 
   constructor(private session: Session, private i18n: I18N, private appConfig: AureliaConfiguration, private utils: Utils, 
-    private caseService:CaseService, private dataService:DataService, private evt: EventAggregator, private vController:ValidationController) {
+    private caseService:CaseService, private dataService:DataService, private evt: EventAggregator, 
+    private vController:ValidationController, private router: Router) {
 
     this['id'] = new Date().getTime();
     this.requestType = 'PENDING';
@@ -100,7 +100,9 @@ export class CasesDetail {
       scope.context.deleteTask(event.data, event.event);
     } else {
       if(!!(event.data) && (!(this.selectedTask) || (!!(this.selectedTask) && !(event.data.taskId === this.selectedTask.taskId)))) {
-        event.context.evt.publish('taskSelected', {task: event.data, type: 'SENT'});
+        // Navigate to Task view.
+        this.router.navigateToRoute('task', { taskId: event.data.taskId, caseId:  this.selectedCase.caseId});
+        // event.context.evt.publish('taskSelected', {task: event.data, type: 'SENT'});
       }
     }
   };

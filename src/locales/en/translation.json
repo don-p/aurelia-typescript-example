@@ -245,6 +245,8 @@
     "cases": {
         "caseDetailTab": "Case {{caseRefId}}",
         "tasksTab": "Tasks",
+        "taskDetailTab": "Detail",
+        "taskCommentsTab": "Comments",
         "tasks": {
             "createTask":"Create Task",
             "editTask":"Update Task",
