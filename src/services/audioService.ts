@@ -20,10 +20,13 @@ export class AudioService {
         let context;
         try {
             // Fix up for prefixing
+            // Not compat w/ IE11
+            /*
             window['AudioContext'] = window['AudioContext'] || window['webkitAudioContext'];
             context = new AudioContext();
             this.audioContext = context;
             this.loadSound('./sounds/' + this.alertSoundFilename);
+            */
             this.loadSoundCompat('./sounds/' + this.alertSoundFilename);
 /*
             let bufferLoader = new BufferLoader(
