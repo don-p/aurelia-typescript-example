@@ -324,6 +324,15 @@ export class App {
         settings: {auth: true, roles: ['admin']},
         className: 'ico-briefcase2',   
         title: this.i18n.tr('router.nav.cases') 
+      },
+      { 
+        route: 'cases/:caseId/tasks/:taskId',   
+        name: 'task',  
+        moduleId: './cases/task',  
+        nav: false,      
+        settings: {auth: true, roles: ['admin']},
+        className: 'ico-briefcase2',   
+        title: this.i18n.tr('router.nav.cases') 
       }
     ]);
 
