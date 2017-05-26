@@ -2612,3 +2612,8 @@ label.LOW {
     font-size: 14px;
     float: right;    
 }
+
+.row.textMessage {
+  max-height: 500px;
+  overflow: auto;  
+}
