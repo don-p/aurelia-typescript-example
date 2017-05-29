@@ -2,12 +2,13 @@
 <require from="../lib/loading-mask/loading-mask"></require>
 
   <div class="blg-fixed-wrapper">
-    <ul class="nav nav-tabs nav-append-content tabs-bar">
-        <a href.bind="route.href" id="tabTaskTitle">Case: ${caseId}</a> > Task: ${taskId}
+    <ul class="tabs-bar breadcrumbs">
+<!--    <a href.bind="route.href" id="tabTaskTitle">Case: ${caseId}</a> > Task: ${taskId} -->
+        <a href.bind="route.href" id="tabTaskTitle">< Case: <span>${caseId}</span></a>
     </ul>
 
     <!-- Right sub-tabs -->
-    <aside class="blg-right-panel">
+    <aside class="blg-right-panel task-comments">
         <compose view-model="./task-tabs"></compose>
     </aside>
     <!-- Left detail view. -->
