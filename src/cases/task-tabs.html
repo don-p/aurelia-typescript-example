@@ -3,7 +3,7 @@
 
     <ul class="nav nav-tabs nav-append-content">
         <li class.bind="requestType == 'PENDING'?'active':''">
-            <a id="tabReceivedRequests"  click.delegate="showRequests('PENDING')">Comments</a>
+            <a id="tabReceivedRequests"  click.delegate="showRequests('PENDING')">Comments and files</a>
         </li>
         <li class.bind="requestType == 'INVITED'?'active':''">
             <a id="tabSentRequests"  click.delegate="showRequests('INVITED')">History</a>
@@ -12,40 +12,96 @@
     </ul>
     <div id="requests-tab" class="blg-tab-section tab-content ">
         <div class="blg-inner-content tab-pane active" id="requests">
-            <div show.bind="requestType == 'PENDING'" class="blg-connection-content">
-                <div class="requests-content" id="membersTableContent">	
-                        -- COMMENTS --
-                    <div class="request-details">
-                        <div show.bind="!!(selectedRequest)" class="requestDetailContainer">
-                            <div class="request-details-content">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td class="table-label">From:</td>
-                                            <td class="table-text">${selectedRequest.physicalPersonProfile.firstName} ${selectedRequest.physicalPersonProfile.lastName}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="table-label">Organization:</td>
-                                            <td class="table-text">${selectedRequest.physicalPersonProfile.organization.organizationName}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="table-label">Message:</td>
-                                            <td class="table-text">${selectedRequest.statusComment}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-danger btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'DECLINE', 'REQUEST_DECLINED')"><i class="ico-blocked"></i>&nbsp; Decline</button>
-                                <button  type="submit" class="btn btn-success btn-sm" click.trigger="editConnectionRequest([selectedRequest], 'ACCEPT', 'REQUEST_ACCEPTED')"><i class="ico-checkmark-circle"></i>&nbsp; Accept</button>
-                            </div>
-                        </div>
-                    </div>
-                    </div>     
+            <div class="comments-button-bar">
+                <div class="right-select">
+                    <span  class="community-select-label" i18n='[prepend]community.communities.commType'>: </span>
+                    <select class="form-control select select-default-blg" value.bind="commType" change.delegate="selectCommunityType(commType)">
+                        <option value="COI" i18n="community.communities.coi"></option>
+                        <option value="TEAM" i18n="community.communities.team"></option>
+                    </select>
                 </div>
             </div>
+            <div show.bind="requestType == 'PENDING'" class="blg-comments-content">
+                <div class="comments-content" id="membersTableContent">
+
+
+
+
+
+                    <div class="comment-list-item">
+                        <div class="comment-type-icon"><i class="ico-bubble-lines"></i></div>                            
+                        <div class="comment-container">
+                            <h3 class="comment-title">
+                                <span>05-02-2017 21:15 - Simon Fox</span>
+                                <span class="pull-right">Bethesda, MD</span> 
+                            </h3>
+                            <div class="comment-content">Text messaging, or texting, is the act of composing and sending electronic messages, typically consisting of alphabetic and numeric characters</div>
+                        </div>
+                    </div>
+
+                    <div class="comment-list-item">
+                        <div class="comment-type-icon"><i class="ico-image"></i></div>                            
+                        <div class="comment-container">
+                            <h3 class="comment-title">
+                                <span>05-01-2017 01:15 - Michael Douglas</span>
+                                <span class="pull-right">Washington, DC</span> 
+                            </h3>
+                            <div class="comment-content">suspect_photo13.jpg</div>
+                        </div>
+                    </div>
+
+                    <div class="comment-list-item">
+                        <div class="comment-type-icon"><i class="ico-video-camera3"></i></div>                            
+                        <div class="comment-container">
+                            <h3 class="comment-title">
+                                <span>05-01-2017 00:46 - Gregory Norman</span>
+                                <span class="pull-right">New York, NY</span> 
+                            </h3>
+                            <div class="comment-content">crime_scene35b.avi</div>
+                        </div>
+                    </div>
+
+                    <div class="comment-list-item">
+                        <div class="comment-type-icon"><i class="ico-tape"></i></div>                            
+                        <div class="comment-container">
+                            <h3 class="comment-title">
+                                <span>04-29-2017 21:00 - John Smith</span>
+                                <span class="pull-right">Rockville, MD</span> 
+                            </h3>
+                            <div class="comment-content">suspect_aswering_machine.mp3</div>
+                        </div>
+                    </div>
+
+                    <div class="comment-list-item">
+                        <div class="comment-type-icon"><i class="ico-file-empty"></i></div>                            
+                        <div class="comment-container">
+                            <h3 class="comment-title">
+                                <span>04-25-2017 02:44 - Simon Fox</span>
+                                <span class="pull-right">Bethesda, MD</span> 
+                            </h3>
+                            <div class="comment-content">schedule_25.docx</div>
+                        </div>
+                    </div>                                                                                   
+
+
+
+
+
+                </div>
+            </div>
+            <div class="comments-footer">
+                <span>
+                    <button  type="submit" class="btn btn-primary btn-sm" click.trigger="exportCase(selectedCase)" title="Add attachment"><i class="ico-attachment"></i></button>
+                </span>
+                <span>
+                    <input placeholder="Type a comment..." class="comments-input" type="text"/>
+                </span>                                 
+                <span>
+                    <button  type="submit" class="btn btn-info btn-sm" click.trigger="exportCase(selectedCase)">Add</button>
+                </span>               
+            </div>            
             <div show.bind="requestType == 'INVITED'" class="blg-connection-content">
-                <div class="requests-content" id="membersTableContent">	
+                <div class="history-content" id="membersTableContent">	
                     -- HISTORY --
                 </div>
             </div>
