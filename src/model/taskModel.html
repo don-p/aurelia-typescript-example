@@ -26,7 +26,7 @@
             <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.taskStatus.statusName & validate" 
             class="form-control input-lg" />
         </div>
-        <div class="dialog-section">
+        <div show.bind="!!(item.taskId)" class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.createdDate'>: </label>
             <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.formattedCreateDate & validate" 
             class="form-control input-lg" />

@@ -172,7 +172,6 @@ export class CasesDetail {
         me.selectedTask = data;
         task = new TaskResource(data);
         title = me.i18n.tr('cases.tasks.editTask');
-        me.openTaskResourceDialog(task, title, null);
       });
       // task = new TaskResource(task);
       // title = this.i18n.tr('cases.tasks.editTask');
@@ -192,6 +191,8 @@ export class CasesDetail {
       .maxLength(120)
       // .on(community)
       .rules;
+
+      me.openTaskResourceDialog(task, title, null);
 
   }
 

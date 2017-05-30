@@ -106,6 +106,12 @@
 <!-- Tasks list content -->
                             <div class="case-tasks-content" style="display: inline;">
                                 <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" style="display: inline;position:static;height:auto;">
+                                    <div class="conv-buttons-bar">
+                                        <button id="btn-communities-create-community" click.delegate="editTask(null)" class="btn btn-info btn-xs-square" i18n='[title]button.createCommunity'>
+                                        <i class="ico-users-plus"></i>
+                                        </button>
+                                    </div>
+
                                     <tasks-table-grid
                                         grid-id.bind="tasksGrid"
                                         grid-options.bind="gridOptions" 
