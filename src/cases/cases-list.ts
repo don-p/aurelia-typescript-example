@@ -10,7 +10,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 // import * as Ps from 'perfect-scrollbar';
 import {ValidationRules, ValidationController, Validator} from 'aurelia-validation';
-import {CommunityResource} from '../model/communityResource';
+import {CaseResource} from '../model/caseResource';
 import {Grid, GridOptions, Column, TextFilter} from 'ag-grid/main';
 import {Utils} from '../services/util';
 import {MemberActionsBarCustomElement} from '../components/member-actions-bar';
@@ -70,7 +70,7 @@ export class CasesList {
     this.ps.update(container);
 */
     let me = this;
-    // Get list of organizations the logged-in user has rights to.
+    // Get list of cases the logged-in user has rights to.
     this.getCases(0, 500).then(function(){
       me.selectDefaultCase();
     });
@@ -263,25 +263,24 @@ export class CasesList {
       // })
     });
   }
-
-  createCommunity() {
-    this.editCommunity(null, null);
+*/
+  createCase() {
+    this.editCase(null, null);
   }
 
-  editCommunity(community: any, event: MouseEvent) {
+  editCase(_case: any, event: MouseEvent) {
     if(!!(event)) event.stopPropagation();
 
     let me = this;
     let title = '';
-    if(community === null) {
+    if(_case === null) {
       // Create an empty or cloned object model for the edit dialog.
-      community = new CommunityResource();
-      community.communityType = "TEAM";
-      title = this.i18n.tr('community.communities.createCommunity');
+      _case = new CaseResource();
+      title = this.i18n.tr('cases.createCase');
     } else {
       // Clone the object so we do not edit the live/bound model.
-      community = new CommunityResource(community);
-      title = this.i18n.tr('community.communities.editCommunity');
+      _case = new CaseResource(_case);
+      title = this.i18n.tr('cases.editCase');
     }
     const vRules = ValidationRules
       .ensure((community: any) => community.communityName)
@@ -299,50 +298,24 @@ export class CasesList {
       // .on(community)
       .rules;
 
-    this.dataService.openResourceEditDialog({modelView:'model/communityModel.html', title:title, 
-      loadingTitle: 'app.loading', item:community, okText:this.i18n.tr('button.save'), validationRules:vRules})
+    this.dataService.openResourceEditDialog({modelView:'model/caseModel.html', title:title, 
+      loadingTitle: 'app.loading', item:_case, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
 
       // let model = controller.settings.model;
       let model = controller.settings;
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (community) => {
-        me.logger.debug("Edit community submit()");
-        let comm = {
-          communityId: community.communityId, 
-          communityName: community.communityName, 
-          communityDescription: community.communityDescription, 
-          communityType: community.communityType,
-          membershipType: 'DEFINED'
-        };
-        let modelPromise = me.communityService.createCommunity(comm);
+        me.logger.debug("Edit case submit()");
+        let modelPromise = me.caseService.createCase(_case);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
         .then(response => response.json())
         .then(data => {
-          me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then((communitiesResult:any) => {
-            if(community === null || typeof community.communityId !== 'string') {
-              // select the new community
-              me.selectCommunity(data);
-            }
-            // re-select the selected communities
-            if(me.selectedCommunities.length > 0) {
-              let temp = [];
-              for(community of communitiesResult) {
-                let found = me.selectedCommunities.find(function(item: any) {
-                  return item.communityId == community.communityId;
-                })
-                
-                if(!!(found)) {
-                  temp.push(community);
-                  // let index = me.selectedCommunities.indexOf(found);
-                  // me.selectedCommunities[index] = community;
-                }
-              }
-              me.selectedCommunities = temp;
-            }
-
+          me.getCases(0, 500).then(function(){
+            me.selectCase(data);
           });
+          
           // Close dialog on success.
           controller.ok();
         }, error => {
@@ -363,7 +336,7 @@ export class CasesList {
       // })
     });
   }
-*/
+
 
 }
 
