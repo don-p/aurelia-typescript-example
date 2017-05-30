@@ -240,6 +240,7 @@ export class CaseService {
             } 
             return v;                
         });
+        response.typeId = response.type.typeId;
         return response;
     }
 

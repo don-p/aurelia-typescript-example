@@ -14,6 +14,7 @@ export class CaseResource {
   attachments: Array<any>;
   caseId: string;
   type: any;
+  typeId: string;
   status: any;
   priority: string;
   assigneeReference: any;
