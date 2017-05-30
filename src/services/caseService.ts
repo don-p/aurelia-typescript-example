@@ -320,7 +320,7 @@ export class CaseService {
     }
 
     /**
-     * Get an individual case.
+     * Get an individual task.
      */
     async getTask(caseId:string, taskId:string): Promise<any> {
         await fetch;
@@ -361,6 +361,22 @@ export class CaseService {
         });
    
     }
+
+    async createTask(_case: any, task: any) {
+        await fetch;
+
+        let method = (typeof task.taskId !== 'string')?'POST':'PUT';
+        let path = (typeof task.taskId !== 'string')?'':'/' + task.taskId;
+        
+        let response = this.getHttpClient().fetch('v1/cases/'+ _case.caseId + '/tasks' + path, 
+            {
+                method: method,
+                body: JSON.stringify(task)
+            }
+        );
+        return response;
+    }
+
 
     /**
      * Getcase-related lookup data.

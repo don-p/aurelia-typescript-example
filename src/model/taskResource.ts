@@ -36,7 +36,7 @@ export class TaskResource {
         */
       } else {
         this.title = '';
-        this.taskId = '';
+        this.taskId = null;
       }
 
   }

@@ -33,7 +33,7 @@
         </div>
         <div class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
-            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.formattedDueDate & validate" 
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.dueDate & validate" 
             class="form-control input-lg" />
         </div>
         <input type="hidden" value.bind="item.communityId" />
