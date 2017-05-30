@@ -27,36 +27,24 @@
                                                 <td class="table-text">${selectedTask.description}</td>
                                             </tr>
                                             <tr>
-                                                <td class="table-label table-label-case-detail">External Reference:</td>
-                                                <td class="table-text">${selectedCase.externalReference}</td>                                        
+                                                <td class="table-label table-label-case-detail">Assignment Role:</td>
+                                                <td class="table-text">${selectedTask.assignmentRole.roleName}</td>                                        
                                             </tr>
                                             <tr>
-                                                <td class="table-label table-label-case-detail">Type:</td>
-                                                <td class="table-text">${selectedCase.type.typeName}</td>                                        
+                                                <td class="table-label table-label-case-detail">Assignment Name:</td>
+                                                <td class="table-text">${selectedTask.assignmentName}</td>                                        
                                             </tr>
                                             <tr>
-                                                <td class="table-label table-label-case-detail">Priority:</td>
-                                                <td class="table-text">${selectedCase.priority.priorityName}</td>                                        
+                                                <td class="table-label table-label-case-detail">Status:</td>
+                                                <td class="table-text">${selectedTask.taskStatus.statusName}</td>                                        
                                             </tr>
                                             <tr>
-                                                <td class="table-label table-label-case-detail">Tags:</td>
-                                                <td class="table-text">${selectedCase.priority.priorityName}</td>                                        
+                                                <td class="table-label table-label-case-detail">Created Date:</td>
+                                                <td class="table-text">${selectedTask.formattedCreateDate}</td>                                        
                                             </tr>
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Due date:</td>
-                                                <td class="table-text">${selectedCase.formattedDueDate}</td>                                        
-                                            </tr>
-                                            <tr repeat.for="attr of selectedCase.caseAttributes">
-                                                <td class="table-label table-label-case-detail">${attr.attributeKey}:</td>
-                                                <td class="table-text">${attr.attributeValue}</td>                                        
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Tasks:</td>
-                                                <td class="table-text"><a href="javascript:void" click.delegate="caseView='TASK'">${selectedCase.tasks.length}</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Attachments:</td>
-                                                <td class="table-text">${selectedCase.attachmentsCount}</td>
+                                                <td class="table-text">${selectedTask.formattedDueDate}</td>                                        
                                             </tr>
                                         </tbody>
                                     </table>
