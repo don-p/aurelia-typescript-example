@@ -12,6 +12,7 @@ import {Utils} from '../services/util';
 import {CaseService} from '../services/caseService';
 import {DataService} from '../services/dataService';
 import {TaskResource} from '../model/taskResource';
+import {CaseResource} from '../model/caseResource';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
@@ -192,56 +193,27 @@ export class CasesDetail {
       // .on(community)
       .rules;
 
-      me.openTaskResourceDialog(task, title, null);
-
+      me.openTaskResourceDialog(me.selectedCase, task, title, null);
   }
 
-  openTaskResourceDialog(task: TaskResource, title: string, vRules) {
+  openTaskResourceDialog(_case: CaseResource, task: TaskResource, title: string, vRules):Promise<any> {
 
     let me = this;
-    this.dataService.openResourceEditDialog({modelView:'model/taskModel.html', title:title, 
+    return this.dataService.openResourceEditDialog({modelView:'model/taskModel.html', title:title, 
       loadingTitle: 'app.loading', item:task, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
       let model = controller.settings;
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (community) => {
-        me.logger.debug("Edit community submit()");
-        let comm = {
-          communityId: community.communityId, 
-          communityName: community.communityName, 
-          communityDescription: community.communityDescription, 
-          communityType: community.communityType,
-          membershipType: 'DEFINED'
-        };
-        /*
-        let modelPromise = me.communityService.createCommunity(comm);
+        me.logger.debug("Edit task submit()");
+        
+        let modelPromise = me.caseService.createTask(_case, task);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
         .then(response => response.json())
         .then(data => {
-          me.getCommunitiesPage(me.commType, 0, this.pageSizeList).then((communitiesResult:any) => {
-            if(community === null || typeof community.communityId !== 'string') {
-              // select the new community
-              me.selectCommunity(data);
-            }
-            // re-select the selected communities
-            if(me.selectedCommunities.length > 0) {
-              let temp = [];
-              for(community of communitiesResult) {
-                let found = me.selectedCommunities.find(function(item: any) {
-                  return item.communityId == community.communityId;
-                })
-                
-                if(!!(found)) {
-                  temp.push(community);
-                  // let index = me.selectedCommunities.indexOf(found);
-                  // me.selectedCommunities[index] = community;
-                }
-              }
-              me.selectedCommunities = temp;
-            }
-
-          });
+          // Refresh the task list grid.
+          me.getTasks();
           // Close dialog on success.
           controller.ok();
         }, error => {
@@ -253,7 +225,7 @@ export class CasesDetail {
           model.errorMessage = "Failed"; 
           return Promise.reject(error);
         })
-        */
+        
       }
       // controller.result.then((response) => {
       //   if (response.wasCancelled) {
@@ -262,7 +234,6 @@ export class CasesDetail {
       //   }
       // })
     });
-
 
   }
   
