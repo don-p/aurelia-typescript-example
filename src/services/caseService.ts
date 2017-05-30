@@ -401,7 +401,7 @@ export class CaseService {
         const http =  this.getHttpClient();
         let me = this;
         let response = http.fetch('v1/organizations/' + orgId + 
-            '/case-priorities/', 
+            '/case-priorities', 
             {
                 method: 'GET'
             }
@@ -421,7 +421,7 @@ export class CaseService {
         const http =  this.getHttpClient();
         let me = this;
         let response = http.fetch('v1/organizations/' + orgId + 
-            '/case-types/', 
+            '/case-types', 
             {
                 method: 'GET'
             }
@@ -441,7 +441,7 @@ export class CaseService {
         const http =  this.getHttpClient();
         let me = this;
         let response = http.fetch('v1/organizations/' + orgId + 
-            '/case-metatags/', 
+            '/case-metatags', 
             {
                 method: 'GET'
             }

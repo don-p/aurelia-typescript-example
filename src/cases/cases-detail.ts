@@ -121,7 +121,7 @@ export class CasesDetail {
     let me = this;
     // Reset the view.
     this.setView('CASE');
-    me.gridOptions.api.deselectAll();
+    // me.gridOptions.api.deselectAll();
 
     // get the case details.
     this.casePromise = this.caseService.getCase(selectedCase.caseId);

@@ -85,55 +85,49 @@ export class App {
         //throw error;
         return Promise.reject(error);
       });
-/*
+
       // Get Case Management data collections.
       let caseTypesPromise: Promise<Response> = me.caseService.getCaseTypes(me.session.auth.organization.organizationId);
-      caseTypesPromise.then(function(response) {
-        return response.json()
-        .then((data) => {
-          // Merge configs.
-          me.appConfig.merge({server: data});
-          me.logger.debug('=== CONFIG callServer ===');
-          return data;
-        }).catch(error => {
-          me.logger.debug('getCallServiceConfig() returned error: ' + error);
-        })
-      });
-
+      caseTypesPromise
+      .then((data: any) => {
+        // Merge configs.
+        me.appConfig.merge({server: {case: {types: data.responseCollection}}});
+        me.logger.debug('=== CONFIG callServer ===');
+        return data;
+      }).catch(error => {
+        me.logger.debug('getCallServiceConfig() returned error: ' + error);
+      })
+ 
       let casePrioritiesPromise: Promise<Response> = me.caseService.getCasePriorities(me.session.auth.organization.organizationId);
-      casePrioritiesPromise.then(function(response) {
-        return response.json()
-        .then((data) => {
-          // Merge configs.
-          me.appConfig.merge({server: data});
-          me.logger.debug('=== CONFIG callServer ===');
-          return data;
-        }).catch(error => {
-          me.logger.debug('getCallServiceConfig() returned error: ' + error);
-        })
+      casePrioritiesPromise
+      .then((data: any) => {
+        // Merge configs.
+        me.appConfig.merge({server: {case: {priorities: data.responseCollection}}});
+        me.logger.debug('=== CONFIG callServer ===');
+        return data;
+      }).catch(error => {
+        me.logger.debug('getCallServiceConfig() returned error: ' + error);
       });
 
       let caseTagsPromise: Promise<Response> = me.caseService.getCaseTags(me.session.auth.organization.organizationId);
-      caseTagsPromise.then(function(response) {
-        return response.json()
-        .then((data) => {
-          // Merge configs.
-          me.appConfig.merge({server: data});
-          me.logger.debug('=== CONFIG callServer ===');
-          return data;
-        }).catch(error => {
-          me.logger.debug('getCallServiceConfig() returned error: ' + error);
-        })
+      caseTagsPromise
+      .then((data: any) => {
+        // Merge configs.
+        me.appConfig.merge({server: {case: {tags: data.responseCollection}}});
+        me.logger.debug('=== CONFIG callServer ===');
+        return data;
+      }).catch(error => {
+        me.logger.debug('getCallServiceConfig() returned error: ' + error);
       });
-*/
+
       me.configPromise = Promise.all(
         [
           callConfigPromise, 
           callConfigPromise , 
           alertCatsPromise,
-          // caseTypesPromise,
-          // casePrioritiesPromise,
-          // caseTagsPromise
+          caseTypesPromise,
+          casePrioritiesPromise,
+          caseTagsPromise
         ]
       );
       me.session['configured'] = me.configPromise;
