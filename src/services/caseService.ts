@@ -362,6 +362,21 @@ export class CaseService {
    
     }
 
+    async createCase(_case: any) {
+        await fetch;
+
+        let method = (typeof _case.caseId !== 'string')?'POST':'PUT';
+        let path = (typeof _case.caseId !== 'string')?'':'/' + _case.caseId;
+        
+        let response = this.getHttpClient().fetch('v1/cases' + path, 
+            {
+                method: method,
+                body: JSON.stringify(_case)
+            }
+        );
+        return response;
+    }
+
     async createTask(_case: any, task: any) {
         await fetch;
 
@@ -376,7 +391,6 @@ export class CaseService {
         );
         return response;
     }
-
 
     /**
      * Getcase-related lookup data.

@@ -243,10 +243,13 @@
         "unreadCountTooltip": "{{unreadAlertCount}} unread alerts"
     },
     "cases": {
+        "createCase":"Create Case",
+        "editCase":"Update Case",
         "caseDetailTab": "Case {{caseRefId}}",
         "tasksTab": "Tasks",
         "taskDetailTab": "Detail",
         "taskCommentsTab": "Comments",
+        "externalReference": "External Reference",
         "tasks": {
             "createTask":"Create Task",
             "editTask":"Update Task",

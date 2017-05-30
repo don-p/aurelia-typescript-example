@@ -1,0 +1,38 @@
+<template>
+    <div>
+        <div class="dialog-section">
+            <label class="blg-form-required" i18n='[prepend]global.title'>: </label>
+            <input id="title"  input.delegate="clearError()" change.delegate="clearError()" attach-focus="true" value.bind="item.title & validate" 
+             
+            class="form-control input-lg"/>
+        </div>
+        <div class="dialog-section">
+            <label class="blg-form-required" i18n='[prepend]global.description'>: </label>
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.description & validate" 
+            class="form-control input-lg" />
+        </div>
+        <div class="dialog-section">
+            <label class="blg-form-required" i18n='[prepend]cases.externalReference'>: </label>
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.externalReference & validate" 
+            class="form-control input-lg" />
+        </div>
+        <div class="dialog-section">
+            <label class="blg-form-required" i18n='[prepend]cases.tasks.assignmentName'>: </label>
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.type & validate" 
+            class="form-control input-lg" />
+        </div>
+        <div class="dialog-section">
+            <label class="blg-form-required" i18n='[prepend]global.status'>: </label>
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.priority & validate" 
+            class="form-control input-lg" />
+        </div>
+        <div class="dialog-section">
+            <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.dueDate & validate" 
+            class="form-control input-lg" />
+        </div>
+        <input type="hidden" value.bind="item.communityId" />
+    </div>
+    <div>
+    </div>
+</template>
