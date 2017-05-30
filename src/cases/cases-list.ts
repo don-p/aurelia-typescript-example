@@ -282,6 +282,10 @@ export class CasesList {
       _case = new CaseResource(_case);
       title = this.i18n.tr('cases.editCase');
     }
+
+    let types = this.appConfig.get('server.case.types');
+    types = types.types;
+
     const vRules = ValidationRules
       .ensure((community: any) => community.communityName)
       .displayName(this.i18n.tr('community.communities.communityName'))
@@ -302,6 +306,8 @@ export class CasesList {
       loadingTitle: 'app.loading', item:_case, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
 
+      controller.viewModel.types = types;
+      
       // let model = controller.settings.model;
       let model = controller.settings;
       // Callback function for submitting the dialog.
