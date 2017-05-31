@@ -2568,12 +2568,26 @@ label.LOW {
   left: -10px;  
 }
 
+.reply-message-text .attachments-list {
+  list-style-type: none;
+  position: relative;
+  left: -25px;  
+}
+
 .image-container {
   width: 600px;
 }
 
 .image-container IMG {
   max-width: 600px;
+}
+
+.reply-message-text .image-container {
+  width: 425px;
+}
+
+.reply-message-text .image-container IMG {
+  max-width: 425px;
 }
 
 .alerts-table-content .ag-row-even {
