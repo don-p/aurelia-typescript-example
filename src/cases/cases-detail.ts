@@ -123,12 +123,15 @@ export class CasesDetail {
     this.setView('CASE');
     // me.gridOptions.api.deselectAll();
 
+    // Update router Url.
+    this.router.navigateToRoute('cases-caseId', { caseId: selectedCase.caseId}, {replace: true, trigger: false});
     // get the case details.
     this.casePromise = this.caseService.getCase(selectedCase.caseId);
     this.casePromise.then(function(data:any){
       let _case = data;
       
       me.selectedCase = _case;
+      me.logger.debug("Setting task grid row data. api: " + me.gridOptions.api);
       me.gridOptions.api.setRowData(me.selectedCase.tasks);
     });
 

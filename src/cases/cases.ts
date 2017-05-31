@@ -16,6 +16,7 @@ export class Cases {
 
   router: Router;
   // alertCategories: Array<Object>;
+  caseId: string;
 
   logger: Logger;
   pageSize;
@@ -30,9 +31,11 @@ export class Cases {
     this.logger.debug("Community | bind()");
   }
 
-  activate() {
-    // Wait for required view data before routing, by returning a Promise from activate().
-
+  activate(params) {
+    // Set case ID for a case-specific request.
+    if(!!(params)) {
+      this.caseId = params.caseId;
+    }
   }
 
 

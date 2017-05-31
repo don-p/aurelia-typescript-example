@@ -9,6 +9,7 @@ import {DialogService, DialogController} from 'aurelia-dialog';
 import {Model} from '../model/model';
 import {CaseResource} from '../model/caseResource';
 import {TaskResource} from '../model/taskResource';
+import {MemberResource} from '../model/memberResource';
 import {NotificationAckResource} from '../model/notificationAckResource';
 import {DataService} from './dataService';
 import 'bootstrap-sass';
@@ -146,7 +147,8 @@ export class CaseService {
             // return JSON.parse(JSON.stringify(result));
             return response.json()
             .then(data => {
-                // let json = JSON.stringify(data);
+                let json = JSON.stringify(data);
+                let caseContent = me.parseCase(json);
                 // let content = JSON.parse(json, (k, v) => { 
                 //     if(k == 'sentDate') {
                 //         return new Date(v);
@@ -160,8 +162,8 @@ export class CaseService {
                 //     } 
                 //     return v;                
                 // });
-                // return content;
-                return data;
+                return caseContent;
+                // return data;
             })
         });
     }
@@ -223,7 +225,7 @@ export class CaseService {
 
     }
 
-    parseCase(json): CaseResource {
+    parseCase(json): any {
         let response = JSON.parse(json, (k, v) => { 
             if(k == 'dueDate') {
                 return new Date(v);
@@ -235,12 +237,22 @@ export class CaseService {
             //     let status = this.parseNotificationAckStatusSummary(v);
             //     return status;
             // }
-            if ((k == '')  && (typeof this == 'object') && (v != null) && (typeof v == 'object') && (!(v['payloadId'])) && (!(v['ackStatus'])) ) {
-                return new CaseResource(v);
-            } 
+            if( (!(k === 'responseCollection')) && (v != null) && (typeof v == 'object') ) {
+                if((k == '')  && (typeof this == 'object') && !(v.responseCollection)) {
+                    let cr = new CaseResource(v);
+                    // cr.typeId = cr.type.typeId;
+                    return cr;                    
+                } else if((!(Number.isNaN(Number.parseInt(k)))) && (!(v.metaTagId)) && (!(v.attributeKey))) {
+                    // if(this.constructor.name === 'Array') {
+                        let cr = new CaseResource(v);
+                        // cr.typeId = cr.type.typeId;
+                        return cr;                
+                    // }
+                }
+            }
             return v;                
         });
-        response.typeId = response.type.typeId;
+        
         return response;
     }
 
@@ -486,6 +498,9 @@ export class CaseService {
             }
             if(k == 'createDate') {
                 return new Date(v);
+            }
+            if(k == 'member') {
+                return new MemberResource(v);
             }
             // if(k == 'ackStatusSummary') {
             //     let status = this.parseNotificationAckStatusSummary(v);
