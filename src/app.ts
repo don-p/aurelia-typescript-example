@@ -311,6 +311,15 @@ export class App {
       //   route: 'child-router', name: 'child-router', moduleId: './child-router', nav: true, title: 'Child Router' 
       },
       { 
+        route: 'cases/:caseId',   
+        name: 'cases-caseId',  
+        moduleId: './cases/cases',  
+        nav: false,      
+        settings: {auth: true, roles: ['admin']},
+        className: 'ico-briefcase2',   
+        title: this.i18n.tr('router.nav.cases') 
+      },
+      { 
         route: 'cases',   
         name: 'cases',  
         moduleId: './cases/cases',  

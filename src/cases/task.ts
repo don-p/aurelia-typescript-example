@@ -1,4 +1,4 @@
-import {inject, NewInstance, Lazy, LogManager} from 'aurelia-framework';
+import {inject, NewInstance, Lazy, LogManager, bindable} from 'aurelia-framework';
 import {Logger} from 'aurelia-logging';
 import {Router, NavigationInstruction} from 'aurelia-router';
 import {EventAggregator} from 'aurelia-event-aggregator';
@@ -22,7 +22,7 @@ export class Task {
   pageSize;
 
   casePromise: Promise<Response>;
-  caseId: string;
+  @bindable caseId: string;
   taskId: string;
   selectedTask: any;
 

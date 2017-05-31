@@ -1,10 +1,8 @@
 <template>
 <require from="../lib/loading-mask/loading-mask"></require>
-
   <div class="blg-fixed-wrapper">
     <ul class="tabs-bar breadcrumbs">
-<!--    <a href.bind="route.href" id="tabTaskTitle">Case: ${caseId}</a> > Task: ${taskId} -->
-        <a href.bind="route.href" id="tabTaskTitle">< Case: <span>${caseId}</span></a>
+        <a route-href="route.bind: 'cases-caseId'; params.bind: {caseId: caseId}" id="tabTaskTitle">< Case: <span>${caseId}</span></a>
     </ul>
 
     <!-- Right sub-tabs -->

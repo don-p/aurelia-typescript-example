@@ -33,6 +33,7 @@ export class CasesList {
   selectAll: boolean;
   cases: Array<any>;
   casesPromise: Promise<Response>;
+  caseId: string;
 
   router: Router;
 
@@ -53,11 +54,15 @@ export class CasesList {
     this.logger = LogManager.getLogger(this.constructor.name);
   }
 
-  activate(params, navigationInstruction) {
-    this.navigationInstruction = navigationInstruction;
-  }
+  activate(params, router, instruction) {
 
-  bind(bindingContext: Object, overrideContext: Object) {
+    this.logger.debug("Case | activate()");
+  }
+  bind(bindingContext: any, overrideContext: any) {
+    let caseId = overrideContext.parentOverrideContext.bindingContext.caseId;
+    if(!!(caseId)) {
+      this.caseId = caseId;
+    }
     this.logger.debug("Communities | bind()");
   }
 
@@ -72,7 +77,11 @@ export class CasesList {
     let me = this;
     // Get list of cases the logged-in user has rights to.
     this.getCases(0, 500).then(function(){
-      me.selectDefaultCase();
+      if(!(me.caseId)) {
+        me.selectDefaultCase()
+      } else {
+        me.selectCase({caseId: me.caseId});
+      }
     });
 
   }
@@ -272,19 +281,28 @@ export class CasesList {
     if(!!(event)) event.stopPropagation();
 
     let me = this;
+
     let title = '';
     if(_case === null) {
       // Create an empty or cloned object model for the edit dialog.
       _case = new CaseResource();
       title = this.i18n.tr('cases.createCase');
+      me.openCaseResourceDialog(_case, title, null);
     } else {
-      // Clone the object so we do not edit the live/bound model.
-      _case = new CaseResource(_case);
-      title = this.i18n.tr('cases.editCase');
+      // get the case details.
+      let casePromise = this.caseService.getCase(_case.caseId);
+      casePromise.then(function(data:any){
+        let _case = data;
+        // Clone the object so we do not edit the live/bound model.
+        _case = new CaseResource(_case);
+        title = me.i18n.tr('cases.editCase');
+        me.openCaseResourceDialog(_case, title, null);
+      });
+
     }
 
-    let types = this.appConfig.get('server.case.types');
-    types = types.types;
+    // let types = this.appConfig.get('server.case.types');
+    // types = types.types;
 
     const vRules = ValidationRules
       .ensure((community: any) => community.communityName)
@@ -302,12 +320,19 @@ export class CasesList {
       // .on(community)
       .rules;
 
+  }
+
+  openCaseResourceDialog(_case, title, vRules) {
+    let me = this;
+
     this.dataService.openResourceEditDialog({modelView:'model/caseModel.html', title:title, 
       loadingTitle: 'app.loading', item:_case, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
 
+      let types = this.appConfig.get('server.case.types');
+      types = types.types;
       controller.viewModel.types = types;
-      
+
       // let model = controller.settings.model;
       let model = controller.settings;
       // Callback function for submitting the dialog.
@@ -341,8 +366,8 @@ export class CasesList {
       //   }
       // })
     });
+    
   }
-
 
 }
 
