@@ -260,7 +260,7 @@ export class CaseService {
         return response;
     }
 
-    parseTask(json): CaseResource {
+    parseTask(json): any {
         let response = JSON.parse(json, (k, v) => { 
             if(k == 'dueDate') {
                 return new Date(v);
