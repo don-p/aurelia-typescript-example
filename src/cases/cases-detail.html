@@ -46,7 +46,9 @@
                                             </tr>
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Tags:</td>
-                                                <td class="table-text">${selectedCase.priority.priorityName}</td>                                        
+                                                <td class="table-text">
+                                                    <span repeat.for="tag of selectedCase.metaTags" style="margin-right: 12px; padding: 0px 3px 0px 3px; border-radius: 3px; border: 1px solid #777;">${tag.metaTagName}</span>
+                                                </td>                                        
                                             </tr>
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Due date:</td>
@@ -70,7 +72,7 @@
                                         <tbody>-->
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Tasks:</td>
-                                                <td class="table-text"><a href="javascript:void" click.delegate="caseView='TASK'">${selectedCase.tasks.length}</a></td>
+                                                <td class="table-text"><a href="javascript:void" click.delegate="caseView='TASK'">${selectedCase.taskCount}</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Attachments:</td>

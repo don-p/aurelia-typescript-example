@@ -17,21 +17,16 @@
             class="form-control input-lg" />
         </div>
         <div class="dialog-section">
-            <label class="blg-form-required" i18n='[prepend]cases.tasks.assignmentName'>: </label>
-            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.type & validate" 
-            class="form-control input-lg" />
-        </div>
-        <!--<div class="dialog-section" if.bind="(!(item.caseId) || item.caseId == null)">-->
-        <div class="dialog-section">
             <label class="blg-form-required community-select-label" i18n='[prepend]global.type'>: </label>
             <select class="form-control select select-default-blg" value.bind="item.type.typeId">
                 <option repeat.for="type of types" model.bind="type.typeId">${type.typeName}</option>
             </select>
         </div>
         <div class="dialog-section">
-            <label class="blg-form-required" i18n='[prepend]global.status'>: </label>
-            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.priority & validate" 
-            class="form-control input-lg" />
+            <label class="blg-form-required community-select-label" i18n='[prepend]global.priority'>: </label>
+            <select class="form-control select select-default-blg" value.bind="item.priority.priorityId">
+                <option repeat.for="priority of priorities" model.bind="priority.priorityId">${priority.priorityName}</option>
+            </select>
         </div>
         <div class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
