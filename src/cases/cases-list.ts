@@ -333,6 +333,10 @@ export class CasesList {
       types = types.types;
       controller.viewModel.types = types;
 
+      let priorities = this.appConfig.get('server.case.priorities');
+      priorities = priorities.priorities;
+      controller.viewModel.priorities = priorities;
+
       // let model = controller.settings.model;
       let model = controller.settings;
       // Callback function for submitting the dialog.

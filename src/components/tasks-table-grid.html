@@ -22,7 +22,7 @@
                                 debug>
         <ag-grid-column if.bind="showColumn('id')" header-class="ag-header-cell-left" width.bind="80" min-width.bind="80" header-name="${'cases.tasks.id' | t}" field="taskId" suppress-filter.bind="true"></ag-grid-column>
         <ag-grid-column if.bind="showColumn('title')" header-class="ag-header-cell-left" header-name="${'cases.tasks.title' | t}" field="title" filter.bind="getTextSearchFilter()"></ag-grid-column>
-        <ag-grid-column if.bind="showColumn('assignedTo')" header-class="ag-header-cell-left" header-name="${'cases.tasks.assignedTo' | t}" field="assignedTo" filter.bind="getTextSearchFilter()"></ag-grid-column>
+        <ag-grid-column if.bind="showColumn('assignedTo')" header-class="ag-header-cell-left" header-name="${'cases.tasks.assignedTo' | t}" field="assignee.member.fullName" filter.bind="getTextSearchFilter()"></ag-grid-column>
         <ag-grid-column if.bind="showColumn('status')" header-class="ag-header-cell-left" width.bind="100" header-name="${'cases.tasks.status' | t}" field="taskStatus.statusName" get-quick-filter-text.bind="getStatusQuickFilterText" suppress-sorting.bind="true" suppress-filter.bind="true"></ag-grid-column>
         <ag-grid-column if.bind="showColumn('attachments')" width.bind="56" header-class="ico-attachment" header-name="" field="attachmentCount" suppress-sorting.bind="true" suppress-filter.bind="true">
         </ag-grid-column>

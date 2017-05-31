@@ -333,6 +333,7 @@
         "name": "Name",
         "description": "Description",
         "type": "Type",
+        "priority": "Priority",
         "filter":"Filter",
         "confirm":"Confirm",
         "charsRemaining":"characters remaining",

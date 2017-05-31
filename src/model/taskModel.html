@@ -13,12 +13,12 @@
         </div>
         <div class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.assignmentRole'>: </label>
-            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.assignmentRole.roleName & validate" 
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.assignee.assigneeRole.roleName & validate" 
             class="form-control input-lg" />
         </div>
         <div class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.assignmentName'>: </label>
-            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.assignmentName & validate" 
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.assignee.member.fullName & validate" 
             class="form-control input-lg" />
         </div>
         <div class="dialog-section">
@@ -33,7 +33,7 @@
         </div>
         <div class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
-            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.dueDate & validate" 
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.formattedDueDate & validate" 
             class="form-control input-lg" />
         </div>
         <input type="hidden" value.bind="item.communityId" />

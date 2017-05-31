@@ -166,6 +166,7 @@ export class CasesDetail {
       // Create an empty or cloned object model for the edit dialog.
       task = new TaskResource();
       title = this.i18n.tr('cases.tasks.createTask');
+      me.openTaskResourceDialog(me.selectedCase, task, title, null);
     } else {
       // Clone the object so we do not edit the live/bound model.
       // get the task details.
@@ -176,6 +177,7 @@ export class CasesDetail {
         me.selectedTask = data;
         task = new TaskResource(data);
         title = me.i18n.tr('cases.tasks.editTask');
+        me.openTaskResourceDialog(me.selectedCase, task, title, null);
       });
       // task = new TaskResource(task);
       // title = this.i18n.tr('cases.tasks.editTask');
@@ -195,8 +197,6 @@ export class CasesDetail {
       .maxLength(120)
       // .on(community)
       .rules;
-
-      me.openTaskResourceDialog(me.selectedCase, task, title, null);
   }
 
   openTaskResourceDialog(_case: CaseResource, task: TaskResource, title: string, vRules):Promise<any> {

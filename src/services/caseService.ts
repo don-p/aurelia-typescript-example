@@ -215,7 +215,9 @@ export class CaseService {
                 return tasksResponse
                 .then(res => {return res.json()
                     .then(tasksData => {
-                        caseContent.tasks = tasksData.responseCollection;
+                        let json = JSON.stringify(tasksData);
+                        let taskContent = me.parseTask(json);
+                        caseContent.tasks = taskContent.responseCollection;
                         return caseContent;
                     })
                 });
@@ -239,20 +241,56 @@ export class CaseService {
             // }
             if( (!(k === 'responseCollection')) && (v != null) && (typeof v == 'object') ) {
                 if((k == '')  && (typeof this == 'object') && !(v.responseCollection)) {
+                    // Individual case.
                     let cr = new CaseResource(v);
                     // cr.typeId = cr.type.typeId;
                     return cr;                    
                 } else if((!(Number.isNaN(Number.parseInt(k)))) && (!(v.metaTagId)) && (!(v.attributeKey))) {
-                    // if(this.constructor.name === 'Array') {
-                        let cr = new CaseResource(v);
-                        // cr.typeId = cr.type.typeId;
-                        return cr;                
-                    // }
+                // if(this.constructor.name === 'Array') {
+                    // Collection of cases in responseCollection.
+                    let cr = new CaseResource(v);
+                    // cr.typeId = cr.type.typeId;
+                    return cr;                
+                // }
                 }
             }
             return v;                
         });
         
+        return response;
+    }
+
+    parseTask(json): CaseResource {
+        let response = JSON.parse(json, (k, v) => { 
+            if(k == 'dueDate') {
+                return new Date(v);
+            }
+            if(k == 'lastChangeDate') {
+                return new Date(v);
+            }
+            if(k == 'createDate') {
+                return new Date(v);
+            }
+            if(k == 'member') {
+                return new MemberResource(v);
+            }
+            // if(k == 'ackStatusSummary') {
+            //     let status = this.parseNotificationAckStatusSummary(v);
+            //     return status;
+            // }
+            if( (!(k === 'responseCollection')) && (v != null) && (typeof v == 'object') ) {
+                if((k == '')  && (typeof this == 'object') && !(v.responseCollection)) {
+                    // Individual task.
+                    let t = new TaskResource(v);
+                    return t;                    
+                } else if((!(Number.isNaN(Number.parseInt(k)))) && (!(v.metaTagId)) && (!(v.attributeKey))) {
+                    // Collection of tasks in responseCollection.
+                    let t = new TaskResource(v);
+                    return t;                
+                }
+            }
+            return v;                
+        });
         return response;
     }
 
@@ -486,32 +524,6 @@ export class CaseService {
             })
         });
    
-    }
-
-    parseTask(json): CaseResource {
-        let response = JSON.parse(json, (k, v) => { 
-            if(k == 'dueDate') {
-                return new Date(v);
-            }
-            if(k == 'lastChangeDate') {
-                return new Date(v);
-            }
-            if(k == 'createDate') {
-                return new Date(v);
-            }
-            if(k == 'member') {
-                return new MemberResource(v);
-            }
-            // if(k == 'ackStatusSummary') {
-            //     let status = this.parseNotificationAckStatusSummary(v);
-            //     return status;
-            // }
-            if ((k == '')  && (typeof this == 'object') && (v != null) && (typeof v == 'object') && (!(v['payloadId'])) && (!(v['ackStatus'])) ) {
-                return new TaskResource(v);
-            } 
-            return v;                
-        });
-        return response;
     }
 
     parseNotificationAcks(json): Array<NotificationAckResource> {
