@@ -88,6 +88,7 @@
 .ico-user-minus2              { &:before { content: "\eb03"; } }
 .ico-user-cancel              { &:before { content: "\eafb"; } }
 .ico-bubble-right             { &:before { content: "\eaf0"; } }
+.ico-exit                     { &:before { content: "\ed77"; } }
 .ico-exit3                    { &:before { content: "\ed7b"; } }
 .ico-pencil7                  { &:before { content: "\e914"; } }
 .ico-attachment               { &:before { content: "\ecac"; } }
@@ -127,7 +128,7 @@
 .ico-hour-glass3              { &:before { content: "\eb21"; } }
 .ico-blocked                  { &:before { content: "\ed67"; } }
 .ico-key                      { &:before { content: "\eb4a"; } }
-.ico-exit                     { &:before { content: "\ed76"; } }
+.ico-enter                    { &:before { content: "\ed76"; } }
 .ico-bin                      { &:before { content: "\ebfd"; } }
 .ico-bin2                     { &:before { content: "\ebfe"; } }
 .ico-pen7                     { &:before { content: "\e927"; } }
@@ -146,6 +147,7 @@
 .ico-filter4                  { &:before { content: "\ee8c"; } }
 .ico-tree7                    { &:before { content: "\ec66"; } }
 .ico-file-upload              { &:before { content: "\e9a7"; } }
+.ico-file-download            { &:before { content: "\e9a5"; } }
 .ico-arrow-right3             { &:before { content: "\edbd"; } }
 .ico-arrow-left3              { &:before { content: "\edc6"; } }
 .ico-checkmark4               { &:before { content: "\ed72"; } }
@@ -165,7 +167,6 @@
 .ico-shield-plus              { &:before { content: "\ef4d"; } }
 .ico-shield-cancel            { &:before { content: "\ef4e"; } }
 .ico-briefcase2               { &:before { content: "\ec03"; } }
-.ico-export                   { &:before { content: "\ec7f"; } }
 .ico-bubble-lines             { &:before { content: "\eada"; } }
 .ico-image                    { &:before { content: "\e93a"; } }
 .ico-video-camera3            { &:before { content: "\e965"; } }
