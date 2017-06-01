@@ -515,17 +515,17 @@ header .navbar-nav {
 }
 
 .blg-right-panel .blg-task-content {
-  padding: 20px 5px 0px 5px;
+  padding: 10px 5px 0px 5px;
   position: absolute;
-  top: 39px;
+  top: 90px;
   bottom: 15px;
   left: 0px;
   right: 0px;
   border-right: 2px solid $blg-grey-light;
-  border-top: 2px solid $blg-grey-light;
+  border-top: 1px solid $blg-grey-light;
   border-left: 2px solid $blg-grey-light;
   border-bottom: 2px solid $blg-grey-light;
-  border-radius: 6px;
+  border-radius: 0 0 6px 6px;
   background-color: $blg-white;
   z-index: 0;
 }
@@ -2263,9 +2263,8 @@ span.recipientsListItem:not(:last-child)::after {
 }
 
 .case-tasks-content {
-  display: block;
   width: 100%;
-  /*height: 100%;*/
+  height: 100%;
 }
 
 .status-details-content {
@@ -2578,7 +2577,7 @@ label.LOW {
   width: 600px;
 }
 
-.image-container IMG {
+.image-container img {
   max-width: 600px;
 }
 
@@ -2586,7 +2585,7 @@ label.LOW {
   width: 425px;
 }
 
-.requestDetailContainer .reply-message-text .image-container IMG {
+.requestDetailContainer .reply-message-text .image-container img {
   max-width: 425px;
 }
 
@@ -2669,6 +2668,9 @@ label.LOW {
     float: right;    
 }
 
+.case-details-footer button i {
+    font-size: 16px;
+}
 .comments-footer {
     position: absolute;
     height: 50px;
@@ -2797,4 +2799,13 @@ label.LOW {
 
 .comment-type-icon i {
   left: 8px;
+}
+
+.case-metatag {
+  font-size: 14px;
+  background-color: $blg-blue-lighter;
+  color: $blg-white;
+  margin-right: 5px; 
+  padding: 0px 5px 2px 5px; 
+  border-radius: 3px; 
 }

@@ -12,8 +12,8 @@
         <li class.bind="caseView == 'TASK'?'active':''">
             <a id="tabSentRequests" click.delegate="setView('TASK')">${'cases.tasksTab' | t : {taskRefId: selectedTask.taskId}}</a>
         </li>
-
     </ul>
+
     <div id="requests-tab" class="blg-tab-section tab-content ">
         <div class="blg-inner-content tab-pane active" id="requests">
             <div show.bind="caseView == 'CASE'" class="blg-case-content">
@@ -47,29 +47,17 @@
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Tags:</td>
                                                 <td class="table-text">
-                                                    <span repeat.for="tag of selectedCase.metaTags" style="margin-right: 12px; padding: 0px 3px 0px 3px; border-radius: 3px; border: 1px solid #777;">${tag.metaTagName}</span>
+                                                    <span repeat.for="tag of selectedCase.metaTags" class="case-metatag">${tag.metaTagName}</span>
                                                 </td>                                        
                                             </tr>
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Due date:</td>
                                                 <td class="table-text">${selectedCase.formattedDueDate}</td>                                        
                                             </tr>
-                                        <!--</tbody>
-                                    </table>
-                                </div>
-                                <div class="case-details-content-right">
-                                    <table>
-                                        <tbody>-->
                                             <tr repeat.for="attr of selectedCase.caseAttributes">
                                                 <td class="table-label table-label-case-detail">${attr.attributeKey}:</td>
                                                 <td class="table-text">${attr.attributeValue}</td>                                        
                                             </tr>
-                                        <!--</tbody>
-                                    </table>
-                                </div>
-                                <div class="case-details-content" style="width: 100%;">
-                                    <table>
-                                        <tbody>-->
                                             <tr>
                                                 <td class="table-label table-label-case-detail">Tasks:</td>
                                                 <td class="table-text"><a href="javascript:void" click.delegate="caseView='TASK'">${selectedCase.taskCount}</a></td>
@@ -82,98 +70,36 @@
                                     </table>
                                 </div>
                             </div>
-                            <!--<div class="case-tasks-content" style="display: inline;">
-                                <div>Tasks:</div>
-                                <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" class="tasks-table-content" style="display: inline;position:static;height:auto;">
-                                    <tasks-table-grid
-                                        grid-id.bind="tasksGrid"
-                                        grid-options.bind="gridOptions" 
-                                        grid-ready-func.bind="onGridReady"
-                                        pagination-page-size.bind="pageSize"
-                                        enable-sorting.bind="true"
-                                        enable-server-side-sorting.bind="false"
-                                        enable-filter.bind="true"
-                                        enable-server-side-filter.bind="false"
-                                        display-columns.bind="['attachments','status','date','id','title', 'assignedTo', 'actions']">
-                                    </tasks-table-grid>
-                                </div>
-                            </div>-->
                     </div>
                 </div>
             </div>
             <div class="case-details-footer">
-                <button  type="submit" class="btn btn-info btn-sm" click.trigger="exportCase(selectedCase)"><i class="ico-export"></i>&nbsp; Export</button>
+                <button  type="submit" class="btn btn-info btn-sm" click.trigger="exportCase(selectedCase)" title="Export to RMS"><i class="ico-file-download"></i>&nbsp; Export</button>
+            </div>
+<!-- Tasks list content -->
+            <div class="comments-button-bar">
+                <button id="btn-communities-create-community" click.delegate="editTask(null)" class="btn btn-info btn-xs-square" i18n='[title]button.createCommunity'>
+                    <i class="ico-users-plus"></i>
+                </button>
             </div>
             <div show.bind="caseView == 'TASK'" class="blg-task-content">
-<!-- Tasks list content -->
-                            <div class="case-tasks-content" style="display: inline;">
-                                <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" style="display: inline;position:static;height:auto;">
-                                    <div class="conv-buttons-bar">
-                                        <button id="btn-communities-create-community" click.delegate="editTask(null)" class="btn btn-info btn-xs-square" i18n='[title]button.createCommunity'>
-                                        <i class="ico-users-plus"></i>
-                                        </button>
-                                    </div>
-
-                                    <tasks-table-grid
-                                        grid-id.bind="tasksGrid"
-                                        grid-options.bind="gridOptions" 
-                                        grid-ready-func.bind="onGridReady"
-                                        pagination-page-size.bind="pageSize"
-                                        enable-sorting.bind="true"
-                                        enable-server-side-sorting.bind="false"
-                                        enable-filter.bind="true"
-                                        enable-server-side-filter.bind="false"
-                                        display-columns.bind="['attachments','status','date','id','title', 'assignedTo', 'actions']">
-                                    </tasks-table-grid>
-                                </div>
-                            </div>
-
-
-
-<!-- Task detail content -->
-
-
-                <!--<div class="alert-details-received-content" style="height: 100%;">
-                    <div class="alert-details-content-scroll" style="display: inline;">
-                            <div show.bind="!!(selectedCase)" class="requestDetailContainer" >
-                                <div class="case-details-content">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Task:</td>
-                                                <td class="table-text">${selectedTask.title}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Description:</td>
-                                                <td class="table-text">${selectedTask.description}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Task Role:</td>
-                                                <td class="table-text">${selectedTask.assigmentRole.roleName}</td>                                        
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Priority:</td>
-                                                <td class="table-text">${selectedTask.assigmentName}</td>                                        
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Status:</td>
-                                                <td class="table-text">${selectedTask.taskStatus.statusName}</td>                                        
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Created date:</td>
-                                                <td class="table-text">${selectedTask.formattedCreateDate}</td>                                        
-                                            </tr>
-                                            <tr>
-                                                <td class="table-label table-label-case-detail">Due date:</td>
-                                                <td class="table-text">${selectedTask.formattedDueDate}</td>                                        
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div>Comments:</div>-->
-
+                <div class="case-tasks-content">
+                    <div show.bind="!!(selectedCase.tasks) && selectedCase.tasks.length >= 1" style="display: inline;">
+                        <tasks-table-grid
+                            grid-id.bind="tasksGrid"
+                            grid-options.bind="gridOptions" 
+                            grid-ready-func.bind="onGridReady"
+                            pagination-page-size.bind="pageSize"
+                            enable-sorting.bind="true"
+                            enable-server-side-sorting.bind="false"
+                            enable-filter.bind="true"
+                            enable-server-side-filter.bind="false"
+                            display-columns.bind="['attachments','status','date','id','title', 'assignedTo', 'actions']">
+                        </tasks-table-grid>
                     </div>
+                </div>
+            </div>
+
                 </div>
             </div>
         </div>					
