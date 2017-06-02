@@ -320,8 +320,11 @@
         "accept": "Accept",
         "reject": "Reject",
         "resend": "Re-send",
+        "createCase":"Create case",        
         "editCase":"Update case",
         "deleteCase": "Delete case",
+        "exportCase": "Export to RMS",        
+        "createTask":"Create task",        
         "editTask":"Update task",
         "deleteTask": "Delete task"
     },
