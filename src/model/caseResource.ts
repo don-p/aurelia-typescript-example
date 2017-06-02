@@ -38,7 +38,7 @@ export class CaseResource {
         */
       } else {
         this.title = '';
-        this.caseId = '';
+        this.caseId = null;
       }
 
   }
