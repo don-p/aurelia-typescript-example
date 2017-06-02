@@ -340,8 +340,12 @@ export class CasesList {
       // let model = controller.settings.model;
       let model = controller.settings;
       // Callback function for submitting the dialog.
-      controller.viewModel.submit = (community) => {
+      controller.viewModel.submit = (_case) => {
         me.logger.debug("Edit case submit()");
+        _case.typeId = _case.type.typeId;
+        delete _case.type;
+        _case.priorityId = _case.priority.priorityId;
+        delete _case.priority;
         let modelPromise = me.caseService.createCase(_case);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
