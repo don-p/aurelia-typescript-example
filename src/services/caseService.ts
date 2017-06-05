@@ -518,11 +518,14 @@ export class CaseService {
             }
         );
         return response
-        .then(response => {return response.json()
             .then(data => {
                 return data;
-            })
-        });
+            });
+        // .then(response => {return response.json()
+        //     .then(data => {
+        //         return data.responseCollection;
+        //     })
+        // });
     }
 
     async getCaseTaskAssignees(orgId:string): Promise<any> {

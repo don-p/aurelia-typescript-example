@@ -36,7 +36,7 @@
                 element.bind="picker" model.bind="item.dueDate" 
                 show-today-button.bind="false" side-by-side.bind="true" format="YYYY-MM-DD"></abp-datetime-picker>
         </div>
-        <div class="dialog-section" repeat.for="attr of item.caseAttributes">
+        <div class="dialog-section" repeat.for="attr of caseAttributes">
             <label class="blg-form-required community-select-label">${attr.attributeKey}: </label>
             <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="attr.attributeValue" 
             class="form-control input-lg" />
