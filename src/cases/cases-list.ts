@@ -301,9 +301,6 @@ export class CasesList {
 
     }
 
-    // let types = this.appConfig.get('server.case.types');
-    // types = types.types;
-
     const vRules = ValidationRules
       .ensure((community: any) => community.communityName)
       .displayName(this.i18n.tr('community.communities.communityName'))
@@ -339,6 +336,28 @@ export class CasesList {
 
       // let model = controller.settings.model;
       let model = controller.settings;
+
+      // On change of case type, get associated attributes.
+      controller.viewModel.getCaseAttributes = function(_case) {
+        let caseAttrPromise = me.caseService.getCaseAttributes(_case.type.typeId, me.session.auth.organization.organizationId);
+        caseAttrPromise.then(function(data) {
+          let attrs:Array<any> = _case.caseAttributes;
+          let attrsObj = {};
+          let caseAttributes = data;
+          // Match attrs with data.
+          attrs.forEach(function(value) {
+            attrsObj[value.attributeKey] = {description: value.description};
+          });
+          caseAttributes.forEach(function(value) {
+            // For each type-attr, find a value in the case attr obj, and set the data in the type-attr with the value.
+
+          });
+          controller.viewModel.caseAttributes = caseAttributes;
+        })
+      }
+      if(!!(_case.type)) {
+        controller.viewModel.getCaseAttributes(_case);
+      }
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (_case) => {
         me.logger.debug("Edit case submit()");
