@@ -27,17 +27,16 @@
             <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.taskStatus.statusName & validate" 
             class="form-control input-lg" />
         </div>
+        <div class="dialog-section model-dialog">
+            <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
+            <abp-datetime-picker
+                element.bind="picker" model.bind="item.dueDate" 
+                show-today-button.bind="false" side-by-side.bind="true" format="YYYY-MM-DD"></abp-datetime-picker>
+        </div>
         <div show.bind="!!(item.taskId)" class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.createdDate'>: </label>
-            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.formattedCreateDate & validate" 
-            class="form-control input-lg" />
+            <div id="desc">${item.formattedCreateDate}</div>
         </div>
-        <div class="dialog-section">
-            <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
-            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.dueDate & validate" 
-            class="form-control input-lg" />
-        </div>
-        <input type="hidden" value.bind="item.communityId" />
     </div>
     <div>
     </div>
