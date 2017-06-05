@@ -351,7 +351,7 @@ export class CasesList {
         modelPromise
         .then(response => response.json())
         .then(data => {
-          me.getCases(0, 500).then(function(){
+          me.getCases(0, 1000).then(function(){
             me.selectCase(data);
           });
           
