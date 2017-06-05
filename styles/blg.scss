@@ -2819,3 +2819,7 @@ label.LOW {
 .case-tasks-content .ag-body-container {
   cursor: pointer;
 } 
+
+.model-dialog > abp-datetime-picker > div.input-group.date {
+  display: block;
+}
