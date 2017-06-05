@@ -28,13 +28,20 @@
                 <option repeat.for="priority of priorities" model.bind="priority.priorityId">${priority.priorityName}</option>
             </select>
         </div>
-        <div class="dialog-section">
+        <div class="dialog-section model-dialog">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
             <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.dueDate & validate" 
             class="form-control input-lg" />
+            <abp-datetime-picker
+                element.bind="picker" model.bind="item.dueDate" 
+                show-today-button.bind="false" side-by-side.bind="true" format="YYYY-MM-DD"></abp-datetime-picker>
         </div>
-        <input type="hidden" value.bind="item.communityId" />
-    </div>
-    <div>
+        <div class="dialog-section" repeat.for="attr of item.caseAttributes">
+            <label class="blg-form-required community-select-label">${attr.attributeKey}: </label>
+            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="attr.attributeValue" 
+            class="form-control input-lg" />
+        </div>
     </div>
 </template>
+                                                <td class="table-label table-label-case-detail">${attr.attributeKey}:</td>
+                                                <td class="table-text">${attr.attributeValue}</td>                                        
