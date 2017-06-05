@@ -2765,14 +2765,16 @@ label.LOW {
 .comment-title {
   margin: 0;
   background-color: $blg-grey-lighter;
-  color: $blg-blue;;
+  color: $blg-blue;
   font-size: 14px;
   line-height: 1.2;
   font-weight: 700;
   padding: 10px 10px 11px;
-  border: none;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
+  border-left: 1px solid $blg-grey-light-more;
+  border-right: 1px solid $blg-grey-light-more;
+  border-top: 1px solid $blg-grey-light-more;  
 }
 
 .comment-content {
@@ -2780,6 +2782,11 @@ label.LOW {
   font-size: 14px;
   line-height: 1.286;
   background-color: $blg-grey-lighter-more;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-left: 1px solid $blg-grey-light-more;
+  border-right: 1px solid $blg-grey-light-more;
+  border-bottom: 1px solid $blg-grey-light-more;        
 }
 
 .comment-title i {
