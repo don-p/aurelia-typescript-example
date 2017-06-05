@@ -13,8 +13,7 @@ export class TaskResource {
   attachments: Array<any>;
   taskId: string;
   taskStatus: any;
-  assigneeReference: any;
-  assignmentRole: any;
+  assignee: any;
   dueDate: Date;
   createDate: Date;
   lastChangeDate: Date;
@@ -59,7 +58,7 @@ export class TaskResource {
 
   get assigneeFullName() {
     let i18n = Container.instance.get(I18N);
-    return i18n.tr('global.memberFullName', {firstName: this.assigneeReference.physicalPersonProfile.firstName, lastName: this.assigneeReference.physicalPersonProfile.lastName});
+    return i18n.tr('global.memberFullName', {firstName: this.assignee.member.physicalPersonProfile.firstName, lastName: this.assignee.member.physicalPersonProfile.lastName});
   }
 
 /*

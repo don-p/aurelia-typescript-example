@@ -523,8 +523,34 @@ export class CaseService {
                 return data;
             })
         });
-   
     }
+
+    async getCaseTaskAssignees(orgId:string): Promise<any> {
+        await fetch;
+
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/organizations/' + orgId + 
+            '/case-types/' + '001' + '/attributes', 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => {
+           return [
+               new MemberResource({memberId: "890d19c8-a29a-11e5-8837-1272df70e7fd", physicalPersonProfile:  {firstName: "John", lastName: "Doe", jobTitle: "VP"}}),
+               new MemberResource({memberId: "890d19c8-a29a-11e5-8837-1272df70e7fe", physicalPersonProfile:  {firstName: "Bob", lastName: "Smith", jobTitle: "VP"}}),
+               new MemberResource({memberId: "890d19c8-a29a-11e5-8837-1272df70e7fc", physicalPersonProfile:  {firstName: "Vasyl", lastName: "Kutishchev", jobTitle: "VP"}})
+            ];
+        });
+        // .then(response => {return response.json()
+        //     .then(data => {
+        //         return data;
+        //     })
+        // });
+    }
+
 
     parseNotificationAcks(json): Array<NotificationAckResource> {
         let response = JSON.parse(json, (k, v) => { 
