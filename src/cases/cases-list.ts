@@ -338,8 +338,9 @@ export class CasesList {
       let model = controller.settings;
 
       // On change of case type, get associated attributes.
-      controller.viewModel.getCaseAttributes = function(_case) {
-        let caseAttrPromise = me.caseService.getCaseAttributes(_case.type.typeId, me.session.auth.organization.organizationId);
+      controller.viewModel.getCaseAttributes = function(typeId, newCase) {
+        me.logger.debug("Edit case getCaseAttributes()");
+        let caseAttrPromise = me.caseService.getCaseAttributes(typeId, me.session.auth.organization.organizationId);
         caseAttrPromise.then(function(data) {
           let attrs:Array<any> = _case.caseAttributes;
           let attrsObj = {};
@@ -348,15 +349,17 @@ export class CasesList {
           attrs.forEach(function(value) {
             attrsObj[value.attributeKey] = {description: value.description};
           });
-          caseAttributes.forEach(function(value) {
-            // For each type-attr, find a value in the case attr obj, and set the data in the type-attr with the value.
+          if(!!(caseAttributes)) {
+            caseAttributes.forEach(function(value) {
+              // For each type-attr, find a value in the case attr obj, and set the data in the type-attr with the value.
 
-          });
+            });
+          }
           controller.viewModel.caseAttributes = caseAttributes;
         })
       }
       if(!!(_case.type)) {
-        controller.viewModel.getCaseAttributes(_case);
+        controller.viewModel.getCaseAttributes(_case.type.typeId);
       }
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (_case) => {
