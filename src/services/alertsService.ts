@@ -283,7 +283,7 @@ export class AlertsService {
         });
     }
 
-    async setNotificationReply(memberId:string, notificationId:string, ack:any) {
+    async setNotificationReply(memberId:string, notificationId:string, ack:any): Promise<any> {
         await fetch;
 
         let me = this;
@@ -330,7 +330,7 @@ export class AlertsService {
         // .then(response => {return response.json()
         //  .then(response => {return response
            .then(data => {
-                let json = JSON.stringify(data);
+                let json = data.response;
                 let content = JSON.parse(json, (k, v) => { 
                     if(k == 'acknowledgementDate') {
                         // return new Date(Number.parseInt(v));
@@ -342,7 +342,21 @@ export class AlertsService {
                     } 
                     return v;                
                 });
-                return content;
+                // content is the ack response, we need the full detail.
+                const http =  this.getHttpClient();
+                let acksDetailResponse = http.fetch('v2/members/' + memberId + 
+                    '/notifications/' + content.notificationId + '/acks/' + content.acknowledgementId, 
+                    {
+                        method: 'GET'
+                    }
+                );
+                return acksDetailResponse.then(response => {return response.json()
+                    .then(function(data) {
+                        let ackDetail = new NotificationAckResource(data);
+                        return ackDetail;
+                    })
+                });
+                
             // })
         }).catch(function(error){
             me.logger.error("Ack update failed: " + error);
