@@ -32,9 +32,8 @@
             <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
             <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.dueDate & validate" 
             class="form-control input-lg" />
-            <abp-datetime-picker
-                element.bind="picker" model.bind="item.dueDate" 
-                show-today-button.bind="false" side-by-side.bind="true" format="YYYY-MM-DD"></abp-datetime-picker>
+            <abp-datetime-picker class="form-datepicker"
+                element.bind="picker" value.bind="' '" model.bind="item.dueDate" options.bind="{ showTodayButton: true, format: 'YYYY-MM-DD' }"></abp-datetime-picker>
         </div>
         <div class="dialog-section" repeat.for="attr of caseAttributes">
             <label class="blg-form-required community-select-label">${attr.attributeKey}: </label>

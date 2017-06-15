@@ -45,6 +45,9 @@ export class CaseResource {
 
   get formattedDueDate(): string {
     // let moment1 = Container.instance.get(Moment);
+    if(this.dueDate == null) {
+      return '';
+    }
     return (moment as any).default(this.dueDate).format(CaseResource.dateFormat);
   }
 

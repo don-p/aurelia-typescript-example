@@ -2282,13 +2282,13 @@ span.recipientsListItem:not(:last-child)::after {
   display: block;
 }
 
-.input-group.date {
+form abp-datetime-picker.form-datepicker > div.input-group.date {
   width: 220px;
-  display:inline-block; 
+  display:table-row; 
 }
 
 .input-group.date > input {
-  width: 180px;
+  width: 100%;
 }
 
 .send-alert {
