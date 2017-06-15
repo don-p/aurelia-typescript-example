@@ -29,9 +29,8 @@
         </div>
         <div class="dialog-section model-dialog">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
-            <abp-datetime-picker
-                element.bind="picker" model.bind="item.dueDate" 
-                show-today-button.bind="false" side-by-side.bind="true" format="YYYY-MM-DD"></abp-datetime-picker>
+            <abp-datetime-picker class="form-datepicker"
+                element.bind="picker" model.bind="item.dueDate" options.bind="{ showTodayButton: true, format: 'YYYY-MM-DD' }"></abp-datetime-picker>
         </div>
         <div show.bind="!!(item.taskId)" class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.createdDate'>: </label>

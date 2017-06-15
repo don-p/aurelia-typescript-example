@@ -41,9 +41,8 @@ export class TaskResource {
   }
 
   get formattedDueDate(): string {
-    // let moment1 = Container.instance.get(Moment);
     return !!(this.dueDate)?
-      (moment as any).default(this.dueDate).format(TaskResource.dateFormat):null;
+      (moment as any).default(this.dueDate).format(TaskResource.dateFormat):'';
   }
 
   get formattedCreateDate(): string {

@@ -87,7 +87,7 @@
 
                 </div>
             </div>
-            <!-- TODO: Removing controls for scheduled alert/notification. 
+             <!--TODO: Removing controls for scheduled alert/notification. 
             <div class="div-table-row">
                 <div class="div-table-cell column-label">
                     <span class="wizard-content-label blg-form-required" i18n='[prepend]community.communities.alert.sendType'>:</span>
@@ -99,14 +99,15 @@
                     </select>
                     <abp-datetime-picker show.bind="sendType=='SCH'" 
                         element.bind="picker" model.bind="controller.dialogController.alertModel.schedule.sendDate" 
-                        show-today-button.bind="false" side-by-side.bind="true" stepping="30" format="YYYY-MM-DD HH:mm"></abp-datetime-picker>
+                        options.bind="{ showTodayButton: false, format: 'YYYY-MM-DD HH:mm', sideBySide:true, stepping:30}"></abp-datetime-picker>
                     <div show.bind="sendType=='SCH'" class="checkbox checkbox-info recepient-tz">
                         <input id="checkbox-tz" name="checkbox-tz" type="checkbox" class="styled styled-info" model.bind="tz" checked.bind="controller.dialogController.alertModel.schedule.isReceiverTZ">
                         <label></label>
                     </div>
                     <div show.bind="sendType=='SCH'" class="recepient-tz-label">Recipient timezone</div>
                 </div>
-            </div>            -->
+            </div>  
+            -->          
         </div>
     </div>    
 
