@@ -12,11 +12,12 @@ import {TaskResource} from '../model/taskResource';
 import {MemberResource} from '../model/memberResource';
 import {NotificationAckResource} from '../model/notificationAckResource';
 import {DataService} from './dataService';
+import {CommunityService} from './communityService';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 import * as moment from 'moment';
 
-@inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService, LogManager)
+@inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService, CommunityService, LogManager)
 export class CaseService {  
 
     // Service object for retreiving application data from REST services.
@@ -104,7 +105,7 @@ export class CaseService {
 
     constructor(private httpClient: HttpClient, private httpBase: Http, 
         private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
-        private fetchConfig: FetchConfig, private dataService:DataService){
+        private fetchConfig: FetchConfig, private dataService:DataService, private communityService: CommunityService){
 
         this.pageSize = 100000;
 
@@ -545,25 +546,38 @@ export class CaseService {
 
         const http =  this.getHttpClient();
         let me = this;
-        let response = http.fetch('v1/organizations/' + orgId + 
-            '/case-types/' + '001' + '/attributes', 
+        let response = http.fetch('v1/communities?community_type=' + 'TEAM' + '&start_index=' + 0 + '&page_size=' + 10000, 
             {
                 method: 'GET'
             }
         );
         return response
-        .then(response => {
-           return [
-               new MemberResource({memberId: "06b5e9d8-8ab2-4684-b52c-f95cc0f9fa45", physicalPersonProfile:  {firstName: "John", lastName: "Doe", jobTitle: "VP"}}),
-               new MemberResource({memberId: "4640b2ed-c609-11e6-9dd3-1272df70e7fc", physicalPersonProfile:  {firstName: "Bob", lastName: "Smith", jobTitle: "VP"}}),
-               new MemberResource({memberId: "890d19c8-a29a-11e5-8837-1272df70e7fc", physicalPersonProfile:  {firstName: "Vasyl", lastName: "Kutishchev", jobTitle: "VP"}})
-            ];
+        .then(response => {return response.json()
+        .then(data => {
+            let comm = data.responseCollection[1];
+            // Get members.
+            let membersResponse = http.fetch('v1/communities/' + comm.communityId + '/members' + '?start_index=' + 0 + '&page_size=' + 10000, 
+                {
+                    method: 'GET'
+                }
+            );
+            return membersResponse
+            .then(response => {return response.json()
+                .then(data => {
+                    let json = JSON.stringify(data);
+                    let content = JSON.parse(json, (k, v) => { 
+                        if ((k !== '')  && typeof this == 'object' && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
+                            return new MemberResource(v);
+                        } 
+                        return v;                
+                    });
+                    return content.responseCollection;
+                    // return data.responseCollection;
+                });
+            });
+            
+        })
         });
-        // .then(response => {return response.json()
-        //     .then(data => {
-        //         return data;
-        //     })
-        // });
     }
 
     async getCaseTaskStatuses(orgId:string): Promise<any> {
