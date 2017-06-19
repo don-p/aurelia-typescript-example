@@ -207,6 +207,10 @@ export class CasesDetail {
     .then((controller:any) => {
       let model = controller.settings;
 
+      let statuses = this.appConfig.get('server.task.statuses');
+      statuses = statuses.statuses;
+      controller.viewModel.statuses = statuses;
+
       let assigneesListPromise = me.caseService.getCaseTaskAssignees(me.session.auth.organization.organiztionId);
       assigneesListPromise.then(data => {
         controller.viewModel.assignees = data;
@@ -223,7 +227,7 @@ export class CasesDetail {
         task.assignee = assignee;
         // task['statusId'] = task.taskStatus.statusId;
         // FIXME: hard-coding initial status.  Should be ID of 'Open'.
-        task['statusId'] = 12345;
+        // task['statusId'] = 12345;
         delete task.taskStatus;
         let modelPromise = me.caseService.createTask(_case, task);
         controller.viewModel.modelPromise = modelPromise;        
