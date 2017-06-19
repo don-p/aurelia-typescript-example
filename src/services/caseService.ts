@@ -418,7 +418,15 @@ export class CaseService {
 
         let method = (typeof _case.caseId !== 'string')?'POST':'PUT';
         let path = (typeof _case.caseId !== 'string')?'':'/' + _case.caseId;
+
+        _case.caseAttributes = [];
+        _case.metaTags = [];
+        _case.locale = 'us-en';
+        if(method === 'POST') {
+            delete _case.caseId;
+        }
         
+        _case.dueDate = new Date(_case.dueDate).getTime();
         let response = this.getHttpClient().fetch('v1/cases' + path, 
             {
                 method: method,
@@ -433,6 +441,10 @@ export class CaseService {
 
         let method = (typeof task.taskId !== 'string')?'POST':'PUT';
         let path = (typeof task.taskId !== 'string')?'':'/' + task.taskId;
+
+        task.dueDate = task.dueDate.getTime();
+
+        task.assignee.roleId = 'role-uuid-002';
         
         let response = this.getHttpClient().fetch('v1/cases/'+ _case.caseId + '/tasks' + path, 
             {
@@ -542,8 +554,8 @@ export class CaseService {
         return response
         .then(response => {
            return [
-               new MemberResource({memberId: "890d19c8-a29a-11e5-8837-1272df70e7fd", physicalPersonProfile:  {firstName: "John", lastName: "Doe", jobTitle: "VP"}}),
-               new MemberResource({memberId: "890d19c8-a29a-11e5-8837-1272df70e7fe", physicalPersonProfile:  {firstName: "Bob", lastName: "Smith", jobTitle: "VP"}}),
+               new MemberResource({memberId: "06b5e9d8-8ab2-4684-b52c-f95cc0f9fa45", physicalPersonProfile:  {firstName: "John", lastName: "Doe", jobTitle: "VP"}}),
+               new MemberResource({memberId: "4640b2ed-c609-11e6-9dd3-1272df70e7fc", physicalPersonProfile:  {firstName: "Bob", lastName: "Smith", jobTitle: "VP"}}),
                new MemberResource({memberId: "890d19c8-a29a-11e5-8837-1272df70e7fc", physicalPersonProfile:  {firstName: "Vasyl", lastName: "Kutishchev", jobTitle: "VP"}})
             ];
         });
@@ -552,6 +564,26 @@ export class CaseService {
         //         return data;
         //     })
         // });
+    }
+
+    async getCaseTaskStatuses(orgId:string): Promise<any> {
+        await fetch;
+
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/organizations/' + orgId + 
+            '/case-task-statuses', 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                return data;
+            })
+        });
+   
     }
 
 
