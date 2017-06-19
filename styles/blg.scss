@@ -2295,7 +2295,7 @@ abp-datetime-picker > div.input-group.date {
 .input-group.date > input {
   width: inherit;
 }
-form abp-datetime-picker.input-group.date > input {
+form abp-datetime-picker > .input-group.date > input {
   width: 100%;
 }
 
