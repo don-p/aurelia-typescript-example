@@ -19,6 +19,7 @@
         <div class="dialog-section">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.assignmentName'>: </label>
             <select class="form-control select select-default-blg" style="display: block;width: 100%;"  value.bind="item.assignee.member.memberId">
+                <option show.bind="(!(item.taskId) && !(item.assignee) && !(item.assignee.member) && !(item.assignee.member.memberId))" value="null"> </option>
                 <option repeat.for="member of assignees" model.bind="member.memberId">${member.fullName}</option>
             </select>
         </div>
