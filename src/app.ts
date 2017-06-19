@@ -120,10 +120,21 @@ export class App {
         me.logger.debug('getCallServiceConfig() returned error: ' + error);
       });
 
+      let caseTaskStatusPromise: Promise<Response> = me.caseService.getCaseTaskStatuses(me.session.auth.organization.organizationId);
+      caseTagsPromise
+      .then((data: any) => {
+        // Merge configs.
+        me.appConfig.merge({server: {task: {statuses: data.responseCollection}}});
+        me.logger.debug('=== CONFIG callServer ===');
+        return data;
+      }).catch(error => {
+        me.logger.debug('getCallServiceConfig() returned error: ' + error);
+      });
+
       me.configPromise = Promise.all(
         [
           callConfigPromise, 
-          callConfigPromise , 
+          caseTaskStatusPromise, 
           alertCatsPromise,
           caseTypesPromise,
           casePrioritiesPromise,
