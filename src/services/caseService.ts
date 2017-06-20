@@ -178,20 +178,6 @@ export class CaseService {
         // Multiple Promises to be resolved here.
         const http =  this.getHttpClient();
         let me = this;
-        // let response = http.fetch('v1/cases/' + caseId, 
-        //     {
-        //         method: 'GET'
-        //     }
-        // );
-        // return response
-        // .then(response => 
-        // {
-        //     return response.json().then(data => {
-        //         return data;
-        //     });
-
-        // });
-
 
         // First, get the Case object.
         let response = http.fetch('v1/cases/' + caseId, 
@@ -443,18 +429,34 @@ export class CaseService {
         let method = (typeof task.taskId !== 'string')?'POST':'PUT';
         let path = (typeof task.taskId !== 'string')?'':'/' + task.taskId;
 
-        task.dueDate = task.dueDate.getTime();
+        let taskObj = new TaskResource();
+        Object.assign(taskObj, task);
 
-        task.assignee.roleId = 'role-uuid-002';
+        taskObj.dueDate = task.dueDate.getTime();
+
+        taskObj.assignee.roleId = 'role-uuid-002';
         
         let response = this.getHttpClient().fetch('v1/cases/'+ _case.caseId + '/tasks' + path, 
             {
                 method: method,
-                body: JSON.stringify(task)
+                body: JSON.stringify(taskObj)
             }
         );
         return response;
     }
+
+    async deleteTask(task: TaskResource) {
+        await fetch;
+
+
+        let response = this.getHttpClient().fetch('v1/cases/' + task.caseId + '/tasks/' + task.taskId, 
+            {
+                method: 'DELETE'
+            }
+        );
+        return response;
+    }
+
 
     /**
      * Getcase-related lookup data.

@@ -253,6 +253,10 @@
         "tasks": {
             "createTask":"Create Task",
             "editTask":"Update Task",
+            "confirmDelete": {
+                "title": "Delete Task?",
+                "message": "Delete the task '{{taskId}}'?"
+            },
             "id": "ID",
             "title": "Task",
             "assignedTo": "Assigned to",
