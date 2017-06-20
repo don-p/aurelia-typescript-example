@@ -217,7 +217,7 @@ export class CasesDetail {
       });
 
       // Callback function for submitting the dialog.
-      controller.viewModel.submit = (community) => {
+      controller.viewModel.submit = (task) => {
         me.logger.debug("Edit task submit()");
         let assignee = {
           memberId: task.assignee.member.memberId,
@@ -234,10 +234,14 @@ export class CasesDetail {
         modelPromise
         .then(response => response.json())
         .then(data => {
-          // Refresh the task list grid.
-          me.getTasks();
-          // Close dialog on success.
-          controller.ok();
+          let casePromise = me.caseService.getCase(_case.caseId);
+          casePromise.then(data => {
+            me.selectedCase = data;
+            // Refresh the task list grid.
+            me.getTasks();
+            // Close dialog on success.
+            controller.ok();
+          })
         }, error => {
           me.logger.error("Community create() rejected.");
           model.errorMessage = "Failed"; 
@@ -259,6 +263,50 @@ export class CasesDetail {
 
   }
   
+  deleteTask(task: TaskResource, event: MouseEvent) {
+    event.stopPropagation();
+
+    let me = this;
+    let modelPromise = null;
+    this.dataService.openPromptDialog(this.i18n.tr('cases.tasks.confirmDelete.title'),
+      this.i18n.tr('cases.tasks.confirmDelete.message', {taskId: task.taskId}),
+      task, this.i18n.tr('button.delete'), true, null, 'modelPromise', '')
+    .then((controller:any) => {
+      let model = controller.settings;
+      // Callback function for submitting the dialog.
+      controller.viewModel.submit = (task) => {
+        // Call the delete service.
+        // let modelPromise = ;
+        let taskPromise = this.caseService.deleteTask(task);
+        controller.viewModel.modelPromise = taskPromise;        
+        taskPromise.then(data => {
+          let casePromise = me.caseService.getCase(task.caseId);
+          return casePromise.then(caseData => {
+            me.selectedCase = caseData;
+            // Refresh the task list grid.
+            me.getTasks();
+            // Close dialog on success.
+            controller.ok();
+          });
+        }, error => {
+          model.errorMessage = "Failed"; 
+          me.logger.error("Task delete() rejected."); 
+        }).catch(error => {
+          model.errorMessage = "Failed"; 
+          me.logger.error("Task delete() failed."); 
+          me.logger.error(error); 
+          return Promise.reject(error);
+        });
+        return taskPromise;        
+      }
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
+    });
+  }
 
 /*
   editConnectionRequest(connections: Array<any>, status:string, event:string) {

@@ -12,6 +12,7 @@ export class TaskResource {
   attachmentCount: Number;
   attachments: Array<any>;
   taskId: string;
+  caseId: string;
   taskStatus: any;
   assignee: any;
   dueDate: Date;
