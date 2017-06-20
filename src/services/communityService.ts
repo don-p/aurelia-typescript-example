@@ -9,10 +9,11 @@ import {DialogService, DialogController} from 'aurelia-dialog';
 import {Model} from '../model/model';
 import {MemberResource} from '../model/memberResource';
 import {DataService} from './dataService';
+import {Utils} from './util';
 import 'bootstrap-sass';
 import * as QueryString from 'query-string';
 
-@inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService, LogManager)
+@inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, DataService, Utils, QueryString, LogManager)
 export class CommunityService {  
 
     // Service object for retreiving application data from REST services.
@@ -24,7 +25,7 @@ export class CommunityService {
 
     constructor(private httpClient: HttpClient, private httpBase: Http, 
         private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
-        private fetchConfig: FetchConfig, private dataService:DataService){
+        private fetchConfig: FetchConfig, private dataService:DataService, private utils: Utils){
 
         this.logger = LogManager.getLogger(this.constructor.name);
     }
@@ -65,6 +66,7 @@ export class CommunityService {
     async getCommunity(args:any): Promise<Response> {
         await fetch;
 
+        let me = this;
         let communityId = args.communityId; 
         let startIndex = args.startIndex; 
         let pageSize = args.pageSize; 
@@ -89,12 +91,7 @@ export class CommunityService {
         .then(response => {return response.json()
             .then(data => {
                 let json = JSON.stringify(data);
-                let content = JSON.parse(json, (k, v) => { 
-                    if ((k !== '')  && typeof this == 'object' && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-                        return new MemberResource(v);
-                    } 
-                    return v;                
-                });
+                let content:any = me.utils.parseMemberResource(json);
                 return content;
             })
         });

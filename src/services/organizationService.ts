@@ -4,10 +4,11 @@ import {HttpClient as Http, HttpResponseMessage} from 'aurelia-http-client';
 import {FetchConfig} from 'aurelia-auth';
 import {Session} from './session';
 import {DataService} from './dataService';
+import {Utils} from './util';
 import * as QueryString from 'query-string';
 import {MemberResource} from '../model/memberResource';
 
-@inject(HttpClient, Http, Session, DataService, FetchConfig)
+@inject(HttpClient, Http, Session, DataService, FetchConfig, Utils)
 export class OrganizationService {  
 
     // Service object for retreiving application data from REST services.
@@ -16,7 +17,8 @@ export class OrganizationService {
     clientId: string;
     clientSecret: string;
 
-    constructor(private httpClient: HttpClient, private httpBase: Http, private session: Session, private dataService:DataService, private fetchConfig: FetchConfig){
+    constructor(private httpClient: HttpClient, private httpBase: Http, private session: Session, 
+        private dataService:DataService, private fetchConfig: FetchConfig, private utils: Utils){
 
     }
 
@@ -29,6 +31,7 @@ export class OrganizationService {
     async getOrgMembers(args: any): Promise<Response> {
         await fetch;
 
+        let me = this;
         let organizationId = args.organizationId; 
         let startIndex = args.startIndex; 
         let pageSize = args.pageSize; 
@@ -53,12 +56,7 @@ export class OrganizationService {
         .then(response => {return response.json()
             .then(data => {
                 let json = JSON.stringify(data);
-                let content = JSON.parse(json, (k, v) => { 
-                    if ((k !== '')  && typeof this == 'object' && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-                        return new MemberResource(v);
-                    } 
-                    return v;                
-                });
+                let content:any = me.utils.parseMemberResource(json);
                 return content;
             })
         });
@@ -106,6 +104,7 @@ export class OrganizationService {
     async searchOrganizationMembers(args: any) {
         await fetch;
 
+        let me = this;
         let organization = args.organizationId; 
         let startIndex = args.startIndex; 
         let pageSize = args.pageSize; 
@@ -137,12 +136,7 @@ export class OrganizationService {
         .then(response => {return response.json()
             .then(data => {
                 let json = JSON.stringify(data);
-                let content = JSON.parse(json, (k, v) => { 
-                    if ((k !== '')  && typeof this == 'object' && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-                        return new MemberResource(v);
-                    } 
-                    return v;                
-                });
+                let content:any = me.utils.parseMemberResource(json);
                 return content;
             })
         });

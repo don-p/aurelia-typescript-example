@@ -13,11 +13,11 @@ import {MemberResource} from '../model/memberResource';
 import {NotificationAckResource} from '../model/notificationAckResource';
 import {DataService} from './dataService';
 import {CommunityService} from './communityService';
+import {Utils} from './util';
 import 'bootstrap-sass';
-import * as QueryString from 'query-string';
 import * as moment from 'moment';
 
-@inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService, CommunityService, LogManager)
+@inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, DataService, CommunityService, Utils, LogManager)
 export class CaseService {  
 
     // Service object for retreiving application data from REST services.
@@ -105,7 +105,7 @@ export class CaseService {
 
     constructor(private httpClient: HttpClient, private httpBase: Http, 
         private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
-        private fetchConfig: FetchConfig, private dataService:DataService, private communityService: CommunityService){
+        private fetchConfig: FetchConfig, private dataService:DataService, private communityService: CommunityService, private utils: Utils){
 
         this.pageSize = 100000;
 
@@ -567,14 +567,8 @@ export class CaseService {
             .then(response => {return response.json()
                 .then(data => {
                     let json = JSON.stringify(data);
-                    let content = JSON.parse(json, (k, v) => { 
-                        if ((k !== '')  && typeof this == 'object' && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-                            return new MemberResource(v);
-                        } 
-                        return v;                
-                    });
+                    let content:any = me.utils.parseMemberResource(json);
                     return content.responseCollection;
-                    // return data.responseCollection;
                 });
             });
             
