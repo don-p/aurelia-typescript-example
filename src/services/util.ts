@@ -5,6 +5,7 @@ import {Grid, GridOptions, IGetRowsParams, Column, TextFilter} from 'ag-grid/mai
 import {I18N} from 'aurelia-i18n';
 import {TextSearchFilter} from '../lib/grid/textSearchFilter';
 import {Logger} from 'aurelia-logging';
+import {MemberResource} from '../model/memberResource';
 
 @inject(Session, AuthService, I18N, LogManager)
 export class Utils {  
@@ -33,6 +34,20 @@ export class Utils {
         } 
         return false;
     }
+
+    /**
+     * Resource model object factory methods.
+     */
+    parseMemberResource(json): any {
+        let content = JSON.parse(json, (k, v) => { 
+            if ((k !== '')  && typeof this == 'object' && typeof v == 'object' && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
+                return new MemberResource(v);
+            } 
+            return v;                
+        });
+        return content;
+    }
+    
 
     /**
      * Ag-Grid utility support functions.
