@@ -121,7 +121,7 @@ export class App {
       });
 
       let caseTaskStatusPromise: Promise<Response> = me.caseService.getCaseTaskStatuses(me.session.auth.organization.organizationId);
-      caseTagsPromise
+      caseTaskStatusPromise
       .then((data: any) => {
         // Merge configs.
         me.appConfig.merge({server: {task: {statuses: data.responseCollection}}});

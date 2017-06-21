@@ -211,6 +211,10 @@ export class CasesDetail {
       statuses = statuses.statuses;
       controller.viewModel.statuses = statuses;
 
+      // let roles = this.appConfig.get('server.task.statuses');
+      // statuses = statuses.statuses;
+      // controller.viewModel.statuses = statuses;
+
       let assigneesListPromise = me.caseService.getCaseTaskAssignees(me.session.auth.organization.organiztionId);
       assigneesListPromise.then(data => {
         controller.viewModel.assignees = data;
@@ -219,16 +223,6 @@ export class CasesDetail {
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (task) => {
         me.logger.debug("Edit task submit()");
-        let assignee = {
-          memberId: task.assignee.member.memberId,
-          roleId: task.assignee.assigneeRole.roleId
-        };
-        delete task.assignee;
-        task.assignee = assignee;
-        // task['statusId'] = task.taskStatus.statusId;
-        // FIXME: hard-coding initial status.  Should be ID of 'Open'.
-        // task['statusId'] = 12345;
-        delete task.taskStatus;
         let modelPromise = me.caseService.createTask(_case, task);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise

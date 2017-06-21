@@ -28,81 +28,6 @@ export class CaseService {
     logger: Logger;
     pageSize: number; // In-memory rowModel pageSize.
 
-    // MOCK DATA
-    casesArray: Array<any> = [
-                    {
-                        "caseId": "001",
-                        "description": "Desc 1",
-                        "externalReference": "Ref 1",
-                        "title": "Case 1",
-                        "dueDate": 0,
-                        "lastExportDate": 0,
-                        "attachmentsCount": 0,
-                        "type": {
-                            "typeId": "t1",
-                            "typeName": "Type A"
-                        },
-                        "priority": 
-                            {
-                                "priorityId": "p1",
-                                "priorityName": "Urgent"
-                            }
-                    },
-                    {
-                        "caseId": "002",
-                        "description": "Description 2",
-                        "externalReference": "Ref 2",
-                        "title": "Case 2",
-                        "dueDate": 0,
-                        "lastExportDate": 0,
-                        "attachmentsCount": 0,
-                        "type": {
-                            "typeId": "t2",
-                            "typeName": "Type B"
-                        },
-                        "priority": 
-                            {
-                                "priorityId": "p3",
-                                "priorityName": "Normal"
-                            }
-                    },
-                    {
-                        "caseId": "003",
-                        "description": "Case Desc 3",
-                        "externalReference": "Ref 3",
-                        "title": "Case number 3",
-                        "dueDate": 0,
-                        "lastExportDate": 0,
-                        "attachmentsCount": 1,
-                        "type": {
-                            "typeId": "t3",
-                            "typeName": "Type C"
-                        },
-                        "priority": 
-                            {
-                                "priorityId": "p2",
-                                "priorityName": "High"
-                            }
-                    }
-                ];
-    tasksArray: Array<any> = [
-                    {
-                        "taskId": "001",
-                        "description": "Desc 1",
-                        "title": "Task 1"
-                    },
-                    {
-                        "taskId": "002",
-                        "description": "Description 2",
-                        "title": "Task 2",
-                    },
-                    {
-                        "taskId": "003",
-                        "description": "Case Desc 3",
-                        "title": "Task number 3",
-                    }
-                ];
-
     constructor(private httpClient: HttpClient, private httpBase: Http, 
         private evt: EventAggregator, private dialogService:DialogService, private session: Session, 
         private fetchConfig: FetchConfig, private dataService:DataService, private communityService: CommunityService, private utils: Utils){
@@ -303,57 +228,25 @@ export class CaseService {
         return response
         .then(response => 
         {
-            let result = {
-                "pageSize": 0,
-                "responseCollection": [
-                    {
-                    "caseId": "001",
-                    "description": "Desc 1",
-                    "externalReference": "Ref 1",
-                    "title": "Case 1",
-                    "type": "Type A",
-                    "priority": "Urgent"
-                    },
-                    {
-                    "caseId": "002",
-                    "description": "Description 2",
-                    "externalReference": "Ref 2",
-                    "title": "Case 2",
-                    "type": "Type B",
-                    "priority": "Normal"
-                    },
-                    {
-                    "caseId": "003",
-                    "description": "Case Desc 3",
-                    "externalReference": "Ref 3",
-                    "title": "Case number 3",
-                    "type": "Type C",
-                    "priority": "High"
-                    }
-                ],
-                "startPosition": 0,
-                "totalCount": 3
-            };
-            return JSON.parse(JSON.stringify(result));
-            // return response.json()
-            // .then(data => {
-            //     // let json = JSON.stringify(data);
-            //     // let content = JSON.parse(json, (k, v) => { 
-            //     //     if(k == 'sentDate') {
-            //     //         return new Date(v);
-            //     //     }
-            //     //     if(k == 'ackStatusSummary') {
-            //     //         let status = me.parseNotificationAckStatusSummary(v);
-            //     //         return status;
-            //     //     }
-            //     //     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-            //     //         return new NotificationResource(v);
-            //     //     } 
-            //     //     return v;                
-            //     // });
-            //     // return content;
-            //     return data;
-            // })
+            return response.json()
+            .then(data => {
+                // let json = JSON.stringify(data);
+                // let content = JSON.parse(json, (k, v) => { 
+                //     if(k == 'sentDate') {
+                //         return new Date(v);
+                //     }
+                //     if(k == 'ackStatusSummary') {
+                //         let status = me.parseNotificationAckStatusSummary(v);
+                //         return status;
+                //     }
+                //     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
+                //         return new NotificationResource(v);
+                //     } 
+                //     return v;                
+                // });
+                // return content;
+                return data;
+            })
         });
     }
 
@@ -432,10 +325,28 @@ export class CaseService {
         let taskObj = new TaskResource();
         Object.assign(taskObj, task);
 
+        let assignee = {
+          memberId: task.assignee.member.memberId,
+          roleId: task.assignee.assigneeRole.roleId
+        };
+        delete taskObj.assignee;
+        taskObj.assignee = assignee;
+        // task['statusId'] = task.taskStatus.statusId;
+        // FIXME: hard-coding initial status.  Should be ID of 'Open'.
+        // task['statusId'] = 12345;
+        if(typeof task.taskId !== 'string') {
+            taskObj['statusId'] = "status-uuid-02";
+        } else {
+            taskObj['statusId'] = task.taskStatus.statusId;
+        }
+        delete taskObj.taskStatus;
+
         taskObj.dueDate = task.dueDate.getTime();
 
-        taskObj.assignee.roleId = 'role-uuid-002';
-        
+        if (!(taskObj.assignee.roleId)) {
+            taskObj.assignee.roleId = 'role-uuid-002';
+        }
+
         let response = this.getHttpClient().fetch('v1/cases/'+ _case.caseId + '/tasks' + path, 
             {
                 method: method,
