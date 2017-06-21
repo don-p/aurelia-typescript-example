@@ -61,7 +61,7 @@ export class AlertsService {
 
         const http =  this.getHttpClient();
         let me = this;
-        let date = (moment as any).default().subtract(30, 'days').hour(0).minute(0).second(0).toDate().getTime();
+        let date = (moment as any).default().subtract(12, 'months').hour(0).minute(0).second(0).toDate().getTime();
         let response = http.fetch('v2/members/' + memberId + 
             '/notifications?direction=' + direction + '&include_status=true&start_index=' + 
             startIndex + '&page_size=' + pageSize + '&from_date=' + date, 
