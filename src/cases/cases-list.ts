@@ -341,20 +341,26 @@ export class CasesList {
       controller.viewModel.getCaseAttributes = function(typeId, newCase) {
         me.logger.debug("Edit case getCaseAttributes()");
         let caseAttrPromise = me.caseService.getCaseAttributes(me.session.auth.organization.organizationId, typeId);
-        caseAttrPromise.then(function(data) {
-          let attrs:Array<any> = _case.caseAttributes;
-          let attrsObj = {};
-          let caseAttributes = data;
-          // Match attrs with data.
-          attrs.forEach(function(value) {
-            attrsObj[value.attributeKey] = {description: value.description};
+        caseAttrPromise.then(function(data: Array<any>) {
+          // Current attributes from the case.
+          let instanceAttrs:Array<any> = _case.caseAttributes;
+          // Set of supported case attributes from the configuration.
+          let caseAttributes = data.map(function(item) {
+            return {attributeKey: item.attributeKey, attributeValue: item.defValue};
           });
-          if(!!(caseAttributes)) {
+          // Match attrs with data.
+          if(!!(caseAttributes) && !!(instanceAttrs)) {
             caseAttributes.forEach(function(value) {
               // For each type-attr, find a value in the case attr obj, and set the data in the type-attr with the value.
-
+              let attr = instanceAttrs.find(function(item) {
+                return item.attributeKey === value.attributeKey;
+              });
+              if(!!(attr)) {
+                value.attributeValue = attr.attributeValue;
+              }
             });
           }
+          
           controller.viewModel.caseAttributes = caseAttributes;
         })
       }
