@@ -128,11 +128,13 @@ export class CasesDetail {
     // get the case details.
     this.casePromise = this.caseService.getCase(selectedCase.caseId);
     this.casePromise.then(function(data:any){
-      let _case = data;
-      
-      me.selectedCase = _case;
-      me.logger.debug("Setting task grid row data. api: " + me.gridOptions.api);
-      me.gridOptions.api.setRowData(me.selectedCase.tasks);
+      if(!!(me.gridOptions) && !!(me.gridOptions.api)) {
+        let _case = data;
+        
+        me.selectedCase = _case;
+        me.logger.debug("Setting task grid row data. api: " + me.gridOptions.api);
+        me.gridOptions.api.setRowData(me.selectedCase.tasks);
+      }
     });
 
   }
