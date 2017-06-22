@@ -41,7 +41,7 @@
                         <div class='panel-heading community-item-head' class.bind="(selectedItem && selectedItem !==null) && (case.caseId == selectedItem.caseId) ? 'active':''"
                           role='tab'>
                           <a class='collapsed' role='button' data-parent='#accordion_communities' href='#collapse${$index}' aria-expanded='false'>
-                            <h4 class='panel-title' click.delegate="selectCase(case)">
+                            <h4 class='panel-title' click.delegate="selectedItem !== case?selectCase(case):function(){}">
                               <span class="community-name case-name">${case.title}</span>
                               <span class='community-buttons'>
                                 <a href="javascript:void(0);" 

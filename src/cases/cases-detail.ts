@@ -47,9 +47,9 @@ export class CasesDetail {
     let me = this;
 
     this.evt.subscribe('caseSelected', payload => {
-      if((!me.selectedCase || me.selectedCase === null) || (me.selectedCase.caseId !== payload.case.caseId)) {
+      // if((!me.selectedCase || me.selectedCase === null) || (me.selectedCase.caseId !== payload.case.caseId)) {
         me.onCaseSelected(payload);
-     }
+    //  }
     });
     
     this.evt.subscribe('taskSelected', payload => {

@@ -18,22 +18,22 @@
         </div>
         <div class="dialog-section">
             <label class="blg-form-required community-select-label" i18n='[prepend]global.type'>: </label>
-            <select class="form-control select select-default-blg" change.delegate="getCaseAttributes(item.type.typeId, $event)" value.bind="item.type.typeId">
+            <select class="form-control select select-default-blg" change.delegate="getCaseAttributes(item.typeId, $event)" value.bind="item.typeId">
                 <option repeat.for="type of types" model.bind="type.typeId">${type.typeName}</option>
             </select>
         </div>
         <div class="dialog-section">
             <label class="blg-form-required community-select-label" i18n='[prepend]global.priority'>: </label>
-            <select class="form-control select select-default-blg" value.bind="item.priority.priorityId">
+            <select class="form-control select select-default-blg" value.bind="item.priorityId">
                 <option repeat.for="priority of priorities" model.bind="priority.priorityId">${priority.priorityName}</option>
             </select>
         </div>
         <div class="dialog-section model-dialog">
             <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
-            <input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.dueDate & validate" 
-            class="form-control input-lg" />
-            <abp-datetime-picker class="form-datepicker"
-                element.bind="picker" model.bind="item.dueDate" options.bind="{ showTodayButton: true, format: 'YYYY-MM-DD' }"></abp-datetime-picker>
+            <!--<input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.dueDate & validate" 
+            class="form-control input-lg" />-->
+            <abp-datetime-picker class="form-datepicker" value.bind="item.dueDate""
+                element.bind="picker" options.bind="{ showTodayButton: true, format: 'YYYY-MM-DD' }"></abp-datetime-picker>
         </div>
         <div class="dialog-section" repeat.for="attr of caseAttributes">
             <label class="blg-form-required community-select-label">${attr.attributeKey}: </label>
