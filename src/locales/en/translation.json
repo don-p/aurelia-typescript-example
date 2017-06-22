@@ -245,15 +245,16 @@
     "cases": {
         "createCase":"Create Case",
         "editCase":"Update Case",
-            "confirmDelete": {
-                "title": "Delete Case?",
-                "message": "Delete case '{{caseId}}'?"
-            },
+        "confirmDelete": {
+            "title": "Delete Case?",
+            "message": "Delete case '{{caseId}}'?"
+        },
         "caseDetailTab": "Case {{caseRefId}}",
         "tasksTab": "Tasks",
         "taskDetailTab": "Detail",
         "taskCommentsTab": "Comments",
         "externalReference": "External Reference",
+        "dateFormat": "MMM DD YYYY",
         "tasks": {
             "createTask":"Create Task",
             "editTask":"Update Task",

@@ -299,18 +299,22 @@ export class CaseService {
         let method = (typeof _case.caseId !== 'string')?'POST':'PUT';
         let path = (typeof _case.caseId !== 'string')?'':'/' + _case.caseId;
 
-        _case.caseAttributes = [];
-        _case.metaTags = [];
-        _case.locale = 'us-en';
+        // Clone
+        let caseObj:any = new CaseResource();
+        Object.assign(caseObj, _case);
+
+        caseObj.caseAttributes = [];
+        caseObj.metaTags = [];
+        caseObj.locale = 'us-en';
         if(method === 'POST') {
-            delete _case.caseId;
+            delete caseObj.caseId;
         }
         
-        _case.dueDate = new Date(_case.dueDate).getTime();
+        caseObj.dueDate = new Date(caseObj.dueDate).getTime();
         let response = this.getHttpClient().fetch('v1/cases' + path, 
             {
                 method: method,
-                body: JSON.stringify(_case)
+                body: JSON.stringify(caseObj)
             }
         );
         return response;
@@ -334,7 +338,7 @@ export class CaseService {
 
         let method = (typeof task.taskId !== 'string')?'POST':'PUT';
         let path = (typeof task.taskId !== 'string')?'':'/' + task.taskId;
-
+        // Clone
         let taskObj = new TaskResource();
         Object.assign(taskObj, task);
 
