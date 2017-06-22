@@ -32,7 +32,7 @@
             <label class="blg-form-required" i18n='[prepend]cases.tasks.dueDate'>: </label>
             <!--<input id="desc" input.delegate="clearError()" change.delegate="clearError()" value.bind="item.dueDate & validate" 
             class="form-control input-lg" />-->
-            <abp-datetime-picker class="form-datepicker" value.bind="item.dueDate""
+            <abp-datetime-picker class="form-datepicker" model.bind="item.dueDate""
                 element.bind="picker" options.bind="{ showTodayButton: true, format: 'YYYY-MM-DD' }"></abp-datetime-picker>
         </div>
         <div class="dialog-section" repeat.for="attr of caseAttributes">

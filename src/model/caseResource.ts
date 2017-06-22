@@ -22,7 +22,7 @@ export class CaseResource {
   lastExportDate: Date;
   tasks: Array<any>;
 
-  static dateFormat: string = Container.instance.get(I18N).tr('alerts.notifications.dateFormat');
+  static dateFormat: string = Container.instance.get(I18N).tr('cases.dateFormat');
 
   constructor(_case?:any) {
       if(_case && _case !== null) {
