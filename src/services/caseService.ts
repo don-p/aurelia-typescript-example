@@ -316,6 +316,19 @@ export class CaseService {
         return response;
     }
 
+    async deleteCase(_case: CaseResource) {
+        await fetch;
+
+
+        let response = this.getHttpClient().fetch('v1/cases/' + _case.caseId, 
+            {
+                method: 'DELETE'
+            }
+        );
+        return response;
+    }
+
+
     async createTask(_case: any, task: any) {
         await fetch;
 

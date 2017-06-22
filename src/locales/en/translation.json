@@ -245,6 +245,10 @@
     "cases": {
         "createCase":"Create Case",
         "editCase":"Update Case",
+            "confirmDelete": {
+                "title": "Delete Case?",
+                "message": "Delete case '{{caseId}}'?"
+            },
         "caseDetailTab": "Case {{caseRefId}}",
         "tasksTab": "Tasks",
         "taskDetailTab": "Detail",
@@ -255,7 +259,7 @@
             "editTask":"Update Task",
             "confirmDelete": {
                 "title": "Delete Task?",
-                "message": "Delete the task '{{taskId}}'?"
+                "message": "Delete task '{{taskId}}'?"
             },
             "id": "ID",
             "title": "Task",

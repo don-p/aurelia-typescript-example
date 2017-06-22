@@ -340,7 +340,7 @@ export class CasesList {
       // On change of case type, get associated attributes.
       controller.viewModel.getCaseAttributes = function(typeId, newCase) {
         me.logger.debug("Edit case getCaseAttributes()");
-        let caseAttrPromise = me.caseService.getCaseAttributes(typeId, me.session.auth.organization.organizationId);
+        let caseAttrPromise = me.caseService.getCaseAttributes(me.session.auth.organization.organizationId, typeId);
         caseAttrPromise.then(function(data) {
           let attrs:Array<any> = _case.caseAttributes;
           let attrsObj = {};
@@ -364,9 +364,9 @@ export class CasesList {
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (_case) => {
         me.logger.debug("Edit case submit()");
-        _case.typeId = _case.type.typeId;
+        // _case.typeId = _case.type.typeId;
         delete _case.type;
-        _case.priorityId = _case.priority.priorityId;
+        // _case.priorityId = _case.priority.priorityId;
         delete _case.priority;
         let modelPromise = me.caseService.createCase(_case);
         controller.viewModel.modelPromise = modelPromise;        
@@ -398,6 +398,50 @@ export class CasesList {
     });
     
   }
+
+  
+  deleteCase(_case: CaseResource, event: MouseEvent) {
+    event.stopPropagation();
+
+    let me = this;
+    let modelPromise = null;
+    this.dataService.openPromptDialog(this.i18n.tr('cases.confirmDelete.title'),
+      this.i18n.tr('cases.confirmDelete.message', {caseId: _case.caseId}),
+      _case, this.i18n.tr('button.delete'), true, null, 'modelPromise', '')
+    .then((controller:any) => {
+      let model = controller.settings;
+      // Callback function for submitting the dialog.
+      controller.viewModel.submit = (task) => {
+        // Call the delete service.
+        // let modelPromise = ;
+        let casePromise = this.caseService.deleteCase(_case);
+        controller.viewModel.modelPromise = casePromise;        
+        casePromise.then(data => {
+          me.getCases(0, 1000).then(function(){
+            me.selectDefaultCase();
+          });
+          // Close dialog on success.
+          controller.ok();
+        }, error => {
+          model.errorMessage = "Failed"; 
+          me.logger.error("Task delete() rejected."); 
+        }).catch(error => {
+          model.errorMessage = "Failed"; 
+          me.logger.error("Task delete() failed."); 
+          me.logger.error(error); 
+          return Promise.reject(error);
+        });
+        return casePromise;        
+      }
+      // controller.result.then((response) => {
+      //   if (response.wasCancelled) {
+      //     // Cancel.
+      //     this.logger.debug('Cancel');
+      //   }
+      // })
+    });
+  }
+  
 
 }
 
