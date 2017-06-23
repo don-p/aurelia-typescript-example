@@ -16,6 +16,7 @@ export class Organization {
   member: Object;
 
   organizations: Array<Object>;
+  organizationsTotalCount: number;
   items:Array<Object>;
   pageSize: number;
   orgPromise: Promise<Response>;
@@ -48,10 +49,9 @@ export class Organization {
     private evt: EventAggregator, private i18n: I18N) {
 
     // this.organizations['responseCollection'] = [];
-    this.pageSize = 500;
+    this.pageSize = 10000;
     this.selectedItem = null;
     this.logger = LogManager.getLogger(this.constructor.name);
-    this.pageSize = 200;
 
     const sortAsc = Column.SORT_ASC;
     const sortDesc = Column.SORT_DESC;
@@ -116,6 +116,7 @@ export class Organization {
     .then(response => {return response.json()
       .then(data => {
         me.organizations = data.responseCollection;
+        me.organizationsTotalCount = data.totalCount;
         return Promise.resolve(data.responseCollection);
         // me.logger.debug('cmtyPromise resolved: ' + JSON.stringify(data));
       }).catch(error => {
