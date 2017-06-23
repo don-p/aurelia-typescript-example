@@ -272,6 +272,15 @@ export class ReceivedAlerts {
         controller.viewModel.item.files = fileArray;
       };
 
+      controller.viewModel.removeAttachment = function(att: any) {
+        if(att) {
+          let index = controller.ackModel.files.indexOf(att);
+          controller.ackModel.files.splice(index, 1);
+        } else {
+          delete controller.ackModel.fileList;
+        }
+      };
+
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (reply) => {
         me.logger.debug("Edit community submit()");

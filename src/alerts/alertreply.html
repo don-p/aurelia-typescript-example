@@ -40,7 +40,7 @@
                                             </strong>
                                             <span if.bind="(!(item.files) || item.files.length === 0)">${'community.communities.alert.selectFile' | t}&hellip;</span>
                                             <span if.bind="((item.files) && item.files.length !== 0)">${item.files[0].name}</span>
-                                            <button if.bind="((item.files) && item.files.length !== 0)" id="btn-remove-attachment" click.delegate="controller.removeAttachment(item.files[0])" class="btn btn-xs send-alert-remove-attachment" i18n="[title]button.removeAttachment">
+                                            <button if.bind="((item.files) && item.files.length !== 0)" id="btn-remove-attachment" click.delegate="removeAttachment(item.files[0])" class="btn btn-xs send-alert-remove-attachment" i18n="[title]button.removeAttachment">
                                                 <i class="ico-cancel-square2"></i>
                                             </button>
                                         </label>
