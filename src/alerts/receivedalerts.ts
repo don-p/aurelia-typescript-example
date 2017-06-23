@@ -290,6 +290,12 @@ export class ReceivedAlerts {
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
         .then(function(data:any) {
+          let ack = me.selectedNotification.acks.find(function(item:any){
+            return item.acknowledgementId = data.acknowledgementId;
+          });
+          let index = me.selectedNotification.acks.indexOf(ack);
+          me.selectedNotification.acks[index] = data;
+          me.onNotificationSelected({notification: me.selectedNotification});
           me.selectedNotificationAck = data;
           // Close dialog on success.
           controller.ok();
