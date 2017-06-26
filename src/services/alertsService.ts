@@ -269,7 +269,7 @@ export class AlertsService {
                 let json = JSON.stringify(data);
                 let content = JSON.parse(json, (k, v) => { 
                     if(k == 'acknowledgementDate') {
-                        return new Date(Number.parseInt(v));
+                        return new Date(parseInt(v));
                         //FIXME: TEMP - parsing for wrong date format from Response.
                         // return new Date(v);
                     }
