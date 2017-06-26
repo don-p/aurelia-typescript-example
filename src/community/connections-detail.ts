@@ -58,6 +58,7 @@ export class ConnectionsDetail {
       }
       if(payload === 'CONNECTION_TERMINATED') {
         me.isSelectedMembers = false; // When removing conn, selected members are removed from list.
+        this.evt.publish('communityMembersSelected', {selectedMembers: [], isSelectedMembers: false, memberType: 'CON'});
       }
     });
     this.logger = LogManager.getLogger(this.constructor.name);
