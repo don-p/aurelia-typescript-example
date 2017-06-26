@@ -157,7 +157,7 @@ export class CaseService {
                     let cr = new CaseResource(v);
                     // cr.typeId = cr.type.typeId;
                     return cr;                    
-                } else if((!(Number.isNaN(Number.parseInt(k)))) && (!(v.metaTagId)) && (!(v.attributeKey))) {
+                } else if((!(isNaN(parseInt(k)))) && (!(v.metaTagId)) && (!(v.attributeKey))) {
                 // if(this.constructor.name === 'Array') {
                     // Collection of cases in responseCollection.
                     let cr = new CaseResource(v);
@@ -195,7 +195,7 @@ export class CaseService {
                     // Individual task.
                     let t = new TaskResource(v);
                     return t;                    
-                } else if((!(Number.isNaN(Number.parseInt(k)))) && (!(v.metaTagId)) && (!(v.attributeKey))) {
+                } else if((!(isNaN(parseInt(k)))) && (!(v.metaTagId)) && (!(v.attributeKey))) {
                     // Collection of tasks in responseCollection.
                     let t = new TaskResource(v);
                     return t;                
@@ -303,7 +303,7 @@ export class CaseService {
         let caseObj:any = new CaseResource();
         Object.assign(caseObj, _case);
 
-        caseObj.caseAttributes = [];
+        // caseObj.caseAttributes = [];
         caseObj.metaTags = [];
         caseObj.locale = 'us-en';
         if(method === 'POST') {
@@ -522,237 +522,6 @@ export class CaseService {
             })
         });
    
-    }
-
-
-    parseNotificationAcks(json): Array<NotificationAckResource> {
-        let response = JSON.parse(json, (k, v) => { 
-            if(k == 'acknowledgementDate') {
-                // return new Date(Number.parseInt(v));
-                //FIXME: TEMP - parsing for wrong date format from Response.
-                return new Date(v);
-            }
-            if(k == 'ackStatusSummary') {
-                let status = this.parseNotificationAckStatusSummary(v);
-                return status;
-            }
-            if ((k !== '')  && (typeof this == 'object') && (v != null) && (!(v.payloadId)) && (typeof v == 'object') && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-                return new NotificationAckResource(v);
-            } 
-            return v;
-        })
-        return response.responseCollection;      
-    }
-
-    parseNotificationAckStatusSummary(statusObj: Array<any>) {
-        let status = {};
-        status = statusObj.reduce(function(acc, curVal, curIndex) {
-            let key = curVal.ackStatus;
-            let val = curVal.count;
-            acc[key] = val;
-            return acc;
-        }, {});
-
-        return status;
-    }
-
-    async setNotificationAckStatus(memberId, notificationId, status) {
-        await fetch;
-
-        // let notificationId:string = args.memberId;
-        // let startIndex:number = args.startIndex;
-        // let pageSize:number = args.pageSize;
-        // let direction:string = args.direction;
-
-        const http =  this.getHttpClient();
-        let me = this;
-
-        let body = {
-            ackStatus: status
-        };
-
-        let response = http.fetch('v1/members/' + memberId + 
-            '/notifications/' + notificationId + '/acks', 
-            {
-                method: 'PUT',
-                body: JSON.stringify(body)
-            }
-        );
-        return response
-        .then(response => {return response.json()
-            .then(data => {
-                let json = JSON.stringify(data);
-                let content = JSON.parse(json, (k, v) => { 
-                    if(k == 'acknowledgementDate') {
-                        return new Date(Number.parseInt(v));
-                        //FIXME: TEMP - parsing for wrong date format from Response.
-                        // return new Date(v);
-                    }
-                    if ((k === '')  && typeof this == 'object' && v != null && typeof v == 'object') {
-                        return new NotificationAckResource(v);
-                    } 
-                    return v;                
-                });
-                return content;
-            })
-        });
-    }
-
-    async setNotificationReply(memberId:string, notificationId:string, ack:any) {
-        await fetch;
-
-        let me = this;
-
-        // let notificationId:string = args.memberId;
-        // let startIndex:number = args.startIndex;
-        // let pageSize:number = args.pageSize;
-        // let direction:string = args.direction;
-
-        // const http =  this.getHttpClient();
-
-        let body = {
-            ackStatus: 'REPLY_MESSAGE',
-            ackMessage: ack.message
-        };
-
-        var form = new FormData();
-        form.append('acknowledgement', JSON.stringify(body));
-        let files = ack.files;
-        if(files) {
-            for (let i = 0; i < files.length; i++) {
-                let file = files[i];
-                form.append('file', file);
-
-            }
-        }
-
-        const http =  this.httpBase;
-        let response = http.createRequest('v2/members/' + memberId + '/notifications/' + notificationId + '/acks')
-        // .asPut()
-        .asPost()
-        .withContent(form)
-        .withHeader('Authorization', 'Bearer '+ this.session.auth.access_token)
-        .send();
-
-        // let response = http.fetch('v1/members/' + memberId + 
-        //     '/notifications/' + notificationId + '/acks', 
-        //     {
-        //         method: 'PUT',
-        //         body: JSON.stringify(body)
-        //     }
-        // );
-        return response
-        // .then(response => {return response.json()
-        //  .then(response => {return response
-           .then(data => {
-                let json = JSON.stringify(data);
-                let content = JSON.parse(json, (k, v) => { 
-                    if(k == 'acknowledgementDate') {
-                        // return new Date(Number.parseInt(v));
-                        //FIXME: TEMP - parsing for wrong date format from Response.
-                        return new Date(v);
-                    }
-                    if ((k === '')  && typeof this == 'object' && v != null && typeof v == 'object') {
-                        return new NotificationAckResource(v);
-                    } 
-                    return v;                
-                });
-                return content;
-            // })
-        }).catch(function(error){
-            me.logger.error("Ack update failed: " + error);
-        });
-        
-    }
-
-    async sendNotification(alertModel:any):Promise<HttpResponseMessage> {
-        await fetch;
-
-        let members:Array<any> = alertModel.communityMembers; 
-        let communities:Array<any> = alertModel.communities; 
-        let notificationConfig:Object = {
-            message: alertModel.alertMessage, 
-            notificationCategory: alertModel.alertType, 
-            attachmentRefs: alertModel.files
-        };
-        let schedule:Object;
-
-        if(typeof alertModel.schedule == 'object' && 
-            !!(alertModel.schedule.sendDate) &&
-            alertModel.schedule.sendDate.constructor.name == 'Date') {
-            schedule = alertModel.schedule;
-            schedule['sendDate'] = alertModel.schedule.sendDate.getTime();
-        }
-
-        let memberIds = members.map(function(member) {
-            return member.memberId;
-        });
-
-        let communityIds = communities.map(function(community) {
-            return community.communityId;
-        });
-
-        let body = {
-            memberRecipients: memberIds,
-            communityRecipients: communityIds,
-            message: notificationConfig['message'],
-            notificationCategory: notificationConfig['notificationCategory']
-        };
-
-        if(!!(schedule)) {
-            body['schedule'] = schedule;
-        }
-
-        var form = new FormData();
-        form.append('notification', JSON.stringify(body));
-        let files = notificationConfig['attachmentRefs']
-        if(files) {
-            for (let i = 0; i < files.length; i++) {
-                let file = files[i];
-                form.append('file', file);
-
-            }
-        }
-        // form.append('file', notificationConfig['attachmentRefs']);
-
-        const http =  this.httpBase;
-
-        // Use base http-client, instead of Fetch, for multipart-form file upload.
-        let response = http.createRequest('v1/notifications')
-        .asPost()
-        .withContent(form)
-        .withHeader('Authorization', 'Bearer '+ this.session.auth.access_token)
-        .send();
-
-        return response;
-    
-        // let response = this.getHttpClient().fetch('v1/notifications', 
-        //     {
-        //         method: 'POST',
-        //         body: form
-
-        //     }
-        // );
-        // return response;
-    }
-
-    getNotificationsCounts(args): Promise<any> {
-        
-        const http =  this.getHttpClient();
-        let me = this;
-        let response = http.fetch('v1/members/' + args.memberId + '/notification-statistics', 
-            {
-                method: 'GET'
-            }
-        );
-        response.catch(function(error) {
-            me.logger.debug('Error getting notification count statistics: ' + error);
-        })
-        return response.then(response => {return response.json()
-            .then(function(data) {
-                return data;
-            });
-        });
     }
 
 }
