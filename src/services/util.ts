@@ -372,7 +372,6 @@ export class Utils {
     let membersPromise = callback.call(dataService, args);
     membersPromise//.then(response => response.json())
       .then(data => {
-        // Filter out existing community members.
         let totalCount = data.totalCount;
         let result = data.responseCollection;
         gridOptions.api.setRowData(result);

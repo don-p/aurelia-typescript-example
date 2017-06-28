@@ -60,8 +60,19 @@ export class ReceivedAlerts {
       me.selectedNotifications = payload.selectedNotifications;
     });
     // Subscribe to new alerts.
-    me.evt.subscribe('NOTIFICATION_RECEIVED', function(message) {
+    me.evt.subscribe(AlertsService.NotificationEvent.NOTIFICATION_RECEIVED, function(message) {
        me.logger.debug(' || New notification');
+      // Refresh the alerts list.
+      if(me.router.currentInstruction && me.router.currentInstruction.config.route !== '' && me.router.currentInstruction.config.name === 'alerts/received') {
+        me.getReceivedAlerts();
+      }
+    });
+    // Subscribe to alerts change to 'READ' status.
+    me.evt.subscribe(AlertsService.NotificationEvent.NOTIFICATION_READ, function(message) {
+      me.logger.debug(' || New notification');
+      // Update the unread badge count.
+
+      // If notification is visible, update the 'UNREAD' indicator.
       // Refresh the alerts list.
       if(me.router.currentInstruction && me.router.currentInstruction.config.route !== '' && me.router.currentInstruction.config.name === 'alerts/received') {
         me.getReceivedAlerts();
@@ -146,8 +157,8 @@ export class ReceivedAlerts {
           });
           me.selectedNotificationAck = ack;
           me.showSelectedNotification(notification);
-          // Update "READ" status in list.
-          selectedNotification.notificationStatus.ackStatusSummary = {READ: 1};
+          // // Update "READ" status in list.
+          // selectedNotification.notificationStatus.ackStatusSummary = {READ: 1};
         });
       });
     } else {

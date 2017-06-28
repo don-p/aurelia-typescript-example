@@ -213,9 +213,9 @@ export class CasesDetail {
       statuses = statuses.statuses;
       controller.viewModel.statuses = statuses;
 
-      // let roles = this.appConfig.get('server.task.statuses');
-      // statuses = statuses.statuses;
-      // controller.viewModel.statuses = statuses;
+      let roles = this.appConfig.get('server.task.roles');
+      roles = roles.roles;
+      controller.viewModel.roles = roles;
 
       let assigneesListPromise = me.caseService.getCaseTaskAssignees(me.session.auth.organization.organiztionId);
       assigneesListPromise.then(data => {
@@ -228,7 +228,7 @@ export class CasesDetail {
         let modelPromise = me.caseService.createTask(_case, task);
         controller.viewModel.modelPromise = modelPromise;        
         modelPromise
-        .then(response => response.json())
+        // .then(response => response.json())
         .then(data => {
           let casePromise = me.caseService.getCase(_case.caseId);
           casePromise.then(data => {

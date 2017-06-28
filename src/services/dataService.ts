@@ -356,7 +356,23 @@ export class DataService {
         return response;
     }
 
-
+    async getUserRoles(): Promise<Response> {
+         await fetch;
+        const http =  this.getHttpClient();
+        let response = http.fetch('v1/member-roles', 
+            {
+                method: 'GET'
+            }
+        );
+        
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                return data;
+            });
+        });
+       
+    }
 
  
 // GLOBAL SERVICES //

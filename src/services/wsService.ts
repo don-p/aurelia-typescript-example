@@ -115,6 +115,14 @@ export class WebSocketService {
     handleWsMessage(frame) {
         let body = JSON.parse(frame.body);
         let eventType = body.actionType;
+        // FIXME: Fix for inconsistent server WS alert messages.
+        if(!!(body.notificationStatus)) {
+            let statistics = body.notificationStatus;
+            statistics.received = statistics.ackStatusSummary;
+            delete statistics.ackStatusSummary;
+            delete body.notificationStatus;
+            body.statistics = statistics;
+        }
         this.logger.debug(" || Received WS message: " + eventType);
         this.evt.publish(eventType, body);
     }

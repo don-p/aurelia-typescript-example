@@ -360,8 +360,8 @@ export class CasesList {
               }
             });
           }
-          
-          controller.viewModel.caseAttributes = caseAttributes;
+          _case.caseAttributes = caseAttributes;
+          // controller.viewModel.caseAttributes = caseAttributes;
         })
       }
       if(!!(_case.type)) {

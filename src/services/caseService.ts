@@ -119,7 +119,7 @@ export class CaseService {
                 
                 // Second, get the associated Tasks object array.
                 let tasksResponse = http.fetch('v1/cases/' + caseId + 
-                    '/tasks', 
+                    '/tasks?start_index=0&page_size=10000', 
                     {
                         method: 'GET'
                     }
@@ -334,43 +334,55 @@ export class CaseService {
 
 
     async createTask(_case: any, task: any) {
-        await fetch;
+        // await fetch;
 
         let method = (typeof task.taskId !== 'string')?'POST':'PUT';
         let path = (typeof task.taskId !== 'string')?'':'/' + task.taskId;
         // Clone
         let taskObj = new TaskResource();
         Object.assign(taskObj, task);
+        if(method === 'POST') {
+            delete taskObj.taskId;
+            delete taskObj.statusId;
+        }
 
         let assignee = {
-          memberId: task.assignee.member.memberId,
-          roleId: task.assignee.assigneeRole.roleId
+          memberId: task.assigneeId,
+          roleId: task.roleId
         };
-        delete taskObj.assignee;
+        delete taskObj.assigneeId;
+        delete taskObj.roleId;
         taskObj.assignee = assignee;
-        // task['statusId'] = task.taskStatus.statusId;
-        // FIXME: hard-coding initial status.  Should be ID of 'Open'.
-        // task['statusId'] = 12345;
-        if(typeof task.taskId !== 'string') {
-            taskObj['statusId'] = "status-uuid-02";
-        } else {
-            taskObj['statusId'] = task.taskStatus.statusId;
-        }
-        delete taskObj.taskStatus;
 
         taskObj.dueDate = task.dueDate.getTime();
 
-        if (!(taskObj.assignee.roleId)) {
-            taskObj.assignee.roleId = 'role-uuid-002';
-        }
+        // let response = this.getHttpClient().fetch('v1/cases/'+ _case.caseId + '/tasks' + path, 
+        //     {
+        //         method: method,
+        //         body: JSON.stringify(taskObj)
+        //     }
+        // );
+        // return response;
+        let form = new FormData();
+        form.append('caseTaskRequest', JSON.stringify(taskObj));
+        /*
+        let files = ack.files;
+        if(files) {
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                form.append('file', file);
 
-        let response = this.getHttpClient().fetch('v1/cases/'+ _case.caseId + '/tasks' + path, 
-            {
-                method: method,
-                body: JSON.stringify(taskObj)
             }
-        );
-        return response;
+        }
+        */
+        const http =  this.httpBase;
+        let response = http.createRequest('v1/cases/'+ _case.caseId + '/tasks' + path)
+        .withContent(form)
+        .withHeader('Authorization', 'Bearer '+ this.session.auth.access_token);
+        response = method === 'POST'?response.asPost():response.asPut();
+        response.send();
+
+        return response
     }
 
     async deleteTask(task: TaskResource) {
@@ -502,6 +514,26 @@ export class CaseService {
             
         })
         });
+    }
+
+    async getCaseTaskRoles(orgId:string): Promise<any> {
+        await fetch;
+
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/organizations/' + orgId + 
+            '/case-task-roles', 
+            {
+                method: 'GET'
+            }
+        );
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                return data;
+            })
+        });
+   
     }
 
     async getCaseTaskStatuses(orgId:string): Promise<any> {
