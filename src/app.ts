@@ -50,6 +50,18 @@ export class App {
       });
       // Open a new WebSocket connection.
       me.wsService.openWsConnection(me.session);
+
+      // Get the user's authentication roles.
+      let userRolesPromise: Promise<Response> = me.dataService.getUserRoles();
+      userRolesPromise
+      .then((data: any) => {
+        // Merge configs.
+        me.appConfig.merge({server: {case: {types: data.responseCollection}}});
+        me.logger.debug('=== CONFIG caseTypes ===');
+        return data;
+      }).catch(error => {
+        me.logger.debug('getCallServiceConfig() returned error: ' + error);
+      })
       
       // Get alert categories/types.
       let alertCatsPromise: Promise<Response> =me.dataService.getAlertCategories(0,  10000);
@@ -70,7 +82,7 @@ export class App {
               category['categoryTemplates'] = data[templateCategoryId].responseCollection;
             });
             me.appConfig.set('alertCategories', categories);
-            me.logger.debug('=== CONFIG appConfig ===');
+            me.logger.debug('=== CONFIG alertCategories ===');
             return data;
             //me.appConfig.set('alertTemplates', data);
           });
@@ -92,7 +104,7 @@ export class App {
       .then((data: any) => {
         // Merge configs.
         me.appConfig.merge({server: {case: {types: data.responseCollection}}});
-        me.logger.debug('=== CONFIG callServer ===');
+        me.logger.debug('=== CONFIG caseTypes ===');
         return data;
       }).catch(error => {
         me.logger.debug('getCallServiceConfig() returned error: ' + error);
@@ -103,7 +115,7 @@ export class App {
       .then((data: any) => {
         // Merge configs.
         me.appConfig.merge({server: {case: {priorities: data.responseCollection}}});
-        me.logger.debug('=== CONFIG callServer ===');
+        me.logger.debug('=== CONFIG casePriorities ===');
         return data;
       }).catch(error => {
         me.logger.debug('getCallServiceConfig() returned error: ' + error);
@@ -114,7 +126,7 @@ export class App {
       .then((data: any) => {
         // Merge configs.
         me.appConfig.merge({server: {case: {tags: data.responseCollection}}});
-        me.logger.debug('=== CONFIG callServer ===');
+        me.logger.debug('=== CONFIG caseTags ===');
         return data;
       }).catch(error => {
         me.logger.debug('getCallServiceConfig() returned error: ' + error);
@@ -125,7 +137,18 @@ export class App {
       .then((data: any) => {
         // Merge configs.
         me.appConfig.merge({server: {task: {statuses: data.responseCollection}}});
-        me.logger.debug('=== CONFIG callServer ===');
+        me.logger.debug('=== CONFIG taskStatus ===');
+        return data;
+      }).catch(error => {
+        me.logger.debug('getCallServiceConfig() returned error: ' + error);
+      });
+
+      let caseTaskRolesPromise: Promise<Response> = me.caseService.getCaseTaskRoles(me.session.auth.organization.organizationId);
+      caseTaskRolesPromise
+      .then((data: any) => {
+        // Merge configs.
+        me.appConfig.merge({server: {task: {roles: data.responseCollection}}});
+        me.logger.debug('=== CONFIG taskRoles ===');
         return data;
       }).catch(error => {
         me.logger.debug('getCallServiceConfig() returned error: ' + error);
@@ -149,12 +172,18 @@ export class App {
       })
 
       // Subscribe to new alerts.
-      me.evt.subscribe('NOTIFICATION_RECEIVED', function(message) {
-        me.logger.debug(' || New notification');
+      me.evt.subscribe(AlertsService.NotificationEvent.NOTIFICATION_RECEIVED, function(message) {
+        me.logger.debug(' || New UNREAD notification');
         // Play alert sound.
         // me.audioService.playSound(me.audioService.alertSound);
         me.audioService.playSoundCompat(me.audioService.alertSoundAudio);
-        me.logger.debug(' || Received new notification');
+        // Refresh the alerts count.
+        let statusObj = me.alertsService.parseNotificationAckStatusSummary(message.statistics.received);
+        me.session.notificationStatus = statusObj;
+      });
+      // Subscribe to alerts change to 'READ' status.
+      me.evt.subscribe(AlertsService.NotificationEvent.NOTIFICATION_READ, function(message) {
+        me.logger.debug(' || READ notification');
         // Refresh the alerts count.
         let statusObj = me.alertsService.parseNotificationAckStatusSummary(message.statistics.received);
         me.session.notificationStatus = statusObj;
@@ -229,12 +258,27 @@ export class App {
   configureRouter(config: RouterConfiguration, router: Router) {
     let me = this;
     config.title = this.i18n.tr('app.title');
+    // let redirect = 'community';
+    // let route =  './community';
+    // let user = me.session.auth.member;
+    // if (user && !!(me.session.getRole())) {
+    //   if (me.session.getRole() === 'admin') {
+    //     route = './organization/organization';
+    //     redirect = 'organization';
+    //   } else if (me.session.getRole() === 'case-mgmt') {
+    //     route = './cases/cases';
+    //     redirect = 'cases';
+    //   }
+    // }
+    
     config.mapUnknownRoutes((instruction: NavigationInstruction) => {
       let user = me.session.auth.member;
       let route = './community';
       if (user && !!(me.session.getRole())) {
         if (me.session.getRole() === 'admin') {
           route = './organization/organization';
+        } else if (me.session.getRole() === 'case-mgmt') {
+          route = './cases/cases';
         }
       }
       return route;
@@ -326,7 +370,7 @@ export class App {
         name: 'cases-caseId',  
         moduleId: './cases/cases',  
         nav: false,      
-        settings: {auth: true, roles: ['admin']},
+        settings: {auth: true, roles: ['admin','ROLE_CASE_MANAGEMENT']},
         className: 'ico-briefcase2',   
         title: this.i18n.tr('router.nav.cases') 
       },
@@ -335,7 +379,7 @@ export class App {
         name: 'cases',  
         moduleId: './cases/cases',  
         nav: true,      
-        settings: {auth: true, roles: ['admin']},
+        settings: {auth: true, roles: ['admin','ROLE_CASE_MANAGEMENT']},
         className: 'ico-briefcase2',   
         title: this.i18n.tr('router.nav.cases') 
       },
@@ -344,7 +388,7 @@ export class App {
         name: 'task',  
         moduleId: './cases/task',  
         nav: false,      
-        settings: {auth: true, roles: ['admin']},
+        settings: {auth: true, roles: ['admin','ROLE_CASE_MANAGEMENT']},
         className: 'ico-briefcase2',   
         title: this.i18n.tr('router.nav.cases') 
       }

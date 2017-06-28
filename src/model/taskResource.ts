@@ -14,7 +14,10 @@ export class TaskResource {
   taskId: string;
   caseId: string;
   taskStatus: any;
+  statusId: string;
   assignee: any;
+  assigneeId: string;
+  roleId: string;
   dueDate: Date;
   createDate: Date;
   lastChangeDate: Date;
@@ -22,18 +25,13 @@ export class TaskResource {
 
   static dateFormat: string = Container.instance.get(I18N).tr('alerts.notifications.dateFormat');
 
-  constructor(_case?:any) {
-      if(_case && _case !== null) {
-        Object.assign(this, _case);
-        /*
-        this.isConnected = member.isConnected;
-        this.entitlementRole = member.entitlementRole;
-        this.memberId = member.memberId;
-        this.physicalPersonProfile = member.physicalPersonProfile;
-        this.connectId = member.connectId;
-        this.connectStatus = member.connectStatus;
-        this.statusComment = member.statusComment;
-        */
+  constructor(task?:any) {
+      if(task && task !== null) {
+        Object.assign(this, task);
+        // Flatten model for compatibility with REST API interface.
+        this.assigneeId = this.assignee.member.memberId;
+        this.roleId = this.assignee.assigneeRole.roleId;
+        this.statusId = this.taskStatus.statusId;
       } else {
         this.title = '';
         this.taskId = null;
@@ -60,6 +58,14 @@ export class TaskResource {
     let i18n = Container.instance.get(I18N);
     return i18n.tr('global.memberFullName', {firstName: this.assignee.member.physicalPersonProfile.firstName, lastName: this.assignee.member.physicalPersonProfile.lastName});
   }
+
+  // get assigneeId() {
+  //   return this.assignee.member.memberId;
+  // }
+
+  // get roleId() {
+  //   return this.assignee.assigneeRole.roleId;
+  // }
 
 /*
   get statusName(): string {

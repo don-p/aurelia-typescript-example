@@ -17,6 +17,14 @@ import * as moment from 'moment';
 @inject(HttpClient, Http, EventAggregator, DialogService, Session, FetchConfig, QueryString, DataService, LogManager)
 export class AlertsService {  
 
+    static NotificationEvent = {
+	    NOTIFICATION_RECEIVED: 'NOTIFICATION_RECEIVED',  	// Receiver. New Alert Notification Received
+	    NOTIFICATION_READ:'NOTIFICATION_READ',		        // Sender. When message has been read
+	    NOTIFICATION_REPLIED: 'NOTIFICATION_REPLIED', 		// Sender. Get a new reply for notification
+	    NOTIFICATION_ACCEPTED: 'NOTIFICATION_ACCEPTED',		// Sender. Message has been accepted
+	    NOTIFICATION_DECLINED: 'NOTIFICATION_DECLINED'		// Sender message has been declined
+    }
+
     // Service object for retreiving application data from REST services.
     
     apiServerUrl: string;
