@@ -30,7 +30,7 @@ export class NavBar {
   get unreadAlertCount(): number {
       return this.session.unreadAlertCount;
   }
-
+/*
   hasRole(roles: Array<string>): boolean {
 
     
@@ -60,6 +60,6 @@ export class NavBar {
     }
     return hasRole;
   }
-
+*/
 }
 
