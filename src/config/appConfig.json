@@ -10,6 +10,7 @@
             "wsProtocol": "ws",
             "wsHeartbeatInterval": 5000
         },
+        "showCaseMgmt": true,
         "logLevel": "debug"
     },
     "qa": {
@@ -20,6 +21,7 @@
             "wsProtocol": "wss",
             "wsHeartbeatInterval": 10000
         },
+        "showCaseMgmt": true,
         "logLevel": "debug"
     },
     "production": {

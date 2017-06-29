@@ -370,7 +370,7 @@ export class App {
         name: 'cases-caseId',  
         moduleId: './cases/cases',  
         nav: false,      
-        settings: {auth: true, roles: ['admin','ROLE_CASE_MANAGEMENT']},
+        settings: {auth: true, roles: ['ROLE_CASE_MANAGEMENT']},
         className: 'ico-briefcase2',   
         title: this.i18n.tr('router.nav.cases') 
       },
@@ -379,7 +379,7 @@ export class App {
         name: 'cases',  
         moduleId: './cases/cases',  
         nav: true,      
-        settings: {auth: true, roles: ['admin','ROLE_CASE_MANAGEMENT']},
+        settings: {auth: true, roles: ['ROLE_CASE_MANAGEMENT']},
         className: 'ico-briefcase2',   
         title: this.i18n.tr('router.nav.cases') 
       },
@@ -388,7 +388,7 @@ export class App {
         name: 'task',  
         moduleId: './cases/task',  
         nav: false,      
-        settings: {auth: true, roles: ['admin','ROLE_CASE_MANAGEMENT']},
+        settings: {auth: true, roles: ['ROLE_CASE_MANAGEMENT']},
         className: 'ico-briefcase2',   
         title: this.i18n.tr('router.nav.cases') 
       }
