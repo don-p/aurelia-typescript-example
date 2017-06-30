@@ -411,6 +411,12 @@ header .navbar-nav {
   top: 14px;  
 }
 
+a.back-link, a.back-link:hover, a.back-link:active {
+  color: #2980b9;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
 // Community
 
 .blg-left-panel {
