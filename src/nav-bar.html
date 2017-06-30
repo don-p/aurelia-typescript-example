@@ -5,7 +5,7 @@
         </div>
         <nav role="navigation">
             <ul>
-                <li repeat.for="row of router.navigation" show.bind="((row.config.route.indexOf('cases') === 0) && !!(showCaseMgmt)) || (row.settings.roles.indexOf(session.getRole()) != -1)" 
+                <li repeat.for="row of router.navigation" show.bind="((row.config.route.indexOf('cases') === 0) && !!(showCaseMgmt)) || ((row.config.route.indexOf('cases') === -1) &&  (row.settings.roles.indexOf(session.getRole()) != -1))" 
                     class="${row.isActive || router.currentInstruction.config.title === row.title? 'active' : ''}">
                     <a data-toggle="collapse" data-target="#skeleton-navigation-navbar-collapse.in" href.bind="row.href">
                         <i class="${row.config.className}"></i>${row.title}
