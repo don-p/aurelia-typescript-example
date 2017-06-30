@@ -21,7 +21,7 @@
             "wsProtocol": "wss",
             "wsHeartbeatInterval": 10000
         },
-        "showCaseMgmt": true,
+        "showCaseMgmt": false,
         "logLevel": "debug"
     },
     "production": {
