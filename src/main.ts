@@ -131,12 +131,16 @@ export async function configure(aurelia: Aurelia) {
         LogManager.addAppender(new ConsoleAppender());
         LogManager.setLevel(LogManager.logLevel.debug);
 
-        //FIXME - get case-management support flag from query string.
-        let queryString = window.location.search;
+        //FIXME - get case-management support flag from initial hash.
+        let queryString = window.location.hash;
+        let showCm = false;
         queryString = queryString.substring(1);
-        let showCm = queryString.indexOf('cm') !== -1;
-        configInstance.set('showCaseMgmt', showCm);
-        
+        if (queryString.indexOf('cm') !== -1) {
+          showCm = true;
+          window.location.hash = '';
+          configInstance.set('showCaseMgmt', showCm);
+        }
+
         // Merge server config with local.
         /*
         dataInstance.getCallServiceConfig()
