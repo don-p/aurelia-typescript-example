@@ -368,12 +368,14 @@ export class Utils {
   setNotificationsGridMemoryDataSource(gridOptions, dataService: any, callback: Function, args: any, isConnectionType: boolean) {
     const me = this;
 
+    gridOptions.totalCount = 0;
     gridOptions.api.showLoadingOverlay();
     let membersPromise = callback.call(dataService, args);
     membersPromise//.then(response => response.json())
       .then(data => {
         let totalCount = data.totalCount;
         let result = data.responseCollection;
+        gridOptions.totalCount = totalCount;
         gridOptions.api.setRowData(result);
 
         gridOptions.api.hideOverlay();
