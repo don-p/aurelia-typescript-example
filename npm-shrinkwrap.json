@@ -488,9 +488,9 @@
       "resolved": "https://registry.npmjs.org/aurelia-binding/-/aurelia-binding-1.2.0.tgz"
     },
     "aurelia-bootstrap-datetimepicker": {
-      "version": "1.0.9",
-      "from": "aurelia-bootstrap-datetimepicker@1.0.9",
-      "resolved": "https://registry.npmjs.org/aurelia-bootstrap-datetimepicker/-/aurelia-bootstrap-datetimepicker-1.0.9.tgz"
+      "version": "1.0.10",
+      "from": "aurelia-bootstrap-datetimepicker@1.0.10",
+      "resolved": "https://registry.npmjs.org/aurelia-bootstrap-datetimepicker/-/aurelia-bootstrap-datetimepicker-1.0.10.tgz"
     },
     "aurelia-bootstrapper-webpack": {
       "version": "1.1.0",
