@@ -326,11 +326,11 @@ export class CasesList {
       loadingTitle: 'app.loading', item:_case, okText:this.i18n.tr('button.save'), validationRules:vRules})
     .then((controller:any) => {
 
-      let types = this.appConfig.get('server.case.types');
+      let types = me.appConfig.get('server.case.types');
       types = types.types;
       controller.viewModel.types = types;
 
-      let priorities = this.appConfig.get('server.case.priorities');
+      let priorities = me.appConfig.get('server.case.priorities');
       priorities = priorities.priorities;
       controller.viewModel.priorities = priorities;
 

@@ -209,11 +209,11 @@ export class CasesDetail {
     .then((controller:any) => {
       let model = controller.settings;
 
-      let statuses = this.appConfig.get('server.task.statuses');
+      let statuses = me.appConfig.get('server.task.statuses');
       statuses = statuses.statuses;
       controller.viewModel.statuses = statuses;
 
-      let roles = this.appConfig.get('server.task.roles');
+      let roles = me.appConfig.get('server.task.roles');
       roles = roles.roles;
       controller.viewModel.roles = roles;
 
