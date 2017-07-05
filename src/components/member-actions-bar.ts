@@ -497,7 +497,7 @@ export class MemberActionsBarCustomElement {
       gridOptions.getRowNodeId = function(item) {
         return item.memberId.toString();
       };
-      gridOptions.rowModelType = 'infinite';
+      gridOptions.rowModelType = 'virtual';
 
       gridOptions.onGridReady = function(event) {
         let grid:any = this;
@@ -573,7 +573,7 @@ export class MemberActionsBarCustomElement {
         controller.viewModel.showSelectedOrganizationMembers = function(showSelected:boolean) {
           gridOptions['showSelected'] = showSelected;
           controller.viewModel.showSelectedMembers = showSelected;
-          gridOptions.api.refreshInfinitePageCache();
+          gridOptions.api.refreshVirtualPageCache();
         };
         controller.viewModel.$isGridFiltered = function() {
           let filtered =  controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent();
@@ -635,7 +635,7 @@ export class MemberActionsBarCustomElement {
               Array.prototype.splice.apply(me.parent.communityMembers,[].concat(me.parent.communityMembers.length,0,orgMemberIds));
             }
             if(!!(selectedCmty)) {
-              me.parent.gridOptions.api.refreshInfinitePageCache();
+              me.parent.gridOptions.api.refreshVirtualPageCache();
               me.parent.gridOptions.api.refreshView();
               me.parent.gridOptions.api.deselectAll();
               // update the community member count.
@@ -702,7 +702,7 @@ export class MemberActionsBarCustomElement {
               })
             }
 
-            me.parent.gridOptions.api.refreshInfinitePageCache();
+            me.parent.gridOptions.api.refreshVirtualPageCache();
             me.parent.gridOptions.api.refreshView();
             me.parent.gridOptions.api.deselectAll();
             // update the community member count.
@@ -839,7 +839,7 @@ export class MemberActionsBarCustomElement {
         modelPromise
         .then(response => response.json())
         .then(data => {
-            me.parent.gridOptions.api.refreshInfinitePageCache();
+            me.parent.gridOptions.api.refreshVirtualPageCache();
             me.parent.gridOptions.api.refreshView();
             me.parent.gridOptions.api.deselectAll();
             // me.selectedMembers = me.parent.gridOptions.api.getSelectedRows();
