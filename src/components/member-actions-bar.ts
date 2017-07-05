@@ -426,6 +426,8 @@ export class MemberActionsBarCustomElement {
         if(att) {
           let index = controller.alertModel.files.indexOf(att);
           controller.alertModel.files.splice(index, 1);
+          let el:HTMLInputElement = <HTMLInputElement>document.getElementById('alertFile');
+          el.value = '';
         } else {
           delete controller.alertModel.fileList;
         }
@@ -495,7 +497,7 @@ export class MemberActionsBarCustomElement {
       gridOptions.getRowNodeId = function(item) {
         return item.memberId.toString();
       };
-      gridOptions.rowModelType = 'virtual';
+      gridOptions.rowModelType = 'infinite';
 
       gridOptions.onGridReady = function(event) {
         let grid:any = this;
@@ -571,7 +573,7 @@ export class MemberActionsBarCustomElement {
         controller.viewModel.showSelectedOrganizationMembers = function(showSelected:boolean) {
           gridOptions['showSelected'] = showSelected;
           controller.viewModel.showSelectedMembers = showSelected;
-          gridOptions.api.refreshVirtualPageCache();
+          gridOptions.api.refreshInfinitePageCache();
         };
         controller.viewModel.$isGridFiltered = function() {
           let filtered =  controller.viewModel.gridOptions && controller.viewModel.gridOptions.api && controller.viewModel.gridOptions.api.isAnyFilterPresent();
@@ -633,7 +635,7 @@ export class MemberActionsBarCustomElement {
               Array.prototype.splice.apply(me.parent.communityMembers,[].concat(me.parent.communityMembers.length,0,orgMemberIds));
             }
             if(!!(selectedCmty)) {
-              me.parent.gridOptions.api.refreshVirtualPageCache();
+              me.parent.gridOptions.api.refreshInfinitePageCache();
               me.parent.gridOptions.api.refreshView();
               me.parent.gridOptions.api.deselectAll();
               // update the community member count.
@@ -700,7 +702,7 @@ export class MemberActionsBarCustomElement {
               })
             }
 
-            me.parent.gridOptions.api.refreshVirtualPageCache();
+            me.parent.gridOptions.api.refreshInfinitePageCache();
             me.parent.gridOptions.api.refreshView();
             me.parent.gridOptions.api.deselectAll();
             // update the community member count.
@@ -837,7 +839,7 @@ export class MemberActionsBarCustomElement {
         modelPromise
         .then(response => response.json())
         .then(data => {
-            me.parent.gridOptions.api.refreshVirtualPageCache();
+            me.parent.gridOptions.api.refreshInfinitePageCache();
             me.parent.gridOptions.api.refreshView();
             me.parent.gridOptions.api.deselectAll();
             // me.selectedMembers = me.parent.gridOptions.api.getSelectedRows();

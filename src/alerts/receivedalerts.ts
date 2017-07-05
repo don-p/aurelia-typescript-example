@@ -287,6 +287,8 @@ export class ReceivedAlerts {
         if(att) {
           let index = controller.ackModel.files.indexOf(att);
           controller.ackModel.files.splice(index, 1);
+          let el:HTMLInputElement = <HTMLInputElement>document.getElementById('replyFile');
+          el.value = '';
         } else {
           delete controller.ackModel.fileList;
         }
