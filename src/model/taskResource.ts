@@ -21,6 +21,7 @@ export class TaskResource {
   dueDate: Date;
   createDate: Date;
   lastChangeDate: Date;
+  files: Array<any>;
   comments: Array<any>;
 
   static dateFormat: string = Container.instance.get(I18N).tr('alerts.notifications.dateFormat');
