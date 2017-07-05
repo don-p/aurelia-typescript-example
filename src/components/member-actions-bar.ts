@@ -426,6 +426,8 @@ export class MemberActionsBarCustomElement {
         if(att) {
           let index = controller.alertModel.files.indexOf(att);
           controller.alertModel.files.splice(index, 1);
+          let el:HTMLInputElement = <HTMLInputElement>document.getElementById('alertFile');
+          el.value = '';
         } else {
           delete controller.alertModel.fileList;
         }
