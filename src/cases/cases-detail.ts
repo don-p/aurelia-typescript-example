@@ -222,6 +222,20 @@ export class CasesDetail {
         controller.viewModel.assignees = data;
       });
 
+      controller.viewModel.onAttachmentFile = function(event, fileList) {
+        let fileArray = Array.from(fileList);
+        controller.viewModel.item.files = fileArray;
+      };
+      controller.viewModel.removeAttachment = function(att: any) {
+        if(att) {
+          let index = controller.viewModel.item.files.indexOf(att);
+          controller.viewModel.item.files.splice(index, 1);
+          let el:HTMLInputElement = <HTMLInputElement>document.getElementById('taskFile');
+          el.value = '';
+        } else {
+          delete controller.viewModel.item.fileList;
+        }
+      };
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (task) => {
         me.logger.debug("Edit task submit()");

@@ -336,6 +336,7 @@ export class CaseService {
     async createTask(_case: any, task: any) {
         // await fetch;
 
+        let me = this;
         let method = (typeof task.taskId !== 'string')?'POST':'PUT';
         let path = (typeof task.taskId !== 'string')?'':'/' + task.taskId;
         // Clone
@@ -364,9 +365,8 @@ export class CaseService {
         // );
         // return response;
         let form = new FormData();
-        form.append('caseTaskRequest', JSON.stringify(taskObj));
-        /*
-        let files = ack.files;
+        
+        let files = taskObj.files;
         if(files) {
             for (let i = 0; i < files.length; i++) {
                 let file = files[i];
@@ -374,16 +374,28 @@ export class CaseService {
 
             }
         }
-        */
+        delete taskObj.files;
+        delete taskObj['fileList'];
+
+        form.append('caseTaskRequest', JSON.stringify(taskObj));
+        
         const http =  this.httpBase;
-        let response = http.createRequest('v1/cases/'+ _case.caseId + '/tasks' + path)
+        let r = http.createRequest('v1/cases/'+ _case.caseId + '/tasks' + path)
         .withContent(form)
         .withHeader('Authorization', 'Bearer '+ this.session.auth.access_token);
-        response = method === 'POST'?response.asPost():response.asPut();
-        response.send();
+        let response = method === 'POST'?r.asPost().send():r.asPut().send();
+        // response.send();
 
         return response
-    }
+        .then(data => {
+            let json = data.response;
+            let taskContent = me.parseTask(json);
+            return taskContent;
+           
+        }).catch(function(error){
+            me.logger.error("Task create failed: " + error);
+        });
+   }
 
     async deleteTask(task: TaskResource) {
         await fetch;

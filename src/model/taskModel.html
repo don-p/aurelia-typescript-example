@@ -35,6 +35,22 @@
             <abp-datetime-picker class="form-datepicker"
                 element.bind="picker" model.bind="item.dueDate" options.bind="{ showTodayButton: true, format: 'YYYY-MM-DD' }"></abp-datetime-picker>
         </div>
+        <div class="dialog-section model-dialog">
+            <form class="select-file2">
+                <input type="file" id="taskFile" class="inputfile2" 
+                change.delegate="onAttachmentFile($event, item.fileList)" load.delegate="controller.handleFiles($event)" files.bind="item.fileList" />
+                <label for="taskFile" style="width: 100%;">
+                    <strong>
+                        <i class="ico-attachment"></i>
+                    </strong>
+                    <span if.bind="(!(item.files) || item.files.length === 0)">${'community.communities.alert.selectFile' | t}&hellip;</span>
+                    <span if.bind="((item.files) && item.files.length !== 0)">${item.files[0].name}</span>
+                    <button if.bind="((item.files) && item.files.length !== 0)" style="top: 3px;float: right;" id="btn-remove-attachment" click.delegate="removeAttachment(item.files[0])" class="btn btn-xs send-alert-remove-attachment" i18n="[title]button.removeAttachment">
+                        <i class="ico-cancel-square2"></i>
+                    </button>
+                </label>
+            </form>
+        </div>
         <div show.bind="!!(item.taskId)" class="dialog-section">
             <label i18n='[prepend]cases.tasks.createdDate'>: </label>
             <div id="desc">${item.formattedCreateDate}</div>
