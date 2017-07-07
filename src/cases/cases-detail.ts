@@ -146,13 +146,19 @@ export class CasesDetail {
 
     this.setView('TASK');
 
-    // get the task details.
-    this.casePromise = this.caseService.getTask(this.selectedCase.caseId, selectedTask.taskId);
-    this.casePromise.then(function(data:any){
-      let task = data;
+    // // get the task details.
+    // this.casePromise = this.caseService.getTask(this.selectedCase.caseId, selectedTask.taskId);
+    // this.casePromise.then(function(data:any){
+    //   let task = data;
+    //   // get the task artifacts (comments/files).
+    //   let artPromise = this.caseService.getTaskArtifacts(this.selectedCase.caseId, selectedTask.taskId);
+    //   artPromise.then(function(artData:any){
+    //     task.artifacts = artData;
+    //     me.selectedTask = task;
+    //     return task;
+    //   });
       
-      me.selectedTask = task;
-    });
+    // });
   }
 
   setView(view) {

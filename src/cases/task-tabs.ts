@@ -43,13 +43,17 @@ export class TaskTabs {
     this.caseView = 'CASE';
 
     let me = this;
+    this.selectedTask = {artifacts: []};
 
+    this.evt.subscribe('taskLoaded', payload => {
+      me.selectedTask = payload.task;
+    });
 
     this.logger = LogManager.getLogger(this.constructor.name);
     
   }
 
-  bind(bindingContext: Object, overrideContext: Object) {
+  bind(bindingContext: Object, overrideContext: any) {
     this.logger.debug("Connections | bind()");
   }
 

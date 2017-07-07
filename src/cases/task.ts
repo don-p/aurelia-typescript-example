@@ -114,8 +114,15 @@ export class Task {
     me.casePromise = me.caseService.getTask(caseId, taskId);
     me.casePromise.then(function(data:any){
       // let task = data;
-      me.evt.publish('taskLoaded', {task: data});
-      me.selectedTask = data;
+      let selectedTask = data;
+      // get the task artifacts (comments/files).
+      let artPromise = me.caseService.getTaskArtifacts(selectedTask.caseId, selectedTask.taskId);
+      artPromise.then(function(artData:any){
+        selectedTask.artifacts = artData;
+        me.selectedTask = selectedTask;
+        me.evt.publish('taskLoaded', {task: data});
+        return selectedTask;
+      });
 
     });
   }  

@@ -119,6 +119,21 @@ export class TaskDetail {
     let me = this;
 
     this.selectedTask = selectedTask;
+    /*
+    // get the task details.
+    this.casePromise = this.caseService.getTask(selectedTask.caseId, selectedTask.taskId);
+    this.casePromise.then(function(data:any){
+      let task = data;
+      // get the task artifacts (comments/files).
+      let artPromise = me.caseService.getTaskArtifacts(selectedTask.caseId, selectedTask.taskId);
+      artPromise.then(function(artData:any){
+        task.artifacts = artData;
+        me.selectedTask = task;
+        return task;
+      });
+      
+    });
+    */
     this.setView('COMMENTS');
 
     // // get the task details.

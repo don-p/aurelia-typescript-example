@@ -19,6 +19,7 @@
         <div class="dialog-section">
             <label class="blg-form-required community-select-label" i18n='[prepend]global.type'>: </label>
             <select class="form-control select select-default-blg" change.delegate="getCaseAttributes(item.typeId, $event)" value.bind="item.typeId">
+                <option show.bind="(!(item.caseId) && !(item.typeId))" value="null"> </option>
                 <option repeat.for="type of types" model.bind="type.typeId">${type.typeName}</option>
             </select>
         </div>
