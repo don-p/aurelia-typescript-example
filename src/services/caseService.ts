@@ -10,6 +10,7 @@ import {Model} from '../model/model';
 import {CaseResource} from '../model/caseResource';
 import {TaskResource} from '../model/taskResource';
 import {MemberResource} from '../model/memberResource';
+import {ArtifactResource} from '../model/artifactResource';
 import {NotificationAckResource} from '../model/notificationAckResource';
 import {DataService} from './dataService';
 import {CommunityService} from './communityService';
@@ -206,6 +207,30 @@ export class CaseService {
         return response;
     }
 
+    parseArtifact(json): any {
+        let response = JSON.parse(json, (k, v) => { 
+            if(k == 'createDate') {
+                return new Date(v);
+            }
+            if(k == 'createdBy') {
+                return new MemberResource(v);
+            }
+            if( (!(k === 'responseCollection')) && (v != null) && (typeof v == 'object') ) {
+                if((k == '')  && (typeof this == 'object') && !(v.responseCollection)) {
+                    // Individual task.
+                    let t = new ArtifactResource(v);
+                    return t;                    
+                } else if((!(isNaN(parseInt(k)))) && (!(v.metaTagId)) && (!(v.attributeKey))) {
+                    // Collection of tasks in responseCollection.
+                    let t = new ArtifactResource(v);
+                    return t;                
+                }
+            }
+            return v;                
+        });
+        return response;
+    }
+
 
     /**
      * Get list of tasks for logged-in user.
@@ -293,6 +318,33 @@ export class CaseService {
    
     }
 
+    /**
+     * Get an individual task's artifacts.
+     */
+    async getTaskArtifacts(caseId:string, taskId:string): Promise<any> {
+        await fetch;
+
+        const http =  this.getHttpClient();
+        let me = this;
+        let response = http.fetch('v1/cases/' + caseId + 
+            '/tasks/' + taskId + '/artifacts', 
+            {
+                method: 'GET'
+            }
+        );
+
+        return response
+        .then(response => {return response.json()
+            .then(data => {
+                // data is the artifacts list.
+                let json = JSON.stringify(data);
+                let artifactContent = me.parseArtifact(json);
+                return artifactContent.responseCollection;
+            })
+        });
+   
+    }
+
     async createCase(_case: any) {
         await fetch;
 
@@ -343,9 +395,10 @@ export class CaseService {
         let taskObj = new TaskResource();
         Object.assign(taskObj, task);
         if(method === 'POST') {
-            delete taskObj.taskId;
             delete taskObj.statusId;
         }
+        delete taskObj.taskId;
+        delete taskObj.caseId;
 
         let assignee = {
           memberId: task.assigneeId,
@@ -355,7 +408,17 @@ export class CaseService {
         delete taskObj.roleId;
         taskObj.assignee = assignee;
 
+        delete taskObj.taskStatus;
+        delete taskObj.createDate;
+        delete taskObj.lastChangeDate;
+        delete taskObj.attachmentCount;
+        delete taskObj.commentsCount;
+        delete taskObj.changesCount;
+
         taskObj.dueDate = task.dueDate.getTime();
+
+        // Always do a POST
+        method = 'POST';
 
         // let response = this.getHttpClient().fetch('v1/cases/'+ _case.caseId + '/tasks' + path, 
         //     {

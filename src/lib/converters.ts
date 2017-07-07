@@ -17,6 +17,6 @@ export class MathMaxValueConverter {
 export class DateFormatValueConverter {
 
   toView(value, format) {
-   return !!(value)?moment(value).format(format):value;
+   return !!(value)?(moment as any).default(value).format(format):value;
   }
 }

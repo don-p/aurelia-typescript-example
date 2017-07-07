@@ -1,5 +1,6 @@
 <template>
 <require from="../lib/loading-mask/loading-mask"></require>
+<require from="../lib/converters"></require>
 
     <ul class="nav nav-tabs nav-append-content">
         <li class.bind="requestType == 'PENDING'?'active':''">
@@ -25,8 +26,17 @@
                 <div class="comments-content" id="membersTableContent">
 
 
-
-
+                    <div repeat.for="artifact of selectedTask.artifacts" class="comment-list-item">
+                        <div class="comment-type-icon"><i class="${artifact.icon}"></i></div>                            
+                        <div class="comment-container">
+                            <h3 class="comment-title">
+                                <span>${artifact.createDate | dateFormat:'M/D/YYYY HH:mm'} - ${artifact.creatorFullName}</span>
+                                <span class="pull-right">Bethesda, MD</span> 
+                            </h3>
+                            <div class="comment-content" if.bind="artifact.artifactType === 'PAYLOAD'">${artifact.payload.payloadName}</div>
+                            <div class="comment-content" if.bind="artifact.artifactType !== 'PAYLOAD'">${artifact.commentBody}</div>
+                        </div>
+                    </div>
 
                     <div class="comment-list-item">
                         <div class="comment-type-icon"><i class="ico-bubble-lines"></i></div>                            
@@ -38,7 +48,7 @@
                             <div class="comment-content">Text messaging, or texting, is the act of composing and sending electronic messages, typically consisting of alphabetic and numeric characters</div>
                         </div>
                     </div>
-
+<!--
                     <div class="comment-list-item">
                         <div class="comment-type-icon"><i class="ico-image"></i></div>                            
                         <div class="comment-container">
@@ -81,7 +91,7 @@
                             </h3>
                             <div class="comment-content">schedule_25.docx</div>
                         </div>
-                    </div>                                                                                   
+                    </div>                                                                                   -->
 
 
 

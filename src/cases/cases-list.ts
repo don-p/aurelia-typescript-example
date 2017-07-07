@@ -364,9 +364,10 @@ export class CasesList {
           // controller.viewModel.caseAttributes = caseAttributes;
         })
       }
-      if(!!(_case.type)) {
+      if(!!(_case.caseId)) {
         controller.viewModel.getCaseAttributes(_case.type.typeId);
       }
+      
       // Callback function for submitting the dialog.
       controller.viewModel.submit = (_case) => {
         me.logger.debug("Edit case submit()");

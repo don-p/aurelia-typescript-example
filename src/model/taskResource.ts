@@ -21,6 +21,8 @@ export class TaskResource {
   dueDate: Date;
   createDate: Date;
   lastChangeDate: Date;
+  commentsCount: number;
+  changesCount: number;
   files: Array<any>;
   comments: Array<any>;
 
