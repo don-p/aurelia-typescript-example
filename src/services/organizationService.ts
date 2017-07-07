@@ -33,8 +33,10 @@ export class OrganizationService {
 
         let me = this;
         let organizationId = args.organizationId; 
-        let startIndex = args.params.startRow; 
-        let pageSize = args.params.endRow - args.params.startRow; 
+        let startIndex = args.startIndex; 
+        let pageSize = args.pageSize; 
+        // let startIndex = args.params.startRow; 
+        // let pageSize = args.params.endRow - args.params.startRow; 
         let params = args.params;
         
         let criteriaParams;
