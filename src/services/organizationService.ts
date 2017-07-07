@@ -33,8 +33,8 @@ export class OrganizationService {
 
         let me = this;
         let organizationId = args.organizationId; 
-        let startIndex = args.startIndex; 
-        let pageSize = args.pageSize; 
+        let startIndex = args.params.startRow; 
+        let pageSize = args.params.endRow - args.params.startRow; 
         let params = args.params;
         
         let criteriaParams;
@@ -53,10 +53,9 @@ export class OrganizationService {
             }
         );
         return response
-        .then(response => {return response.json()
+        .then(response => {return response.text()
             .then(data => {
-                let json = JSON.stringify(data);
-                let content:any = me.utils.parseMemberResource(json);
+                let content:any = me.utils.parseMemberResource(data);
                 return content;
             })
         });
@@ -133,10 +132,9 @@ export class OrganizationService {
             }
         );
         return response
-        .then(response => {return response.json()
+        .then(response => {return response.text()
             .then(data => {
-                let json = JSON.stringify(data);
-                let content:any = me.utils.parseMemberResource(json);
+                let content:any = me.utils.parseMemberResource(data);
                 return content;
             })
         });

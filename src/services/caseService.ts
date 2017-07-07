@@ -65,32 +65,10 @@ export class CaseService {
         return response
         .then(response => 
         {
-            // let result = {
-            //     "pageSize": 0,
-            //     "responseCollection": me.casesArray,
-            //     "startPosition": 0,
-            //     "totalCount": 3
-            // };
-            // return JSON.parse(JSON.stringify(result));
-            return response.json()
+            return response.text()
             .then(data => {
-                let json = JSON.stringify(data);
-                let caseContent = me.parseCase(json);
-                // let content = JSON.parse(json, (k, v) => { 
-                //     if(k == 'sentDate') {
-                //         return new Date(v);
-                //     }
-                //     if(k == 'ackStatusSummary') {
-                //         let status = me.parseNotificationAckStatusSummary(v);
-                //         return status;
-                //     }
-                //     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-                //         return new NotificationResource(v);
-                //     } 
-                //     return v;                
-                // });
+                let caseContent = me.parseCase(data);
                 return caseContent;
-                // return data;
             })
         });
     }
@@ -112,11 +90,10 @@ export class CaseService {
             }
         );
         return response
-        .then(response => {return response.json()
+        .then(response => {return response.text()
             .then(data => {
                 // data is the case.
-                let json = JSON.stringify(data);
-                let caseContent = me.parseCase(json);
+                let caseContent = me.parseCase(data);
                 
                 // Second, get the associated Tasks object array.
                 let tasksResponse = http.fetch('v1/cases/' + caseId + 
@@ -126,18 +103,15 @@ export class CaseService {
                     }
                 );
                 return tasksResponse
-                .then(res => {return res.json()
+                .then(res => {return res.text()
                     .then(tasksData => {
-                        let json = JSON.stringify(tasksData);
-                        let taskContent = me.parseTask(json);
+                        let taskContent = me.parseTask(tasksData);
                         caseContent.tasks = taskContent.responseCollection;
                         return caseContent;
                     })
                 });
             })
         });
-
-
     }
 
     parseCase(json): any {
@@ -169,7 +143,6 @@ export class CaseService {
             }
             return v;                
         });
-        
         return response;
     }
 
@@ -241,7 +214,6 @@ export class CaseService {
         let memberId:string = args.memberId;
         let startIndex:number = args.startIndex;
         let pageSize:number = args.pageSize;
-        let direction:string = 'RECEIVED';
 
         const http =  this.getHttpClient();
         let me = this;
@@ -255,21 +227,6 @@ export class CaseService {
         {
             return response.json()
             .then(data => {
-                // let json = JSON.stringify(data);
-                // let content = JSON.parse(json, (k, v) => { 
-                //     if(k == 'sentDate') {
-                //         return new Date(v);
-                //     }
-                //     if(k == 'ackStatusSummary') {
-                //         let status = me.parseNotificationAckStatusSummary(v);
-                //         return status;
-                //     }
-                //     if ((k !== '')  && typeof this == 'object' && v != null && typeof v == 'object' && !(v['payloadId']) && !(v['ackStatus']) && (!(isNaN(k)) && !(isNaN(parseInt(k))) )) {
-                //         return new NotificationResource(v);
-                //     } 
-                //     return v;                
-                // });
-                // return content;
                 return data;
             })
         });
@@ -281,7 +238,6 @@ export class CaseService {
     async getTask(caseId:string, taskId:string): Promise<any> {
         await fetch;
 
-        // Multiple Promises to be resolved here.
         const http =  this.getHttpClient();
         let me = this;
         let response = http.fetch('v1/cases/' + caseId + 
@@ -291,13 +247,12 @@ export class CaseService {
             }
         );
 
-        // First, get the Notificaiton object.
+        // get the task object.
         return response
-        .then(response => {return response.json()
+        .then(response => {return response.text()
             .then(data => {
-                // data is the notification.
-                let json = JSON.stringify(data);
-                let taskContent = me.parseTask(json);
+                // data is the task.
+                let taskContent = me.parseTask(data);
                 return taskContent;
                 // // Second, get the associated Comments object array.
                 // let commentsResponse = http.fetch('v1/members/' + memberId + 
@@ -334,11 +289,10 @@ export class CaseService {
         );
 
         return response
-        .then(response => {return response.json()
+        .then(response => {return response.text()
             .then(data => {
                 // data is the artifacts list.
-                let json = JSON.stringify(data);
-                let artifactContent = me.parseArtifact(json);
+                let artifactContent = me.parseArtifact(data);
                 return artifactContent.responseCollection;
             })
         });
@@ -585,9 +539,8 @@ export class CaseService {
                     let content:any = me.utils.parseMemberResource(json);
                     return content.responseCollection;
                 });
-            });
-            
-        })
+            });       
+        });
         });
     }
 
