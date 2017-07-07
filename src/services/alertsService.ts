@@ -78,10 +78,9 @@ export class AlertsService {
             }
         );
         return response
-        .then(response => {return response.json()
+        .then(response => {return response.text()
             .then(data => {
-                let json = JSON.stringify(data);
-                let content = JSON.parse(json, (k, v) => { 
+                let content = JSON.parse(data, (k, v) => { 
                     if(k == 'sentDate') {
                         return new Date(v);
                     }
@@ -116,11 +115,10 @@ export class AlertsService {
         );
         // First, get the Notificaiton object.
         return response
-        .then(response => {return response.json()
+        .then(response => {return response.text()
             .then(data => {
                 // data is the notification.
-                let json = JSON.stringify(data);
-                let notificationContent = me.parseNotification(json);
+                let notificationContent = me.parseNotification(data);
                 
                 // Second, get the associated Acknowledgement object array.
                 let acksResponse = http.fetch('v2/members/' + memberId + 
@@ -130,11 +128,10 @@ export class AlertsService {
                     }
                 );
                 return acksResponse
-                .then(res => {return res.json()
+                .then(res => {return res.text()
                     .then(acksData => {
                         // Third, for each Acknowledgement in list, get the Acknowledgement Detail in order to access attachments.
-                        let json = JSON.stringify(acksData);
-                        let acks:Array<NotificationAckResource> = me.parseNotificationAcks(json);
+                        let acks:Array<NotificationAckResource> = me.parseNotificationAcks(acksData);
                         notificationContent.acks = acks;
                         let promiseArray = [];
                         // 3A. - Fetch the list of Acknowledgement Details.
@@ -145,17 +142,6 @@ export class AlertsService {
                                     method: 'GET'
                                 }
                             );
-                            // acksDetailResponse.then(res => {return res.json()
-                            //     .then(acksData => {
-                            //         let json = JSON.stringify(acksData);
-                            //         let acks:Array<NotificationAckResource> = me.parseNotificationAcks('{"responseCollection":[' + json + ']}');
-                            //         return acks[0];                         
-                            //     })
-                            // });                                
-                                
-                            //     function(data) {
-                            //     return {ack: ack, ackDetail: data};
-                            // });
                             promiseArray.push(acksDetailResponse);
 
                         });
@@ -171,18 +157,6 @@ export class AlertsService {
                             // 3C. - Wait for async JSON transform on Acknowledgement Detail responses.
                             return Promise.all(jsonMap);
 
-                            // result.forEach(response => {response.json()
-                            //     .then(responseAck => {
-                            //         let js = JSON.stringify(responseAck);
-                            //         let ack:Array<NotificationAckResource> = me.parseNotificationAcks('{"responseCollection":[' + js + ']}');
-                            //         resultArray.push(ack[0]);
-                            //         return ack[0];
-                            //     });
-                            // });
-
-                            // notificationContent.acks = resultArray;
-                            // // return result;
-                            // return {notification: notificationContent, response: result};
                         }).then(function(pArray) {
                             // 3D. - Parse Acknowledgement Detail responses into model objects.
                             let acks = [];
@@ -272,10 +246,9 @@ export class AlertsService {
             }
         );
         return response
-        .then(response => {return response.json()
+        .then(response => {return response.text()
             .then(data => {
-                let json = JSON.stringify(data);
-                let content = JSON.parse(json, (k, v) => { 
+                let content = JSON.parse(data, (k, v) => { 
                     if(k == 'acknowledgementDate') {
                         return new Date(parseInt(v));
                         //FIXME: TEMP - parsing for wrong date format from Response.
